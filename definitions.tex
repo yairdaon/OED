@@ -1,0 +1,182 @@
+%%
+%% Place here your \usepackage's. Some recommended packages are already included.
+%%
+
+% Graphics:
+%% \usepackage[final]{graphicx}
+\usepackage{graphicx} % use this line instead of the above to suppress graphics in draft copies
+%\usepackage{graphpap} % \defines the \graphpaper command
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+%\usepackage{amsmath, amsfonts, amsthm} % Math package
+
+\usepackage{cite}
+% makes color citations
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=red,linkcolor=red,bookmarks=true]{hyperref}
+\usepackage{color}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{paralist}
+%% \usepackage{graphics} %% add this and next lines if pictures should be in esp format
+%% \usepackage{epsfig} %For pictures: screened artwork should be set up with an 85 or 100 line screen
+\usepackage{epstopdf} 
+
+%% From slides file
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+
+
+
+%\usepackage{algorithm}
+%\usepackage[noend]{algpseudocode}
+
+
+
+
+
+
+
+%% % Indent first line of each section:
+%% \usepackage{indentfirst}
+
+%% % Good AMS stuff:
+%% \usepackage{amsthm}
+%% \usepackage[tbtags]{amsmath} % a lot of good stuff!
+
+
+%% % Fonts and symbols:
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% Formatting tools:
+%\usepackage{relsize} % relative font size selection, provides commands \textsmalle, \textlarger
+%\usepackage{xspace} % gentle spacing in macros, such as \newcommand{\acims}{\textsc{acim}s\xspace}
+
+% Page formatting utility:
+\usepackage{geometry}
+
+%%
+%% Place here your \newcommand's and \renewcommand's. Some examples already included.
+%%
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\emptyset}{\ensuremath{\varnothing}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\T}{\ensuremath{\mathbb{T}}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\closure}[1]{\ensuremath{\overline{#1}}}
+\newcommand{\M}{\mathcal{M}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}
+\newtheorem*{main}{Main Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem*{problem}{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem*{notation}{Notation}
+\newcommand{\ep}{\varepsilon}
+%\newcommand{\eps}[1]{{#1}_{\varepsilon}}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\der}{\text{\textup{d}}}
+\newcommand{\coder}[1]{\texttt{#1}}
+\newcommand{\inner}[2]{#1 \cdot #2}
+\newcommand{\var}{\textup{Var}}
+\newcommand{\corr}{\textup{Corr}}
+\newcommand{\cov}{\textup{Cov}}
+\newcommand{\diag}{\textup{diag}}
+\newcommand{\dom}{\mathcal{D}om}
+\newcommand{\gsnote}[1]{{\textcolor{blue}{#1}}}
+\newcommand{\ydnote}[1]{{\textcolor{cyan}{#1}}}
+
+\newcommand{\precop}{\mathcal{L}}
+\newcommand{\precmat}{\mathbf{L}}
+\newcommand{\Op}{\mathcal{A}}
+\newcommand{\OpDir}{\mathcal{A}_{\textup{Dirichlet}}}
+\newcommand{\OpNeu}{\mathcal{A}_{\textup{Neumann}}}
+\newcommand{\covop}{\mathcal{C}}
+\newcommand{\lag}{\mathcal{L}}
+\newcommand{\n}{\boldsymbol{n} }
+\newcommand{\dn}{\partial \n }
+\newcommand{\x}{{\boldsymbol{x}}}
+\newcommand{\y}{{\boldsymbol{y}}}
+\newcommand{\z}{{\boldsymbol{z}}}
+\newcommand{\kxmy}{ \kappa \| \x - \y \| }
+\newcommand{\xmy}{ \| \x - \y \| }
+\newcommand{\proj}{\mathcal{P}}
+\newcommand{\kr}{\kappa r}
+\newcommand{\ivar}{\text{IntVar}}
+
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\hil}{\mathcal{H}}
+\newcommand{\ban}{\mathcal{B}}
+\newcommand{\obs}{\mathcal{O}}
+\newcommand{\fwd}{\mathcal{F}}
+\newcommand{\tru}{\fwd_{\textup{True}}}
+\newcommand{\err}{\fwd_{\textup{Error}}}
+
+\newcommand{\obsm}{\widehat{\obs}}
+\newcommand{\Sigmam}{\widehat{\Sigma}}
+\newcommand{\postcovm}{\widehat{\postcov}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\tar}{\Psi}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Definitions for second chapter
+\newcommand{\data}{\mathbf{d}}
+\newcommand{\param}{\mathbf{m}}
+\newcommand{\sspar}{\param_{\textup{SmallScale}}}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\pr}{\mu_{\textup{pr}}} %Prior measure
+\newcommand{\post}{\mu_{\textup{post}}} % Posterior measure
+\newcommand{\postmean}{\param_{\textup{post}}} % Posterior mean
+\newcommand{\postcov}{\Gamma_{\textup{post}}} % Posterior covariance
+\newcommand{\prcov}{\Gamma_{\textup{pr}}} % Prior covariance
+\newcommand{\modcov}{\Gamma_{\textup{model}}} % Model covariance
+\newcommand{\tmp}{\mathcal{G}}
+\newcommand{\meas}{\mathbf{o}}
+\newcommand{\ev}{\mathbf{e}} % eigenvector 
+\newcommand{\func}{\mathbf{a}}
+\newcommand{\tr}{\textup{tr}\ }
+\newcommand{\rank}{\textup{rank}\ }
+\newcommand{\des}{\eta} % vector of design parameters
+\newcommand{\sigsqr}{\sigma^2}
+%\newcommand{\acim}{\textsc{acim}\xspace}
+%\newcommand{\acims}{\textsc{acim}s\xspace}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+%%
+%% Place here your \newtheorem's:
+%%
+
+%% Some examples commented out below. Create your own or use these...
+%%%%%%%%%\swapnumbers % this makes the numbers appear before the statement name.
+%\theoremstyle{plain}
+%\newtheorem{thm}{Theorem}[chapter]
+%\newtheorem{prop}[thm]{Proposition}
+%\newtheorem{lemma}[thm]{Lemma}
+%\newtheorem{cor}[thm]{Corollary}
+\newtheorem{observation}[theorem]{Observation}
+
+%\theoremstyle{definition}
+%\newtheorem{define}{Definition}[chapter]
+
+%\theoremstyle{remark}
+%\newtheorem*{rmk*}{Remark}
+%\newtheorem*{rmks*}{Remarks}
+
+%% This defines the "proo" environment, which is the same as proof, but
+%% with "Proof:" instead of "Proof.". I prefer the former.
+%\newenvironment{proo}{\begin{proof}[Proof:]}{\end{proof}}
+
+
+
+
