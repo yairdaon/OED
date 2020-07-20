@@ -798,7 +798,7 @@ understood from Corollary \ref{cor:zero mod err}).
 \subsection{Characterizing D-Optimal Designs}\label{subsub:characterization}
 In light of \eqref{eq:mod conditions}, let us denote eigenvalues of
 $\fwd \prcov \fwd^*$ by $\lambda_1 \geq \lambda_2 \geq ...$ and its
-eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. First, let us present a lemma:
+eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. The following lemma will be useful:
 
 \begin{lemma}\label{lemma:sim diag}
   Let $C:\hil \to \hil$ self-adjoint and let $\func_1,...,\func_m \in
@@ -859,6 +859,56 @@ Therefore, an optimal design maximizes
 \begin{equation}
   \sum_{i=1}^{k}\log (\lambda_i^{-1} + \sigma^{-2} \eta_i),
 \end{equation}
+
+\pgfplotstableread{
+  Label          prior  $a_1$  $a_2$   $a_3$   $a_4$   $a_5$         $a_6$    topper
+  $\ev_1$         0.2    0.8    0.5     0.5    0.4    0.33333333  0.3333333  0.001
+  $\ev_2$         0.8    0.2    0.5     0.5    0.4    0.33333333  0.3333333  0.001
+  $\ev_3$         2.2    0      0       0      0.2    0.33333333  0.3333333  0.001
+  $\ev_4$         3.5    0      0       0      0      0           0          0.001
+}\testdata
+
+\begin{figure}
+  \begin{tikzpicture}
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\testdata}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=prior and posterior precision,
+        xlabel=eigenvector,
+      ]
+    
+      
+      \addplot [fill=green!80]  table [y=prior, meta=Label, x expr=\coordindex] {\testdata};
+      \addplot [fill=blue!60]   table [y=$a_1$, meta=Label, x expr=\coordindex] {\testdata};
+      \addplot [fill=red!60]    table [y=$a_2$, meta=Label, x expr=\coordindex] {\testdata};
+      \addplot [fill=black!60]  table [y=$a_3$, meta=Label, x expr=\coordindex] {\testdata};
+      \addplot [fill=orange!60] table [y=$a_4$, meta=Label, x expr=\coordindex] {\testdata};
+      \addplot [fill=cyan!60]   table [y=$a_5$, meta=Label, x expr=\coordindex] {\testdata};
+      \addplot [fill=purple!60] table [y=$a_6$, meta=Label, x expr=\coordindex] {\testdata};
+
+      
+      \addlegendentry{prior}
+      \addlegendentry{$a_1$}
+      \addlegendentry{$a_2$}
+      \addlegendentry{$a_3$}
+      \addlegendentry{$a_4$}
+      \addlegendentry{$a_5$}
+      \addlegendentry{$a_6$}   
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Posterior precision per eigenvector. Each measurement
+    $\func_i$ increases precision uniformly across the lowest precision
+    eigenvectors. We see that $\func_2$ and $\func_3$ are repeated
+    measurements, as well as $\func_5$ and $\func_6$.}
+  \label{fig:clusterization}
+\end{figure}
 with the norm constraints on $\meas_j,j=1,...,m$. We show in the
 appedix (Lemma \ref{lemma:free}) we can find $\meas_1,...,\meas_m$
 such that $\{\eta_i\}_{i=1}^k$ have any value we desire, subject only
@@ -886,66 +936,70 @@ so symmetric and identical Lagrange multipliers definitely make sense
 in this context.
 
 \subsection{Sensor Clusterization}\label{subsec:clusterization}
-The symmetry mentioned in last paragraph of the previous section may
-very well break in real life problems. If this happens and eigenvalues
-of \eqref{eq:eigenproblem} are all different, then showing
-sensors do cluster proceeds as follows. First, we show there
-are only so many different equal, by the pigeonhole principle. In
-order to make this argument work, one needs to show this eigenproblem
-does, indeed, have only finitely many eigenvalues. This is done by
-first recalling that $\fwd$ is strongly smoothing (so $\fwd \postcov
-\fwd^*$ has fast decaying eigenvalues) and then showing that small
-eigenvalues arise from un-informative measurements. We use the
-following corollary, whose proof may be found in the appendix.
-%
-\begin{corollary}[Gain for No Model Error]\label{cor:zero mod err}
-  If $\modcov = 0$, then
-  \begin{equation*}
-    \tar( \obs ) - \tar (\obsm )
-    = -\frac12 \log (1 - \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle ).
-  \end{equation*}
-\end{corollary}
-%
-Suppose $\meas_j$ is a measurement with a small eigenvalue, i.e.\
-\begin{equation}\label{eq:small eigenvalue}
-  \sigma^{-2} \fwd \postcov \fwd^* \meas_j = \xi_j \meas_j,\ \xi_j \ll 1.
-\end{equation}
-By Corollary \ref{cor:zero mod err}, the increase in the design
-criterion is
-\begin{align*}
-  \tar(\obs) - \tar(\obsm) &=
-  -\frac12 \log (1- \sigma^{-2} \langle \fwd
-  \postcovm \fwd^* \meas_j, \meas_j \rangle) \\
-  %
-  %
-  %
-  &= - \frac12 \log (1 - \xi_j) \text{ since $\|\meas_j\|=1$ }\\
-  %
-  %
-  %
-  &\approx \frac{\xi_j}{2}.
-\end{align*}
-Thus, negligibly small eigenvalues give negligible increase in the
-design criterion and will not be a part of a truly optimal
-design. Since the eigenvalues of $\fwd \postcov \fwd^*$ decay faster
-than those of $\fwd\prcov\fwd^*$, the latter will determine how many
-non-negligible eigenvalues $\fwd \postcov \fwd^*$ has. Thus, in the
-eigenproblem \eqref{eq:eigenproblem}, we need only consider a finite
-number of eigenvectors.
-
-At this point, one would like to invoke the pigeonhole principle and
-claim that eigenvectors cluster. This, however, is not as
-straightforward as one may hope. If $\fwd \postcov \fwd^*$ only has
-simple eigenvalues, then we may use the pigeonhole principle and
-conclude that some eigenvectors are clustered (up to a sign). However,
-if $\fwd \postcov \fwd^*$ has non-simple eigenvalues, one may hope to
-somehow prove measurement vectors are either orthogonal or parallel,
-which suffices for proving clusterization but that is not true.
+The way clusterization can occur is best understood from figure
+\ref{fig:clusterization}.
 
 
+%% The symmetry mentioned in last paragraph of the previous section may
+%% very well break in real life problems. If this happens and eigenvalues
+%% of \eqref{eq:eigenproblem} are all different, then showing
+%% sensors do cluster proceeds as follows. First, we show there
+%% are only so many different equal, by the pigeonhole principle. In
+%% order to make this argument work, one needs to show this eigenproblem
+%% does, indeed, have only finitely many eigenvalues. This is done by
+%% first recalling that $\fwd$ is strongly smoothing (so $\fwd \postcov
+%% \fwd^*$ has fast decaying eigenvalues) and then showing that small
+%% eigenvalues arise from un-informative measurements. We use the
+%% following corollary, whose proof may be found in the appendix.
+%% %
+%% \begin{corollary}[Gain for No Model Error]\label{cor:zero mod err}
+%%   If $\modcov = 0$, then
+%%   \begin{equation*}
+%%     \tar( \obs ) - \tar (\obsm )
+%%     = -\frac12 \log (1 - \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle ).
+%%   \end{equation*}
+%% \end{corollary}
+%% %
+%% Suppose $\meas_j$ is a measurement with a small eigenvalue, i.e.\
+%% \begin{equation}\label{eq:small eigenvalue}
+%%   \sigma^{-2} \fwd \postcov \fwd^* \meas_j = \xi_j \meas_j,\ \xi_j \ll 1.
+%% \end{equation}
+%% By Corollary \ref{cor:zero mod err}, the increase in the design
+%% criterion is
+%% \begin{align*}
+%%   \tar(\obs) - \tar(\obsm) &=
+%%   -\frac12 \log (1- \sigma^{-2} \langle \fwd
+%%   \postcovm \fwd^* \meas_j, \meas_j \rangle) \\
+%%   %
+%%   %
+%%   %
+%%   &= - \frac12 \log (1 - \xi_j) \text{ since $\|\meas_j\|=1$ }\\
+%%   %
+%%   %
+%%   %
+%%   &\approx \frac{\xi_j}{2}.
+%% \end{align*}
+%% Thus, negligibly small eigenvalues give negligible increase in the
+%% design criterion and will not be a part of a truly optimal
+%% design. Since the eigenvalues of $\fwd \postcov \fwd^*$ decay faster
+%% than those of $\fwd\prcov\fwd^*$, the latter will determine how many
+%% non-negligible eigenvalues $\fwd \postcov \fwd^*$ has. Thus, in the
+%% eigenproblem \eqref{eq:eigenproblem}, we need only consider a finite
+%% number of eigenvectors.
+
+%% At this point, one would like to invoke the pigeonhole principle and
+%% claim that eigenvectors cluster. This, however, is not as
+%% straightforward as one may hope. If $\fwd \postcov \fwd^*$ only has
+%% simple eigenvalues, then we may use the pigeonhole principle and
+%% conclude that some eigenvectors are clustered (up to a sign). However,
+%% if $\fwd \postcov \fwd^*$ has non-simple eigenvalues, one may hope to
+%% somehow prove measurement vectors are either orthogonal or parallel,
+%% which suffices for proving clusterization but that is not true.
 
 
-\subsection{Non-Vanishing Model Error}
+
+
+\section{Analysis of Optimal Designs --- Non-Vanishing Model Error}
 We can build on Lemma \ref{lemma:design increase} to find the gain in design
 for identical measurements.
 \begin{corollary}[Gain for Identical Measurement]\label{cor:same meas}
@@ -968,7 +1022,7 @@ that if $\modcov \neq 0$ clustering will not occur. From Corollary
 increase in the design criterion gained by taking a measurement
 identical to a previous one approaches zero. We may conclude that for
 small measurement error levels, the clusterization effect will be
-canceled by the presence of a non-zero model error. Since the design
+mitigated by the presence of a non-zero model error. Since the design
 criterion is not defined for $\sigma^2 = 0$ and identical
 measurements, we cannot make a statement regarding $\sigma^2 = 0$,
 except in the limiting sense described above.
@@ -978,17 +1032,15 @@ except in the limiting sense described above.
 \section{Conclusion}\label{section:conclusion}
 Our relaxed model gives us insight to D-optimal designs. We see that
 in an ideal settings, we should not reduce uncertainty in any
-direction before it is the largest uncertainty present.
+direction (eigenvector) before it is the largest uncertainty present.
 
-
-
-We believe the model presented is not too far from reality. After all,
-taking any measurement (point evaluation or other) is just recording
-the value of a linear combination of individual eigenvectors of the
-prior. In light of this, we believe the reason for clusterization is close
-to the argument made in section \ref{subsub:first attempt}. The reason
-we observe clusterization in real life problems is probably due to
-symmetry breaking, although we cannot show that rigorously.
+%% We believe the model presented is not too far from reality. After all,
+%% taking any measurement (point evaluation or other) is just recording
+%% the value of a linear combination of individual eigenvectors of the
+%% prior. In light of this, we believe the reason for clusterization is close
+%% to the argument made in section \ref{subsub:first attempt}. The reason
+%% we observe clusterization in real life problems is probably due to
+%% symmetry breaking, although we cannot show that rigorously.
 
 An important consequence of the argument in \ref{section:vanishing} is
 that we can find an approximately optimal design by means of linear
@@ -1017,6 +1069,10 @@ algebra. Here is how this should be done.
         without \emph{any} optimization.
       \item Find point measurements that approximate those in the domain. 
 \end{enumerate}
+
+\section{Acknowledgements}
+This study was conducted during when the author was a PhD student of
+Prof. Georg Stadler in New York University's Courant Institute.
 
 \appendix
 \section{Widely Applicable Lemmas}
