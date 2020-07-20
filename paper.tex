@@ -762,7 +762,7 @@ notation, we can write this more compactly as:
   = \obs^* \Xi.
 \end{equation}
 
-\section{Analysis of Optimal Designs --- Vanishing Model Error}
+\section{Analysis of Optimal Designs --- Vanishing Model Error}\label{section:vanishing}
 When $\modcov = 0$, then $\Sigma= \sigma^2I$. The necessary
 first-order condition for optimality \eqref{eq:conditions} becomes
 \begin{equation}\label{eq:eigenproblem}
@@ -904,7 +904,7 @@ Therefore, an optimal design maximizes
     \end{axis}
   \end{tikzpicture}
   \caption{Posterior precision per eigenvector. Each measurement
-    $\func_i$ increases precision uniformly across the lowest precision
+    icreases precision uniformly across the lowest precision
     eigenvectors. We see that $\func_2$ and $\func_3$ are repeated
     measurements, as well as $\func_5$ and $\func_6$.}
   \label{fig:clusterization}
@@ -1033,7 +1033,9 @@ except in the limiting sense described above.
 Our relaxed model gives us insight to D-optimal designs. We see that
 in an ideal settings, we should not reduce uncertainty in any
 direction (eigenvector) before it is the largest uncertainty present.
-
+We show how and why repeated measurements can give rise to a D-optimal
+design. There is more work to be done in understanding exactly what
+causes such designs to be strictly better than others.
 %% We believe the model presented is not too far from reality. After all,
 %% taking any measurement (point evaluation or other) is just recording
 %% the value of a linear combination of individual eigenvectors of the
@@ -1042,7 +1044,7 @@ direction (eigenvector) before it is the largest uncertainty present.
 %% we observe clusterization in real life problems is probably due to
 %% symmetry breaking, although we cannot show that rigorously.
 
-An important consequence of the argument in \ref{section:vanishing} is
+A consequence of the argument in section \ref{section:vanishing} is
 that we can find an approximately optimal design by means of linear
 algebra. Here is how this should be done.
 \begin{enumerate}
@@ -1051,9 +1053,9 @@ algebra. Here is how this should be done.
      corresponding eigenvectors $\ev_i$ of $\fwd \prcov \fwd^*$.
    \item Denote the (assumed known) variance of the measurement noise
      $\sigma^2$.
-   \item Decide how many measurements you can take and denote that
-     number $m$. This is the total precision one can allocate to the
-     different eigenvectors. Next, we see how to allocate these.
+   \item Decide how many measurements can be taken and denote that
+     number $m$. This is the total precision that can be allocated to
+     the different eigenvectors.
     \item Find $k$ and $\{\eta_i\}_{i=1}^k$, $\eta_i > 0, i=1,...,k$
       such that:
       \begin{itemize}
@@ -1071,8 +1073,9 @@ algebra. Here is how this should be done.
 \end{enumerate}
 
 \section{Acknowledgements}
-This study was conducted during when the author was a PhD student of
-Prof. Georg Stadler in New York University's Courant Institute.
+This study was conducted during when I was a PhD student of
+Prof. Georg Stadler in New York University's Courant Institute. I
+would like to thank him for his great mentorship.
 
 \appendix
 \section{Widely Applicable Lemmas}
