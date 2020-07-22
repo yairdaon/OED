@@ -56,8 +56,8 @@ both.
 Designing experiments is usually done by optimizing some \emph{design
   criterion} and this is true both for frequentists
 \cite{Silvey13,Ucinski05} as well as for Bayesians
-\cite{ChalonerVerdinelli95}, and the analogy between the two
-approaches was investigated in \cite{ChalonerVerdinelli95}. Although
+\cite{ChalonerVerdinelli95}, see \cite{ChalonerVerdinelli95} for an
+investigation of the analogy between the two approaches. Although
 there is a plethora of design criteria, in the current work we will
 focus on just one of these, commonly referred to as \emph{D-optimal
   design}. It has a simple and appealing motivation in the Bayesian
@@ -87,9 +87,9 @@ be found as shown in \cite{AlexanderianGloorGhattas14}.
 
 It seems counter intuitive that when one computes an optimal design
 using the D-optimal criterion (and others that will not be
-investigated here), the optimization process results in measurement
-locations are very similar. Specifically, if a measurement is thought
-of as measuring some function value at $\x \in \Omega \subseteq \R^d,
+investigated here), the optimization process results in measurements
+that are very similar. For example, if a measurement is thought of as
+measuring some function value at $\x \in \Omega \subseteq \R^d,
 d=1,2,3$ (with added error) then the optimization procedure sometimes
 places sensors in close proximity to each other (as can be seen in
 figure \ref{fig:clusterization illustration}). Following
@@ -102,7 +102,7 @@ different contexts. In a frequentist and finite-dimensional context,
 \cite{Fedorov96} and \cite[chapter 2.4.3]{Ucinski05} discuss this
 phenomenon and suggest an approach called clusterization-free design,
 where the user enforces measurement locations to be far from each
-other. One way to do this is by introducing correlated error which,
+other. One way to do this is by introducing correlated errors which,
 philosophically, accounts for both measurement error and model error.
 Another method considered is imposing distance constraints between
 measurements. A somewhat different approach is suggested in \cite[page
@@ -121,22 +121,21 @@ these approaches are practical and help us avoid the problem, they do
 not provide insight as to why sensors are clustering.
 
 \subsection{Contribution}
-In this work we propose and thoroughly study an analytically tractable
-model for understanding D-optimal designs. The initial motivation was
-to understand the causes of sensor-clusterization and the end result
-is interesting in its own. Specifically, in section \ref{subsec:unit
-  length} we suggest a somewhat simplified model for experimental
-design that is analytically tractable. In section \ref{section:D and
-  grad} we derive a constrained optimization problem for D-optimal
-design using Lagrange multipliers. In the case of no model error we
-show this constrained optimization problem is in fact a set of
-eigenvector-eigenvalue problems \eqref{eq:eigenproblem}. all eigenvalues are
-equal --- this is done in section \ref{subsub:characterization}. An
-important consequence is that we know the value of the best design
-criterion without any optimization and which measurements give rise to
-it. Practically, we can use this information to seek a design in the
-real problem we are interested in and we outline this in section
-\ref{section:conclusion}.
+We propose and thoroughly study an analytically tractable model for
+understanding D-optimal designs. In this model, an optimal design
+arises as a solution to a constrained optimization problem. This
+problem is solved using Lagrange multipliers (section \ref{section:D
+  and grad}). In the case of no model error we show this problem is in
+fact a set of eigenvector-eigenvalue problems (equation
+\eqref{eq:eigenproblem}). We then characterize an optimal design as
+one that reduces the highest uncertainties, and show how that can give
+rise to repeated measurements (figure \ref{fig:clusterization}).
+
+The solution to the this could be used to seek a design in the real
+problem we are interested in and we outline this in section
+\ref{section:conclusion}. The analysis that culminates in equation
+\eqref{eq:true target} also gives us an upper bound for the design
+criterion (denoted $\tar$) below.
 
 In the process we generalize several lemmas from linear algebra to
 infinite-dimensional settings --- the Matrix Determinant Lemma and a
@@ -151,22 +150,19 @@ the measurement operator (denoted below $\obs^*\obs$) are the same as
 the eigenvectors of the prior covariance in observation space, which
 helps arrive at the results outlined in the previous paragraph. The
 arguments presented are completely generic and apply equally to any of
-the scenarios mentioned above. 
+the scenarios mentioned above.
 
-Based on the analysis presented, we show why clusterization is a
-reasonable thing to expect in the case of independent measurements.
-We further show how considering an observation model that is spatially
-correlated makes an optimal design clusterization-free.
+%% \subsection{Limitations}\label{subsec:limitations}
+%% There are two main drawbacks of the arguments presented here. First,
+%% one can argue that we allow considerably less restrictive observations
+%% than any real-life problem does. This is because our observation model
+%% allows taking measurements that are arbitrarily weighted linear
+%% combinations of eigenvectors. The second drawback is that we do not
+%% show rigorously that clusterization necessarily occurs in our model,
+%% we only show that it can occur.
 
-\subsection{Limitations}\label{subsec:limitations}
-There are two main drawbacks of the arguments presented here. First,
-one can argue that we allow considerably less restrictive observations
-than any real-life problem does. This is because our observation model
-allows taking measurements that are arbitrarily weighted linear
-combinations of eigenvectors. The second drawback is that we do not
-show rigorously that clusterization occurs in our model.
 
-\subsection{Illustration and Example}\label{subsec:example}
+\subsection{An Example of Clusterization}\label{subsec:example}
 \begin{figure}
   \begin{tikzpicture}[thick, scale=1.3, every node/.style={scale=0.99}]
     \begin{axis}
@@ -230,7 +226,9 @@ In section \ref{section:abstract OED} we present a more abstract and
 general formulation of the problem, but for the purpose of
 illustration, we present the problem via a toy model --- the 1D heat
 equation in $[0,\pi]$ with homogeneous Dirichlet boundary
-conditions. The 1D heat equation is:
+conditions.
+
+The 1D heat equation is:
 \begin{subequations}\label{eq:heat equation}
   \begin{alignat}{2}
     u_t &= \Delta u &&\qquad \text{in } [0,\pi] \times [0,\infty),\\
@@ -238,6 +236,7 @@ conditions. The 1D heat equation is:
         u &= u_0 &&\qquad \text{on }[0,\pi] \times \{0\}.
   \end{alignat}
 \end{subequations}
+
 We would like to infer the initial condition $u_0$. For that purpose,
 we measure $u$ at some set of locations $\x_j \in [0,\pi], j=1,...,m$
 and a final time $T > 0$. We assume centered Gaussian measurement
@@ -257,44 +256,44 @@ $\sigma^2$ (see section \ref{section:abstract OED} and
 \eqref{eq:postcov} specifically).
 
 We will consider the information-theoretic design criterion presented
-in section \ref{section:OED intro}. Thus, we choose $\x_j,j=1,...,m$ so
-as to minimize an expression analogous to the log-determinant of the
-posterior covariance operator (corresponding to a D-optimal
+in section \ref{section:OED intro}. Thus, we choose $\x_j,j=1,...,m$
+so as to minimize an expression analogous to the log-determinant of
+the posterior covariance operator (corresponding to a D-optimal
 design). We can see the clusterization effect in figure
-\ref{fig:clusterization illustration}. For low numbers of sensors, the
-design criterion suggests placing sensors in locations that are
-close. 
+\ref{fig:clusterization illustration} --- the design criterion
+suggests placing sensors in locations that are extremely close.
 
 
-\subsection{Overview}\label{subsec:plan}
-Half of this paper is devoted to finding the Lagrange multipliers
-problem and culminates in \eqref{eq:conditions}. The reader may skip
-directly there if they are willing to take the rest on faith. The more
-interesting stuff may be found in section \ref{section:analysis}.
+\subsection{Remarks to the Reader}\label{subsec:plan}
+The Lagrange multipliers problem for iid measurement noise is
+discussed in section \ref{section:vanishing}. In that section, it is
+shown how sensor clusterization occurs. It is advised that a reader
+less comfortable with Hilbert and Banach spaces mostly ignore these
+terms and consider $\hil$ and $\ban$ finite dimensional vector spaces.
 
-Seeking an optimal design amounts to maximizing $\tar(\obs)$ in
-$\obs$, subject to constraints posed on $\obs$. These enter as
-constraints on the allowed set of measurement vectors we can choose
-from --- the rows of $\obs$. These constraints are determined by the
-problem structure --- for example, in the 1D heat equation example
-considered in section \ref{subsec:example}, we were constrained to
-choose $\obs = (\meas_1,...,\meas_m)^t$ with $\meas_j = \delta_{\x_j}$
-for some $\x_j \in [0,\pi]$. We present an approach to understanding
-optimal experiment design based on the first-order necessary condition for
-optimal design, where the constraints are incorporated using Lagrange
-multipliers. This condition is used to understand what causes
-clusterization. One problem with such an approach is that the set we
-can choose $\obs$ from is complicated and difficult to work with. For
-example, if $\ban = C(\Omega)$ for some compact $\Omega$, then the
-allowed set of measurement vectors may only be point evaluations --- a
-set that is not easy to describe as a level set of some simple
-function, a description crucial for the use of Lagrange multipliers.
-In order to facilitate analysis, we consider an easier constraint in
-section \ref{subsec:unit length}. Reverting to this simpler constraint
-is a limitation of our analysis but it provides some insight
-into the cause of clusterization.
+%% Seeking an optimal design amounts to maximizing $\tar(\obs)$ in
+%% $\obs$, subject to constraints posed on $\obs$. These enter as
+%% constraints on the allowed set of measurement vectors we can choose
+%% from --- the rows of $\obs$. These constraints are determined by the
+%% problem structure --- for example, in the 1D heat equation example
+%% considered in section \ref{subsec:example}, we were constrained to
+%% choose $\obs = (\meas_1,...,\meas_m)^t$ with $\meas_j = \delta_{\x_j}$
+%% for some $\x_j \in [0,\pi]$. We present an approach to understanding
+%% optimal experiment design based on the first-order necessary condition
+%% for optimal design, where the constraints are incorporated using
+%% Lagrange multipliers. This condition is used to understand what causes
+%% clusterization. One problem with such an approach is that the set we
+%% can choose $\obs$ from is complicated and difficult to work with. For
+%% example, if $\ban = C(\Omega)$ for some compact $\Omega$, then the
+%% allowed set of measurement vectors may only be point evaluations --- a
+%% set that is not easy to describe as a level set of some simple
+%% function, a description crucial for the use of Lagrange multipliers.
+%% In order to facilitate analysis, we consider an easier constraint in
+%% section \ref{subsec:unit length}. Reverting to this simpler constraint
+%% is a limitation of our analysis but it provides some insight into the
+%% cause of clusterization.
 
-\section{Preliminaries}
+\section{Preliminaries and Notation}\label{section:prelim}
 
 The theoretical foundations for inverse problems over function spaces
 can be found in \cite{Stuart10}. At this point, it is useful to
@@ -304,7 +303,7 @@ our inverse problem, namely
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd )^{-1}.
 \end{align}
 
-\subsection{bayesian inverse problems}\label{section:abstract OED}
+\subsection{Bayesian Inverse Problems}\label{section:abstract OED}
 Let $\hil$ be a Hilbert space and $\ban$ a Banach space, both
 infinite-dimensional. Consider $\fwd: \hil \to \ban$, a linear
 operator (the ``forward operator''). We are interested in forward
@@ -394,7 +393,7 @@ where
 \begin{equation}\label{eq:modcov explained}
   [\obs \modcov \obs^*]_{ij} = e_i^t \obs \modcov \obs^* e_j = \meas_i (\modcov \meas_j),
 \end{equation}
-where the first equality in \ref{eq:modcov explained} holds by
+where the first equality in \eqref{eq:modcov explained} holds by
 definition and the second by \eqref{eq:obs*}. The explicit dependence
 on $\obs$ will be mostly dropped for notational convenience, so
 $\Sigma(\obs) = \Sigma$. Thus, for a fixed $\obs$ (i.e.\ a fixed set
@@ -716,12 +715,12 @@ notation, we can write this more compactly as:
 When $\modcov = 0$, then $\Sigma= \sigma^2I$. The necessary
 first-order condition for optimality \eqref{eq:conditions} becomes
 \begin{equation}\label{eq:eigenproblem}
-  \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi. 
-\end{equation}  
-This is an eigenvalue problem for the self-adjoint operator
-$\sigma^{-2}\fwd \postcov \fwd^*$ where the rows of $\obs$, namely
-$\meas_j,j=1,...m$, are the eigenvectors. If $\fwd$ is invertible,
-then we may write:
+  \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi, 
+\end{equation}
+with $\Xi$ diagonal. This is an eigenvalue problem for the
+self-adjoint operator $\sigma^{-2}\fwd \postcov \fwd^*$ where the rows
+of $\obs$, namely $\meas_j,j=1,...m$, are the eigenvectors. If $\fwd$
+is invertible, then we may write:
 \begin{align}\label{eq:mod conditions}
   \begin{split}
   \obs^* \Xi &= \sigma^{-2}\fwd \postcov \fwd^* \obs^*  \\
@@ -739,10 +738,10 @@ which presents the optimal design problem as a problem on $\ban$ and
 not on $\hil$ --- the term $(\fwd \prcov \fwd^*)^{-1}$ is the prior
 precision in $\ban$ and the big parentheses enclose the posterior
 precision in $\ban$. This expression makes sense even if $\fwd$ is not
-invertible --- consider $\fwd: \ker \fwd^{\perp} \to \text{Im} \fwd
-\subseteq \ban$ and this does not change the optimal design problem at
+invertible --- consider instead $\fwd$ restricted to $\ker
+\fwd^{\perp}$. This does not change the optimal design problem at
 all, since we will never take measurements that have a component in
-$\fwd^{\perp}$ (this is intuitive by Occam's razor but can also be
+$\ker \fwd$ (this is intuitive by Occam's razor but can also be
 understood from Corollary \ref{cor:zero mod err}).
 
 \subsection{Characterizing D-Optimal Designs}\label{subsub:characterization}
@@ -806,7 +805,8 @@ By definition of the objective \eqref{eq:objective} and using
   \end{split}
 \end{align}
 Therefore, an optimal design maximizes
-\begin{equation}
+
+\begin{equation}\label{eq:true target}
   \sum_{i=1}^{k}\log (\lambda_i^{-1} + \sigma^{-2} \eta_i),
 \end{equation}
 
@@ -854,13 +854,13 @@ Therefore, an optimal design maximizes
     \end{axis}
   \end{tikzpicture}
   \caption{Posterior precision per eigenvector. Each measurement $\func_i$
-    icreases precision uniformly across the lowest precision
+    increases precision uniformly across the lowest precision
     eigenvectors. We see that $\func_2$ and $\func_3$ are repeated
     measurements, as well as $\func_5$ and $\func_6$.}
   \label{fig:clusterization}
 \end{figure}
 with the norm constraints on $\meas_j,j=1,...,m$. We show in the
-appedix (Lemma \ref{lemma:free}) we can find $\meas_1,...,\meas_m$
+appendix (Lemma \ref{lemma:free}) we can find $\meas_1,...,\meas_m$
 such that $\{\eta_i\}_{i=1}^k$ have any value we desire, subject only
 to the restriction that we do not change the trace of $\obs^*\obs$, so
 that $\sum_{i=1}^k \eta_i = m$. By concavity of $\log$, the highest
