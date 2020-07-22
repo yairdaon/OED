@@ -1,61 +1,14 @@
-
-%-----------------------------------------------------------------------
-% Beginning of article-template.tex
-%-----------------------------------------------------------------------
-%
-%    This is a template file for proceedings articles prepared with AMS
-%    author packages, for use with AMS-LaTeX.
-%
-%    Templates for various common text, math and figure elements are
-%    given following the \end{document} line.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%    Remove any commented or uncommented macros you do not use.
-
-%    Replace amsproc by the name of the author package.
-\documentclass{amsproc}
-
-%    If you need symbols beyond the basic set, uncomment this command.
-%\usepackage{amssymb}
-
-%    If your article includes graphics, uncomment this command.
-%\usepackage{graphicx}
-
-%    If the article includes commutative diagrams, ...
-%\usepackage[cmtip,all]{xy}
-
-%    Include other referenced packages here.
+\documentclass{amsart}
 \input{definitions}
-
-%    Update the information and uncomment if AMS is not the copyright
-%    holder.
-%\copyrightinfo{2009}{American Mathematical Society}
-
-%% \newtheorem{theorem}{Theorem}[section]
-%% \newtheorem{lemma}[theorem]{Lemma}
-
-%% \theoremstyle{definition}
-%% \newtheorem{definition}[theorem]{Definition}
-%% \newtheorem{example}[theorem]{Example}
-%% \newtheorem{xca}[theorem]{Exercise}
-
-%% \theoremstyle{remark}
-%% \newtheorem{remark}[theorem]{Remark}
 
 \numberwithin{equation}{section}
 
 \begin{document}
 
-% \title[short text for running head]{full title}
-\title{A tractable model for D-optimal design in infinite dimensional
-  Bayesian inverse problems.}
+\title[Sensor Clusterization in D-optimal design in infinite
+  dimensions]{Sensor Clusterization in D-optimal Design in Infinite
+  Dimensional Bayesian Inverse Problems}
 
-%    Only \author and \address are required; other information is
-%    optional.  Remove any unused author tags.
-
-%    author one information
-% \author[short version for running head]{name for top of paper}
 \author{Yair Daon}
 \address{Courant Institute}
 %% \curraddr{}
@@ -177,10 +130,7 @@ design that is analytically tractable. In section \ref{section:D and
   grad} we derive a constrained optimization problem for D-optimal
 design using Lagrange multipliers. In the case of no model error we
 show this constrained optimization problem is in fact a set of
-eigenvector-eigenvalue problems \eqref{eq:eigenproblem} and suggest a
-natural way for understanding sensor-clusterization in section
-\ref{subsub:first attempt}. We explain why this approach fails and
-show the reason is that (perhaps surprisingly), all eigenvalues are
+eigenvector-eigenvalue problems \eqref{eq:eigenproblem}. all eigenvalues are
 equal --- this is done in section \ref{subsub:characterization}. An
 important consequence is that we know the value of the best design
 criterion without any optimization and which measurements give rise to
@@ -861,11 +811,11 @@ Therefore, an optimal design maximizes
 \end{equation}
 
 \pgfplotstableread{
-  Label          prior  $a_1$  $a_2$   $a_3$   $a_4$   $a_5$         $a_6$    topper
-  $\ev_1$         0.2    0.8    0.5     0.5    0.4    0.33333333  0.3333333  0.001
-  $\ev_2$         0.8    0.2    0.5     0.5    0.4    0.33333333  0.3333333  0.001
-  $\ev_3$         2.2    0      0       0      0.2    0.33333333  0.3333333  0.001
-  $\ev_4$         3.5    0      0       0      0      0           0          0.001
+  Label    prior  $a_1$  $a_2$   $a_3$   $a_4$   $a_5$         $a_6$    topper
+  1         0.2    0.8    0.5     0.5    0.4    0.33333333  0.3333333  0.001
+  2         0.8    0.2    0.5     0.5    0.4    0.33333333  0.3333333  0.001
+  3         2.2    0      0       0      0.2    0.33333333  0.3333333  0.001
+  4         3.5    0      0       0      0      0           0          0.001
 }\testdata
 
 \begin{figure}
@@ -880,7 +830,7 @@ Therefore, an optimal design maximizes
         xticklabels from table={\testdata}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
-        ylabel=prior and posterior precision,
+        ylabel=precision --- prior and posterior,
         xlabel=eigenvector,
       ]
     
@@ -903,7 +853,7 @@ Therefore, an optimal design maximizes
       \addlegendentry{$a_6$}   
     \end{axis}
   \end{tikzpicture}
-  \caption{Posterior precision per eigenvector. Each measurement
+  \caption{Posterior precision per eigenvector. Each measurement $\func_i$
     icreases precision uniformly across the lowest precision
     eigenvectors. We see that $\func_2$ and $\func_3$ are repeated
     measurements, as well as $\func_5$ and $\func_6$.}
@@ -937,7 +887,10 @@ in this context.
 
 \subsection{Sensor Clusterization}\label{subsec:clusterization}
 The way clusterization can occur is best understood from figure
-\ref{fig:clusterization}.
+\ref{fig:clusterization}. We see that each measurement increases
+precision (reduces uncertainty) only for the eigenvectors of lowest
+precision. If the precision in these is lower than the precision for
+the next eigenvector, a repeated measurement is taken.
 
 
 %% The symmetry mentioned in last paragraph of the previous section may
@@ -1073,9 +1026,9 @@ algebra. Here is how this should be done.
 \end{enumerate}
 
 \section{Acknowledgements}
-This study was conducted during when I was a PhD student of
-Prof. Georg Stadler in New York University's Courant Institute. I
-would like to thank him for his great mentorship.
+This study is a part of my PhD thesis \cite{mine} which was written
+under the instruction of Prof. Georg Stadler in New York University's
+Courant Institute. I would like to thank him for his great mentorship.
 
 \appendix
 \section{Widely Applicable Lemmas}
