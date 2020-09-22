@@ -1,3 +1,4 @@
+
 %%
 %% Place here your \usepackage's. Some recommended packages are already included.
 %%
@@ -25,16 +26,11 @@
 
 %% From slides file
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
-
-
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
 %\usepackage{algorithm}
 %\usepackage[noend]{algpseudocode}
-
-
-
-
-
-
+\usepackage{proof-at-the-end}
 
 %% % Indent first line of each section:
 %% \usepackage{indentfirst}
@@ -55,6 +51,7 @@
 
 % Page formatting utility:
 \usepackage{geometry}
+%\usepackage[margin=0.1in]{geometry}
 
 %%
 %% Place here your \newcommand's and \renewcommand's. Some examples already included.
@@ -73,10 +70,10 @@
 \newcommand{\closure}[1]{\ensuremath{\overline{#1}}}
 \newcommand{\M}{\mathcal{M}}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}{Corollary}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem*{main}{Main Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}{Proposition}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{conjecture}{Conjecture}
 \newtheorem*{problem}{Problem}
 \theoremstyle{definition}
@@ -96,6 +93,12 @@
 \newcommand{\dom}{\mathcal{D}om}
 \newcommand{\gsnote}[1]{{\textcolor{blue}{#1}}}
 \newcommand{\ydnote}[1]{{\textcolor{cyan}{#1}}}
+%\newcommand{\reftwo}[1]{{\textcolor{green}{#1}}}
+%\newcommand{\refthree}[1]{{\textcolor{red}{#1}}}
+\newcommand{\refthree}[1]{{\color{red} #1}}
+\newcommand{\reftwo}[1]{{\color{green} #1}}
+
+
 
 \newcommand{\precop}{\mathcal{L}}
 \newcommand{\precmat}{\mathbf{L}}
@@ -146,12 +149,14 @@
 \newcommand{\meas}{\mathbf{o}}
 \newcommand{\ev}{\mathbf{e}} % eigenvector 
 \newcommand{\func}{\mathbf{a}}
-\newcommand{\tr}{\textup{tr}\ }
+\newcommand{\tr}[1]{\textup{tr}\left \{#1 \right \} }
+\newcommand{\ttr}[1]{\textup{tr}\{#1\} }
 \newcommand{\rank}{\textup{rank}\ }
 \newcommand{\des}{\eta} % vector of design parameters
 \newcommand{\sigsqr}{\sigma^2}
 %\newcommand{\acim}{\textsc{acim}\xspace}
 %\newcommand{\acims}{\textsc{acim}s\xspace}
+
 
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 %%
@@ -178,6 +183,6 @@
 %% with "Proof:" instead of "Proof.". I prefer the former.
 %\newenvironment{proo}{\begin{proof}[Proof:]}{\end{proof}}
 
-
-
-
+%% Hack
+\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+\usepackage{cancel}

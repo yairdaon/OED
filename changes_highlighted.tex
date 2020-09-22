@@ -8,7 +8,7 @@
 
 \title[Sensor Clusterization in D-optimal design in infinite
   dimensions]{Sensor Clusterization in D-optimal Design in Infinite
-  Dimensional Bayesian Inverse Problems}
+  Dimensional \reftwo{Linear} Bayesian Inverse Problems}
 
 \author{Yair Daon}
 \address{Porter School of the Environment and Earth
@@ -32,14 +32,14 @@
 
 \begin{abstract}
   We investigate the problem of sensor clusterization in optimal
-  experimental design for infinite-dimensional Bayesian inverse
-  problems. We suggest an analytically tractable model for such
-  designs and reason how it may lead to sensor clusterization in the
-  case of iid measurement noise. We also show that in the case of
-  spatially correlated measurement error clusterization does not
-  occur. As a part of the analysis we prove a matrix determinant
-  lemma analog in infinite dimensions, as well as a lemma for
-  calculating derivatives of $\log \det$ of operators.
+  experimental design for infinite-dimensional Bayesian
+  \reftwo{linear} inverse problems. We suggest an analytically
+  tractable model for such designs and reason how it may lead to
+  sensor clusterization in the case of iid measurement noise. We also
+  show that in the case of spatially correlated measurement error
+  clusterization does not occur. As a part of the analysis we prove a
+  matrix determinant lemma analog in infinite dimensions, as well as a
+  lemma for calculating derivatives of $\log \det$ of operators.
 \end{abstract}
 
 \maketitle
@@ -67,7 +67,7 @@ model, a D-optimal design seeks to maximize the expected information
 gain (KL divergence \cite{KullbackLeibler51,CoverThomas12}) between
 posterior and prior. In finite dimensions, maximizing the expected
 information gain amounts to minimizing the determinant of the
-posterior covariance matrix. In a frequentist settings, an optimal
+posterior covariance matrix. In a frequentist setting\reftwo{\sout{s}}, an optimal
 design minimizes the volume of the uncertainty ellipsoid \cite[page
   16]{Ucinski05}, but this is done for the Fisher information matrix
 and not the posterior covariance. However, \cite{ChalonerVerdinelli95}
@@ -133,7 +133,7 @@ uncertainties, and show how that can give rise to repeated
 measurements (section \ref{subsec:clusterization} and figure
 \ref{fig:clusterization}).
 
-In the process we generalize several lemmas from linear algebra to
+In the process\reftwo{,} we generalize several lemmas from linear algebra to
 infinite-dimensional settings --- the Matrix Determinant Lemma and a
 lemma for calculating the derivative of determinants. We also provide
 other tools for understanding D-optimal designs in
@@ -215,7 +215,7 @@ any of the scenarios mentioned in the introduction.
   \end{tikzpicture}
   \caption{Shown are pointwise posterior standard deviations for
     various numbers of sensors, and location of these sensors for the
-    1D heat equation with homogeneous Dirichlet boundary described in
+    1D heat equation with \reftwo{a} homogeneous Dirichlet boundary described in
     section \ref{subsec:example}. Note the clusterization that occurs
     when 6 sensors are used --- only 4 measurement locations are
     included. Observed data does not influence the pointwise
@@ -224,7 +224,7 @@ any of the scenarios mentioned in the introduction.
 In section \ref{section:abstract OED} we present a more abstract and
 general formulation of the problem, but for the purpose of
 illustration, we present the problem via a toy model --- the 1D heat
-equation in $[0,\pi]$ with homogeneous Dirichlet boundary
+equation in $[0,\pi]$ with \reftwo{a} homogeneous Dirichlet boundary
 conditions.
 
 The 1D heat equation is:
@@ -240,9 +240,9 @@ We would like to infer the initial condition $u_0$. For that purpose,
 we measure $u$ at some set of locations $\x_j \in [0,\pi], j=1, \dots,m$
 and a final time $T > 0$. We assume centered Gaussian measurement
 error, so we can observe $v(\x_j,T) = u(\x_j,T) + \eps(\x_j)$ with
-$\eps(\x_j) \sim \normal(0, \sigma^2), \sigma > 0$ iid.  We model the
+$\eps(\x_j) \sim \normal(0, \sigma^2), \sigma > 0$ iid. We model the
 initial condition as $u_0 \sim \normal(0,\prcov)$, for $\prcov =
-(-\Delta)^{-1}$ with homogeneous Dirichlet boundary condition. It is
+(-\Delta)^{-1}$ with \reftwo{a} homogeneous Dirichlet boundary condition. It is
 well known \cite{Tarantola05} that for linear problems, with Gaussian
 prior and error, the posterior is also Gaussian with a covariance that
 does not depend on the observed data. The posterior covariance
@@ -250,7 +250,7 @@ $\postcov$ is known to have a closed form formula, even in infinite
 dimensions\cite{Stuart10}. If we denote by $\fwd$ the dynamics
 operator, so that $u( \cdot,T) = \fwd u_0$, and the observation
 operator $\obs$ so that $u(\x_j,T) = (\obs u)_j, j=1,\dots,m$, then the
-posterior covariance is known and depends on $\prcov, \fwd, \obs$ and
+posterior covariance is known and depends only on $\prcov, \fwd, \obs$ and
 $\sigma^2$ (see section \ref{section:abstract OED} and
 \eqref{eq:postcov} specifically).
 
@@ -298,30 +298,31 @@ $\hil$ and $\ban$ finite dimensional vector spaces.
 
 The theoretical foundations for inverse problems over function spaces
 can be found in \cite{Stuart10}. This section is mostly devoted to
-setting notation. At this point, it is useful to record a known result
+setting notation. \reftwo{\sout{At this point, it is useful to record a known result
 regarding the posterior covariance operator of our inverse problem,
-namely
+namely}
 \begin{align}\label{eq:postcov precursor}
-  \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd )^{-1}.
+  \stkout{\postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd )^{-1}.}
 \end{align}
+}
 
-\subsection{Bayesian Inverse Problems}\label{section:abstract OED}
+\subsection{Bayesian \reftwo{Linear} Inverse Problems}\label{section:abstract OED}
 Let $\hil$ be a Hilbert space and $\ban$ a Banach space, both
 infinite-dimensional. Consider $\fwd: \hil \to \ban$, a linear
 operator (the ``forward operator''). We are interested in forward
 operators that are strongly smoothing (have fast decaying singular
 values --- the heat operator from section \ref{subsec:example} is a
-prime example).
-
-We want to infer $\param \in \hil$, some parameter of the dynamics
-given noisy observations of $\fwd \param$. We model $\param \sim
-\normal(0,\prcov)$ with some appropriate covariance operator $\prcov$
-\cite{Stuart10}. Observations (measurements) are taken via the linear
-observation operator $\obs \in ( \ban^* )^m$, where $m$ is the number
-of observations allowed (e.g. sensors at our disposal). In an analogy
-with linear algebra (where row vectors are thought of as linear
-functionals), we think of $\obs$ as having ``rows'' $\meas_j,
-j=1,\dots,m$:
+prime example). We want to infer $\param \in \hil$, some parameter of
+the dynamics given noisy observations of $\fwd \param$. \reftwo{We
+  take a zero mean Gaussian prior $\pr$ for $\param$ (otherwise the
+  mean can just be subtracted everywhere). Hence, \sout{We model}}
+$\param \sim \pr = \normal(0,\prcov)$ with some appropriate covariance
+operator $\prcov$ \cite{Stuart10}. Observations (measurements) are
+taken via the linear observation operator $\obs \in ( \ban^* )^m$,
+where $m$ is the number of observations allowed (e.g. sensors at our
+disposal). In an analogy with linear algebra (where row vectors are
+thought of as linear functionals), we think of $\obs$ as having
+``rows'' $\meas_j, j=1,\dots,m$:
 \begin{equation}\label{eq:O}
   \obs = (\meas_1,\dots, \meas_m)^t, \meas_j \in \ban^*, j = 1,\dots,m.
 \end{equation}
@@ -380,7 +381,7 @@ in which case measuring the mean $\ell(u) = \int_{\Omega}u$ (or any
 non-atomic measure) of a function is not possible.
 
 \subsubsection{Error Terms}
-Considering the sum of the error terms it is easy to see that $\obs
+Considering the sum of the error terms\reftwo{,} it is easy to see that $\obs
 \eps' + \eps \in \R^m$. It is a centered Gaussian random vector and
 its covariance matrix is
 \begin{align}\label{eq:Sigma}
@@ -401,17 +402,20 @@ on $\obs$ will be mostly dropped for notational convenience, so
 $\Sigma(\obs) = \Sigma$. Thus, for a fixed $\obs$ (i.e.\ a fixed set
 of measurements) we can equivalently write $\data = \obs \fwd \param +
 \bar{\eps}$ with $\bar{\eps} \sim \normal(0,\Sigma)$. At this point,
-it is useful to rewrite the posterior covariance operator of our
-inverse problem from \eqref{eq:postcov precursor}
+it is useful to \reftwo{\sout{rewrite the posterior covariance operator of our
+inverse problem from \eqref{eq:postcov precursor}} record a known result
+regarding the posterior covariance operator of our inverse problem,
+namely}
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
 \end{align}
+\refthree{
+Usually, this is written using $\tmp := \obs \fwd$ and $\tmp^*$ but
+since we need to separate the observation operator $\obs$ from the
+forward operator $\fwd$ we write the explicit expression
+\eqref{eq:postcov}.}
 
-%% Usually, this is written using $\tmp := \obs \fwd$ and $\tmp^*$ but
-%% since we need to separate the observation operator $\obs$ from the
-%% forward operator $\fwd$ we write the explicit expression
-%% \eqref{eq:postcov}.
 Taking $\modcov = 0$ is common practice
 \cite{Tarantola05,KaipioSomersalo05,Vogel02} and then we are reduced
 to the case where we take iid observations and $\Sigma = \sigma^2I$ is
@@ -443,8 +447,9 @@ much'' clusterization we see. As stated
 \cite[pp. 681]{AlexanderianGloorGhattas14}, the results hold for more
 general covariance matrices. The conclusion is that in
 infinite-dimensions, a D-optimal design is well-defined as maximizing
-the expected KL divergence between posterior and prior and is
-summarized, using our notation, in the following theorem:
+the expected KL divergence between posterior and prior
+\reftwo{(denoted $\tar$ below and throughout the paper)} and is summarized, using our notation,
+in the following theorem:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]
   Let $\pr = \normal(0,\prcov)$ be a centered Gaussian prior
   on $\hil$   and let $\post = \normal(\postmean,\postcov)$ 
@@ -473,13 +478,14 @@ following optimization problem for $\tar$. %%: (\ban^*)^m \to \R$:
   (I + \prcov^{1/2} \fwd^*\obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}),
 \end{align}
 where $\obs$ is constrained to some allowed set of measurements
-(e.g.\ pointwise evaluations on $[0,\pi]$)
+(e.g.\ pointwise evaluations on $[0,\pi]$).
 %%, for the example in section \ref{subsec:example}).
 We seek a formulation of the optimal design using Lagrange
 multipliers. In section \ref{section:objective} we find the gradient
-of $\tar$.  In section \ref{subsec:unit length} we relax the
+of $\tar$. In section \ref{subsec:unit length} we relax the
 constraints on $\obs$ so that the optimization problem in
-\eqref{eq:optimization} and find gradients for the new constraints.
+\eqref{eq:optimization} \reftwo{is analytically tractable} and find
+gradients for the new constraints.
 
 \subsection{The Objective and its Gradient}\label{section:objective}
 In order to use Lagrange multipliers, we need to find the gradient of
@@ -487,15 +493,16 @@ $\tar$. This section is mostly technical and devoted to calculating
 said gradient. The result is recorded in \eqref{eq:tar grad}.
 
 We start by calculating the first variation. Some calculations are
-delegated to Lemma \ref{lemma:aux calc} in the appendix. Also, we
-use the following lemma whose proof is also delegated to the appendix:
-\begin{lemma}[Generalized from \cite{Lax97}]\label{lemma:lax}
+delegated to Lemma \ref{lemma:aux calc} in the appendix. Also, we use
+the following lemma whose proof is also delegated to the appendix
+\ref{lemma:lax}:
+\begin{restatable*}[Generalized from \cite{Lax97}]{lemma}{lax}\label{lemma:lax}
   Let $Y(t)$ be a differentiable operator-valued function. Assume 
   $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
   \begin{equation*}
-    \frac{\der \log \det (I+Y(t))}{\der t} = \tr (I+Y(t))^{-1} \dot{Y}(t).
+    \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
   \end{equation*}
-\end{lemma}
+\end{restatable*}
 
 First variation of $\tar (\obs)$ in the direction $V$ is:
 \begin{align*}%%\label{eq:tar var}
@@ -510,18 +517,17 @@ First variation of $\tar (\obs)$ in the direction $V$ is:
     % 
     % 
     % 
-    &= \frac12 \tr ( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
+    &= \frac12 \tr{( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
     \obs\fwd \prcov^{1/2} )^{-1}
     \frac{\der}{\der \tau} \Big |_{\tau=0}
-    \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}\ \text{ (by \ref{lemma:lax})}\\
+    \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (by \ref{lemma:lax})}\\
     % 
     % 
     % 
-    &= \frac12 \tr \postcov \fwd^* (
-      V^* \Sigma^{-1} \obs 
-      - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \text{ (by \ref{lemma:aux calc})}\\
-      &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs
-      + \obs^* \Sigma^{-1} V ) \fwd \\
+    &= \frac12 \ttr{\postcov \fwd^* (V^* \Sigma^{-1} \obs 
+      - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
+      &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
+      + \obs^* \Sigma^{-1} V ) \fwd}  \text{ (by \ref{lemma:aux calc})}\\
 %%   \end{split}
 %% \end{align} 
 %% Taking adjoints and cyclic permutations we see that
@@ -540,18 +546,18 @@ First variation of $\tar (\obs)$ in the direction $V$ is:
 %% \begin{align} \label{eq:tar var}
 %%   \begin{split}
       %% \delta \tar(\obs) V 
-    &= \tr \postcov \fwd^* ( \obs^* \Sigma^{-1} V 
-    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd \\
+    &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V 
+    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
     %
     %
     % 
-    &= \tr \postcov \fwd^* \obs^* \Sigma^{-1} V 
-    ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd \\
+    &= \tr{\postcov \fwd^* \obs^* \Sigma^{-1} V 
+    ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
     % 
     %
     %
-    &= \tr V ( I - \modcov \obs^* \Sigma^{-1}\obs )
-    \fwd \postcov \fwd^* \obs^* \Sigma^{-1}.
+    &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
+    \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
   \end{split}
 \end{align*} 
 Denote
@@ -561,10 +567,10 @@ Denote
 \end{align}
 the gradient of $\tar (\obs )$ and we now justify this definition.
 Since the trace of $A := V \nabla \tar(\obs) \in \R^{m \times m}$ is
-just $\tr A = \sum_{j=1}^m e_j^t A e_j$ (with $e_j$ the $j$th standard
+just $\tr{A} = \sum_{j=1}^m e_j^t A e_j$ (with $e_j$ the $j$th standard
 basis vector), we see that
 \begin{align*}
-  \delta \tar(\obs)V = \tr V \nabla \tar(\obs) = \sum_{j=1}^m
+  \delta \tar(\obs)V = \tr{V \nabla \tar(\obs)} = \sum_{j=1}^m
   V_j(\nabla \tar(\obs)_j),
 \end{align*}
 with $V_j \in \ban^*$ and $\nabla \tar(\obs)_j \in \ban^{**}\subseteq
@@ -590,11 +596,11 @@ functionals in $\ban^*$. This set differs based on the kind of sensors
 we have at our disposal and the properties of $\ban$, as discussed in
 section \ref{subsec:dynamics}. The following proposition will give us
 better understanding of the constraints. 
-\begin{proposition}\label{prop:bigger better}
+\begin{restatable*}{proposition}{biggerbetter}\label{prop:bigger better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$, $\sigma^2
   > 0$ and $\lambda > 1$. Then $\tar(\obs)$ increases if we use
   $\lambda \meas_j$ in $\obs$ instead of $\meas_j$.
-\end{proposition}
+\end{restatable*}
 Proof of Proposition \ref{prop:bigger better} is delegated to the
 appendix but the idea behind it is simple: making rows of $\obs$ large
 is equivalent to making $\sigma^2$ small. This can be understood
@@ -670,7 +676,7 @@ with $e_j \in \R^m$ the $j$th standard basis vector. The first variations are:
   % 
   %
   %
-  &= \tr V \obs^* e_je_j^t.
+  &= \tr{V \obs^* e_je_j^t}.
 \end{align*}
 Using the same arguments we used to justify the definition of
 \eqref{eq:tar grad}, we conclude that
@@ -722,8 +728,12 @@ first-order condition for optimality \eqref{eq:conditions} becomes
 \end{equation}
 with $\Xi$ diagonal. This is an eigenvalue problem for the
 self-adjoint operator $\sigma^{-2}\fwd \postcov \fwd^*$ where the rows
-of $\obs$, namely $\meas_j,j=1,\dots, m$, are the eigenvectors. If $\fwd$
-is invertible, then we may write:
+of $\obs$, namely $\meas_j,j=1,\dots, m$, are the
+eigenvectors. \refthree{Below, we use \eqref{eq:postcov} in the second
+  equality.} If $\fwd$ is invertible, \refthree{\sout{then we may
+    write} the third equality is trivial. Otherwise, we use some
+  calculations delegated to lemma \ref{lemma:twice woodbury} in the
+  appendix}:
 \begin{align}\label{eq:mod conditions}
   \begin{split}
   \obs^* \Xi &= \sigma^{-2}\fwd \postcov \fwd^* \obs^*  \\
@@ -734,24 +744,28 @@ is invertible, then we may write:
   %
   %
   %
-  &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^*,
+  &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^*
   \end{split}
 \end{align}  
-which presents the optimal design problem as a problem on $\ban$ and
-not on $\hil$ --- the term $(\fwd \prcov \fwd^*)^{-1}$ is the prior
-precision in $\ban$ and the big parentheses enclose the posterior
-precision in $\ban$. This expression makes sense even if $\fwd$ is not
-invertible --- consider instead $\fwd$ restricted to $\ker
-\fwd^{\perp}$. This does not change the optimal design problem at all,
-since we will never take measurements that have a component in $\ker
-\fwd$ (this can be understood from Corollary \ref{cor:zero mod err}).
+\refthree{\sout{which} This} presents the optimal design problem as a
+problem on $\ban$ and not on $\hil$ --- the term $(\fwd \prcov
+\fwd^*)^{-1}$ is the prior precision in $\ban$ and \reftwo{\sout{the
+    big parentheses enclose} $(\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}
+  \obs^* \obs$ is} the posterior precision in
+$\ban$. \refthree{\sout{This expression makes sense even if $\fwd$ is
+    not invertible --- consider instead $\fwd$ restricted to $\ker
+    \fwd^{\perp}$. This does not change the optimal design problem at
+    all, since we will never take measurements that have a component
+    in $\ker \fwd$ (this can be understood from Corollary
+    \ref{cor:zero mod err}).}}
 
 \subsection{Characterizing D-Optimal Designs}\label{subsub:characterization}
 In light of \eqref{eq:mod conditions}, let us denote eigenvalues of
 $\fwd \prcov \fwd^*$ by $\lambda_1 \geq \lambda_2 \geq \dots$ and its
-eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. The following lemma will be useful:
+eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. The following lemma (proved
+in the appendix \ref{lemma:sim diag}) will be useful:
 
-\begin{lemma}[Proved as lemma \ref{lemma:sim diag} in the appendix]
+\begin{restatable*}{lemma}{simdiag}\label{lemma:sim diag}
   Let $C:\hil \to \hil$ self-adjoint and let $\func_1,\dots,\func_m \in
   \hil$. Denote $\func^*$ the element $\func$ acting as a linear
   functional. If
@@ -760,7 +774,7 @@ eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. The following lemma will be useful:
   \end{equation*}
   then $C$ and $\sum_{j=1}^m \func_j \func_j^*$ are simultaneously
   diagonalizable.
-\end{lemma}
+\end{restatable*}
 
 Thus, if we take $\func_j^{*} = \meas_j$ and $C := (\fwd \prcov
 \fwd^*)^{-1}$ in the above lemma, we conclude from the eigenproblem
@@ -769,22 +783,57 @@ as $\fwd \prcov \fwd^*$, namely $\{\ev_i\}_{i=1}^{\infty}$ (infinitely
 many of them with zero eigenvalue, since $\obs^*\obs$ is
 finite-rank). Denote the corresponding non-zero eigenvalues of
 $\obs^*\obs$ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i
-\geq k+1$. By the argument in the paragraph following \eqref{eq:mod
-  conditions}:
+\geq k+1$. \refthree{\stkout{By the argument in the paragraph following
+    \eqref{eq:mod conditions}:}}
+
+\refthree{
+\begin{align}%\label{eq:old pre manipulations}
+  \cancel{
+  \begin{split}
+    I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
+    \obs \fwd \prcov^{1/2}\right ) &= \prcov^{1/2} ( \prcov^{-1} +
+    \sigma^{-2} \fwd^*\obs^* \obs \fwd ) \prcov^{1/2} \\
+    %
+    %
+    %
+    &=\prcov^{1/2} \fwd^* ( \fwd^{-*}
+    \prcov^{-1}\fwd^{-1} + \sigma^{-2} \obs^* \obs ) \fwd \prcov^{1/2}
+    (\fwd\prcov\fwd^*)^{-1}\\
+    %
+    %
+    %
+    &= \prcov^{1/2} \fwd^* \left ( (\fwd \prcov \fwd^* )^{-1}
+    +\sigma^{-2} \obs^* \obs \right ) \fwd \prcov^{1/2}.
+  \end{split}
+  }
+\end{align}
+}
+
+
+\refthree{
 \begin{align}\label{eq:pre manipulations}
   \begin{split}
-    I + \sigma^{-2} \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2} &= 
-    \prcov^{1/2} ( \prcov^{-1} + \sigma^{-2} \fwd^*\obs^*  \obs \fwd ) \prcov^{1/2}\\
+    \det \left (I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
+    \obs \fwd \prcov^{1/2}\right ) &=
+    %
+    \det \left (  \fwd \prcov^{1/2}(I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
+    \obs \fwd \prcov^{1/2}) \prcov^{1/2} \fwd^* (\fwd \prcov \fwd^*)^{-1} \right ) \\
     %
     %
     %
-    &=\prcov^{1/2} \fwd^* ( \fwd^{-*} \prcov^{-1}\fwd^{-1} + \sigma^{-2} \obs^* \obs  ) \fwd \prcov^{1/2}\\
+    &= \det \left ( (\fwd \prcov \fwd^* + \sigma^{-2}\fwd \prcov
+    \fwd^* \obs^*\obs \fwd \prcov \fwd^*) (\fwd \prcov \fwd^*)^{-1}
+    \right )\\
     %
     %
     %
-    &= \prcov^{1/2} \fwd^* \left ( (\fwd \prcov \fwd^* )^{-1} +\sigma^{-2} \obs^* \obs  \right ) \fwd \prcov^{1/2}.
+    &= \det \left ( ((\fwd \prcov \fwd^*)^{-1} + \sigma^{-2}
+    \obs^*\obs ) (\fwd \prcov \fwd^*) \right )\\
   \end{split}
 \end{align}
+}
+
+
 By definition of the objective \eqref{eq:objective} and using
 \eqref{eq:pre manipulations}:
 \begin{align}\label{eq:mod objective}
@@ -794,8 +843,9 @@ By definition of the objective \eqref{eq:objective} and using
     %
     %
     %
-    &=\frac12 \log \det
-    \left ( (\fwd \prcov \fwd^* )^{-1} + \sigma^{-2}\obs^* \obs  \right ) \fwd \prcov \fwd^* \\ 
+    %
+    &=\frac12 \log \det \Big ( \left ( (\fwd \prcov \fwd^* )^{-1} +
+    \sigma^{-2}\obs^* \obs \right ) \fwd \prcov \fwd^* \Big )\\
     %
     %
     %
@@ -884,10 +934,10 @@ sense. First, we know the Lagrange multipliers tell us how much we
 gain by relaxing the constraints and there is no reason for any
 measurement to give us more than any other (otherwise we would put
 more weight on the better measurement, as can be understood from the
-discussion in the following paragraph). We are also used to symmetric
-optimization problems having symmetric solutions \cite{Waterhouse83},
-so symmetric and identical Lagrange multipliers definitely make sense
-in this context.
+discussion in the following paragraph).%%  We are also used to symmetric
+%% optimization problems having symmetric solutions \cite{Waterhouse83},
+%% so symmetric and identical Lagrange multipliers definitely make sense
+%% in this context.
 
 \subsection{Sensor Clusterization}\label{subsec:clusterization}
 The way clusterization can occur is best understood from figure
@@ -896,12 +946,18 @@ precision (reduces uncertainty) only for the eigenvectors of lowest
 precision. If the precision in these is lower than the precision for
 the next eigenvector, a repeated measurement is optimal.
 
+\reftwo{Results of section \ref{subsub:characterization} specifically,
+  the discussion at the end of said section, along with figure
+  \ref{figure:clusterization} and eqaution \eqref{eq:true target} show
+  how clusterization arises when an optimal design is saught.
+  
 
+  }
 \section{Analysis of Optimal Designs --- Non-Vanishing Model Error}
 Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
 (\meas_1,\dots,\meas_{m-1})^t$. The following corollary is proved in
-the appendix.
-\begin{corollary}[Proved as corollary \ref{cor:same meas} in the appendix]
+appendix \ref{cor:same meas proof}.
+\begin{restatable*}{corollary}{samemeas}\label{cor:same meas}.
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
     \tar(\obs) - \tar(\obsm) =
@@ -913,7 +969,7 @@ the appendix.
     }       
     \right ).
   \end{equation*}
-\end{corollary}
+\end{restatable*}
 
 In contrast to the previous case of vanishing model error, we will see
 that if $\modcov \neq 0$ clustering will not occur. From Corollary
@@ -945,13 +1001,7 @@ Courant Institute. I would like to thank him for his great mentorship.
 
 The following lemma is generalized from \cite[Chapter 9,
   Theorem 4, pp. 127]{Lax97}
-\begin{lemma}\label{lemma:lax}
-  Let $Y(t)$ be a differentiable operator-valued function. Assume 
-  $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
-  \begin{equation*}
-    \frac{\der \log \det (I+Y(t))}{\der t} = \tr (I+Y(t))^{-1} \dot{Y}(t).
-  \end{equation*}
-\end{lemma}
+\lax
 \begin{proof}
   Consider a differentiable operator-valued function $X(t)$ such that
   $X(0) = 0$ and $X(t)$ is positive, self-adjoint and trace-class for
@@ -990,8 +1040,8 @@ The following lemma is generalized from \cite[Chapter 9,
   \begin{align*}
     \frac{\der (I+\det X(t))}{\der t}\Big |_{t=0} 
     = \sum_{k=1}^{\infty} \dot{\lambda_k}(X(0)) 
-    = \frac{\der }{\der t}\tr X(0)
-    = \tr \dot{X}(0),
+    = \frac{\der }{\der t}\tr{X(0)}
+    = \tr{\dot{X}(0)},
   \end{align*}
   where the second equality follows by monotone convergence. 
   Let $Y(t)$ a trace-class self-adjoint operator such that 
@@ -999,8 +1049,8 @@ The following lemma is generalized from \cite[Chapter 9,
   Define $X(t)$ via $I+X(t) = (I+Y(0))^{-1/2} (I+Y(t)) (I+Y(0))^{-1/2}$. 
   We show $X(t)$ satisfies the conditions above. It is trace-class:
   \begin{align*}
-    \tr X(t) = \tr \big ( (I+Y(0))^{-1} (I+Y(t)) - I \big )
-    \leq \tr \big( I+Y(t) - I \big ) < \infty,
+    \tr{X(t)} = \tr{(I+Y(0))^{-1} (I+Y(t)) - I}
+    \leq \tr{I+Y(t) - I}< \infty,
   \end{align*}
   since $Y(t)$ is trace-class. It is also clear that
   $X(0) = 0$ and $X(t)$ is self-adjoint.
@@ -1011,11 +1061,11 @@ The following lemma is generalized from \cite[Chapter 9,
     % 
     % 
     % 
-    &= \det (I+Y(0)) \tr \dot{X}(0) \\
+    &= \det (I+Y(0)) \tr{\dot{X}(0)} \\
     % 
     % 
     % 
-    &= \det (I+Y(0)) \tr (I+Y(0))^{-1} \dot{Y}(0).
+    &= \det (I+Y(0)) \tr{(I+Y(0))^{-1} \dot{Y}(0)}.
   \end{align*}
   Consequently, by the one-variable chain rule:
   \begin{align*}
@@ -1027,7 +1077,7 @@ The following lemma is generalized from \cite[Chapter 9,
     % 
     % 
     % 
-    &= \tr (I+Y(t))^{-1} \dot{Y}(t) \big |_{t=0}.
+    &= \tr{ (I+Y(t))^{-1} \dot{Y}(t)} \big |_{t=0}.
   \end{align*}
   Since there is nothing special about $t=0$, the relation holds for all $t$.
 \end{proof}
@@ -1035,7 +1085,7 @@ The following lemma is generalized from \cite[Chapter 9,
 
 \begin{lemma}[Matrix Determinant Lemma in Hilbert Spaces]\label{lemma:MDL}
   Let $\hil$ a separable Hilbert space, $u,v\in \hil$ and $A: \hil \to
-  \hil$ an invertible linear operator such that $\tr A-I <
+  \hil$ an invertible linear operator such that $\tr{A-I} <
   \infty$. Then $\det A$ and $\det A + uv^*$ are well defined and
   \begin{equation*}
     \det (A + uv^*) = (1 + \langle A^{-1} u, v \rangle ) \det A,
@@ -1064,8 +1114,8 @@ The following lemma is generalized from \cite[Chapter 9,
   \end{equation*}
   and so $\det B = 1 + \langle x, y \rangle$.
   
-  It is easy to verify that $uv^*$ is trace-class and since $\tr A - I
-  < \infty$, also $\tr A + uv^* - I < \infty$ (sum of two trace-class
+  It is easy to verify that $uv^*$ is trace-class and since $\tr{A-I}
+  < \infty$, also $\tr{A + uv^* - I} < \infty$ (sum of two trace-class
   operators is trace-class). Thus $\det A$ and $\det (A+uv^*)$ are
   well defined. Let $x:=A^{-1}u$ and $y := v$:
   \begin{equation*}
@@ -1079,7 +1129,65 @@ The following lemma is generalized from \cite[Chapter 9,
 
 
 \section{Specific Lemmas}
+\refthree{
+\begin{lemma}\label{lemma:twice woodbury}
+  Assume $\fwd \prcov \fwd^*$ is invertible. Then
+\begin{align*}
+  \begin{split*}
+    \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* \obs^* \obs \fwd )^{-1} \fwd^* 
+    %
+    %
+    = \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1},
+  \end{split*}
+\end{align*}  
+\end{lemma}
+\begin{proof}
+  The proof is boring and amounts to using Woodbury's matrix identity
+  twice and a regularization trick. The standard proof for this
+  identity works in infinite dimensions, as long as all terms are well
+  defined. Unfortunately, $\obs^*\obs$ is not invertible, so we force
+  it to be. Throughout, we let $X := \fwd\prcov \fwd^*$ and $Y_{\eps}
+  := \obs^*\obs + \eps I$, for some small $\eps > 0$. Note that now
+  $Y_{\eps}$ is invertible. Recall Woodbury's matrix identity:
+  $$
+  (A + UCV)^{-1} = A^{-1} + A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}.
+  $$
 
+  Taking $A := \prcov^{-1}, U := \fwd^*, V := \fwd$ and $C :=
+  \sigma^{-2} (\obs^*\obs+\eps I)$ we get:
+  \begin{align*}
+    \begin{split}
+      \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* &=
+      \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^* \\
+      %
+      %
+      &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
+    \end{split}
+  \end{align*}
+  Note that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of
+  a two positive definite operators. Now, taking $A := X^{-1}, C :=
+  \sigma^2Y_{\eps}^{-1}, U := I$ and $V := I$ and using Wodbury's matrix
+  identity in reverse order:
+  \begin{align*}
+    \begin{split}
+      X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X &= (X^{-1} + \sigma^{-2}Y_{\eps})^{-1} \\
+      %
+      %
+      %
+      &= (\fwd \prcov \fwd^* + \sigma^{-2} (\obs^*\obs + \eps I))^{-1}.
+    \end{split}
+  \end{align*}
+
+  We conclude that $\forall \eps > 0$
+  \begin{align*}
+    \begin{split}
+      \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* 
+     &= (\fwd \prcov \fwd^* + \sigma^{-2} (\obs^*\obs + \eps I))^{-1}.
+    \end{split}
+  \end{align*}
+  Letting $\eps \to 0$ completes the proof.
+\end{proof}
+}
 \begin{lemma}[Increase due to a Measurement]\label{lemma:design increase}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm := (\meas_1,\dots,\meas_{m-1})^t$. Then
   \begin{align*}
@@ -1301,20 +1409,8 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   \end{align*}
 \end{proof}
 
-\begin{corollary}[Gain for Identical Measurement]\label{cor:same meas}
-  If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
-  \begin{equation*}
-    \tar(\obs) - \tar(\obsm) =
-    \log \left ( 1 + \frac{\sigma^2
-      \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1} e_j,
-      \obsm^* \Sigmam^{-1}e_j \rangle
-    }{
-      2 - \sigma^2 e_j^t\Sigmam^{-1}e_j 
-    }       
-    \right ).
-  \end{equation*}
-\end{corollary}
-\begin{proof}
+\samemeas
+\begin{proof} \label{cor:same meas proof}
   Denote $A:= \obs \modcov \obs^*$ and $v_j$ the $j$th column of $A$.
   Note that $v_j = \obsm \modcov \meas_m$, since $(\obsm \modcov
   \obsm^*)_{ij} = \meas_i(\modcov \meas_j)$, as explained in
@@ -1397,7 +1493,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
 \end{proof}
 
 \begin{lemma}\label{lemma:free}
-  Let $M \in \R^{k \times k}$ symmetric positive definite with $\tr M =
+  Let $M \in \R^{k \times k}$ symmetric positive definite with $\tr{M} =
   m$, $m > k$. Then we can find $\func_j \in \R^k,j=1,\dots,m$ with
   $\|\func_j\|=1$ and $A = (\func_1,\dots,\func_m)$ such that $AA^t =
   M$.
@@ -1415,9 +1511,9 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   \begin{equation}\label{eq:V constraints}
    1 = [A^tA]_{jj} = [V S^tS V^t]_{jj},
   \end{equation}
-  and we can expect to do this since we assumed $\tr D = m$.
+  and we can expect to do this since we assumed $\tr{D} = m$.
 
-  Define $C = S^tS - I \in \R^{m \times m}$. Note that $\tr C = 0$ and
+  Define $C = S^tS - I \in \R^{m \times m}$. Note that $\tr{C} = 0$ and
   $C$ is diagonal with non-zero entries $d_i-1,i=1,\dots,k$. It suffices
   to find $V$ orthogonal such that $V C V^t$ has zero diagonal. We
   construct such $V$ by sequentially inserting zeros in the diagonal
@@ -1452,8 +1548,8 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   $c_{pp}c_{kk} < 0$ by assumption and we can find $\theta \in
   (0,\pi)$ such that \eqref{eq:mm} is satisfied. We continue to find
   $R^{(k-1)}$ that leaves rows and columns $k,\dots,m$ unchanged and
-  continue introducing zeros to the diagonal. The assumption $\tr D =
-  m \Rightarrow \tr C = 0$ guarantees we can do that. Taking $V:=
+  continue introducing zeros to the diagonal. The assumption $\tr{D} =
+  m \Rightarrow \tr{C} = 0$ guarantees we can do that. Taking $V:=
   R^{(1)} R^{(2)} \dots R^{(k-1)}R^{(k)}$ completes the proof.
 \end{proof}
 
@@ -1524,17 +1620,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   as required.
 \end{proof}
 
-
-\begin{lemma}\label{lemma:sim diag}
-  Let $C:\hil \to \hil$ self-adjoint and let $\func_1,\dots,\func_m \in
-  \hil$. Denote $\func^*$ the element $\func$ acting as a
-  functional. If
-  \begin{equation*}
-   (C + \sum_{j=1}^m \func_j\func_j^*) \func_k = \xi_k \func_k, k = 1,\dots,m
-  \end{equation*}
-  then $C$ and $\sum_{j=1}^m \func_j \func_j^*$ are simultaneously
-  diagonalizable.
-\end{lemma}
+\simdiag
 \begin{proof}
   First, enumerate the eigenvalues of $C + \sum_{j=1}^m
   \func_j\func_j^*$ as $\xi_1,\dots,\xi_\ell$. Denote the
@@ -1561,11 +1647,12 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   \ell$ and we conclude that $C$ and $A$ have the same eigenvectors.
 \end{proof}
 
-\begin{proposition}\label{prop:bigger better}
-  Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$, $\sigma^2
-  > 0$ and $\lambda > 1$. Then $\tar(\obs)$ increases if we use
-  $\lambda \meas_j$ in $\obs$ instead of $\meas_j$.
-\end{proposition}
+%% \begin{proposition}\label{prop:bigger better}
+%%   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$, $\sigma^2
+%%   > 0$ and $\lambda > 1$. Then $\tar(\obs)$ increases if we use
+%%   $\lambda \meas_j$ in $\obs$ instead of $\meas_j$.
+%% \end{proposition}
+\biggerbetter
 \begin{proof} 
   Fix an arbitrary $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. We see
   that for $u \in \ban$
@@ -1581,11 +1668,11 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
     var}, and denote $\tmp : = \fwd \postcov \fwd^*: \ban^* \to \ban$:
   \begin{align*}
      \delta \tar(\obs) V 
-    &= \tr V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1} \\
+    &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
     % 
     %
     %
-    &= \tr e_je_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1} \\
+    &= \tr{e_je_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
     %
     % 
     %

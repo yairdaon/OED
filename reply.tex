@@ -1,0 +1,304 @@
+\documentclass{amsart}
+\input{definitions}
+
+\title{Corrections}
+
+\begin{document}
+
+\maketitle
+
+\section{Referee 2}
+\subsection{Summary}
+In this article, the author considers what causes sensor clustering in
+optimal experimental design of Bayesian inverse problems. They show
+how D-optimal designs may lead to sensor clustering in the case of iid
+measurement noise. They also show that clustering does not occur for
+spatially correlated measurement error. The paper is somewhat
+difficult to follow due to writing and organizations corrections that
+should be made, but does present original work. The article is
+mathematically rigorous and significant in that the work is a
+necessary step toward developing a deeper understanding of sensor
+clustering. I suggest a major review and resubmission after reviewing
+the comments below.
+
+
+\subsection{General Comments}
+
+\begin{enumerate}
+\item It should be stated in the Abstract whether the work in this
+  paper pertains to only linear inverse problems, or if it is
+  applicable in general to non-linear inverse problems as well.
+  \ydnote{Title and abstract now reflect the fact that the paper only
+    pertains to linear inverse problems.}
+  
+\item It is unclear from the contribution section of the article what
+exactly the primary contribution is. This should be stated very
+explicitly and emphasized clearly as the contribution of the article.
+
+\item In some equations (as seen below in the line comments) operators
+are not clearly defined or described before they are given in a
+proposition or theorem. Please clearly define all operators both with
+mathematical definitions and descriptions (when applicable) before
+using them. \ydnote{Corrected, thanks!}
+
+\item Overall, I find the article difficult to follow. I think this can
+be improved by properly defining all operators and including section
+overviews that give a description of the purpose of each section, and
+a brief summary of how this is being accomplished.
+
+\item On page 10, figure 2 and section 4.2 deliver the main conclusion of
+the article. These areas are deficient with only brief descriptions,
+and should be much more thoroughly explained. In particular page 10,
+lines 38-39 "If the precision in these is lower than the precision for
+the next eigenvector, a repeated measurement is optimal" needs to be
+elaborated on. How do you come to this conclusion? Additionally, the
+wording of the statement can lead to confusion. From figure 2, it
+looks like all measurements grant less precision than that of the
+fourth eigenvector, so I first interpret this as all measurements
+should be repeated. I believe these issues can be fixed by significant
+elaboration in section 4.2.
+\end{enumerate}
+
+
+\subsection{Line Comments}
+
+\begin{itemize}
+\item Page 1, Line 39: "In a frequentist settings" should be changed
+  to "in a frequentist setting" or "in frequentist
+  settings". \ydnote{changed in text}
+
+\item Page 2, Line 36: Add a comma: "In the process, we generalize..."
+  \ydnote{changed in text}
+  
+\item Page 3, Line 37: "with homogeneous Dirichlet boundary condition"
+  should be changed to "with a homogeneous Dirichlet boundary
+  condiiton". \ydnote{changed}
+
+\item Page 4, Line 14: In equation (2.1), $\Sigma$ has not been
+  defined. Please formally define this before giving the equation.
+  \ydnote{Moved the equation after $\Sigma$ is defined}
+
+\item Page 4, Line 21: The prior distribution $\mathcal{N}(0,
+  \Gamma_{pr})$ assumes the prior mean is 0. This is worthy of some
+  comment. Why must the prior mean be 0? \ydnote{It does not have to
+    be, we can subtract the mean. An explanation was added}
+
+\item Page 5, Line 15: Add a comma: "Considering the sum of the error
+  terms, it is easy..."  \ydnote{changed in text}
+
+  
+\item Page 6, Line 7: Please describe what $\psi$ is in the
+  theorem. It is defined mathematically but not described. Only much
+  later is it stated that this is the objective
+  function. \ydnote{added comment before statment of theorem where
+    $\tar$ first appears}
+
+\item Page 6, Line 19-20: "In section 3.2 we relax the constraints on
+  $\mathcal{O}$ so that the optimization problem in (3.1) and find
+  gradients for the new constraints." This sentence is unclear and
+  should be reworded. \ydnote{added short explanation}
+
+\item Page 7, Line 24, 27, 31: The proposition is labeled as
+  Proposition 1, but it is refered to as Proposition 2, and relabeled
+  Proposition 2 in the appendix. \ydnote{all such errors were fixed}
+
+\item Page 9, Line 6: Please be more exact when refering to "the big
+  parentheses" to avoid any chance of confusion. Give the explicit
+  formula here as you do for another term earlier in the sentence.
+  \ydnote{explicit expression given}
+  
+\item Page 18, Line 6: This proposition was previously labeled
+  Proposition 1. \ydnote{all such errors were fixed}
+\end{itemize}
+
+
+
+
+\section{Referee 3}
+
+\subsection{Overview}
+
+This article discusses D-optimal experimental design for infinite
+dimensional Bayesian linear inverse problems, and attempts to provide
+a mathematical foundation to understanding the issue of clusterization
+in such scenario, i.e., finding D-optimal designs.  As the author
+mentioned in the Acknowledgments Section, the paper is paper is part
+of the Ph.D. dissertation, and in general provides a good prospective
+to sensor placement for Bayesian linear inverse problems formulated
+using infinite dimensional approach.  I regret, however, to say that
+the paper requires a major revision before being considered for
+publication.  Below, I provide some comments, that hopefully will help
+improve the manuscript.  Also, provided are some recent references,
+the author may find useful.
+
+
+\subsection{General comments}
+
+The author should clearly state why one should consider
+infinite-dimensional formulation of the observation operator? One
+could just merge the observation operator into the forward simulation
+operator, and follow standard formulations adopted by the works in the
+references below. Moreover, when it comes to sensor placement,
+observations are almost surely pointwise in space/time. In this case,
+I don't see the benefit of consider infinite-dimensional formulation.
+
+\ydnote{I was not able to arrive at the same results when the forward
+  and observation operators were merged. A short remark on this was
+  added. It is placed after equation (2.6) in the highlighted text
+  (equation (2.5) in the new clean text. Specifically, we need it in
+  equation (3.1).}
+
+The contributions detailed in Subsection 1.2 (page 2) are very much
+appreciated, however they raise some concerns:
+
+\begin{enumerate}
+\item line 30: the author claims to present an analytically tractable
+  model for understanding D-optimal designs. By reading the paper, I
+  couldn't figure out how this reflects to any practical scenario. I'm
+  not sure how this can be utilized for example in spatial sensor
+  placement problems. An algorithmic description would be very useful
+  here.
+
+
+\item The statement made on page 2, lines 40-41 (... apply equally to
+  any of the scenarios...) is rather strong and unjustified.
+\end{enumerate}
+
+On page 8, Equation 4.2, which is crucial in this study, assumes that
+the forward operator is invertible. This is clearly impossible in
+practical Bayesian inverse problems, otherwise, it reduces to a
+standard regression problem. This is understandable for clarification,
+however, the following argument on Page 9 that extends this assumption
+is not well-justified. \ydnote{This is a great point! The flawed
+  explanation was removed. I was able to remove that assumption.}
+
+
+In Equation 4.3, not sure what $\fwd^{-*}$ stands for. Moreover, an
+inverse of the forward operator is not well-defined even if
+$\mathcal{F}\Gamma_{prior}\mathcal{F}^*$ is invertible! This is very
+limiting, and can't be used in practical inverse problems. This should
+be clearly discussed for the reader to appreciate the valuable effort
+made. \ydnote{Again, great point. $ \fwd^{-*} = (\fwd^*)^{-1}$ but now
+  I do not assume $\fwd$ is invertible so this is removed}
+
+
+A numerical example with the setup studied in the paper, should help
+clarify several confusions that a reader can fall for easily.
+
+
+The title should reflect the fact that the study is restricted to
+linear inverse problems. Also, this should be clarified in the
+abstract, in addition to the fact that observations errors are
+uncorrelated with fixed variance $\sigma^2$. \ydnote{The title and
+  abstract were changed to reflect the fact that linear problems are concerned.
+The treatment of correlated errors was emphasized.}
+
+
+
+\subsection{Other Comments}
+
+In the abstract (line 20, page 1), and on page 5, lines 30-40, the
+author mentions that the effect of observation-correlations on sensor
+clusterization will be considered later, but I failed to find any
+relevant discussion to that issue which I find interesting. Even if
+the model error covariance $\Gamma_{model}$ is known, this doesn't
+amount for observation correlations, .e.g,
+single-instrument-observations, because the observation operator
+$\mathcal{O}$ is non invertible. This issue should addressed and
+clarified clearly.
+
+I found it difficult to trace the referenced Lemmas, Corollaries,
+etc., mainly because bad referencing in the appendix, and the links do
+not works properly.  For example Corollary 2 should be Corollary B.x,
+etc. \ydnote{All such bad references were fixed}
+
+The trace operator should be followed with some sort of brackets to
+make it easier to follow and validated the formulae
+\ydnote{curly brackets added everywhere}
+
+Sensor clusterization in OED is central to this study. Figure 2 is
+used to illustrate the phenomena, however, it is underrepresented, and
+is hard to decipher. Specifically, Section 4.2 (Page 10, lines 36-39),
+and caption of Figure 2 should be rewritten with clear explanation of
+the axes, and the plot-generation process.
+
+One page 10, lines 30-35, the argument doesn't seem to be quite
+accurate. It's not always true that one associates a higher
+weight/value to ``better'' observation. If one defines ``better'' as
+lower uncertainty, then, variable observation variances must be
+considered. On the other hand, if being ``better'' corresponds to a
+more accurate realization of the observation (true snapshot of
+reality), then the whole statement would be wrong, because optimal
+design relies only on the uncertainty levels in linear Bayesian
+settings, as manifested by the posterior covariance matrix.
+
+The last statement of the proof of Lemma A.1 (see page 12, line 24),
+stating that ``there is nothing special about $t=0$, and the relation
+holds for all t''. This is rather odd. In fact, It is assumed that
+$X(t=0)$ explicitly (see line 32 on page 11). A clarification is
+required here.
+
+
+
+\subsection{Minor Comments}
+
+Page 1, line 22; ... ``calculating derivative of log det of
+oeprators''. Please clarify for the reader, which operators you're
+referring to.
+
+Page 2, line 11; wrong reference to Figure 1.3?
+
+Page 6; in equation 2.7, don't you need an expectation over all priors
+to achieve this result? Please clarify.
+
+Page 6, line 13; the optimization problem is solved for $\mathcal{O}$,
+not $\Psi$ ?
+
+Page 6, lines 19; the statement made about relaxing the constraints on
+the observation operator is unclear.
+
+Page 6, line 24, I believe the reference to (3.2) should be replaced
+with (3.1).
+
+Page 6, line 26, proof is provided in which Appendix? Please state
+clearly.
+
+page 6, In the proof of Lemma 3.1, the author utilized the operator
+$T$, which is only introduced in the appendix (Proof of Lemma
+A.1). Maybe state that clearly here. Also, in the proof, from step 4
+to 5, the first and third terms vanished; why?
+
+Page 7; Proposition 1 should be replaced with something like
+Proposition 3.2 or something similar to match previous referencing
+(e.g., Lemma 3.1).
+
+Page 7, line 27 (and also line 31); the reference to Proposition 2
+seems to be incorrect. Also, state clearly which appendix the proof is
+delegated to.
+
+Page 10, Corollary 1 should be renamed (see the comment on Proposition
+1 above). Same applies to Corollary 3 in the appendix. Better also to
+clarify which appendix. Finally, the author utilizes
+$\widehat{\Gamma_{post}}$ int the corollary, which is defined only in
+the appendix, under the proof.
+
+
+Page 11, in the proof of Lemma A.1 (lines 39-43), the partial
+derivative vanished from step 2 to step 3; please explain!
+
+
+References:
+
+* - Koval, Karina, Alen Alexanderian, and Georg
+Stadler. "Optimal experimental design under irreducible uncertainty
+for linear inverse problems governed by PDEs." Inverse Problems
+(2020).
+
+* - Attia, Ahmed, and Emil Constantinescu. "Optimal Experimental
+Design for Inverse Problems in the Presence of Observation
+Correlations." arXiv preprint arXiv:2007.14476 (2020).
+
+Letter reference: DSMa01
+
+
+\end{document}
