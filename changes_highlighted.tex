@@ -295,16 +295,33 @@ $\hil$ and $\ban$ finite dimensional vector spaces.
 %% cause of clusterization.
 
 \section{Preliminaries and Notation}\label{section:prelim}
-
+\reftwo{
+\subsection{Overview}
 The theoretical foundations for inverse problems over function spaces
-can be found in \cite{Stuart10}. This section is mostly devoted to
-setting notation. \reftwo{\sout{At this point, it is useful to record a known result
-regarding the posterior covariance operator of our inverse problem,
-namely}
+can be found in \cite{Stuart10}. In this section we define notations that will be
+  used throughout the paper.
+%% A reader mostly familiar with the
+%% literature may initially want to skip this section and only consult
+%% the list below, which summarizes the notation used. We denote:
+%% \begin{itemize}
+%%   \item Parameter space $\hil$.
+%%   \item Data space $\ban$.
+%%   \item Forward dynamics operator $\fwd: \hil \to \ban$.
+%%   \item Observation operator $\obs: \ban \to \mathbb{R}^m$.
+%%   \item Prior measure $\pr = \mathcal{N}(0, \prcov)$.
+%%   \item Data $\data \in \mathbb{R}^m$.
+%%   \item Observation and model errors, captured in $\Sigma(\obs)$.
+%% \end{itemize}
+%% The design objective was derived in \cite{AlexanderianGloorGhattas14}
+%% and recorded in \eqref{eq:objective} below.
+\sout{At this point, it is useful to record a known result regarding
+  the posterior covariance operator of our inverse problem, namely}
 \begin{align}\label{eq:postcov precursor}
   \stkout{\postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd )^{-1}.}
 \end{align}
 }
+
+
 
 \subsection{Bayesian \reftwo{Linear} Inverse Problems}\label{section:abstract OED}
 Let $\hil$ be a Hilbert space and $\ban$ a Banach space, both
@@ -470,6 +487,8 @@ in the following theorem:
 
 
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+
+\subsection{\reftwo{Overview}}
 From \eqref{eq:objective} we wish to characterize solution(s) of the
 following optimization problem for $\tar$. %%: (\ban^*)^m \to \R$:
 \begin{align}\label{eq:optimization}
@@ -482,10 +501,14 @@ where $\obs$ is constrained to some allowed set of measurements
 %%, for the example in section \ref{subsec:example}).
 We seek a formulation of the optimal design using Lagrange
 multipliers. In section \ref{section:objective} we find the gradient
-of $\tar$. In section \ref{subsec:unit length} we relax the
-constraints on $\obs$ so that the optimization problem in
-\eqref{eq:optimization} \reftwo{is analytically tractable} and find
-gradients for the new constraints.
+of $\tar$ and record it in \eqref{eq:tar grad}. In section
+\ref{subsec:unit length} we relax the constraints on $\obs$ so that
+the optimization problem in \eqref{eq:optimization} \reftwo{is
+  analytically tractable}.  We find gradients for the new constraints
+\reftwo{and record them in \eqref{eq:grad constraints}. Finally, in
+  section \ref{subsec:necessary} we use these to formulate the optimal
+  design problem as a Lagrange multipliers problem in equation
+  \eqref{eq:conditions}.}
 
 \subsection{The Objective and its Gradient}\label{section:objective}
 In order to use Lagrange multipliers, we need to find the gradient of
@@ -720,7 +743,28 @@ notation, we can write this more compactly as:
   = \obs^* \Xi.
 \end{equation}
 
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION Analysis of Optimal Designs --- Vanishing Model Error
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analysis of Optimal Designs --- Vanishing Model Error}\label{section:vanishing}
+\subsection{\reftwo{Overview}}
+\reftwo{In this section we analyze optimal designs when no model error
+  is present. We show how sensor clusterization arises in section
+  \ref{subsec:clusterization}. We prepare the ground by first deriving
+  an eigenvalue problem in $\obs$ for an optimal design in section
+  \ref{subsec:eigenproblem}. This eigenvalue problem is recorded in
+  \eqref{eq:mod conditions}. Next, we characterize optimal designs as
+  ones that make all eigenvalues in equal in the above mentioned
+  eigenproblem. This is crucial for clusterization to occur. The
+  derivation is presented in section \ref{subsec:characterization}. }
+
+
+\subsection{\reftwo{The Eigenvalue Problem}}\label{subsec:eigenproblem}
 When $\modcov = 0$, then $\Sigma= \sigma^2I$. The necessary
 first-order condition for optimality \eqref{eq:conditions} becomes
 \begin{equation}\label{eq:eigenproblem}
@@ -759,7 +803,8 @@ $\ban$. \refthree{\sout{This expression makes sense even if $\fwd$ is
     in $\ker \fwd$ (this can be understood from Corollary
     \ref{cor:zero mod err}).}}
 
-\subsection{Characterizing D-Optimal Designs}\label{subsub:characterization}
+
+\subsection{Characterizing D-Optimal Designs}\label{subsec:characterization}
 In light of \eqref{eq:mod conditions}, let us denote eigenvalues of
 $\fwd \prcov \fwd^*$ by $\lambda_1 \geq \lambda_2 \geq \dots$ and its
 eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. The following lemma (proved
@@ -787,28 +832,27 @@ $\obs^*\obs$ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i
     \eqref{eq:mod conditions}:}}
 
 \refthree{
-\begin{align}%\label{eq:old pre manipulations}
-  \cancel{
-  \begin{split}
-    I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
-    \obs \fwd \prcov^{1/2}\right ) &= \prcov^{1/2} ( \prcov^{-1} +
-    \sigma^{-2} \fwd^*\obs^* \obs \fwd ) \prcov^{1/2} \\
-    %
-    %
-    %
-    &=\prcov^{1/2} \fwd^* ( \fwd^{-*}
-    \prcov^{-1}\fwd^{-1} + \sigma^{-2} \obs^* \obs ) \fwd \prcov^{1/2}
-    (\fwd\prcov\fwd^*)^{-1}\\
-    %
-    %
-    %
-    &= \prcov^{1/2} \fwd^* \left ( (\fwd \prcov \fwd^* )^{-1}
-    +\sigma^{-2} \obs^* \obs \right ) \fwd \prcov^{1/2}.
-  \end{split}
-  }
+  \begin{align}%\label{eq:old pre manipulations}
+    \cancel{
+      \begin{split}
+        I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
+        \obs \fwd \prcov^{1/2} &= \prcov^{1/2} ( \prcov^{-1} +
+        \sigma^{-2} \fwd^*\obs^* \obs \fwd ) \prcov^{1/2} \\
+        %
+        %
+        %
+        &=\prcov^{1/2} \fwd^* ( \fwd^{-*}
+        \prcov^{-1}\fwd^{-1} + \sigma^{-2} \obs^* \obs ) \fwd \prcov^{1/2}
+        (\fwd\prcov\fwd^*)^{-1} \\
+        %
+        %
+        %
+        &= \prcov^{1/2} \fwd^* \left ( (\fwd \prcov \fwd^* )^{-1}
+        +\sigma^{-2} \obs^* \obs \right ) \fwd \prcov^{1/2}.
+      \end{split}
+    }
 \end{align}
 }
-
 
 \refthree{
 \begin{align}\label{eq:pre manipulations}
@@ -816,19 +860,13 @@ $\obs^*\obs$ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i
     \det \left (I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
     \obs \fwd \prcov^{1/2}\right ) &=
     %
-    \det \left (  \fwd \prcov^{1/2}(I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
-    \obs \fwd \prcov^{1/2}) \prcov^{1/2} \fwd^* (\fwd \prcov \fwd^*)^{-1} \right ) \\
+    \det \left (I + \sigma^{-2} \obs^*
+    \obs \fwd \prcov\fwd^* \right ) \text{(Sylvester's determinant theorem)}\\
     %
     %
     %
-    &= \det \left ( (\fwd \prcov \fwd^* + \sigma^{-2}\fwd \prcov
-    \fwd^* \obs^*\obs \fwd \prcov \fwd^*) (\fwd \prcov \fwd^*)^{-1}
-    \right )\\
-    %
-    %
-    %
-    &= \det \left ( ((\fwd \prcov \fwd^*)^{-1} + \sigma^{-2}
-    \obs^*\obs ) (\fwd \prcov \fwd^*) \right )\\
+    &= \det \left \{ \left ( (\fwd \prcov \fwd^*)^{-1} +
+    \sigma^{-2}\obs^*\obs \right ) (\fwd \prcov \fwd^*)\right \}\\
   \end{split}
 \end{align}
 }
@@ -929,7 +967,7 @@ $\lambda_i^{-1} + \sigma^{-2} \eta_i = \lambda_3^{-1},i=1,2$ and so
 forth.
 
 The argument above has the important consequence that the eigenvalues
-in \eqref{eq:eigenproblem} are all equal! This makes perfect
+in \eqref{eq:eigenproblem} are all equal This makes perfect
 sense. First, we know the Lagrange multipliers tell us how much we
 gain by relaxing the constraints and there is no reason for any
 measurement to give us more than any other (otherwise we would put
@@ -946,17 +984,37 @@ precision (reduces uncertainty) only for the eigenvectors of lowest
 precision. If the precision in these is lower than the precision for
 the next eigenvector, a repeated measurement is optimal.
 
-\reftwo{Results of section \ref{subsub:characterization} specifically,
+\reftwo{Results of section \ref{subsec:characterization} specifically,
   the discussion at the end of said section, along with figure
-  \ref{figure:clusterization} and eqaution \eqref{eq:true target} show
+  \ref{figure:clusterization} and equation \eqref{eq:true target} show
   how clusterization arises when an optimal design is saught.
   
 
-  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION Analysis of Optimal Designs --- Non-Vanishing Model Error
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analysis of Optimal Designs --- Non-Vanishing Model Error}
-Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
-(\meas_1,\dots,\meas_{m-1})^t$. The following corollary is proved in
-appendix \ref{cor:same meas proof}.
+\subsection{\reftwo{Overview}}
+In this section we show how clusterization is avoided when model
+error does not vanish.
+
+\subsection{\reftwo{Derivation}}
+We rely on corollary \ref{cor:same meas} below, which is proved in the
+appendix. Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
+(\meas_1,\dots,\meas_{m-1})^t$.
 \begin{restatable*}{corollary}{samemeas}\label{cor:same meas}.
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
@@ -970,17 +1028,22 @@ appendix \ref{cor:same meas proof}.
     \right ).
   \end{equation*}
 \end{restatable*}
-
-In contrast to the previous case of vanishing model error, we will see
+ In
+contrast to the previous case of vanishing model error, we will see
 that if $\modcov \neq 0$ clustering will not occur. From Corollary
-\ref{cor:same meas} we can observe that as $\sigma^2 \to 0$, the
-increase in the design criterion gained by taking a measurement
-identical to a previous one approaches zero. We may conclude that for
-small measurement error levels, the clusterization effect will be
-mitigated by the presence of a non-zero model error. Since the design
-criterion is not defined for $\sigma^2 = 0$ and identical
-measurements, we cannot make a statement regarding $\sigma^2 = 0$,
-except in the limiting sense described above.
+\ref{cor:same meas} we can observe that
+\refthree{
+$$
+\lim_{\sigma^2 \to 0} \tar(\obs) -\tar(\obsm) = 0
+$$ \sout{as $\sigma^2 \to 0$, the increase in the design criterion
+  gained by taking a measurement identical to a previous one
+  approaches zero}. Hence no increase in the design criterion is
+achieved. This is clearly sub-optimal and $\obsm$ cannot be an optimal
+design}. We may conclude that for small measurement error levels, the
+clusterization effect will be mitigated by the presence of a non-zero
+model error. Since the design criterion is not defined for $\sigma^2 =
+0$ and identical measurements, we cannot make a statement regarding
+$\sigma^2 = 0$, except in the limiting sense described above.
 
 \section{Conclusion}\label{section:conclusion}
 Our relaxed model gives us insight to D-optimal designs. We see that
@@ -1133,12 +1196,12 @@ The following lemma is generalized from \cite[Chapter 9,
 \begin{lemma}\label{lemma:twice woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
 \begin{align*}
-  \begin{split*}
+  \begin{split}
     \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* \obs^* \obs \fwd )^{-1} \fwd^* 
     %
     %
     = \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1},
-  \end{split*}
+  \end{split}
 \end{align*}  
 \end{lemma}
 \begin{proof}
