@@ -988,10 +988,10 @@ The following lemma is generalized from \cite[Chapter 9,
   \end{align*}
   The assumption $X(0) = 0$ means $\lambda_k(X(0)) = 0,\ \forall k \geq 1$. Thus:
   \begin{align*}
-    \frac{\der (I+\det X(t))}{\der t}\Big |_{t=0} 
-    = \sum_{k=1}^{\infty} \dot{\lambda_k}(X(0)) 
+    \frac{\der (I+\det X(t))}{\der t}\Big |_{t=0}
+    = \sum_{k=1}^{\infty} \dot{\lambda_k}(X(0))
     = \frac{\der }{\der t}\tr X(0)
-    = \tr \dot{X}(0),
+    = \ttr \dot{X}(0),
   \end{align*}
   where the second equality follows by monotone convergence. 
   Let $Y(t)$ a trace-class self-adjoint operator such that 
@@ -999,8 +999,8 @@ The following lemma is generalized from \cite[Chapter 9,
   Define $X(t)$ via $I+X(t) = (I+Y(0))^{-1/2} (I+Y(t)) (I+Y(0))^{-1/2}$. 
   We show $X(t)$ satisfies the conditions above. It is trace-class:
   \begin{align*}
-    \tr X(t) = \tr \big ( (I+Y(0))^{-1} (I+Y(t)) - I \big )
-    \leq \tr \big( I+Y(t) - I \big ) < \infty,
+    \ttr X(t) = \tr{(I+Y(0))^{-1} (I+Y(t)) - I}
+    \leq \tr{I+Y(t) - I} < \infty,
   \end{align*}
   since $Y(t)$ is trace-class. It is also clear that
   $X(0) = 0$ and $X(t)$ is self-adjoint.
@@ -1011,7 +1011,7 @@ The following lemma is generalized from \cite[Chapter 9,
     % 
     % 
     % 
-    &= \det (I+Y(0)) \tr \dot{X}(0) \\
+    &= \det (I+Y(0)) \ttr \dot{X}(0) \\
     % 
     % 
     % 

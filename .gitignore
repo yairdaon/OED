@@ -8,3 +8,4 @@
 *.latexmk
 *.out
 *.blg
+*.dvi
