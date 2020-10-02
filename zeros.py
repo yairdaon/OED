@@ -3,8 +3,11 @@ from numpy import sin, cos
 from scipy.stats import ortho_group
 import pdb
 
+EPS = 1e-14
 ortho = ortho_group.rvs
 cot = lambda x: cos(x)/ sin(x)
+
+
 def conj(D, U):
     ''' Returns UDU^t'''
     assert U.shape == D.shape
@@ -37,12 +40,12 @@ def MDUS(m, k):
     
     D = np.abs(np.random.uniform(size=k))
     D = D * m / np.sum(D)
-    assert abs(np.sum(D) - m) < 1e-12 
+    assert abs(np.sum(D) - m) < EPS 
     D = np.diag(D)
     assert D.shape == (k,k)
 
     U = ortho(k)
-    assert np.all(np.abs(np.dot(U,U.T) - np.identity(k)) < 1e-12)
+    assert np.all(np.abs(np.dot(U,U.T) - np.identity(k)) < EPS)
 
     M = conj(D, U)
 
@@ -96,10 +99,31 @@ def get_theta(C, upper):
     
 def main(m, k):
     assert m > k
-    M, D, U, S = MDUS(m, k)
+    M, _, _, _ = MDUS(m, k)
+
+    A = get_A(M, m)
+
+    ## Check that AAt = M, as stated.
+    AAt = np.dot(A,A.T)
+    assert np.all(np.abs(AAt - M) < EPS)
+    
+    ## Check that A does have unit norm columns, as stated.
+    norms = np.linalg.norm(A, axis=0)
+    assert np.all(np.abs(norms - 1) < EPS) 
+
+    
+def get_A(M, m):
+    k = M.shape[0]
+    assert abs(m - np.trace(M)) < EPS
+    
+    D, U = np.linalg.eig(M)
+    S = np.zeros((k,m))
+    for i in range(k):
+        S[i,i] = np.sqrt(D[i])
+
     
     C = np.dot(S.T, S) - np.identity(m)
-    assert abs(np.trace(C)) < 1e-14
+    assert abs(np.trace(C)) < EPS
 
     V = np.identity(m)
     for upper in reversed(range(1,k+1)):
@@ -107,23 +131,17 @@ def main(m, k):
         R = givens(theta=theta, dims=m, lower=lower, upper=upper)
         C = conj(C, R)
         V = np.dot(R, V)
-  
+
+    A = np.einsum('ij, jk, lk ->il', U, S, V)
+
     ## Verify C has zero trace
-    assert abs(np.trace(C)) < 1e-14
+    assert abs(np.trace(C)) < EPS
 
     ## Verify V is orthogonal
-    assert np.all(np.abs(np.diag(np.dot(V,V.T)) - 1) < 1e-14)
-    assert np.all(np.abs(np.dot(V,V.T) - np.identity(m)) < 1e-14)
+    assert np.all(np.abs(np.diag(np.dot(V,V.T)) - 1) < EPS)
+    assert np.all(np.abs(np.dot(V,V.T) - np.identity(m)) < EPS)
 
-    ## Check that AAt = M, as stated.
-    A = np.einsum('ij, jk, lk ->il', U, S, V)
-    AAt = np.dot(A,A.T)
-    assert np.all(np.abs(AAt - M) < 1e-12)
-    
-    ## Check that A does have unit norm columns, as stated.
-    norms = np.linalg.norm(A, axis=0)
-    assert np.all(np.abs(norms - 1) < 1e-14) 
-
+    return A
 
     
 def test_theta(big_dim=20, dim=9, upper=4):
@@ -131,7 +149,7 @@ def test_theta(big_dim=20, dim=9, upper=4):
     M, D, U, S = MDUS(big_dim, dim)
     
     C = M - np.identity(dim) * np.trace(M) / dim
-    assert abs(np.trace(C)) < 1e-14
+    assert abs(np.trace(C)) < EPS
     
     theta, lower = get_theta(C, upper)
     R = givens(theta=theta, dims=dim, lower=lower, upper=upper)
@@ -139,8 +157,8 @@ def test_theta(big_dim=20, dim=9, upper=4):
 
     cot = cos(theta) / sin(theta)
     eqn = cot**2 * C[upper, upper] + 2*cot*C[upper,lower] + C[lower,lower]
-    assert abs(eqn) < 1e-13
-    assert abs(T[upper,upper]) < 1e-14
+    assert abs(eqn) < EPS
+    assert abs(T[upper,upper]) < EPS
   
 
 
@@ -157,7 +175,7 @@ def test_givens(k=8, lower=4, upper=6):
     res[:,lower] = 0
     res[:,upper] = 0
 
-    assert np.all(np.abs(res) < 1e-13)
+    assert np.all(np.abs(res) < EPS)
 
     
 if __name__ == '__main__':
