@@ -3,7 +3,7 @@ from numpy import sin, cos
 from scipy.stats import ortho_group
 import pdb
 
-EPS = 1e-14
+EPS = 1e-13
 ortho = ortho_group.rvs
 cot = lambda x: cos(x)/ sin(x)
 
@@ -73,19 +73,22 @@ def get_theta(C, upper):
         if ckk * cpp < 0:
             success = True
             break
-    assert success
+    assert success, f'ckk = {ckk:2.3f}, cpp = {cpp:2.3f}, sum = {ckk+cpp:2.3f}' 
     
     ## Comment refers to common names in quadratic equation lingo
-    a = C[upper,upper] 
-    b = 2*C[upper,lower]
-    c = C[lower,lower] 
-    assert a * c < 0
+    c2 = C[upper,upper] 
+    c1 = 2*C[upper,lower]
+    c0 = C[lower,lower] 
+    assert c2 * c0 < 0
     
     ## Solving the quadratic to get cot(theta), which will soon
     ## be inverted to find theta.
-    cot1 = (-b + np.sqrt(b**2 - 4*a*c))/ 2 / a
-    cot2 = (-b - np.sqrt(b**2 - 4*a*c))/ 2 / a ## Second solution
-
+    disc = c1**2 - 4*c2*c0 # Discriminant
+    assert disc >= 0
+    cot1 = (-c1 + np.sqrt(disc))/ 2 / c2
+    cot2 = (-c1 - np.sqrt(disc))/ 2 / c2 ## Second solution
+    
+    
     theta1 = np.arctan(1/cot1)
     theta2 = np.arctan(1/cot2)
     if 0 <= theta1 <= np.pi:
@@ -105,11 +108,11 @@ def main(m, k):
 
     ## Check that AAt = M, as stated.
     AAt = np.dot(A,A.T)
-    assert np.all(np.abs(AAt - M) < EPS)
+    assert np.all(np.abs(AAt - M) < 1e-10)
     
     ## Check that A does have unit norm columns, as stated.
     norms = np.linalg.norm(A, axis=0)
-    assert np.all(np.abs(norms - 1) < EPS) 
+    assert np.all(np.abs(norms - 1) < 1e-10) 
 
     
 def get_A(M, m):
@@ -123,10 +126,9 @@ def get_A(M, m):
 
     
     C = np.dot(S.T, S) - np.identity(m)
-    assert abs(np.trace(C)) < EPS
-
     V = np.identity(m)
-    for upper in reversed(range(1,k+1)):
+    for upper in reversed(range(1,m)):
+        assert abs(np.trace(C)) < EPS
         theta, lower = get_theta(C, upper)
         R = givens(theta=theta, dims=m, lower=lower, upper=upper)
         C = conj(C, R)
@@ -182,8 +184,11 @@ if __name__ == '__main__':
     try:
         test_givens()
         test_theta()
-        main(k=4, m=5)
+        for m in range(30):
+            for k in range(2, m):
+                main(k=k, m=m)
 
+        
     except:
         import sys, traceback, pdb
         _, _, tb = sys.exc_info()
