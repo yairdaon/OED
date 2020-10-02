@@ -455,8 +455,7 @@ much'' clusterization we see. As stated
 \cite[pp. 681]{AlexanderianGloorGhattas14}, the results hold for more
 general covariance matrices. The conclusion is that in
 infinite-dimensions, a D-optimal design is well-defined as maximizing
-the expected KL divergence between posterior and prior (denoted $\tar$
-below and throughout the paper) and is summarized, using our notation,
+the expected KL divergence between posterior and prior and is summarized, using our notation,
 in the following theorem:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]
   Let $\pr = \normal(0,\prcov)$ be a centered Gaussian prior
@@ -475,7 +474,7 @@ in the following theorem:
     \end{split}
   \end{align}
 \end{theorem}
-
+A D-optimal design seeks to maximize $\tar(\obs)$.
 
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
 
@@ -789,7 +788,7 @@ precision in $\ban$ and $(\fwd\prcov\fwd^*)^{-1} + \sigma^{-2} \obs^*
 
 \subsection{Characterizing D-Optimal Designs}\label{subsec:characterization}
 In light of \eqref{eq:mod conditions}, let us denote eigenvalues of
-$\fwd \prcov \fwd^*$ by $\lambda_1 \geq \lambda_2 \geq \dots$ and its
+$\fwd \prcov \fwd^*$ by $\{\lambda_i\}_{i=1}^{\infty}$ and its
 eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. The following lemma (proved
 in the appendix \ref{lemma:sim diag}) is crucial for the rest of the
 analysis:
@@ -808,8 +807,8 @@ analysis:
 Thus, if we take $\func_j^{*} = \meas_j$ and $C := (\fwd \prcov
 \fwd^*)^{-1}$ in the above lemma, we conclude from the eigenproblem
 \eqref{eq:mod conditions} that $\obs^*\obs$ has the same eigenvectors
-as $\fwd \prcov \fwd^*$, namely $\{\ev_i\}_{i=1}^{\infty}$ (infinitely
-many of them with zero eigenvalue, since $\obs^*\obs$ is
+as $\fwd \prcov \fwd^*$, namely $\{\ev_i\}_{i=1}^{\infty}$ (all but
+finitely many of them with zero eigenvalue, since $\obs^*\obs$ is
 finite-rank). Denote the corresponding non-zero eigenvalues of
 $\obs^*\obs$ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i
 \geq k+1$. Using Sylvester's determinant theorem we get:
@@ -849,14 +848,89 @@ By definition of the objective \eqref{eq:objective} and using
     %
     %
     %
-    &=\frac12 \log \left ( \prod_{i=1}^{k} ( \lambda_i^{-1} + \sigma^{-2} \eta_i )\prod_{i=1}^{k} \lambda_i \right ). 
+    &=\frac12 \log \left ( \prod_{i=1}^{k} ( \lambda_i^{-1} + \sigma^{-2} \eta_i )\prod_{i=1}^{k} \lambda_i \right )\\
+    %
+    %
+    %
+    &=\frac12 \sum_{i=1}^{k} \log (\sigma^2\lambda_i^{-1} + \eta_i), \text{ up to an additive constant}. 
   \end{split}
 \end{align}
+
 Therefore, an optimal design maximizes
 
 \begin{equation}\label{eq:true target}
-  \sum_{i=1}^{k}\log (\lambda_i^{-1} + \sigma^{-2} \eta_i),
+  \sum_{i=1}^{k}\log (\sigma^2 \lambda_i^{-1} + \eta_i),
 \end{equation}
+
+
+
+
+\pgfplotstableread{
+  Label     prior  optimal  sub-optimal 
+  1         0.2    1.3           1.4
+  2         0.8    0.7           0.3
+  3         2.2    0             0.2
+  4         3.5    0             0.1
+}\optimalvsnot
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\optimalvsnot}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=precision --- prior and posterior,
+        xlabel=eigenvector $i$,
+      ]
+    
+      
+      \addplot [fill=green!80]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
+      \addplot [fill=blue!60]   table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
+            
+      \addlegendentry{$\sigma^2\lambda_i^{-1}$}
+      \addlegendentry{$\eta_i$ from an optimal design}
+      
+    \end{axis}
+  \end{tikzpicture}
+  \qquad
+  \begin{tikzpicture}[scale=0.85]
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\optimalvsnot}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=precision --- prior and posterior,
+        xlabel=eigenvector $i$,
+      ]   
+      
+      \addplot [fill=green!80]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
+      \addplot [fill=blue!60]   table [y=sub-optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
+
+      \addlegendentry{$\sigma^2\lambda_i^{-1}$}
+      \addlegendentry{$\eta_i$ from a sub-optimal desgin}
+      
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Characterizing an optimal design, compared to a
+    sub-optimal design. Both designs are allowed two measurements,
+    which means the blue area has accumulated height of $2$ in both
+    plots. An optimal design (left) increases precision (reduces
+    uncertainty) where it is lowest. A sub-optimal design (right) does
+    not. In this example, a measurement is taken partly in the direction of the
+    fourth eigenvector, where precision is highest.}
+  \label{fig:optimal vs not}
+\end{figure}
 
 
 
@@ -917,34 +991,74 @@ such that $\{\eta_i\}_{i=1}^k$ have any value we desire, subject only
 to the restriction that we do not change the trace of $\obs^*\obs$, so
 that $\sum_{i=1}^k \eta_i = m$. By concavity of $\log$, the fastest
 increase in the design criterion (equation \eqref{eq:true target}) is
-gained by increasing $\lambda_i^{-1} + \sigma^{-2}\eta_i$ where it is
-smallest. So, no weight should be given to (i.e. measurement taken of)
-the $k$th eigenvector before $\lambda_i^{-1} + \sigma^{-2}\eta_i \geq
-\lambda_k^{-1},\ \forall i \neq k$. Thus, we should choose
-$\{\eta_i\}_{i=1}^k$ as follows. We would increase $\lambda_1^{-1} +
-\sigma^{-2} \eta_1$ until it equals $\lambda_2^{-1}$. Then,
-$\lambda_i^{-1} + \sigma^{-2} \eta_i,i=1,2$ are increased until
-$\lambda_i^{-1} + \sigma^{-2} \eta_i = \lambda_3^{-1},i=1,2$ and so
-forth.
+gained by increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is
+smallest. So, no weight should be given to (i.e. measurement taken in
+direction of) the $k$th eigenvector before $\sigma^2\lambda_i^{-1} +
+\eta_i \geq \sigma^2\lambda_k^{-1},\ \forall i \neq k$. Thus, we
+should choose $\{\eta_i\}_{i=1}^k$ as follows. First, order the
+eigenvalues $\lambda_1 \geq \lambda_2 \geq \dots$. We should increase
+$\sigma^2 \lambda_1^{-1} + \eta_1$ until it equals
+$\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} + \eta_i,i=1,2$ are
+increased until $\sigma^2 \lambda_i^{-1} + \eta_i =
+\sigma^2\lambda_3^{-1},i=1,2$ and so forth.
 
-The argument above has the important consequence that the eigenvalues
-in \eqref{eq:eigenproblem} are all equal! This is illustrated in
-figure \ref{fig:optimal vs not}. This makes perfect sense. First, we
-know the Lagrange multipliers tell us how much we gain by relaxing the
-constraints and there is no reason for any measurement to give us more
-than any other (otherwise we would put more weight on the better
-measurement, as can be understood from the discussion in the following
-paragraph).%% We are also used to symmetric
-%% optimization problems having symmetric solutions \cite{Waterhouse83},
-%% so symmetric and identical Lagrange multipliers definitely make sense
-%% in this context.
+The argument above has the important consequence (illustrated in
+figure \ref{fig:optimal vs not}) that the eigenvalues in the
+eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
+perfect sense. First, we know the Lagrange multipliers tell us how
+much we gain by relaxing the constraints and there is no reason for
+any measurement to give us more than any other (otherwise we would put
+more weight on the better measurement, as can be understood from the
+discussion in the following paragraph). This result of the analysis
+above is summarized in the theorem below.
 
-\subsection{Sensor Clusterization}\label{subsec:clusterization}
-The way clusterization can occur is best understood from figure
-\ref{fig:clusterization}. We see that each measurement increases
-precision (reduces uncertainty) only for the eigenvectors of lowest
-precision. If the precision in these is lower than the precision for
-the next eigenvector, a repeated measurement is optimal.
+\begin{theorem}[Characterizing D-optimal designs]\label{thm:char}
+In a D-optimal design $\eta_i, i=1,\dots,k$ are chosen such that
+$\sigma^2\lambda_i^{-1} + \eta_i < \sigma^2\lambda_k^{-1}$ and
+$\sigma^2\lambda_i^{-1} + \eta_i$ are all equal for $1 \leq i \leq k$
+for some $k$. For $i \geq k+1$, however, $\eta_i = 0$.
+\end{theorem}
+
+%% We are also used to symmetric optimization problems having
+%% symmetric solutions \cite{Waterhouse83}, so symmetric and identical
+%% Lagrange multipliers definitely make sense in this context.
+
+
+
+
+
+
+
+
+
+
+
+\section{Sensor Clusterization --- Vanishing Model Error}\label{section:clusterization}
+\subsection{Overview}
+In this section we explain how sensor clusterization may arise. We
+first consider a sequential optimal design, where measurements are
+chosen sequentially. We then consider the case where all measurements
+are chosen at once. Finally, we hypothesize how this may apply to a
+real-life inverse problem.
+
+
+\subsection{Sequential Design}
+The way clusterization can occur is illustrated in figure
+\ref{fig:clusterization} and understood using theorem
+\ref{thm:char}. The first measurement $\meas_1$ is optimal, since
+$\eta_i, i=1,2$ are chosen to increase and equalize
+$\sigma^2\lambda_i^{-1} +\eta_i, i=1,2$, which are lowest. In this
+case, $\meas_1$ has no component in the direction of $\ev_i, i\geq
+3$. We see that each measurement increases precision (reduces
+uncertainty) only for the eigenvectors of lowest precision. Consider a
+sequential optimization scenario. We first seek a measurement to
+maximize our our utility, given the prior. From , the posterior
+covariance does not depend on data observed, so we know it after
+deciding on the first measurement.
+
+the best
+first measuremen, thIf the precision in these is lower than the
+precision for the next eigenvector, a repeated measurement is optimal.
 
 Results of section \ref{subsec:characterization} specifically, the
 discussion at the end of said section, along with figure
@@ -1514,7 +1628,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
 \end{proof}
 
 \begin{lemma}\label{lemma:free}
-  Let $M \in \R^{k \times k}$ symmetric positive definite with $\tr{M} =
+  Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M =
   m$, $m > k$. Then we can find $\func_j \in \R^k,j=1,\dots,m$ with
   $\|\func_j\|=1$ and $A = (\func_1,\dots,\func_m)$ such that $AA^t =
   M$.
@@ -1663,7 +1777,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   Let $V_i := span \{\func_k \}_{k\in S_i}$. Observe that $V_i$ is
   invariant under $A_i$, by definition, and under $C$, by \eqref{eq:on
     vi}. Using \eqref{eq:on vi} again, we conclude that on $V_i$, $A_i
-  = \xi_iI - C$. This immediately implied $A_i$ and $C$ have the
+  = \xi_iI - C$. This immediately implies $A_i$ and $C$ have the
   same eigenvectors on $V_i$. This holds for every $1 \leq i \leq
   \ell$ and we conclude that $C$ and $A$ have the same eigenvectors.
 \end{proof}
