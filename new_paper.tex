@@ -220,7 +220,8 @@ any of the scenarios mentioned in the introduction.
     when 6 sensors are used --- only 4 measurement locations are
     included. Observed data does not influence the pointwise
     variances, hence it is omitted.}
-\end{figure}\label{fig:clusterization illustration}
+  \label{fig:clusterization illustration}
+\end{figure}
 In section \ref{section:abstract OED} we present a more abstract and
 general formulation of the problem, but for the purpose of
 illustration, we present the problem via a toy model --- the 1D heat
@@ -317,7 +318,7 @@ can be found in \cite{Stuart10}. In this section we define notations that will b
 
 
 
-\subsection{Bayesian Linear Inverse Problems}\label{section:abstract OED}
+\subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
 Let $\hil$ be a Hilbert space and $\ban$ a Banach space, both
 infinite-dimensional. Consider $\fwd: \hil \to \ban$, a linear
 operator (the ``forward operator''). We are interested in forward
@@ -476,9 +477,7 @@ in the following theorem:
 \end{theorem}
 A D-optimal design seeks to maximize $\tar(\obs)$.
 
-\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
-
-\subsection{Overview}
+\subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq vs sim}
 From \eqref{eq:objective} we wish to characterize solution(s) of the
 following optimization problem for $\tar$. %%: (\ban^*)^m \to \R$:
 \begin{align}\label{eq:optimization}
@@ -487,18 +486,45 @@ following optimization problem for $\tar$. %%: (\ban^*)^m \to \R$:
   (I + \prcov^{1/2} \fwd^*\obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}),
 \end{align}
 where $\obs$ is constrained to some allowed set of measurements
-(e.g.\ pointwise evaluations on $[0,\pi]$).
+(e.g.\ pointwise evaluations on $[0,\pi]$). We call this simultaneous
+optimization.
+
+For computational reasons, one may prefer to find the best
+measurements in a sequential manner. Denote
+\begin{equation}\label{eq:def obs_k}
+  \obs_k := \sum_{i=1}^k \meas_i\meas^*_i.
+\end{equation}
+Sequential optimal design proceeds as follows. Find $\meas_1$ by
+maximizing $\tar(\obs_1)$. Then, keeping $\meas_1$ fixed --- find
+$\meas_2$ as the maximizer of $\tar(\obs_2)$. Then, find $\meas_3$ by
+keeping $\meas_1,\meas_2$ fixed and taking $\meas_3$ the maximizer of
+$\tar(\obs_3)$. Continue in this fashion until $\obs_m = \obs$ is
+found, where $m$ is the number of available measurements. It is
+important to notice that this scheme does not require actually
+observing data --- in \eqref{eq:objective} data is averaged out.
+
+This paper is mostly focused with the more general simultaneous
+optimization case. The sequential optimization case is dealt with in
+section \ref{subsec:seq clus}. It is important to note, however that
+all conclusions we make on the simultaneous case easily specialize to
+the sequential case by considering the posterior as the next
+sequential step's prior.
+
+
+\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+
+\subsection{Overview}
 %%, for the example in section \ref{subsec:example}).
-We seek a formulation of the optimal design using Lagrange
-multipliers. In section \ref{section:objective} we find the gradient
-of $\tar$ and record it in \eqref{eq:tar grad}. In section
-\ref{subsec:unit length} we relax the constraints on $\obs$ so that
-the optimization problem in \eqref{eq:optimization} is analytically
-tractable.  We find gradients for the new constraints and record them
-in \eqref{eq:grad constraints}. Finally, in section
-\ref{subsec:necessary} we use these to formulate the optimal design
-problem as a Lagrange multipliers problem in equation
-\eqref{eq:conditions}.
+We seek a formulation of the optimal design problem
+\eqref{eq:optimization} using Lagrange multipliers. In section
+\ref{section:objective} we find the gradient of $\tar$ and record it
+in \eqref{eq:tar grad}. In section \ref{subsec:unit length} we relax
+the constraints on $\obs$ so that the optimization problem in
+\eqref{eq:optimization} is analytically tractable.  We find gradients
+for the new constraints and record them in \eqref{eq:grad
+  constraints}. Finally, in section \ref{subsec:necessary} we use
+these to formulate the optimal design problem as a Lagrange
+multipliers problem in equation \eqref{eq:conditions}.
 
 
 \subsection{The Objective and its Gradient}\label{section:objective}
@@ -804,14 +830,20 @@ analysis:
   diagonalizable.
 \end{restatable*}
 
-Thus, if we take $\func_j^{*} = \meas_j$ and $C := (\fwd \prcov
-\fwd^*)^{-1}$ in the above lemma, we conclude from the eigenproblem
-\eqref{eq:mod conditions} that $\obs^*\obs$ has the same eigenvectors
-as $\fwd \prcov \fwd^*$, namely $\{\ev_i\}_{i=1}^{\infty}$ (all but
-finitely many of them with zero eigenvalue, since $\obs^*\obs$ is
-finite-rank). Denote the corresponding non-zero eigenvalues of
-$\obs^*\obs$ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i
-\geq k+1$. Using Sylvester's determinant theorem we get:
+This allow us to arrive at the following:
+\begin{corollary}[Eigenvectors of a D-optimal design]\label{cor:same ev}
+  $\obs^*\obs$ has the same eigenvectors as $\fwd \prcov \fwd^*$.
+  %namely $\{\ev_i\}_{i=1}^{\infty}$.
+\end{corollary}
+\begin{proof}
+In \eqref{eq:mod conditions}, take $\func_j^{*} = \meas_j$ and $C :=
+(\fwd \prcov \fwd^*)^{-1}$ and use lemma \ref{lemma:sim diag}.
+\end{proof}
+Note that all but finitely many of these eigenvectors have zero
+eigenvalue, since $\obs^*\obs$ is finite-rank. Denote the
+corresponding non-zero eigenvalues of $\obs^*\obs$ by
+$\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$. Using
+Sylvester's determinant theorem we get:
 
 \begin{align}\label{eq:pre manipulations}
   \begin{split}
@@ -862,15 +894,58 @@ Therefore, an optimal design maximizes
   \sum_{i=1}^{k}\log (\sigma^2 \lambda_i^{-1} + \eta_i),
 \end{equation}
 
+with the norm constraints on $\meas_j,j=1,\dots,m$. We show in the
+appendix (Lemma \ref{lemma:free}) we can find $\meas_1,\dots,\meas_m$
+such that $\{\eta_i\}_{i=1}^k$ have any value we desire, subject only
+to the restriction that we do not change the trace of $\obs^*\obs$, so
+that $\sum_{i=1}^k \eta_i = m$. By concavity of $\log$, the fastest
+increase in the design criterion (equation \eqref{eq:true target}) is
+gained by increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is
+smallest. So, no weight should be given to (i.e. measurement taken in
+direction of) the $k$th eigenvector before $\sigma^2\lambda_i^{-1} +
+\eta_i \geq \sigma^2\lambda_k^{-1},\ \forall i \neq k$. Thus, we
+should choose $\{\eta_i\}_{i=1}^k$ as follows. First, order the
+eigenvalues $\lambda_1 \geq \lambda_2 \geq \dots$. We should increase
+$\sigma^2 \lambda_1^{-1} + \eta_1$ until it equals
+$\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} + \eta_i,i=1,2$ are
+increased until $\sigma^2 \lambda_i^{-1} + \eta_i =
+\sigma^2\lambda_3^{-1},i=1,2$ and so forth.
 
+\begin{figure}%{r}{0.25\textwidth} 
+    %\centering
+    \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
+    \caption{Three graduated lab cylinders, corresponding to three
+      eigenvectors. Prior not shown.}
+    \label{fig:cylinder}
+\end{figure}
+
+The argument above has the important consequence (illustrated in
+figure \ref{fig:optimal vs not}) that the eigenvalues in the
+eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
+perfect sense. First, we know the Lagrange multipliers tell us how
+much we gain by relaxing the constraints and there is no reason for
+any measurement to give us more than any other (otherwise we would put
+more weight on the better measurement, as can be understood from the
+discussion in the following paragraph). 
+
+One can understand optimal designs as follows: Imagine each
+eigenvector is a lab cylinder (figure \ref{fig:cylinder}). Each
+cylinder $i$ is filled, a-priori, with green liquid
+$\sigma^2\lambda_i^{-1}$ volume units (this is the prior precision,
+weighted by obsevation noise). An optimal design with (e.g.) four
+measurements adds blue liquid of four volume units. It does so by
+adding each drop to whatever cylinder has the lowest level of liquid
+in it (lowest precision). The result of such a procedure is
+illustrated in figure \ref{fig:optimal vs not}. The analysis
+conducted above is summarized in theorem \ref{thm:char} below.
 
 
 \pgfplotstableread{
   Label     prior  optimal  sub-optimal 
-  1         0.2    1.3           1.4
-  2         0.8    0.7           0.3
-  3         2.2    0             0.2
-  4         3.5    0             0.1
+  1         0.2    1.8           1.7
+  2         0.8    1.2           0.8
+  3         2.2    0             0.5
+  4         3.5    0             0.0
 }\optimalvsnot
 
 \begin{figure}
@@ -923,8 +998,8 @@ Therefore, an optimal design maximizes
     \end{axis}
   \end{tikzpicture}
   \caption{Characterizing an optimal design, compared to a
-    sub-optimal design. Both designs are allowed two measurements,
-    which means the blue area has accumulated height of $2$ in both
+    sub-optimal design. Both designs are allowed three measurements,
+    which means the blue area has accumulated height of $3$ in both
     plots. An optimal design (left) increases precision (reduces
     uncertainty) where it is lowest. A sub-optimal design (right) does
     not. In this example, a measurement is taken partly in the direction of the
@@ -940,77 +1015,18 @@ Therefore, an optimal design maximizes
   2         0.8    0.2    0.5     0.5    0.4    0.33333333  0.3333333  0.001
   3         2.2    0      0       0      0.2    0.33333333  0.3333333  0.001
   4         3.5    0      0       0      0      0           0          0.001
-}\testdata
+}\clusterization
 
-\begin{figure}
-  \begin{tikzpicture}
-    \begin{axis}[
-        ybar stacked,
-        ymin=0,
-        ymax=4,
-        xtick=data,
-        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
-        reverse legend=false, % set to false to get correct display, but I'd like to have this true
-        xticklabels from table={\testdata}{Label},
-        xticklabel style={text width=2cm,align=center},
-        legend plot pos=right,
-        ylabel=precision --- prior and posterior,
-        xlabel=eigenvector,
-      ]
-    
-      
-      \addplot [fill=green!80]  table [y=prior, meta=Label, x expr=\coordindex] {\testdata};
-      \addplot [fill=blue!60]   table [y=$o_1$, meta=Label, x expr=\coordindex] {\testdata};
-      \addplot [fill=red!60]    table [y=$o_2$, meta=Label, x expr=\coordindex] {\testdata};
-      \addplot [fill=black!60]  table [y=$o_3$, meta=Label, x expr=\coordindex] {\testdata};
-      \addplot [fill=orange!60] table [y=$o_4$, meta=Label, x expr=\coordindex] {\testdata};
-      \addplot [fill=cyan!60]   table [y=$o_5$, meta=Label, x expr=\coordindex] {\testdata};
-      \addplot [fill=purple!60] table [y=$o_6$, meta=Label, x expr=\coordindex] {\testdata};
 
-      
-      \addlegendentry{prior}
-      \addlegendentry{$o_1$}
-      \addlegendentry{$o_2$}
-      \addlegendentry{$o_3$}
-      \addlegendentry{$o_4$}
-      \addlegendentry{$o_5$}
-      \addlegendentry{$o_6$}   
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Posterior precision per eigenvector, after taking a
-    measurement $\meas_i$. Each $\meas_i$ increases precision
-    uniformly across the lowest precision eigenvectors. We see that
-    $\meas_2$ and $\meas_3$ are repeated measurements, as well as
-    $\meas_5$ and $\meas_6$.}
-  \label{fig:clusterization}
-\end{figure}
+\pgfplotstableread{
+  Label    prior  $o_1$  $o_2$   $o_3$   $o_4$   $o_5$         $o_6$    topper
+  1         0.2    0.8    0.7     0.3    0.4    0.2         0.4666666  0.001
+  2         0.8    0.2    0.3     0.7    0.4    0.46666666  0.2        0.001
+  3         2.2    0      0       0      0.2    0.33333333  0.3333333  0.001
+  4         3.5    0      0       0      0      0           0          0.001
+}\noclusterization
 
-with the norm constraints on $\meas_j,j=1,\dots,m$. We show in the
-appendix (Lemma \ref{lemma:free}) we can find $\meas_1,\dots,\meas_m$
-such that $\{\eta_i\}_{i=1}^k$ have any value we desire, subject only
-to the restriction that we do not change the trace of $\obs^*\obs$, so
-that $\sum_{i=1}^k \eta_i = m$. By concavity of $\log$, the fastest
-increase in the design criterion (equation \eqref{eq:true target}) is
-gained by increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is
-smallest. So, no weight should be given to (i.e. measurement taken in
-direction of) the $k$th eigenvector before $\sigma^2\lambda_i^{-1} +
-\eta_i \geq \sigma^2\lambda_k^{-1},\ \forall i \neq k$. Thus, we
-should choose $\{\eta_i\}_{i=1}^k$ as follows. First, order the
-eigenvalues $\lambda_1 \geq \lambda_2 \geq \dots$. We should increase
-$\sigma^2 \lambda_1^{-1} + \eta_1$ until it equals
-$\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} + \eta_i,i=1,2$ are
-increased until $\sigma^2 \lambda_i^{-1} + \eta_i =
-\sigma^2\lambda_3^{-1},i=1,2$ and so forth.
 
-The argument above has the important consequence (illustrated in
-figure \ref{fig:optimal vs not}) that the eigenvalues in the
-eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
-perfect sense. First, we know the Lagrange multipliers tell us how
-much we gain by relaxing the constraints and there is no reason for
-any measurement to give us more than any other (otherwise we would put
-more weight on the better measurement, as can be understood from the
-discussion in the following paragraph). This result of the analysis
-above is summarized in the theorem below.
 
 \begin{theorem}[Characterizing D-optimal designs]\label{thm:char}
 In a D-optimal design $\eta_i, i=1,\dots,k$ are chosen such that
@@ -1041,29 +1057,151 @@ chosen sequentially. We then consider the case where all measurements
 are chosen at once. Finally, we hypothesize how this may apply to a
 real-life inverse problem.
 
+%% illustrated in figure \ref{fig:clusterization} and
 
 \subsection{Sequential Design}
-The way clusterization can occur is illustrated in figure
-\ref{fig:clusterization} and understood using theorem
-\ref{thm:char}. The first measurement $\meas_1$ is optimal, since
-$\eta_i, i=1,2$ are chosen to increase and equalize
-$\sigma^2\lambda_i^{-1} +\eta_i, i=1,2$, which are lowest. In this
-case, $\meas_1$ has no component in the direction of $\ev_i, i\geq
-3$. We see that each measurement increases precision (reduces
-uncertainty) only for the eigenvectors of lowest precision. Consider a
-sequential optimization scenario. We first seek a measurement to
-maximize our our utility, given the prior. From , the posterior
-covariance does not depend on data observed, so we know it after
-deciding on the first measurement.
+Recall the sequential optimal design scheme from section
+\ref{subsec:seq vs sim} and the definition of $\obs_k$ from
+\eqref{eq:def obs_k}. The way clusterization can occur is understood
+using results of the previous section, specialized to one measurement
+each time. By corollary \ref{cor:ame ev}, the first measurement
+$\meas_1$ has to be (parallel to) an eigenvector of
+$\fwd\prcov\fwd^*$. By theorem \ref{thm:char}, it will be taken in the direction of the
+first eigenvector --- $\meas_1 \parallel \ev_1$. As hinted in
+section \ref{subsec:seq vs sim}, the posterior becomes the prior for
+the next step. Similar reasoning leads to:
+\begin{align*}
+  \begin{split}
+    \meas_2 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_2 \\
+    \meas_2 \parallel \ev_2  &\text{ o.w. }
+  \end{split}
+\end{align*}
+In the first case, we get clusterization. In the second, we consider $\meas_3$:
+\begin{align*}
+  \begin{split}
+    \meas_3 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_3 \text{ (note $\lambda^{-1}_1 < \lambda^{-1}_2$)}  \\
+    %\meas_3 \parallel  \ev_2  &\text{ if } \\
+    \meas_3 \parallel  \ev_3  &\text{ o.w. }
+  \end{split}
+\end{align*}
+Again, the first case results in clusterization. The sequential design
+proceeds in this fashion, where every $\meas_i$ is taken in the
+direction of the eigenvector of smallest eigenvalue of the previous
+posterior precision operator. Taking enough measurements we will
+surely arrive at clusterization, since the prior precision increases
+quickly --- in section \ref{subsec:abstract OED} we assumed  $\fwd$
+is strongly smoothing, which typpically means eigenvalues of $(\fwd
+\prcov\fwd^*)^{-1}$ grow exponentially.
 
-the best
-first measuremen, thIf the precision in these is lower than the
-precision for the next eigenvector, a repeated measurement is optimal.
+\subsection{Simultaneous Design}
+In a simultaneous design scenario, the result is not as clear cut as
+in the sequential design case. We still rely on previous results ---
+namely corollary \ref{cor:same ev} and theorem \ref{thm:char}. An
+illustration of two D-optimal designs scenarios for the same problem
+are presented in figure \ref{fig:clusterization} --- the first
+exhibits clusterization and second does not. As was discussed earlier
+and illustrated in figure \ref{fig:optimal vs not}, an optimal design
+makes the precision ``flat'' where it is lowest. Clusterization may
+arise when two or more eigenvectors have equal precision. This
+happens, for example for eigenvectors $1$ and $2$ when considering
+measurements $\meas_i,i=1,2,3$. Taking three measurements, it is
+possible that $\meas_1$ is such that it equalizes the precision of
+eigenvectors $1$ and $2$. In this case, taking mesurements $\meas_2 =
+\meas_3 = \frac{1}{2}(\ev_1 + \ev_2)$ leads to an optimal design that
+exhibits clusterization. Similarly, taking $\meas_5 = \meas_6 =
+\frac{1}{3}(\ev_1 + \ev_2 + \ev_3)$ also gives rise to an optimal
+design that exhibits clusterization. It is important to note that
+there are (infinitely) many optimal designs that actually do not
+exhibit clusterization --- e.g. the second design presented in figure
+\ref{fig:clusterization}. In the following section we postulate what
+causes such designs to be observed in realistic experimental design
+scenarios.
 
-Results of section \ref{subsec:characterization} specifically, the
-discussion at the end of said section, along with figure
-\ref{figure:clusterization} and equation \eqref{eq:true target} show
-how clusterization arises when an optimal design is saught.
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\clusterization}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=precision --- prior and posterior,
+        xlabel=eigenvector,
+      ]
+    
+      
+      \addplot [fill=green!80]  table [y=prior, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=blue!60]   table [y=$o_1$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=red!60]    table [y=$o_2$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=black!60]  table [y=$o_3$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=orange!60] table [y=$o_4$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=cyan!60]   table [y=$o_5$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=purple!60] table [y=$o_6$, meta=Label, x expr=\coordindex] {\clusterization};
+
+      
+      \addlegendentry{prior}
+      \addlegendentry{$o_1$}
+      \addlegendentry{$o_2$}
+      \addlegendentry{$o_3$}
+      \addlegendentry{$o_4$}
+      \addlegendentry{$o_5$}
+      \addlegendentry{$o_6$}   
+    \end{axis}
+  \end{tikzpicture}
+  \qquad
+  \begin{tikzpicture}[scale=0.85]
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\noclusterization}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=precision --- prior and posterior,
+        xlabel=eigenvector,
+      ]
+    
+      
+      \addplot [fill=green!80]  table [y=prior, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=blue!60]   table [y=$o_1$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=red!60]    table [y=$o_2$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=black!60]  table [y=$o_3$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=orange!60] table [y=$o_4$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=cyan!60]   table [y=$o_5$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=purple!60] table [y=$o_6$, meta=Label, x expr=\coordindex] {\noclusterization};
+
+      
+      \addlegendentry{prior}
+      \addlegendentry{$o_1$}
+      \addlegendentry{$o_2$}
+      \addlegendentry{$o_3$}
+      \addlegendentry{$o_4$}
+      \addlegendentry{$o_5$}
+      \addlegendentry{$o_6$}   
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Clusterization and non-clusterization in simultaneous
+    design. Posterior precision per eigenvector, after taking a
+    measurement $\meas_i$. Each $\meas_i$ increases precision
+    uniformly across the lowest precision eigenvectors. We see that
+    $\meas_2$ and $\meas_3$ are repeated measurements, as well as
+    $\meas_5$ and $\meas_6$.}
+  \label{fig:clusterization}
+\end{figure}
+
+
+\subsection{Why do Realistic Designs Exhibit Clusterization?}
+It is unclear from the previous analysis what makes realistic designs
+exhibit clusterization, such as the one observed in figure
+\ref{fig:clusterization illustration}. We can only hypothesize.
 
 
 
@@ -1100,26 +1238,29 @@ appendix. Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
     \right ).
   \end{equation*}
 \end{restatable*}
-From Corollary \ref{cor:same meas} we can deduce that
+Recall from \eqref{eq:Sigma} that $\Sigma(\obs) = \obs \modcov \obs^*
++ \sigma^2I$. From Corollary \ref{cor:same meas} we can deduce that
 
 $$
 \lim_{\sigma^2 \to 0} \tar(\obs) -\tar(\obsm) = 0
 $$
-Hence no increase in the design criterion is
-achieved. This is clearly sub-optimal and $\obsm$ cannot be an optimal
-design. We may conclude that for small measurement error levels, the
+
+Hence no increase in the design criterion is achieved by taking a
+repeated measurement. This is clearly sub-optimal and $\obsm$ cannot
+be an optimal design. Thus, for small measurement error levels, the
 clusterization effect will be mitigated by the presence of a non-zero
 model error. Since the design criterion is not defined for $\sigma^2 =
 0$ and identical measurements, we cannot make a statement regarding
 $\sigma^2 = 0$, except in the limiting sense described above.
 
-\section{Conclusion}\label{section:conclusion}
-Our relaxed model gives us insight to D-optimal designs. We see that
-in our setting, uncertainty is not reduced in any direction
-(eigenvector) before it is the largest uncertainty present. We show
-how and why repeated measurements can give rise to a D-optimal
-design. There is more work to be done in understanding exactly what
-causes such designs to be strictly better than others.
+
+%% \section{Conclusion and Future Research Directions}\label{section:conclusion}
+%% Our relaxed model gives us insight to D-optimal designs. We see that
+%% in our setting, uncertainty is not reduced in any direction
+%% (eigenvector) before it is the largest uncertainty present. We show
+%% how and why repeated measurements can give rise to a D-optimal
+%% design. There is more work to be done in understanding exactly what
+%% causes such designs to be strictly better than others.
 
 
 \section{Acknowledgements}
@@ -1629,14 +1770,14 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
 
 \begin{lemma}\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M =
-  m$, $m > k$. Then we can find $\func_j \in \R^k,j=1,\dots,m$ with
+  m$, $m \geq k$. Then we can find $\func_j \in \R^k,j=1,\dots,m$ with
   $\|\func_j\|=1$ and $A = (\func_1,\dots,\func_m)$ such that $AA^t =
   M$.
 \end{lemma}
 \begin{proof}
   Let us diagonalize $M$, so that $M = U D U^t$ with $D =
-  \diag(d_1,\dots,d_k)$ and $U \in \R^{k \times k }$ orthogonal. Let $S
-  \in \R^{k \times m}$ with $S_{ii} = \sqrt{d_{i}}$ and zeros
+  \diag(d_1,\dots,d_k)$ and $U \in \R^{k \times k }$ orthogonal. Let
+  $S \in \R^{k \times m}$ with $S_{ii} = \sqrt{d_{i}}$ and zeros
   otherwise. Define $A:= U S V^t$, where $V \in \R^{m \times m}$ is
   orthogonal and will be further restricted later. Then $AA^t = U
   SV^tVS^t U^t = UDU^t$, so $AA^t$ has the required eigenvalues and
@@ -1646,46 +1787,45 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   \begin{equation}\label{eq:V constraints}
    1 = [A^tA]_{jj} = [V S^tS V^t]_{jj},
   \end{equation}
-  and we can expect to do this since we assumed $\tr{D} = m$.
+  and we can expect to do this since we assumed $\ttr D = m$.
 
-  Define $C = S^tS - I \in \R^{m \times m}$. Note that $\tr{C} = 0$ and
+  Define $C = S^tS - I \in \R^{m \times m}$. Note that $\ttr C = 0$ and
   $C$ is diagonal with non-zero entries $d_i-1,i=1,\dots,k$. It suffices
   to find $V$ orthogonal such that $V C V^t$ has zero diagonal. We
   construct such $V$ by sequentially inserting zeros in the diagonal
   and not destroying zeros we already introduced, starting from the
-  last diagonal entry and moving to the first. If $c_{kk} \neq 0$ ,
-  let $p < k$ such that $c_{pp}c_{kk} < 0$ (such $p$ exists because
+  last diagonal entry and moving to the first. If $c_{mm} \neq 0$ ,
+  let $p < m$ such that $c_{pp}c_{mm} < 0$ (such $p$ exists because
   the trace is zero) and let $\theta \in (0,\pi)$. Define a Givens
-  rotation $R^{(k)} \in \R^{m \times m}$ by
+  rotation $R^{(m)} \in \R^{m \times m}$ by
   \begin{equation*}
-    r^{(k)}_{ab} :=
+    r^{(m)}_{ab} :=
     \begin{cases}
-      1 & a = b \neq p \text{ or } a = b \neq k \\
+      1 & a = b \neq p \text{ or } a = b \neq m \\
       \cos \theta & a = b = p  \\
-     -\sin \theta & a = p, b = k\\
-      \cos \theta & a = b = k \\
-      \sin \theta & a = k, b = p \\ 
+     -\sin \theta & a = p, b = m\\
+      \cos \theta & a = b = m \\
+      \sin \theta & a = m, b = p \\ 
       0 & o.w
     \end{cases}
   \end{equation*}
-  Note that conjugating a matrix by $R^{(k)}$ changes only its $k$ and
-  $p$ rows and columns. Specifically, it leaves rows and columns
-  $k+1,\dots,m$ unchanged. We want to choose $\theta$ such that
+  Note that conjugating a matrix by $R^{(m)}$ changes only its $m$ and
+  $p$ rows and columns. We want to choose $\theta$ such that
   \begin{equation}\label{eq:mm}
-    0 = [R^{(k)} C (R^{(k)})^t]_{kk} = \cos^2 \theta c_{kk} + 2\cos \theta \sin
-    \theta c_{kp} + \sin^2\theta c_{pp},
+    0 = [R^{(m)} C (R^{(m)})^t]_{mm} = \cos^2 \theta c_{mm} + 2\cos \theta \sin
+    \theta c_{mp} + \sin^2\theta c_{pp},
   \end{equation}
   and it suffices to choose $\theta$ such that
   \begin{equation*}
-    c_{kk} \cot^2 \theta + 2 c_{kp} \cot \theta + c_{pp} = 0.
+    c_{mm} \cot^2 \theta + 2 c_{mp} \cot \theta + c_{pp} = 0.
   \end{equation*}
   This quadratic in $\cot\theta$ has a real solution, since
-  $c_{pp}c_{kk} < 0$ by assumption and we can find $\theta \in
+  $c_{pp}c_{mm} < 0$ by assumption and we can find $\theta \in
   (0,\pi)$ such that \eqref{eq:mm} is satisfied. We continue to find
-  $R^{(k-1)}$ that leaves rows and columns $k,\dots,m$ unchanged and
-  continue introducing zeros to the diagonal. The assumption $\tr{D} =
-  m \Rightarrow \tr{C} = 0$ guarantees we can do that. Taking $V:=
-  R^{(1)} R^{(2)} \dots R^{(k-1)}R^{(k)}$ completes the proof.
+  $R^{(m-1)}$ that leaves row and column $m$ unchanged and
+  continue introducing zeros to the diagonal. The assumption $\ttr D =
+  m \Rightarrow \ttr C = 0$ guarantees we can do that. Taking $V:=
+  R^{(1)} R^{(2)} \dots R^{(m-1)}R^{(m)}$ completes the proof.
 \end{proof}
 
 \begin{lemma}[Auxilliary Calculations]\label{lemma:aux calc}

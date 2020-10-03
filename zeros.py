@@ -1,9 +1,22 @@
+## This here code implements (and tests) the algorithm outlined in
+## Lemma B.5 in the paper.
+##
+## Given M symmetric positive definite in R^{k X k} such that
+##
+## tr M = m > k, (m an integer),
+## 
+## it finds A such that:
+##
+## A's columns have unit norm, and
+## AA^t = M. 
+
 import numpy as np
+from pandas import isnull
 from numpy import sin, cos
 from scipy.stats import ortho_group
 import pdb
 
-EPS = 1e-13
+EPS = 1e-10
 ortho = ortho_group.rvs
 cot = lambda x: cos(x)/ sin(x)
 
@@ -14,7 +27,7 @@ def conj(D, U):
     return np.einsum('ij, jk, lk -> il', U, D, U)
 
 
-def givens(theta, dims, lower, upper):
+def givens(theta, dims, lower, upper):    
     assert theta >= 0 and theta <= np.pi
     assert lower < upper
     assert upper <= dims
@@ -36,19 +49,25 @@ def givens(theta, dims, lower, upper):
 
 
 def MDUS(m, k):
-    assert m > k
+    assert m >= k
     
-    D = np.abs(np.random.uniform(size=k))
+    # D = np.abs(np.random.uniform(size=k))
+    D = np.random.lognormal(mean=5, sigma=1, size=k)
+    # D = np.array([np.random.lognormal(mean=i, sigma=1) for i in range(k)]) 
     D = D * m / np.sum(D)
     assert abs(np.sum(D) - m) < EPS 
+    assert np.all(D > 0)
     D = np.diag(D)
     assert D.shape == (k,k)
+    assert np.all(~isnull(D))
+    
 
     U = ortho(k)
     assert np.all(np.abs(np.dot(U,U.T) - np.identity(k)) < EPS)
 
     M = conj(D, U)
-
+    M = (M + M.T)/2 ## Ensure it is symmetric
+    
     S = np.zeros((k,m))
     for i in range(k):
         S[i,i] = np.sqrt(D[i,i])
@@ -62,8 +81,8 @@ def get_theta(C, upper):
     assert upper < C.shape[0]
     assert C.shape[0] == C.shape[1]
     if upper == 0:
-        raise ValueError(f'Why upper == 0 and C.shape == {C.shape}?')
-    if C[upper,upper] == 0:
+        raise ValueError(f'Why upper == 0? C.shape == {C.shape}.')
+    if abs(C[upper,upper]) < EPS:
         return None, None
 
     success = False
@@ -101,7 +120,7 @@ def get_theta(C, upper):
 
     
 def main(m, k):
-    assert m > k
+    assert m >= k
     M, _, _, _ = MDUS(m, k)
 
     A = get_A(M, m)
@@ -119,7 +138,9 @@ def get_A(M, m):
     k = M.shape[0]
     assert abs(m - np.trace(M)) < EPS
     
-    D, U = np.linalg.eig(M)
+    D, U = np.linalg.eigh(M)
+    assert np.all(D > 0)
+    
     S = np.zeros((k,m))
     for i in range(k):
         S[i,i] = np.sqrt(D[i])
@@ -130,6 +151,8 @@ def get_A(M, m):
     for upper in reversed(range(1,m)):
         assert abs(np.trace(C)) < EPS
         theta, lower = get_theta(C, upper)
+        if theta is None and lower is None:
+            continue
         R = givens(theta=theta, dims=m, lower=lower, upper=upper)
         C = conj(C, R)
         V = np.dot(R, V)
@@ -184,11 +207,11 @@ if __name__ == '__main__':
     try:
         test_givens()
         test_theta()
-        for m in range(30):
-            for k in range(2, m):
+        for m in range(0,30,3):
+            for k in range(2, m+1, 2):
+                print(m, k) 
                 main(k=k, m=m)
-
-        
+                       
     except:
         import sys, traceback, pdb
         _, _, tb = sys.exc_info()

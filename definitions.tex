@@ -8,6 +8,7 @@
 % Graphics:
 %% \usepackage[final]{graphicx}
 \usepackage{graphicx} % use this line instead of the above to suppress graphics in draft copies
+\usepackage{wrapfig}
 %\usepackage{graphpap} % \defines the \graphpaper command
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 \usepackage[english]{babel} % English language/hyphenation
@@ -150,7 +151,7 @@
 \newcommand{\ev}{\mathbf{e}} % eigenvector 
 \newcommand{\func}{\mathbf{a}}
 \newcommand{\tr}[1]{\textup{tr}\left \{#1 \right \} }
-\newcommand{\ttr}[1]{\textup{tr}\{#1\} }
+\newcommand{\ttr}[1]{\textup{tr}\ #1}
 \newcommand{\rank}{\textup{rank}\ }
 \newcommand{\des}{\eta} % vector of design parameters
 \newcommand{\sigsqr}{\sigma^2}
