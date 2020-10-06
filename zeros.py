@@ -124,14 +124,16 @@ def main(m, k):
     M, _, _, _ = MDUS(m, k)
 
     A = get_A(M, m)
-
+    assert A.shape == (k,m)
+    
     ## Check that AAt = M, as stated.
     AAt = np.dot(A,A.T)
-    assert np.all(np.abs(AAt - M) < 1e-10)
+    assert np.all(np.abs(AAt - M) < EPS)
     
     ## Check that A does have unit norm columns, as stated.
     norms = np.linalg.norm(A, axis=0)
-    assert np.all(np.abs(norms - 1) < 1e-10) 
+    assert len(norms) == m
+    assert np.all(np.abs(norms - 1) < EPS) 
 
     
 def get_A(M, m):
