@@ -367,10 +367,7 @@ forward operator $\fwd$ we write the explicit expression
 \subsubsection{Dynamics and Observation Operators}\label{subsec:dynamics}
 One can \textit{think} of $(\obs \fwd \param)_j$ as pointwise
 evaluations of a continuous function\footnote{Of course, this is
-  impossible if, e.g., $\hilo = L^2(\Omega)$ for some $\Omega$. Still,
-  this approach is in line with previous analyses
-  \cite{Karina,AlexanderianGloorGhattas14} that consider sensor
-  placement but formulate the inverse problem on Hilbert spaces.}. Such
+  impossible if, e.g., $\hilo = L^2(\Omega)$ for some $\Omega$.}. Such
 measurements can be represented using the linear functionals
 $\delta_{\x_j} \in C(\Omega)^*$. In a different setting, we may be
 able to measure other quantities, e.g.\ some Fourier coefficients as
@@ -1044,55 +1041,49 @@ section is summarized in theorem \ref{thm:char} below.
 
 
 
-\begin{restatable}[Characterizing D-optimal designs]{theorem}{main}\label{thm:char}
-Denote $\{\lambda_i, \ev_i\}_{i=1}^\infty$ the eigenvalues and
-eigenvectors of $\fwd\prcov\fwd^*$, in decreasing eigenvalue order.
-Denote $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, chosen
-to maximize $\tar(\obs)$. Denote $m$ number of measurements taken and
-$\sigma^2$ observation noise variance. Then:
-\begin{enumerate}
-\item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
-\item There exists $k \leq m$ such that $\eta_i = 0$ for $i\geq k+1$.
-\item $\sigma^2\lambda_i^{-1} + \eta_i \leq \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
-\item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
-\end{enumerate}
+\begin{restatable}[Characterizing D-optimal designs]{theorem}{char}\label{thm:char}
+  Let:
+  \begin{enumerate}
+  \item $\fwd,\prcov,\obs$ the forward, prior covariance and observation operators, respectively.
+  \item $\{\lambda_i\}_{i=1}^\infty$ the eigenvalues of
+    $\fwd\prcov\fwd^*$ in decreasing order.
+    \item $\{\ev_i\}_{i=1}^\infty$ the corresponding eigenvectors.
+  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, where
+    $\obs$ maximizes $\tar(\obs)$.
+  \item $m$ the number of measurements taken.
+  \item $\sigma^2$ observation noise variance.
+  \end{enumerate}
+  Then:
+  \begin{enumerate}
+  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
+  \item There exists $0 < k \leq m$ such that $\eta_i = 0$ for $i\geq k+1$.
+  \item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
+  \item If $k < m$, then $\sigma^2\lambda_i^{-1} + \eta_i \leq
+    \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
+  \end{enumerate}
 \end{restatable}
-
-%% We are also used to symmetric optimization problems having
-%% symmetric solutions \cite{Waterhouse83}, so symmetric and identical
-%% Lagrange multipliers definitely make sense in this context.
-
-
-
-
-
-
-
 
 
 
 
 \section{Sensor Clusterization --- Vanishing Model Error}\label{section:clusterization}
 \subsection{Overview}
-In this section we explain how sensor clusterization may arise. We
-first consider a sequential optimal design, where measurements are
-chosen sequentially. We then consider the case where all measurements
-are chosen at once. Finally, we hypothesize how this may apply to a
-real-life inverse problem.
+In this section we use theorem \ref{thm:char} to explain how sensor
+clusterization may arise in various scenarios. We first consider a
+sequential optimal design. We then consider the case where all
+measurements are chosen at once. Finally, we hypothesize how this may
+apply to a real-life inverse problem.
 
-%% illustrated in figure \ref{fig:clusterization} and
 
 \subsection{Sequential Design}
 Recall the sequential optimal design scheme from section
 \ref{subsec:seq vs sim} and the definition of $\obs_k$ from
-\eqref{eq:def obs_k}. The way clusterization can occur is understood
-using results of the previous section, specialized to one measurement
-each time. By corollary \ref{cor:ame ev}, the first measurement
-$\meas_1$ has to be (parallel to) an eigenvector of
-$\fwd\prcov\fwd^*$. By theorem \ref{thm:char}, it will be taken in the direction of the
-first eigenvector --- $\meas_1 \parallel \ev_1$. As hinted in
-section \ref{subsec:seq vs sim}, the posterior becomes the prior for
-the next step. Similar reasoning leads to:
+\eqref{eq:def obs_k}. The way clusterization can occur in this
+scenario is understood using thorem \ref{thm:char}, specialized to one
+measurement each time. In this case $m=1$, so $k=1$, so $\meas_1
+\parallel \ev_1$. As hinted in section \ref{subsec:seq vs sim}, the
+posterior becomes the prior for the next step. Similar reasoning leads
+to:
 \begin{align*}
   \begin{split}
     \meas_2 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_2 \\
@@ -1102,7 +1093,7 @@ the next step. Similar reasoning leads to:
 In the first case, we get clusterization. In the second, we consider $\meas_3$:
 \begin{align*}
   \begin{split}
-    \meas_3 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_3 \text{ (note $\lambda^{-1}_1 < \lambda^{-1}_2$)}  \\
+    %\meas_3 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_3 \text{ (note $\lambda^{-1}_1 < \lambda^{-1}_2$)}  \\
     %\meas_3 \parallel  \ev_2  &\text{ if } \\
     \meas_3 \parallel  \ev_3  &\text{ o.w. }
   \end{split}
