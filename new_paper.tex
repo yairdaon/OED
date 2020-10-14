@@ -55,34 +55,34 @@ measurements to take, in order to increase accuracy, reduce costs, or
 both.
 
 Designing experiments is usually done by optimizing some \emph{design
-  criterion} and this is true both for frequentists
+  criterion}. This is true both for frequentists
 \cite{Silvey13,Ucinski05} as well as for Bayesians
-\cite{ChalonerVerdinelli95}, see \cite{ChalonerVerdinelli95} for an
+\cite{ChalonerVerdinelli95}. See \cite{ChalonerVerdinelli95} for an
 investigation of the analogy between the two approaches. Although
-there is a plethora of design criteria, in the current work we will
-focus on just one of these, commonly referred to as \emph{D-optimal
-  design}. It has a simple and appealing motivation in the Bayesian
-context as explained in \cite{ChalonerVerdinelli95}: for a linear
-model, a D-optimal design seeks to maximize the expected information
-gain (KL divergence \cite{KullbackLeibler51,CoverThomas12}) between
-posterior and prior. In finite dimensions, maximizing the expected
-information gain amounts to minimizing the determinant of the
-posterior covariance matrix. In a frequentist setting, an optimal
-design minimizes the volume of the uncertainty ellipsoid \cite[page
-  16]{Ucinski05}, but this is done for the Fisher information matrix
-and not the posterior covariance. However, \cite{ChalonerVerdinelli95}
-shows that the latter is just a regularized version of the former.
+there is a plethora of design criteria, we focus on just one of these,
+commonly referred to as \emph{D-optimal design}. It has a simple and
+appealing motivation in the Bayesian context as explained in
+\cite{ChalonerVerdinelli95}: for a linear model, a D-optimal design
+seeks to maximize the expected information gain (KL divergence
+\cite{KullbackLeibler51,CoverThomas12}) between posterior and
+prior. In finite dimensions, maximizing the expected information gain
+amounts to minimizing the determinant of the posterior covariance
+matrix. In a frequentist setting, a D-optimal design minimizes the
+volume of the uncertainty ellipsoid \cite[page 16]{Ucinski05}, but
+this is done for the Fisher information matrix and not the posterior
+covariance. However, \cite{ChalonerVerdinelli95} show that the latter
+is just a regularized version of the former.
 
 The previous discussion is classical for experimental design when
 inference is to take place over a finite (not too large) number of
 parameters. The subject of optimal experimental design for function
 inference in a Bayesian context was pioneered by
-\cite{AlexanderianGloorGhattas14,AlexanderianPetraStadlerEtAl16,
+\cite{AlexanderianGloorGhattas14, AlexanderianPetraStadlerEtAl16,
   AlexanderianPetraStadlerEtAl14}. Similarly to the finite dimensional
 case, it can be shown that a D-optimal design arises naturally for
 linear models when one wishes to maximize the KL divergence between
-posterior and prior and this amounts to minimizing the determinant of
-the posterior covariance operator (understood as a product of its
+posterior and prior. This amounts to minimizing the determinant of the
+posterior covariance operator (understood as a product of its
 eigenvalues). Some difficulties arise in the process, but remedies can
 be found as shown in \cite{AlexanderianGloorGhattas14}.
 
@@ -92,7 +92,7 @@ investigated here), the optimization process results in measurements
 that are very similar. For example, if a measurement is thought of as
 measuring some function value at $\x \in \Omega \subseteq \R^d,
 d=1,2,3$ (with added error) then the optimization procedure sometimes
-places sensors in close proximity to each other (as can be seen
+places sensors in very close proximity to each other (as can be seen
 in figure \ref{fig:clusterization illustration}). Following
 \cite{Ucinski05}, we refer to this phenomenon as \emph{sensor
   clusterization}.
@@ -101,18 +101,18 @@ in figure \ref{fig:clusterization illustration}). Following
 The phenomenon of sensor clusterization seems to be known in several
 different contexts. In a frequentist and finite-dimensional context,
 \cite{Fedorov96} and \cite[chapter 2.4.3]{Ucinski05} discuss this
-phenomenon and suggest an approach called clusterization-free design,
-where the user enforces measurement locations to be far from each
-other. One way to do this is by introducing correlated errors which,
-philosophically, accounts for both measurement error and model error.
-Another method considered is imposing distance constraints between
-measurements. A somewhat different approach is suggested in \cite[page
-  49]{Fedorov12}, where close by design measurements are merged --- a
-procedure which obviously does not avoid clusterization. The same problem
-arises in time-series analysis for pharmacokinetic experiments. The
-authors of \cite{Hooker09} suggest modeling auto-correlation time in
-the noise model, which is equivalent to the correlated errors
-mentioned above.
+phenomenon and suggest an approach called clusterization-free design.
+In such designs, the user enforces measurement locations to be far
+from each other. One way to do this is by introducing correlated
+errors which, philosophically, accounts for both measurement error and
+model error. Another method considered is imposing distance
+constraints between measurements. A somewhat different approach is
+suggested in \cite[page 49]{Fedorov12}, where close by design
+measurements are merged --- a procedure which obviously does not avoid
+clusterization. The same problem arises in time-series analysis for
+pharmacokinetic experiments. The authors of \cite{Hooker09} suggest
+modeling auto-correlation time in the noise model, which is equivalent
+to the correlated errors mentioned above.
 
 Any of the above mentioned approaches might serve as a remedy and push
 sensors away from each other. Yet, none offers any insight as to why
@@ -125,37 +125,49 @@ problem, they do not provide insight as to why sensors are clustering.
 We propose and thoroughly study an analytically tractable model for
 understanding D-optimal designs. In this model, an optimal design
 arises as a solution to a constrained optimization problem, formulated
-using Lagrange multipliers (section \ref{section:D and grad}). In the
-case of no model error we show this problem is in fact a set of
-eigenvector-eigenvalue problems (equation \eqref{eq:eigenproblem}). We
-then characterize an optimal design as one that reduces the highest
-uncertainties, and show how that can give rise to repeated
-measurements (section \ref{section:clusterization} and figure
-\ref{fig:clusterization}).
+using Lagrange multipliers (section \ref{section:D and grad}). Using
+this model we rigorously show how model error mitigates clusterization
+(section \ref{section:non vanishing}). We show how clusterization
+occurs in a sequential design scenario (section
+\ref{subsec:clusterization sequential}). Then, we show that designs
+that exhibit clusterization are just as optimal as clusterization free
+designs in a simultaneous D-optimal designs (section
+\ref{subsec:clusterization simultaneous}).
+
+A beautiful mathematical structure arises in D-optimal designs when no
+model error is present. The Lagrange multipliers problems is in fact a
+``weird'' eigenvalue problem (``weird'' because the operator depends
+on its eigenvectors, see \eqref{eq:eigenproblem}). This helps us shed
+light into D-optimal designs. We characterize these designs using
+theorem \ref{thm:char}. One key and intuituve insight we prove is that
+a D-optimal design reduces uncertainties where they are highest
+first. More interestig phenomena arise, but they require setting
+notation, so these are discussed later.
 
 In the process we generalize several lemmas from linear algebra to
-infinite-dimensional settings --- the Matrix Determinant Lemma and a
-lemma for calculating the derivative of determinants. We also provide
-other tools for understanding D-optimal designs in
-infinite-dimensional Bayesian inverse problems, including lemmas for
-calculating the increase in the design criterion per observation ---
-Lemmas \ref{lemma:design increase} and Corollary \ref{cor:zero mod
-  err}. %%  We also show that in our model with independent measurement
-%% noise, an interesting phenomenon arises, in which the eigenvectors
-%% of the measurement operator (denoted below $\obs^*\obs$) are the
-%% same as the eigenvectors of the prior covariance in observation
-%% space, which helps arrive at the results outlined in the previous
-%% paragraph.
+infinite-dimensional settings. A matrix determinant emma and a lemma
+due to Lax \cite{lax97} for calculating the derivative of determinants
+of certain operators (\ref{lemma:MDL} and \ref{lemma:lax},
+respectfully). We also prove some non-trivial lemmas in linear
+algebra. One of which (\ref{lemma:free}) gives a decomposition $M =
+AA^t$ where $A$ has unit norm columns. Another (\ref{lemma:sim diag})
+shows simultaneous diagonizability for the ``weird'' eigenvalue problem
+referenced above. We also provide other tools for understanding
+D-optimal designs in infinite-dimensional Bayesian inverse problems,
+including lemmas for calculating the increase in the design criterion
+per observation --- Lemmas \ref{lemma:design increase} and Corollary
+\ref{cor:zero mod err}.
+
 
 \subsection{Limitations}\label{subsec:limitations}
-There are two main drawbacks of the arguments presented here. First,
-one can argue that we allow considerably less restrictive observations
-than any real-life problem does. This is because our observation model
-allows taking measurements that are arbitrarily weighted linear
-combinations of eigenvectors. The second drawback is that we do not
-show rigorously that clusterization necessarily occurs in our model,
-we only show that there is no reason to be surprised when it does
-occur.
+There are two main drawbacks of the study presented here. Our relaxed
+model does not consider any specific set of allowed
+measurements. Rather, we take measurements in the unit ball in some
+Hilbert space. This allows considerably less restrictive observations
+than any real-life problem does. The second drawback is that we do not
+show rigorously that clusterization necessarily occurs in a
+simultaneous design. We only show that it is as reasonable as no
+clusterization.
 
 
 \subsection{An Example of Clusterization}\label{subsec:example}
@@ -940,6 +952,7 @@ reason for any measurement to give us more than any other (otherwise
 we would put more weight on the better measurement, as can be
 understood from the discussion in the following paragraph).
 
+
 One can understand optimal designs as follows: Imagine each
 eigenvector is a graduated lab cylinder (figure
 \ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
@@ -952,6 +965,31 @@ drop to whatever cylinder currently has the lowest level of liquid in
 it (lowest precision). The result of such a procedure is illustrated
 in figure \ref{fig:optimal vs not}. The analysis conducted in this
 section is summarized in theorem \ref{thm:char} below.
+
+
+\begin{theorem}[Characterizing D-optimal designs]\label{thm:char}
+  Let:
+  \begin{enumerate}
+  \item $\fwd, \prcov, \obs$ the forward, prior covariance and
+    observation operators, respectively.
+  \item $\{\lambda_i\}_{i=1}^\infty$ the eigenvalues of
+    $\fwd\prcov\fwd^*$ in decreasing order.
+  \item $\{\ev_i\}_{i=1}^\infty$ the corresponding eigenvectors.
+  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, where
+    $\obs$ maximizes $\tar(\obs)$.
+  \item $m$ the number of measurements taken.
+  \item $\sigma^2$ observation noise variance.
+  \end{enumerate}
+  Then:
+  \begin{enumerate}
+  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
+  \item There exists $0 < k \leq m$ such that $\eta_i = 0$ for $i\geq k+1$.
+  \item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
+  \item If $k < m$, then $\sigma^2\lambda_i^{-1} + \eta_i \leq
+    \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
+  \end{enumerate}
+\end{theorem}
+
 
 \pgfplotstableread{
   Label     prior  optimal  sub-optimal 
@@ -1041,27 +1079,7 @@ section is summarized in theorem \ref{thm:char} below.
 
 
 
-\begin{restatable}[Characterizing D-optimal designs]{theorem}{char}\label{thm:char}
-  Let:
-  \begin{enumerate}
-  \item $\fwd,\prcov,\obs$ the forward, prior covariance and observation operators, respectively.
-  \item $\{\lambda_i\}_{i=1}^\infty$ the eigenvalues of
-    $\fwd\prcov\fwd^*$ in decreasing order.
-    \item $\{\ev_i\}_{i=1}^\infty$ the corresponding eigenvectors.
-  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, where
-    $\obs$ maximizes $\tar(\obs)$.
-  \item $m$ the number of measurements taken.
-  \item $\sigma^2$ observation noise variance.
-  \end{enumerate}
-  Then:
-  \begin{enumerate}
-  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
-  \item There exists $0 < k \leq m$ such that $\eta_i = 0$ for $i\geq k+1$.
-  \item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
-  \item If $k < m$, then $\sigma^2\lambda_i^{-1} + \eta_i \leq
-    \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
-  \end{enumerate}
-\end{restatable}
+
 
 
 
@@ -1070,20 +1088,20 @@ section is summarized in theorem \ref{thm:char} below.
 \subsection{Overview}
 In this section we use theorem \ref{thm:char} to explain how sensor
 clusterization may arise in various scenarios. We first consider a
-sequential optimal design. We then consider the case where all
-measurements are chosen at once. Finally, we hypothesize how this may
-apply to a real-life inverse problem.
+sequential optimal design. Then we consider simultaneous
+designs.
 
 
-\subsection{Sequential Design}
+
+\subsection{Sequential Design}\label{subsec:clusterization sequential}
 Recall the sequential optimal design scheme from section
 \ref{subsec:seq vs sim} and the definition of $\obs_k$ from
-\eqref{eq:def obs_k}. The way clusterization can occur in this
-scenario is understood using thorem \ref{thm:char}, specialized to one
-measurement each time. In this case $m=1$, so $k=1$, so $\meas_1
-\parallel \ev_1$. As hinted in section \ref{subsec:seq vs sim}, the
-posterior becomes the prior for the next step. Similar reasoning leads
-to:
+\eqref{eq:def obs_k}. The way clusterization can occur in sequential
+design scenario is understood by specializing thorem \ref{thm:char} to
+one measurement each time. In this case $m=1$, so $k=1$, $\meas_1
+\parallel \ev_1$ and $\eta_1 = 1$. As hinted in section
+\ref{subsec:seq vs sim}, the posterior becomes the prior for the next
+step. Similar reasoning leads to:
 \begin{align*}
   \begin{split}
     \meas_2 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_2 \\
@@ -1093,21 +1111,22 @@ to:
 In the first case, we get clusterization. In the second, we consider $\meas_3$:
 \begin{align*}
   \begin{split}
-    %\meas_3 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_3 \text{ (note $\lambda^{-1}_1 < \lambda^{-1}_2$)}  \\
+    \meas_3 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_3 \\
     %\meas_3 \parallel  \ev_2  &\text{ if } \\
     \meas_3 \parallel  \ev_3  &\text{ o.w. }
   \end{split}
 \end{align*}
 Again, the first case results in clusterization. The sequential design
-proceeds in this fashion, where every $\meas_i$ is taken in the
-direction of the eigenvector of smallest eigenvalue of the previous
-posterior precision operator. Taking enough measurements we will
-surely arrive at clusterization, since the prior precision increases
-quickly --- in section \ref{subsec:abstract OED} we assumed  $\fwd$
-is strongly smoothing, which typpically means eigenvalues of $(\fwd
-\prcov\fwd^*)^{-1}$ grow exponentially.
+proceeds in this fashion. Every $\meas_i$ is taken in the direction of
+the eigenvector of smallest eigenvalue of the previous posterior
+precision operator. Taking enough measurements we will surely arrive
+at clusterization, since the prior precision increases quickly --- in
+section \ref{subsec:abstract OED} we assumed $\fwd$ is strongly
+smoothing, which means eigenvalues of $(\fwd \prcov\fwd^*)^{-1}$ grow
+quickly.
 
-\subsection{Simultaneous Design}
+
+\subsection{Simultaneous Design}\label{subsec:clusterization simultaneous}
 In a simultaneous design scenario, the result is not as clear cut as
 in the sequential design case. We still rely on previous results ---
 namely corollary \ref{cor:same ev} and theorem \ref{thm:char}. An
@@ -1130,6 +1149,9 @@ exhibit clusterization --- e.g. the second design presented in figure
 \ref{fig:clusterization}. In the following section we postulate what
 causes such designs to be observed in realistic experimental design
 scenarios.
+
+
+
 
 
 \begin{figure}
@@ -1212,14 +1234,6 @@ scenarios.
 \end{figure}
 
 
-\subsection{Why do Realistic Designs Exhibit Clusterization?}
-It is unclear from the previous analysis what makes realistic designs
-exhibit clusterization, such as the one observed in figure
-\ref{fig:clusterization illustration}. We can only hypothesize.
-
-
-
-
 
 
 
@@ -1229,16 +1243,16 @@ exhibit clusterization, such as the one observed in figure
 %% SECTION Analysis of Optimal Designs --- Non-Vanishing Model Error
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analysis of Optimal Designs --- Non-Vanishing Model Error}\label{section:non vanishing}
-\subsection{Overview}
 In this section we show the effect model error has on the
-clusterization phenomenon. In contrast to the previous case of
-vanishing model error, we will see that if $\modcov \neq 0$ clustering
-will not occur.
+clusterization phenomenon. We will see that if $\modcov \neq 0$
+clustering will not occur. This is contrary to the previous case of
+vanishing model error.
 
-\subsection{Derivation}
-We rely on corollary \ref{cor:same meas} below, which is proved in the
-appendix. Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
-(\meas_1,\dots,\meas_{m-1})^t$.
+Corollary \ref{cor:same meas} below is proved in the appendix. Denote
+$\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
+(\meas_1,\dots,\meas_{m-1})^t$. Every symbol with a wide hat
+$\ \widehat{}\ $ refers to the marked object for $\obsm$. E.g. $\Sigmam =
+\Sigma(\obsm)$.
 \begin{restatable*}{corollary}{samemeas}\label{cor:same meas}
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
@@ -1253,19 +1267,20 @@ appendix. Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
   \end{equation*}
 \end{restatable*}
 Recall from \eqref{eq:Sigma} that $\Sigma(\obs) = \obs \modcov \obs^*
-+ \sigma^2I$. From Corollary \ref{cor:same meas} we can deduce that
++ \sigma^2I$. Then
 
 $$
 \lim_{\sigma^2 \to 0} \tar(\obs) -\tar(\obsm) = 0
 $$
 
 Hence no increase in the design criterion is achieved by taking a
-repeated measurement. This is clearly sub-optimal and $\obsm$ cannot
-be an optimal design. Thus, for small measurement error levels, the
-clusterization effect will be mitigated by the presence of a non-zero
-model error. Since the design criterion is not defined for $\sigma^2 =
-0$ and identical measurements, we cannot make a statement regarding
-$\sigma^2 = 0$, except in the limiting sense described above.
+repeated measurement (in the limit $\sigma^2 \to 0$). This is clearly
+sub-optimal and $\obsm$ cannot be an optimal design. Thus, for small
+measurement error levels, the clusterization effect will be mitigated
+by the presence of a non-zero model error. Since the design criterion
+is not defined for $\sigma^2 = 0$ and identical measurements, we
+cannot make a statement regarding $\sigma^2 = 0$, except in the
+limiting sense described above.
 
 
 %% \section{Conclusion and Future Research Directions}\label{section:conclusion}
@@ -1278,9 +1293,9 @@ $\sigma^2 = 0$, except in the limiting sense described above.
 
 
 \section{Acknowledgements}
-This study is a part of my PhD thesis \cite{mine} which was written
-under the instruction of Prof. Georg Stadler in New York University's
-Courant Institute. I would like to thank him for his great mentorship.
+This study is a part of my PhD thesis. It was written under the
+instruction of Prof. Georg Stadler in New York University's Courant
+Institute. I would like to thank him for his great mentorship.
 
 \appendix
 \section{Widely Applicable Lemmas}
@@ -1370,8 +1385,8 @@ The following lemma is generalized from \cite[Chapter 9,
 
 
 \begin{lemma}[Matrix Determinant Lemma in Hilbert Spaces]\label{lemma:MDL}
-  Let $\hilp$ a separable Hilbert space, $u,v\in \hilp$ and $A: \hilp \to
-  \hilp$ an invertible linear operator such that $\tr{A-I} <
+  Let $\hil$ a separable Hilbert space, $u,v\in \hil$ and $A: \hil \to
+  \hil$ an invertible linear operator such that $\tr{A-I} <
   \infty$. Then $\det A$ and $\det A + uv^*$ are well defined and
   \begin{equation*}
     \det (A + uv^*) = (1 + \langle A^{-1} u, v \rangle ) \det A,
@@ -1381,7 +1396,7 @@ The following lemma is generalized from \cite[Chapter 9,
 \begin{proof}
   In this proof we rely on definitions and results from
   \cite{Simon77}. First, consider $B := I + xy^*$ for some $x,y \in
-  \hilp$. We construct an eigenbasis for $B$ and use that to show $\det
+  \hil$. We construct an eigenbasis for $B$ and use that to show $\det
   B = 1 + \langle x, y \rangle$. First let $x_1 := x$.  Now, if $x
   \parallel y$, take $\{x_n \}_{n=2}^{\infty}$ an orthogonal basis for
   $span\{x_1\} ^{\perp}$. If, on the other hand, $x \nparallel y$, let
@@ -1803,7 +1818,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   to find $V$ orthogonal such that $V C V^t$ has zero diagonal. We
   construct such $V$ by sequentially inserting zeros in the diagonal
   and not destroying zeros we already introduced, starting from the
-  last diagonal entry and moving to the first. If $c_{mm} \neq 0$ ,
+  last diagonal entry and moving to the first. Since $c_{mm} \neq 0$ ,
   let $p < m$ such that $c_{pp}c_{mm} < 0$ (such $p$ exists because
   the trace is zero) and let $\theta \in (0,\pi)$. Define a Givens
   rotation $R^{(m)} \in \R^{m \times m}$ by
@@ -1931,11 +1946,6 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   \ell$ and we conclude that $C$ and $A$ have the same eigenvectors.
 \end{proof}
 
-%% \begin{proposition}\label{prop:bigger better}
-%%   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$, $\sigma^2
-%%   > 0$ and $\lambda > 1$. Then $\tar(\obs)$ increases if we use
-%%   $\lambda \meas_j$ in $\obs$ instead of $\meas_j$.
-%% \end{proposition}
 \biggerbetter
 \begin{proof} 
   Fix an arbitrary $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. We see
@@ -1949,7 +1959,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   it is positive --- $\delta \tar(\obs)V > 0$. This means that
   increasing the magnitude of the $j$th measurement functional
   increases $\tar(\obs)$. We start with the last line of \eqref{eq:tar
-    var}, and denote $\tmp : = \fwd \postcov \fwd^*: \hilo^* \to \hilo$:
+    var}, and denote $\tmp : = \fwd \postcov \fwd^*$.
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
@@ -2166,7 +2176,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
 %    Bibliographies can be prepared with BibTeX using amsplain,
 %    amsalpha, or (for "historical" overviews) natbib style.
 \bibliographystyle{amsplain}
-\bibliography{refs.bib,georg_refs}
+\bibliography{refs,georg_refs}
 
 \end{document}
 
