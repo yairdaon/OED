@@ -10,13 +10,11 @@
 Both referees made great comments that I feel improve the manuscript
 substantially, and I would like to thank them for that. I followed up
 on every point made. The referees' comments and my replies are listed
-below. Below, my replies are colored \ydnote{cyan}. In the revised
-manuscript, replies to referee two are in \reftwo{green} and replies
-to referee three are in \refthree{red}. Again, thank you for taking
-the time and helping me improve this manuscript.
+below. My replies are colored \textcolor{cyan}{cyan}. Again, thank you
+for taking the time and helping me improve this manuscript.
 
 \section{Referee 1}
-Preliminary Assessment, Editorial Board Membe.r The manuscript can be
+Preliminary Assessment, Editorial Board Member The manuscript can be
 sent to reviewers.
 
 
@@ -38,28 +36,29 @@ the comments below.
 \subsection{General Comments}
 
 \begin{enumerate}
-\item It should be stated in the Abstract whether the work in this
+\item It should be stated in the abstract whether the work in this
   paper pertains to only linear inverse problems, or if it is
   applicable in general to non-linear inverse problems as well.
-  \ydnote{\item Title and abstract now reflect the fact that the paper only
+  \ydnote{Title and abstract now reflect the fact that the paper only
     pertains to linear inverse problems.}
   
 \item It is unclear from the contribution section of the article what
 exactly the primary contribution is. This should be stated very
 explicitly and emphasized clearly as the contribution of the article.
-
+\ydnote{The contribution section was extended.}
+  
 \item In some equations (as seen below in the line comments) operators
 are not clearly defined or described before they are given in a
 proposition or theorem. Please clearly define all operators both with
 mathematical definitions and descriptions (when applicable) before
 using them.
-\ydnote{\item Corrected, thanks!}
+\ydnote{Corrected, thanks!}
 
 \item Overall, I find the article difficult to follow. I think this can
 be improved by properly defining all operators and including section
 overviews that give a description of the purpose of each section, and
 a brief summary of how this is being accomplished.
-\ydnote{\item Added section overviews and operator definitions.}
+\ydnote{Added section overviews and operator definitions.}
 
 
 \item On page 10, figure 2 and section 4.2 deliver the main conclusion of
@@ -162,7 +161,6 @@ operator, and follow standard formulations adopted by the works in the
 references below. Moreover, when it comes to sensor placement,
 observations are almost surely pointwise in space/time. In this case,
 I don't see the benefit of consider infinite-dimensional formulation.
-
 \ydnote{I was not able to arrive at the same results when the forward
   and observation operators were merged. A short remark on this was
   added. It is placed after equation (2.6) in the highlighted text
@@ -188,6 +186,7 @@ appreciated, however they raise some concerns:
 
 \item The statement made on page 2, lines 40-41 (... apply equally to
   any of the scenarios...) is rather strong and unjustified.
+  \ydnote{Said statement was removed.}
 \end{enumerate}
 
 On page 8, Equation 4.2, which is crucial in this study, assumes that
@@ -195,9 +194,9 @@ the forward operator is invertible. This is clearly impossible in
 practical Bayesian inverse problems, otherwise, it reduces to a
 standard regression problem. This is understandable for clarification,
 however, the following argument on Page 9 that extends this assumption
-is not well-justified.
-\ydnote{This is a great point! The flawed explanation was removed. I
-  was able to remove that assumption.}
+is not well-justified.  \ydnote{This is a great point! The flawed
+  explanation was removed. I was able to remove that assumption. But
+  it required further changes to the manuscript.}
 
 
 In Equation 4.3, not sure what $\fwd^{-*}$ stands for. Moreover, an
@@ -205,22 +204,22 @@ inverse of the forward operator is not well-defined even if
 $\mathcal{F}\Gamma_{prior}\mathcal{F}^*$ is invertible! This is very
 limiting, and can't be used in practical inverse problems. This should
 be clearly discussed for the reader to appreciate the valuable effort
-made.
-\ydnote{Again, great point. $\fwd^{-*} = (\fwd^*)^{-1}$ but now I do
-  not assume $\fwd$ is invertible so this is removed}
+made. \ydnote{Again, great point. $\fwd^{-*} = (\fwd^*)^{-1}$ but now
+  I do not assume $\fwd$ is invertible so this was removed.}
 
 
 A numerical example with the setup studied in the paper, should help
 clarify several confusions that a reader can fall for easily.
-
+\ydnote{I added several plots that I believe make the arguments and
+  conclusions clearer. I also added an illustration story with
+  graduated lab cylinders.}
 
 The title should reflect the fact that the study is restricted to
 linear inverse problems. Also, this should be clarified in the
 abstract, in addition to the fact that observations errors are
-uncorrelated with fixed variance $\sigma^2$.
-\ydnote{The title and
-  abstract were changed to reflect the fact that linear problems are concerned.
-The treatment of correlated errors was emphasized.}
+uncorrelated with fixed variance $\sigma^2$.  \ydnote{The title and
+  abstract were changed to reflect the fact that linear problems are
+  concerned.  The treatment of correlated errors was emphasized.}
 
 
 
@@ -229,18 +228,25 @@ The treatment of correlated errors was emphasized.}
 In the abstract (line 20, page 1), and on page 5, lines 30-40, the
 author mentions that the effect of observation-correlations on sensor
 clusterization will be considered later, but I failed to find any
-relevant discussion to that issue which I find interesting. Even if
-the model error covariance $\Gamma_{model}$ is known, this doesn't
-amount for observation correlations, .e.g,
+relevant discussion to that issue which I find interesting.
+\ydnote{The discussion on observation correlation
+  and how it mitigates clusterization can be found in the last
+  section.}
+
+Even if the model error covariance $\Gamma_{model}$ is known, this
+doesn't amount for observation correlations, .e.g,
 single-instrument-observations, because the observation operator
 $\mathcal{O}$ is non invertible. This issue should addressed and
-clarified clearly.
+clarified clearly.  \ydnote{I am not sure I understand this
+  point. $\modcov$ can model anything you want, including correlated
+  observation instruments. It is true that $\obs$ is not invertible
+  but I fail to understand why this is problematic.}
+
 
 I found it difficult to trace the referenced Lemmas, Corollaries,
 etc., mainly because bad referencing in the appendix, and the links do
 not works properly.  For example Corollary 2 should be Corollary B.x,
-etc.
-\ydnote{All such bad references were fixed.}
+etc.  \ydnote{All such bad references and links were fixed.}
 
 The trace operator should be followed with some sort of brackets to
 make it easier to follow and validated the formulae
@@ -250,24 +256,41 @@ Sensor clusterization in OED is central to this study. Figure 2 is
 used to illustrate the phenomena, however, it is underrepresented, and
 is hard to decipher. Specifically, Section 4.2 (Page 10, lines 36-39),
 and caption of Figure 2 should be rewritten with clear explanation of
-the axes, and the plot-generation process.
+the axes, and the plot-generation process.  \ydnote{I extended the
+  discussion relating to clusterization, added another plot and
+  explained how they arise.}
 
-One page 10, lines 30-35, the argument doesn't seem to be quite
+On page 10, lines 30-35, the argument doesn't seem to be quite
 accurate. It's not always true that one associates a higher
 weight/value to ``better'' observation. If one defines ``better'' as
 lower uncertainty, then, variable observation variances must be
-considered. On the other hand, if being ``better'' corresponds to a
-more accurate realization of the observation (true snapshot of
-reality), then the whole statement would be wrong, because optimal
-design relies only on the uncertainty levels in linear Bayesian
-settings, as manifested by the posterior covariance matrix.
+considered. \ydnote{Unfortunately, I am again not sure I understand
+  fully. Variable observation variances are fixed to $\sigma^2$
+  througout this section.}
+
+On the other hand, if being ``better'' corresponds to a more accurate
+realization of the observation (true snapshot of reality), then the
+whole statement would be wrong, because optimal design relies only on
+the uncertainty levels in linear Bayesian settings, as manifested by
+the posterior covariance matrix.  \ydnote{I think the referee implies
+  that the D-optimal design is only as good as the assumptions it
+  relies on. I could not agree more. However, as long as we do believe
+  the assumptions made --- a D-optimal design is indeed optimal (in a
+  precise and quantifiable way). I think the source of
+  misunderstanding is that I used the term ``measurement'' where I
+  should have used ``eigenvector''. I changed the paragraph
+  accordingly. The transition from thinking of ``measurements'' to
+  thinking of ``eigenvectors'' is confusing and I believe it is better
+  explained in the updated version of the manusctipt.}
+
 
 The last statement of the proof of Lemma A.1 (see page 12, line 24),
 stating that ``there is nothing special about $t=0$, and the relation
 holds for all t''. This is rather odd. In fact, It is assumed that
 $X(t=0)$ explicitly (see line 32 on page 11). A clarification is
-required here.
-
+required here.  \ydnote{Clarification was added at the end of the
+  proof. ``There is nothing special about $t=0$'' means we could have
+  chosen any other value $t_0$ instead.}
 
 
 \subsection{Minor Comments}
@@ -275,47 +298,67 @@ required here.
 Page 1, line 22; ... ``calculating derivative of log det of
 oeprators''. Please clarify for the reader, which operators you're
 referring to.
+\ydnote{Made explicit.}
 
-Page 2, line 11; wrong reference to Figure 1.3?
+Page 2, line 11; wrong reference to Figure 1.3?  \ydnote{Reference now
+  fixed.}
 
 Page 6; in equation 2.7, don't you need an expectation over all priors
 to achieve this result? Please clarify.
+\ydnote{The expectation / integration over the prior space happens
+  inside the KL divergence:
+  $$
+  \mathbb{E}_{\data}[KL(\post^\data||\pr)] = \int KL(\post^\data||\pr) \der \mu(\data) = \int \int \log \frac{\der \post^\data}{\der \pr}(x) \der \post(x) \der \mu(\data)
+  $$ where $\mu(\data)$ is the distribution of data (usually called
+  evidence). I improved the notation to reflect the dependence of the
+  posterior on the data $\data$. I added above definition of KL
+  divergence to the manuscript.}
 
 Page 6, line 13; the optimization problem is solved for $\mathcal{O}$,
-not $\Psi$ ?
-
+not $\Psi$ ?  \ydnote{This line was unclear. I extended the
+  explanation. The mauscript now reflects the claim that the optimal
+  $\obs^{\star}$ is the maximizer of $\tar(\obs)$.}
+  
 Page 6, lines 19; the statement made about relaxing the constraints on
-the observation operator is unclear.
+the observation operator is unclear.  \ydnote{This sentence was poorly
+  written. It is now rephrased.}
 
 Page 6, line 24, I believe the reference to (3.2) should be replaced
-with (3.1).
+with (3.1). \ydnote{This was actually OK. The gradient was recorded in
+  (3.2).}
 
 Page 6, line 26, proof is provided in which Appendix? Please state
 clearly.
+\ydnote{Fixed.}
 
 page 6, In the proof of Lemma 3.1, the author utilized the operator
 $T$, which is only introduced in the appendix (Proof of Lemma
 A.1). Maybe state that clearly here. Also, in the proof, from step 4
-to 5, the first and third terms vanished; why?
+to 5, the first and third terms vanished; why?  \ydnote{This point is
+  spot on. I added the definition of $T$ before the derivation. This
+  is not the proof of Lemma 3.1 --- it is the first variation of the
+  objective. I reworded a few sentences to make this clearer.}
 
 Page 7; Proposition 1 should be replaced with something like
 Proposition 3.2 or something similar to match previous referencing
-(e.g., Lemma 3.1).
+(e.g., Lemma 3.1). \ydnote{Fixed.}
 
 Page 7, line 27 (and also line 31); the reference to Proposition 2
 seems to be incorrect. Also, state clearly which appendix the proof is
-delegated to.
+delegated to.  \ydnote{Fixed.}
 
 Page 10, Corollary 1 should be renamed (see the comment on Proposition
 1 above). Same applies to Corollary 3 in the appendix. Better also to
 clarify which appendix. Finally, the author utilizes
 $\widehat{\Gamma_{post}}$ int the corollary, which is defined only in
-the appendix, under the proof.
-
+the appendix, under the proof. \ydnote{All comments on numbering and
+  references are great and correct. All were fixed. I added an
+  explanation of what $\widehat{\Gamma_{post}}$ means where it
+  appears.}
 
 Page 11, in the proof of Lemma A.1 (lines 39-43), the partial
 derivative vanished from step 2 to step 3; please explain!
-
+\ydnote{I added an extra equality line for explanation.}
 
 References:
 
