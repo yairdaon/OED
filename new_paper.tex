@@ -8,7 +8,7 @@
 
 \title[Sensor Clusterization in D-optimal design in infinite
   dimensions]{Sensor Clusterization in D-optimal Design in Infinite
-  Dimensional Linear Bayesian Inverse Problems}
+  Dimensional Bayesian Linear Inverse Problems}
 
 \author{Yair Daon}
 \address{Porter School of the Environment and Earth
@@ -32,14 +32,16 @@
 
 \begin{abstract}
   We investigate the problem of sensor clusterization in optimal
-  experimental design for infinite-dimensional Bayesian
-  linear inverse problems. We suggest an analytically
-  tractable model for such designs and reason how it may lead to
-  sensor clusterization in the case of iid measurement noise. We also
-  show that in the case of spatially correlated measurement error
-  clusterization does not occur. As a part of the analysis we prove a
-  matrix determinant lemma analog in infinite dimensions, as well as a
-  lemma for calculating derivatives of $\log \det$ of operators.
+  experimental design for infinite-dimensional Bayesian linear inverse
+  problems. We suggest an analytically tractable model for such
+  designs and reason how it may lead to sensor clusterization in the
+  case of iid measurement noise. We also show that in the case of
+  spatially correlated measurement error clusterization does not
+  occur. As a part of the analysis we prove a matrix determinant lemma
+  analog in infinite dimensions and a lemma for calculating
+  $\frac{\der \log \det (I + X(t))}{\der t}$ for certain
+  operator-valued functions. We also show how to decompose $M = AA^t$
+  with $A$ constrained to have unit norm columns.
 \end{abstract}
 
 \maketitle
@@ -65,14 +67,14 @@ appealing motivation in the Bayesian context as explained in
 \cite{ChalonerVerdinelli95}: A D-optimal design seeks to maximize the
 expected information gain (KL divergence
 \cite{KullbackLeibler51,CoverThomas12}) between posterior and
-prior. Consider a linear model in finite dimensions, with Gaussian
-prior and noise. In this model, maximizing the expected information
-gain amounts to minimizing the determinant of the posterior covariance
-matrix. In a frequentist setting, a D-optimal design minimizes the
-volume of the uncertainty ellipsoid \cite[page 16]{Ucinski05}, but
-this is done for the Fisher information matrix and not the posterior
-covariance. However, \cite{ChalonerVerdinelli95} show that the latter
-is just a regularized version of the former.
+prior. For example, consider a linear model in finite dimensions, with
+Gaussian prior and noise. In this model, maximizing the expected
+information gain amounts to minimizing the determinant of the
+posterior covariance matrix. In a frequentist setting, a D-optimal
+design minimizes the volume of the uncertainty ellipsoid \cite[page
+  16]{Ucinski05}, but this is done for the Fisher information matrix
+and not the posterior covariance. However, \cite{ChalonerVerdinelli95}
+show that the latter is just a regularized version of the former.
 
 The previous discussion is classical for experimental design when
 inference is to take place over a finite (not too large) number of
@@ -88,15 +90,14 @@ eigenvalues). Some difficulties arise in the process, but remedies can
 be found as shown in \cite{AlexanderianGloorGhattas14}.
 
 It seems counter intuitive that when one computes an optimal design
-using the D-optimal criterion (and others that will not be
-investigated here), the optimization process results in measurements
-that are very similar. For example, if a measurement is thought of as
-measuring some function value at $\x \in \Omega \subseteq \R^d,
-d=1,2,3$ (with added error) then the optimization procedure sometimes
-places sensors in very close proximity to each other (as can be seen
-in figure \ref{fig:clusterization illustration}). Following
-\cite{Ucinski05}, we refer to this phenomenon as \emph{sensor
-  clusterization}.
+using the D-optimal criterion, the optimization process results in
+measurements that are very similar. For example, if a measurement is
+thought of as measuring some function value at $\x \in \Omega
+\subseteq \R^d, d=1,2,3$ (with added error) then the optimization
+procedure sometimes places sensors in very close proximity to each
+other (as can be seen in figure \ref{fig:clusterization
+  illustration}). Following \cite{Ucinski05}, we refer to this
+phenomenon as \emph{sensor clusterization}.
 
 \subsection{Related Work}
 The phenomenon of sensor clusterization seems to be known in several
@@ -123,9 +124,9 @@ reappear. While these approaches are practical and help us avoid the
 problem, they do not provide insight as to why sensors are clustering.
 
 \subsection{Contribution}
-We propose and thoroughly study an analytically tractable model for
-understanding D-optimal designs. In this model, D-optimal design
-are solutions of a constrained optimization problem, formulated
+We propose and thoroughly study a relaxed and analytically tractable
+model for understanding D-optimal designs. In this model, D-optimal
+design are solutions of a constrained optimization problem, formulated
 using Lagrange multipliers (section \ref{section:D and grad}). Using
 this model we rigorously show how model error mitigates clusterization
 (section \ref{section:non vanishing}). We show how clusterization
@@ -140,8 +141,8 @@ model error is present. The Lagrange multipliers problems is in fact a
 nonlinear eigenvalue problem for the observations and prior
 covariance. The operator for which eigenvectors and eigenvalues are
 sought is a sum of two operators. The first is the prior
-covariance. The second is an outer product of the observations. See
-\eqref{eq:eigenproblem} for details and exact statement. This
+covariance. The second is an outer product of the observations (see
+\eqref{eq:eigenproblem} for details and exact statement). This
 structure helps us shed light into D-optimal designs. We characterize
 these designs using theorem \ref{thm:char}. One insight we prove in
 said theorem, is that a D-optimal design reduces uncertainties where
@@ -244,7 +245,7 @@ clusterization.
 In section \ref{section:prelim} we present a more abstract and general
 formulation of the problem, but for the purpose of illustration, we
 present the problem via a toy model --- the 1D heat equation in
-$[0,\pi]$ with homogeneous Dirichlet boundary conditions.
+$[0,\pi]$ with a homogeneous Dirichlet boundary conditions.
 
 The 1D heat equation is:
 \begin{subequations}\label{eq:heat equation}
@@ -256,41 +257,40 @@ The 1D heat equation is:
 \end{subequations}
 
 We would like to infer the initial condition $u_0$. For that purpose,
-we measure $u$ at some set of locations $\x_j \in [0,\pi], j=1, \dots,m$
-and a final time $T > 0$. We assume centered Gaussian measurement
-error, so we can observe $v(\x_j,T) = u(\x_j,T) + \eps(\x_j)$ with
-$\eps(\x_j) \sim \normal(0, \sigma^2), \sigma > 0$ iid. We model the
-initial condition as $u_0 \sim \normal(0,\prcov)$, for $\prcov =
-(-\Delta)^{-1}$ with homogeneous Dirichlet boundary condition. It is
-well known \cite{Tarantola05} that for linear problems, with Gaussian
-prior and error, the posterior is also Gaussian with a covariance that
-does not depend on the observed data. The posterior covariance
-$\postcov$ is known to have a closed form formula, even in infinite
-dimensions\cite{Stuart10}. If we denote by $\fwd$ the dynamics
-operator, so that $u( \cdot,T) = \fwd u_0$, and the observation
-operator $\obs$ so that $u(\x_j,T) = (\obs u)_j, j=1,\dots,m$, then the
-posterior covariance is known and depends only on $\prcov, \fwd, \obs$ and
-$\sigma^2$ (see section \ref{section:prelim} and
-\eqref{eq:postcov} specifically).
+we measure $u$ at some set of locations $\x_j \in [0,\pi], j=1,
+\dots,m$ and a final time $T > 0$. We assume centered Gaussian
+measurement error, so we can observe $v(\x_j,T) = u(\x_j,T) +
+\eps(\x_j)$ with $\eps(\x_j) \sim \normal(0, \sigma^2), \sigma > 0$
+iid. We model the initial condition as $u_0 \sim \normal(0,\prcov)$,
+for $\prcov = (-\Delta)^{-1}$ with a homogeneous Dirichlet boundary
+condition. It is well known \cite{Tarantola05} that for linear
+problems, with Gaussian prior and error, the posterior is also
+Gaussian with a covariance that does not depend on the observed
+data. The posterior covariance $\postcov$ is known to have a closed
+form formula, even in infinite dimensions\cite{Stuart10}. We denote by
+$\fwd$ the dynamics operator, so that $u( \cdot,T) = \fwd u_0$, and
+the observation operator $\obs$ so that $u(\x_j,T) = (\obs u)_j,
+j=1,\dots,m$. The posterior covariance is known and depends only on
+$\prcov, \fwd, \obs$ and $\sigma^2$ (see section \ref{section:prelim}
+and \eqref{eq:postcov} specifically).
 
 We consider generalization of the information-theoretic design
 criterion presented in the introduction to infinite dimensions
 (section \ref{subsec:D optimal design} below). We choose
 $\x_j,j=1,\dots,m$ to minimize (an expression analogous to) the
-log-determinant of the posterior covariance operator. We will see
-later how this corresponds to maximizing expected information gain.
+determinant of the posterior covariance operator. We will see later
+how this corresponds to maximizing expected information gain.
 
 
 The clusterization effect is illustrated in figure
 \ref{fig:clusterization illustration}. Posterior pointwise standard
-deviations are plotted over the domain $[0, \pi]$. For a Bayesian
-linear inverse problem with Gaussian prior and noise the posterior
-covariance does not depend on data \cite{Stuart10}. Thus, the plot has
-no reference to actual data observed. The posterior covariance does,
-however, depend on the measurement taken. In figure
+deviations are plotted over the domain $[0, \pi]$. Since the posterior
+covariance does not depend on data, the plot has no reference to
+actual data observed. The posterior covariance does, however, depend
+on location of the measurement taken. In figure
 \ref{fig:clusterization illustration}, measurement locations are
 marked by circles. These were chosen to minimize (an expression
-analogous to) the log-determinant of the posterior covariance. The
+analogous to) the determinant of the posterior covariance. The
 clusterization effect can be clearly seen for six sensors. It looks
 like only four measurements were taken. The reason is that two pairs
 of sensors are so close they are indistinguishable.
@@ -302,25 +302,10 @@ of sensors are so close they are indistinguishable.
 In this section we define notations that will be used throughout the
 paper. The theoretical foundations for inverse problems over function spaces
 can be found in \cite{Stuart10}.
-%% A reader mostly familiar with the
-%% literature may initially want to skip this section and only consult
-%% the list below, which summarizes the notation used. We denote:
-%% \begin{itemize}
-%%   \item Parameter space $\hilp$.
-%%   \item Data space $\hilo$.
-%%   \item Forward dynamics operator $\fwd: \hilp \to \hilo$.
-%%   \item Observation operator $\obs: \hilo \to \mathbb{R}^m$.
-%%   \item Prior measure $\pr = \mathcal{N}(0, \prcov)$.
-%%   \item Data $\data \in \mathbb{R}^m$.
-%%   \item Observation and model errors, captured in $\Sigma(\obs)$.
-%% \end{itemize}
-%% The design objective was derived in \cite{AlexanderianGloorGhattas14}
-%% and recorded in \eqref{eq:objective} below.
-
 
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
-Let $\hilp$ and $\hilo$ be seperable Hilbert spaces (the subscripts p
+Let $\hilp$ and $\hilo$ be separable Hilbert spaces (the subscripts p
 and o are for ``parameter'' and ``observation'', respectfully). We
 denote $\hilo^*$ the Hilbert space of all linear functionals on
 $\hilo$. Consider $\fwd: \hilp \to \hilo$, a linear operator (the
@@ -328,14 +313,13 @@ $\hilo$. Consider $\fwd: \hilp \to \hilo$, a linear operator (the
 strongly smoothing (have fast decaying modes --- the heat operator
 from section \ref{subsec:example} is a prime example). Our goal is to
 infer $\param \in \hilp$ --- some parameter of the dynamics --- given
-noisy observations of $\fwd \param$. We take a zero mean Gaussian
-prior $\pr$ for $\param$ (otherwise the non-zero mean can just be
-subtracted everywhere). Hence, $\param \sim \pr = \normal(0,\prcov)$
+noisy observations of $\fwd \param$. We take a Gaussian prior $\pr$
+for $\param$. Hence, $\param \sim \pr = \normal(\param_0 ,\prcov)$
 with some appropriate covariance operator $\prcov$ \cite{Stuart10}. It
 is important to note that $\fwd \prcov \fwd^*$ is the prior covariance
 in $\hilo$ \cite{Stuart10}. As such, it is assumed invertible --- an
-assumption we rely heavily upon. Throughout this paper, we denote $m$
-the number of measurements we are allowed to take. Observations
+assumption we rely on below. Throughout this paper, we denote $m$ the
+number of measurements we are allowed to take. Observations
 (measurements) are taken via the linear observation operator $\obs \in
 ( \hilo^* )^m$. In an analogy with linear algebra (where row vectors
 are thought of as linear functionals), we think of $\obs$ as having
@@ -377,12 +361,6 @@ there is measurement / independent error $\eps \sim \normal(0,
 \sigma^2 I_m)$, with $I_m$ the $m \times m$ identity. Both error terms
 and the prior are assumed independent of each other.
 
-At this point, it is useful to record a known result regarding the
-posterior covariance operator of our inverse problem, namely
-\begin{align}\label{eq:postcov}
-  \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
-  )^{-1}.
-\end{align}
 Usually, this is written using $\tmp := \obs \fwd$ and $\tmp^*$. Since
 we need to separate the observation operator $\obs$ from the forward
 operator $\fwd$ we write the explicit expression
@@ -450,12 +428,20 @@ enough to capture all small scale phenomena. In section
 correlation in the error mitigates the clusterization phenomenon, as
 reported in the literature \cite{Ucinski05}.
 
+Finally, it is useful to record a known result regarding the posterior
+covariance operator of our inverse problem, namely
+\begin{align}\label{eq:postcov}
+  \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
+  )^{-1}.
+\end{align}
+
+
 \subsection{D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
 A D-optimal design maximizes expected KL divergence between posterior
 and prior. It is useful to recall the definition of KL divergence for
 an arbitrary prior measure:
 $$
-KL(\post^\data||\pr) = \int \log \frac{\der \post^\data}{\der \pr}(x) \der \post(x).
+KL(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(x) \der \post(x).
 $$
 
 The meaning of D-optimal design in infinite-dimensional Hilbert spaces
@@ -470,11 +456,10 @@ infinite-dimensions, a D-optimal design is well-defined as maximizing
 the expected KL divergence between posterior and prior. The main
 result is summarized, using our notation, in the following theorem:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]
-  Let $\pr = \normal(0,\prcov)$ be a centered Gaussian prior
-  on $\hilp$   and let $\post = \normal(\postmean,\postcov)$ 
-  the posterior measure on $\hilo$ for the Bayesian linear
-  inverse problem $\data =  \obs \fwd\param + \obs \eps' + \eps$ discussed
-  above. Then 
+  Let $\pr = \normal(\param_0,\prcov)$ be a Gaussian prior on $\hilp$
+  and let $\post = \normal(\postmean,\postcov)$ the posterior measure
+  on $\hilo$ for the Bayesian linear inverse problem $\data = \obs
+  \fwd\param + \obs \eps' + \eps$ discussed above. Then
   \begin{align}\label{eq:objective}
     \begin{split}
       \tar( \obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
@@ -494,8 +479,8 @@ The intuition behind definition \ref{def:d optimality} is
 straightforward. From \eqref{eq:postcov}:
 \begin{align*}
   \begin{split}
-    ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) &= \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \\
-    &= \prcov \postcov^{-1}.
+    \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) &= \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
+    &= \det \prcov \det \postcov^{-1}.
   \end{split}
 \end{align*}
 Since $\prcov$ is constant, a D-optimal design minimizes the posterior
@@ -511,7 +496,7 @@ following optimization problem for $\tar$. %%: (\hilo^*)^m \to \R$:
 \end{align}
 where $\obs$ is constrained to some allowed set of measurements (we
 may \textit{think} of these as pointwise evaluations, even though
-these might not be in $\hilo$). We call this problem ``simultaneous
+these might not be in $\hilo^*$). We call this problem ``simultaneous
 optimization'', since all measurements are decided on simulatneously.
 
 For computational reasons, one may prefer to find the best
@@ -542,10 +527,10 @@ next sequential step's prior.
 We seek a formulation of the optimal design problem
 \eqref{eq:optimization} using Lagrange multipliers. In section
 \ref{section:objective} we find the gradient of $\tar$ and record it
-in \eqref{eq:tar grad}. In section \ref{subsec:unit length} we relax
-the constraints on $\obs$ so that the optimization problem in
-\eqref{eq:optimization} is analytically tractable.  We find gradients
-for the new constraints and record them in \eqref{eq:grad
+in \eqref{eq:tar grad}. In section \ref{subsec:unit length} we suggest
+using unit-norm constraints on rows of $\obs$ so that the optimization
+problem in \eqref{eq:optimization} is analytically tractable. We find
+gradients for the new constraints and record them in \eqref{eq:grad
   constraints}. Finally, in section \ref{subsec:necessary} we use
 these to formulate the optimal design problem as a Lagrange
 multipliers problem in equation \eqref{eq:conditions}.
@@ -570,7 +555,7 @@ the following lemma:
 The proof of \ref{lemma:lax} is delegated to the appendix. Let
 $T(\obs) := \obs^*\Sigma(\obs)\obs$. The first variation of $\tar
 (\obs)$ in the direction $V$ is:
-\begin{align*}%%\label{eq:tar var}
+\begin{align}\label{eq:tar var}
   \begin{split}
     \delta \tar(\obs) V 
     :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (by definition of variation)}\\
@@ -589,10 +574,10 @@ $T(\obs) := \obs^*\Sigma(\obs)\obs$. The first variation of $\tar
     % 
     % 
     % 
-    &= \frac12 \ttr{\postcov \fwd^* (V^* \Sigma^{-1} \obs 
+    &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
       - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
       &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
-      + \obs^* \Sigma^{-1} V ) \fwd}  \text{ (by \ref{lemma:aux calc})}\\
+      + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \ref{lemma:aux calc})}\\
 %%   \end{split}
 %% \end{align} 
 %% Taking adjoints and cyclic permutations we see that
@@ -612,7 +597,7 @@ $T(\obs) := \obs^*\Sigma(\obs)\obs$. The first variation of $\tar
 %%   \begin{split}
       %% \delta \tar(\obs) V 
     &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V 
-    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
+    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \text{ (trace rules, $\frac{1}{2}$ prefactor disappears)} \\
     %
     %
     % 
@@ -624,7 +609,7 @@ $T(\obs) := \obs^*\Sigma(\obs)\obs$. The first variation of $\tar
     &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
     \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
   \end{split}
-\end{align*} 
+\end{align} 
 Denote
 \begin{align}\label{eq:tar grad}
   \nabla \tar(\obs) &:= (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
@@ -784,15 +769,15 @@ notation, we can write this more compactly as:
 In this section we analyze optimal designs when no model error is
 present. We discuss sensor clusterization in section
 \ref{section:clusterization}. We prepare the ground by first deriving
-a ``weird'' eigenvalue problem in $\obs$ for D-optimal designs in
-section \ref{subsec:eigenproblem}. This ``weird'' eigenvalue problem
+a nonlinear eigenvalue problem in $\obs$ for D-optimal designs in
+section \ref{subsec:eigenproblem}. This nonlienar eigenvalue problem
 is recorded in \eqref{eq:mod conditions}. Next, we characterize
 optimal designs as ones that make all eigenvalues equal in the above
-mentioned weird eigenvalue problem. The derivation is presented in
+mentioned nonlinear eigenvalue problem. The derivation is presented in
 section \ref{subsec:characterization}.
 
 
-\subsection{The ``Weird'' Eigenvalue Problem}\label{subsec:eigenproblem}
+\subsection{The nonlinear Eigenvalue Problem}\label{subsec:eigenproblem}
 $\modcov = 0$ implies $\Sigma= \sigma^2I$. The necessary first-order
 condition for optimality \eqref{eq:conditions} becomes
 \begin{equation}\label{eq:eigenproblem}
@@ -802,7 +787,7 @@ with $\Xi$ diagonal. This looks like an eigenvalue problem for the
 self-adjoint operator $\sigma^{-2}\fwd \postcov \fwd^*$. The rows of
 $\obs$, namely $\meas_j,j=1,\dots, m$, are the eigenvectors. Note,
 however, that $\postcov$ depends on $\obs$ --- which makes
-\eqref{eq:eigenproblem} a ``weird'' eigenvalue problem.
+\eqref{eq:eigenproblem} a nonlinear eigenvalue problem.
 
 Below, the expression for the posterior covariance \eqref{eq:postcov}
 justifies the second equality. Some calculations delegated to lemma
@@ -834,7 +819,7 @@ corresponding eigenvectors $\{\ev_i\}_{i=1}^{\infty}$. Lemma
 of the analysis:
 
 \begin{restatable*}[Simultaneous diagonizability for the nonlinear eigenvalue problem]{lemma}{simdiag}\label{lemma:sim diag}
-  Let $\hil$ seperable Hilbert space, $C:\hil \to \hil$ self-adjoint
+  Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
   \begin{equation*}
@@ -852,11 +837,11 @@ of the analysis:
 In \eqref{eq:mod conditions}, take $\func_j^{*} = \meas_j$ and $C :=
 (\fwd \prcov \fwd^*)^{-1}$ and use lemma \ref{lemma:sim diag}.
 \end{proof}
-Only finitely many of the eigenvectors of $\obs^*\obs$ have positive
-eigenvalue. This happens because $k := \rank \obs^*\obs \leq
-m$. Denote the corresponding non-zero eigenvalues of $\obs^*\obs$ by
+At most $m$ of the eigenvectors of $\obs^*\obs$ have positive
+eigenvalue, because $k := \rank \obs^*\obs \leq m$. Denote the
+corresponding non-zero eigenvalues of $\obs^*\obs$ by
 $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$. No
-assumption is made regarding the magnitudes the corresponding
+assumption is made (yet) regarding the magnitudes of the corresponding
 $\{\lambda_i\}_{i=1}^{\infty}$. They are to be thought of as fixed but
 unknown. Using Sylvester's determinant theorem (the standard proof
 works for Hilbert spaces as well) we get:
@@ -910,11 +895,12 @@ D-optimal design maximizes
   \sum_{i=1}^{k}\log (\sigma^2 \lambda_i^{-1} + \eta_i),
 \end{equation}
 
-with the norm constraints on $\meas_j,j=1,\dots,m$. This implies that
-$\meas_i \in span\{\ev_j\}_{j=1}^k,i=1,\dots, m$. The problem of
-D-optimal design has now been cast to finite dimensions. This
-justifies using linear algebra. Lemma \ref{lemma:free} (proved in the
-appendix) does exactly that.
+with the norm constraints on $\meas_j,j=1,\dots,m$.
+%%  This implies that $\meas_i \in span\{\ev_j\}_{j=1}^k,i=1,\dots,
+%% m$.
+The problem of D-optimal design has now been cast to finite
+dimensions. This justifies using linear algebra. Lemma
+\ref{lemma:free} (proved in the appendix) does exactly that.
 \begin{restatable*}[Unit norm decomposition]{lemma}{free}\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
   = m$, $m \geq k$. We can find $\func_j \in \R^k,j=1,\dots,m$
@@ -923,12 +909,11 @@ appendix) does exactly that.
 \end{restatable*}
 
 Take any $\{\eta_i\}_{i=1}^{k}$, with $\sum_{i=1}^k \eta_i = m$. Let
-$M = \diag(\eta_1,\dots,\eta_k)$. The lemma gives us $A$ with unit
-norm columns such that $AA^T = M$. Think of $A^t$ as representing
-$\obs$, so we take $\meas_i :=\sum_{j=1}^k A_{ji}\ev_j^*$. The
-constraints $\|\meas_i\| = 1, i=1,\dots,m$ are satisified by
-construction. Verifying $\obs^*\obs \ev_i = \eta_i \ev_i$ is not too
-difficult:
+$M = \diag(\eta_1,\dots,\eta_k)$. Lemma \ref{lemma:free} gives us $A$
+with unit norm columns such that $AA^T = M$. Take $\meas_i
+:=\sum_{j=1}^k A_{ji}\ev_j^*$. The constraints $\|\meas_i\| = 1,
+i=1,\dots,m$ are satisified by construction. Verifying $\obs^*\obs
+\ev_i = \eta_i \ev_i$ is not too difficult:
 
 \begin{align*}
   \begin{split}
@@ -954,16 +939,17 @@ Now,
   \end{split}
 \end{align*}
 
-
-By concavity of $\log$, the fastest increase in the design criterion
-(equation \eqref{eq:true target}) is gained by increasing
-$\sigma^2\lambda_i^{-1} + \eta_i$ where it is smallest. So, no weight
-should be given to (i.e. measurement taken in direction of) the $n$th
-eigenvector before $\sigma^2\lambda_i^{-1} + \eta_i \geq
-\sigma^2\lambda_n^{-1},\ \forall i \neq n$. Thus, we should choose
-$\{\eta_i\}_{i=1}^k$ as follows. First, order the eigenvalues
-$\lambda_1 \geq \lambda_2 \geq \dots$. We should increase $\sigma^2
-\lambda_1^{-1} + \eta_1$ until it equals
+We have shown that we can realize any $\{\eta_i\}_{i=1}^k$, as long as
+$\sum+{i=1}^k \eta_i = m$. We now turn to understand which choice of
+$\{\eta_i\}_{i=1}^k$ is optimal. By concavity of $\log$, the fastest
+increase in the design criterion (equation \eqref{eq:true target}) is
+gained by increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is
+smallest. So, no weight should be given to (i.e. measurement taken in
+direction of) the $n$th eigenvector before $\sigma^2\lambda_i^{-1} +
+\eta_i \geq \sigma^2\lambda_n^{-1},\ \forall i \neq n$. Thus, we
+should choose $\{\eta_i\}_{i=1}^k$ as follows. First, order the
+eigenvalues $\lambda_1 \geq \lambda_2 \geq \dots$. We should increase
+$\sigma^2 \lambda_1^{-1} + \eta_1$ until it equals
 $\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} +
 \eta_i,i=1,2$ are increased until $\sigma^2 \lambda_i^{-1} + \eta_i =
 \sigma^2\lambda_3^{-1},i=1,2$ and so forth.
@@ -977,7 +963,7 @@ $\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} +
 \end{figure}
 
 The argument above has the important consequence (illustrated in
-figure \ref{fig:optimal vs not}) that the eigenvalues in the ``weird''
+figure \ref{fig:optimal vs not}) that the eigenvalues in the nonlinear
 eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
 perfect sense. We know the Lagrange multipliers $\xi_i,i=1,\dots,k$
 tell us how much we gain by relaxing the constraints and there is no
@@ -987,32 +973,32 @@ understood from the discussion in the following paragraph).
 
 
 One can understand D-optimal designs as follows: Imagine each
-eigenvector is a graduated lab cylinder (figure
+eigenvector corresponds to a graduated lab cylinder (figure
 \ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
-liquid of $\sigma^2\lambda_i^{-1}$ volume units. This liquid is the
-prior precision, weighted by observation noise. The volume of the
-green liquid is increasing in $i$. A D-optimal design with $m$
-measurements ignores cylinders indexed $m+1$ and above. It has blue
-liquid of $m$ volume units at its disposal. It distributes said liquid
-by repeatedly adding a drop to whatever cylinder currently has the
-lowest level of liquid in it (lowest precision). The result of such a
-procedure is illustrated in figure \ref{fig:optimal vs not}. The
-analysis conducted in this section is summarized in theorem
-\ref{thm:char} below.
+liquid of $\sigma^2\lambda_i^{-1}$ volume units. This liquid
+represnets the prior precision, weighted by observation noise. The
+volume of the green liquid is increasing in $i$. A D-optimal design
+with $m$ measurements ignores cylinders indexed $m+1$ and above. It
+has blue liquid of $m$ volume units at its disposal. It distributes
+said liquid by repeatedly adding a drop to whatever cylinder currently
+has the lowest level of liquid in it (lowest precision). The result of
+such a procedure is illustrated in figure \ref{fig:optimal vs
+  not}. The analysis conducted in this section is summarized in
+theorem \ref{thm:char} below.
 
 
-\begin{theorem}[Characterizing D-optimal designs]\label{thm:char}
+\begin{theorem}[Characterizing D-optimal designs with vanishing model error]\label{thm:char}
   Let:
   \begin{enumerate}
-  \item $\fwd, \prcov, \obs$ the forward, prior covariance and
-    observation operators, respectively.
+  \item $\fwd, \prcov$ the forward and prior covariance operators, respectively.
+  \item $m, \sigma^2$ the number of measurements taken and observation
+    noise variance, respectively.
+  \item $\obs$ a D-optimal design operator.
   \item $\{\lambda_i\}_{i=1}^\infty$ the eigenvalues of
     $\fwd\prcov\fwd^*$ in decreasing order.
   \item $\{\ev_i\}_{i=1}^\infty$ the corresponding eigenvectors.
   \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, where
     $\obs$ maximizes $\tar(\obs)$.
-  \item $m$ the number of measurements taken.
-  \item $\sigma^2$ observation noise variance.
   \end{enumerate}
   Then:
   \begin{enumerate}
@@ -1151,13 +1137,16 @@ In the first case, we get clusterization. In the second, we consider $\meas_3$:
   \end{split}
 \end{align*}
 Again, the first case results in clusterization. The sequential design
-proceeds in this fashion. Every $\meas_i$ is taken in the direction of
-the eigenvector of smallest eigenvalue of the previous posterior
-precision operator. Taking enough measurements we will surely arrive
-at clusterization, since the prior precision increases quickly --- in
-section \ref{subsec:abstract OED} we assumed $\fwd$ is strongly
-smoothing, which means eigenvalues of $(\fwd \prcov\fwd^*)^{-1}$ grow
-quickly.
+proceeds in this fashion. Every $\meas_i$ is taken in the direction
+some eigenvector of the prior $\fwd \prcov\fwd^*$. This eigenvector
+has the smallest eigenvalue of the previous step's posterior precision
+operator. If we do not encounter clusterization after $m$ such steps,
+this means that measurement $\meas_k$ was taken in the direction
+$\ev_k$ for $k=1,\dots,m$. Thus $\sigma^2\lambda_i^{-1} + 1 \geq
+\sigma^2\lambda_k^{-1}$ for $i=1,\dots,k-1$. This is will not happen if
+$\lambda_k^{-1}$ increase quickly --- in section \ref{subsec:abstract
+  OED} we assumed $\fwd$ is strongly smoothing, which means
+eigenvalues of $(\fwd \prcov\fwd^*)^{-1}$ grow quickly.
 
 
 \subsection{Simultaneous Design}\label{subsec:clusterization simultaneous}
@@ -1180,12 +1169,7 @@ exhibits clusterization. Similarly, taking $\meas_5 = \meas_6 =
 design that exhibits clusterization. It is important to note that
 there are (infinitely) many optimal designs that actually do not
 exhibit clusterization --- e.g. the second design presented in figure
-\ref{fig:clusterization}. In the following section we postulate what
-causes such designs to be observed in realistic experimental design
-scenarios.
-
-
-
+\ref{fig:clusterization}.
 
 
 \begin{figure}
@@ -1201,7 +1185,7 @@ scenarios.
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
         ylabel=precision --- prior and posterior,
-        xlabel=eigenvector,
+        xlabel=eigenvector $i$,
       ]
     
       
@@ -1236,7 +1220,7 @@ scenarios.
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
         ylabel=precision --- prior and posterior,
-        xlabel=eigenvector,
+        xlabel=eigenvector $i$,
       ]
     
       
@@ -1258,12 +1242,15 @@ scenarios.
       \addlegendentry{$o_6$}   
     \end{axis}
   \end{tikzpicture}
-  \caption{Clusterization and non-clusterization in simultaneous
-    design. Posterior precision per eigenvector, after taking a
-    measurement $\meas_i$. Each $\meas_i$ increases precision
-    uniformly across the lowest precision eigenvectors. We see that
-    $\meas_2$ and $\meas_3$ are repeated measurements, as well as
-    $\meas_5$ and $\meas_6$.}
+  \caption{Clusterization (left) and non-clusterization (right) in
+    simultaneous D-optimal designs. Posterior precision per
+    eigenvector, after taking a measurement $\meas_i$ is plotted. An
+    optimal design reduces uncertainty where it is highest first. This
+    can be achieved by taking repeated measurements --- $\meas_2 =
+    \meas_3$ and $\meas_5 = \meas_6$ in the left design. This is not
+    necessary though, as can be seen in the right design. Both designs
+    achieve the same levels of uncertainty. The left one exhibits
+    clusterization. The right one does not.}
   \label{fig:clusterization}
 \end{figure}
 
@@ -1997,8 +1984,7 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
   set to zero. We calculate the variation in this direction and show
   it is positive --- $\delta \tar(\obs)V > 0$. This means that
   increasing the magnitude of the $j$th measurement functional
-  increases $\tar(\obs)$. We start with the last line of \eqref{eq:tar
-    var}, and denote $\tmp : = \fwd \postcov \fwd^*$.
+  increases $\tar(\obs)$. We start with the last line of \eqref{eq:tar var}, and denote $\tmp : = \fwd \postcov \fwd^*$.
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
@@ -2033,187 +2019,6 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
 
 
 
-%% HERE
-%% Since a measurement that takes into account $\ker \fwd$ is
-%% necessarily sub-optimal, we may assume $\fwd$ is in fact
-%% invertible (it is, on $\ker \fwd ^{\perp}$) and rewrite the
-%% necessary condition \eqref{eq:eigenproblem} using
-%% \eqref{eq:postcov} as \begin{equation*} \sigma^{-2} \left ( (\fwd
-%% \prcov \fwd^*)^{-1} + \sigma^{-2}\obs\obs^* \right )^{-1} =
-%% \obs^* \Xi.  \end{equation*} By Lemma \ref{lemma:sim diag},
-%% taking $C = (\fwd \prcov \fwd^*)^{-1}$ we observe that $\meas_j,
-%% j=1,\dots,m$ are eigenvectors of $\fwd \prcov \fwd^*$. If they have
-%% different eigenvalue, they are orthogonal. If not, this means, by
-%% the common interpretation of the Lagrange multipliers, that an
-%% infinitesimal increase in one will cause the same increase in
-%% design criterion as others with the same eigenvalue. So if these
-%% eigenvectors do not have the same angle between every pair, an
-%% infinitesimal increase in one will give more increase than
-%% others, which is a contradiction. So in every subspace, vectors
-%% will be restricted to these forms and if there will be more
-%% vectors than the dimensionality of the subspace, clusterization
-%% will occur.
-
-
-
-
-
-
-
-
-
-
-%% \begin{figure}
-%%   \begin{tikzpicture}[thick, scale=1.4, every node/.style={scale=0.99}]
-%%     \begin{axis}
-%%       [
-%%         xmin = 0,
-%%         xmax = 3.14,
-%%         xlabel = {$x$},
-%%         ylabel = posterior std,
-%%         ymin   = 0,
-%%         %compat = 1.3,
-%%         % ymax   = 130,
-%%         % ytick = \empty,
-%%         legend cell align=left,
-%%         % legend style={at={(0.45,0.2)}}
-%%         legend pos= outer north east 
-%%       ]
-%%       % \draw[black!30!white, thin] (50,0) -- (50,130);
-%%       % 
-%%       \addplot [thin, black, mark=none] table{data/stdv-trunc-sens1-var1.txt};
-%%       \addlegendentry{1 sensor};
-      
-%%       \addplot [thin, blue, mark=none] table{data/stdv-trunc-sens2-var1.txt};
-%%       \addlegendentry{2 sensors};
-      
-%%       \addplot [thin, red, mark=none] table{data/stdv-trunc-sens3-var1.txt};
-%%       \addlegendentry{3 sensors};
-      
-%%       \addplot [thin, green, mark=none] table{data/stdv-trunc-sens4-var1.txt};
-%%       \addlegendentry{4 sensors};
-      
-%%       \addplot [thin, purple, mark=none] table{data/stdv-trunc-sens5-var1.txt};
-%%       \addlegendentry{5 sensors};
-      
-%%       \addplot [thin, cyan, mark=none] table{data/stdv-trunc-sens6-var1.txt};
-%%       \addlegendentry{6 sensors};
-
-%%       \addplot [black,  only marks, mark=x, mark size=1.5] 
-%%       table{data/locs-trunc-sens1-var1.txt}; 
-%%       \addplot [blue,   only marks, mark=x, mark size=1.5]
-%%       table{data/locs-trunc-sens2-var1.txt}; 
-%%       \addplot [red,    only marks, mark=x, mark size=1.5]
-%%       table{data/locs-trunc-sens3-var1.txt};
-%%       \addplot [green,  only marks, mark=x, mark size=1.5] 
-%%       table{data/locs-trunc-sens4-var1.txt}; 
-%%       \addplot [purple, only marks, mark=x, mark size=1.5] 
-%%       table{data/locs-trunc-sens5-var1.txt}; 
-%%       \addplot [cyan,   only marks, mark=x, mark size=1.5] 
-%%       table{data/locs-trunc-sens6-var1.txt}; 
-%%     \end{axis}
-%%   \end{tikzpicture}
-%%   \caption{Analogously to figure \ref{fig:clusterization
-%%       illustration}, shown are posterior pointwise standard
-%%     deviations. Note the exact clustering. Here the dynamics is not
-%%     the one governed by the 1D heat equation but a dynamics that sets
-%%     to zero all modes except the first three. This dynamics simulates
-%%     a finite-rank operator as per the conditions of Theorem
-%%     \ref{theorem:finite rank}. Although the conditions of the theorem
-%%     allow the use of a different constraint on measurements (see
-%%     section \ref{subsec:unit length}), the conclusion of the theorem
-%%     still seems to hold.}
-%%   \label{fig:finite rank illustration}
-%% \end{figure}
-
-
-
-
-%% \section{Counterexample}\label{section:counterexample}
-%% Applying Lemma \ref{lemma:sim diag} to
-%% \begin{equation*}
-%%   (\fwd \postcov \fwd^*)^{-1} = (\fwd \prcov \fwd^*)^{-1} +
-%%   \sigma^{-2}\obs^*\obs
-%% \end{equation*}
-%% implies $(\fwd \prcov \fwd^*)^{-1}$ and $\obs^*\obs$ have the same
-%% eigenspaces. Since $\meas_j$ are eigenvectors of $\fwd \postcov
-%% \fwd^*$, we may expect this implies that $\meas_j$ are also
-%% eigenvectors of $(\fwd \prcov \fwd^*)^{-1}$ and assuming $(\fwd \prcov
-%% \fwd^*)^{-1}$ has simple eigenvalues completes the proof. Our
-%% expectations, however, are let down.
-
-%% Here is a counterexample. Let $e_1, e_2$ denote two
-%% eigenvectors of $C := (\fwd \prcov \fwd^*)^{-1}$ of different
-%% eigenvalues such that $C + \obs^*\obs$ is scalar on span
-%% $V:=\{e_1,e_2\}$ (we took $\sigma^2 = 1$ for simplicity). Then,
-%% on $V$, we have  
-%% \begin{equation*}
-%%   (\fwd \prcov \fwd^*)^{-1} = diag( d_1, d_2),
-%% \end{equation*}
-%% and we assume $d_1 > d_2$ without loss of generality. For $\meas \in
-%% \hilp$, we denote $\meas^*$ its Riesz representer, making a departure
-%% from the standard notation employed, where $\meas$ is usually taken to
-%% be a linear functional on $\hilp$. Let $\obs = (\meas_1^*, \meas_2^*,
-%% \meas_3^*)^t$. In this setup, we would like that $\meas_j,j=1,2,3$ are
-%% either orthogonal or parallel. We now outline construction that shows
-%% this is not necessarily true.
-
-%% We know, from Corollary \ref{cor:sim diag} that $\meas_j \in V$, so
-%% let
-%% \begin{align*}
-%%   \meas_1 &=  c_1e_1 + c_2e_2 \\
-%%   \meas_2 &= -c_1e_1 + c_2e_2 \\
-%%   \meas_3 &=     e_1.
-%% \end{align*}
-%% Then
-%% \begin{align*}
-%%   \meas_1 \meas_1^*
-%%   &= c_1^2e_1e_1^* + c_1c_2( e_1e_2^* + e_2e_1^*) +
-%%   c_2^2 e_2e_2^* \\
-%%   \meas_2 \meas_2^* &= c_1^2e_1e_1^* - c_1c_2( e_1e_2^* +
-%%   e_2e_1^*) + c_2^2 e_2e_2^*.
-%% \end{align*}
-%% Note that
-%% \begin{equation*}
-%%   \obs^* \obs = \meas_1 \meas_1^* + \meas_2\meas_2^* +
-%%   \meas_3\meas_3^* = (2c_1^2+1) e_1e_1^* + 2c_2^2e_2e_2^*,
-%% \end{equation*}
-%% is diaonal in $\{e_1,e_2\}$. In order for $\meas_j,j=1,2,3$ to be
-%% eigenvectors of $C + \obs^*\obs$ with the same eigenvalue, $C +
-%% \obs^*\obs$ must be a scalar operator on $V$. Thus the following
-%% must hold:
-%% \begin{align*}
-%%   d_1 + 2c_1^2 + 1 &= d_2 + 2c_2^2 \\
-%%   c_1^2 + c_2^2 &= 1 \text{ (arises from $\| \meas_i \| = 1$).}
-%% \end{align*}
-%% Equivalently,
-%% \begin{equation*}
-%%   \begin{bmatrix}
-%%     2 & -2 \\
-%%     1 & 1
-%%   \end{bmatrix}
-%%   \begin{bmatrix}
-%%     c_1^2 \\
-%%     c_2^2
-%%   \end{bmatrix}
-%%   =
-%%   \begin{bmatrix}
-%%     d_2 - d_1 - 1 \\
-%%     1
-%%   \end{bmatrix}.
-%% \end{equation*}
-%% We can always find a solution for this system, for any $d_1,d_2$.
-%% However, it is necessary that either $c_1^2 = 1$ or $c_2^2 = 1$ for
-%% $\meas_j, j=1,2,3$ to all be either orthogonal or parallel. The first
-%% conditiion implies $d_2 - d_1 = 3$, which is impossible, since $d_1 >
-%% d_2$. The second requires $d_1 - d_2 = 1$, a condition that does not
-%% hold generically.
-
-
-%    Text of article.
-
-%    Bibliographies can be prepared with BibTeX using amsplain,
-%    amsalpha, or (for "historical" overviews) natbib style.
 \bibliographystyle{amsplain}
 \bibliography{refs,georg_refs}
 
@@ -2223,52 +2028,3 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%    Templates for common elements of an article; for additional
-%    information, see the file Author_Handbook_ProcColl.pdf, included
-%    in every AMS author package, and the amsthm user's guide, linked
-%    from http://www.ams.org/tex/amslatex.html .
-
-%    Section headings
-\section{}
-\subsection{}
-
-%    Ordinary theorem and proof
-\begin{theorem}[Optional addition to theorem head]
-% text of theorem
-\end{theorem}
-
-\begin{proof}[Optional replacement proof heading]
-% text of proof
-\end{proof}
-
-%    Figure insertion; default placement is top; if the figure occupies
-%    more than 75% of a page, the [p] option should be specified.
-\begin{figure}
-\includegraphics{filename}
-\caption{text of caption}
-\label{}
-\end{figure}
-
-%    Mathematical displays; for additional information, see the amsmath
-%    user's guide:  texdoc amamath  or
-%  http://mirror.ctan.org/tex-archive/macros/latex/required/amsmath/amsldoc.pdf
-
-% Numbered equation
-\begin{equation}
-\end{equation}
-
-% Unnumbered equation
-\begin{equation*}
-\end{equation*}
-
-% Aligned equations
-\begin{align}
-  &  \\
-  &
-\end{align}
-
-%-----------------------------------------------------------------------
-% End of article-template.tex
-%-----------------------------------------------------------------------
