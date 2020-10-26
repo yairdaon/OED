@@ -37,7 +37,7 @@
   designs and reason how it may lead to sensor clusterization in the
   case of iid measurement noise. We also show that in the case of
   spatially correlated measurement error clusterization does not
-  occur. As a part of the analysis we prove a matrix determinant lemma
+  occur. As a part of the analysis we prove a Matrix Determinant Lemma
   analog in infinite dimensions and a lemma for calculating
   $\frac{\der \log \det (I + X(t))}{\der t}$ for certain
   operator-valued functions. We also show how to decompose $M = AA^t$
@@ -123,6 +123,23 @@ error is decreased and the clusterization phenomenon will eventually
 reappear. While these approaches are practical and help us avoid the
 problem, they do not provide insight as to why sensors are clustering.
 
+In the inverse problems community, work is mostly computational and
+less theoretic. Model errors were considered in \cite{Attia20,
+  Koval20}. The former study is focused on inferring of a Quantity of
+Interest (QoI). The focus of the latter is reducing forward solves,
+using randomized linear algebra. Both studies present numerical
+techniques for finding optimal designs when model error is
+present. Both are restricted to linear inverse problems (although in
+the latter the authors use their method on a nonlinear problem with a
+Laplace approximation for the posterior). Both find an optimal design
+by first solving a continuous problem for sensor weights. Said
+solution is then sparsified to give a binary design. Both studies are
+successful in the task of Bayesian inversion. However, neither of
+these studies mentions any effect model errors can have on sensor
+clusterization. The current study is mostly theoretical and aims to
+fill the theoretical gap of understanding sensor clusterization.
+
+
 \subsection{Contribution}
 We propose and thoroughly study a relaxed and analytically tractable
 model for understanding D-optimal designs. In this model, D-optimal
@@ -144,13 +161,13 @@ sought is a sum of two operators. The first is the prior
 covariance. The second is an outer product of the observations (see
 \eqref{eq:eigenproblem} for details and exact statement). This
 structure helps us shed light into D-optimal designs. We characterize
-these designs using theorem \ref{thm:char}. One insight we prove in
+these designs using Theorem \ref{thm:char}. One insight we prove in
 said theorem, is that a D-optimal design reduces uncertainties where
 they are highest first. Other interestig phenomena arise, but they
 require setting notation, and are discussed later.
 
 In the process we generalize several lemmas from linear algebra to
-infinite-dimensional settings. We prove a matrix determinant lemma in
+infinite-dimensional settings. We prove a Matrix Determinant Lemma in
 \ref{lemma:MDL}. We generalize a lemma due to Lax \cite{lax97} for
 calculating $\frac{\der}{\der t} \log \det (I + X(t))$, for an
 operator valued function $X(t)$ in \ref{lemma:lax}. We also prove
@@ -161,7 +178,7 @@ eigenvalue problem referenced above \ref{lemma:sim diag}. We also
 provide other tools for understanding D-optimal designs in
 infinite-dimensional Bayesian inverse problems, including lemmas for
 calculating the increase in the design criterion per observation ---
-Lemmas \ref{lemma:design increase} and Corollary \ref{cor:zero mod
+Lemma \ref{lemma:design increase} and Corollary \ref{cor:zero mod
   err}.
 
 
@@ -314,7 +331,7 @@ strongly smoothing (have fast decaying modes --- the heat operator
 from section \ref{subsec:example} is a prime example). Our goal is to
 infer $\param \in \hilp$ --- some parameter of the dynamics --- given
 noisy observations of $\fwd \param$. We take a Gaussian prior $\pr$
-for $\param$. Hence, $\param \sim \pr = \normal(\param_0 ,\prcov)$
+for $\param$. Hence, $\param \sim \pr = \normal(\prmean ,\prcov)$
 with some appropriate covariance operator $\prcov$ \cite{Stuart10}. It
 is important to note that $\fwd \prcov \fwd^*$ is the prior covariance
 in $\hilo$ \cite{Stuart10}. As such, it is assumed invertible --- an
@@ -456,7 +473,7 @@ infinite-dimensions, a D-optimal design is well-defined as maximizing
 the expected KL divergence between posterior and prior. The main
 result is summarized, using our notation, in the following theorem:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]
-  Let $\pr = \normal(\param_0,\prcov)$ be a Gaussian prior on $\hilp$
+  Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
   on $\hilo$ for the Bayesian linear inverse problem $\data = \obs
   \fwd\param + \obs \eps' + \eps$ discussed above. Then
@@ -790,7 +807,7 @@ however, that $\postcov$ depends on $\obs$ --- which makes
 \eqref{eq:eigenproblem} a nonlinear eigenvalue problem.
 
 Below, the expression for the posterior covariance \eqref{eq:postcov}
-justifies the second equality. Some calculations delegated to lemma
+justifies the second equality. Some calculations delegated to Lemma
 \ref{lemma:twice woodbury} in the appendix justify the third (trivial
 if $\fwd$ is invertible):
 \begin{align}\label{eq:mod conditions}
@@ -835,7 +852,7 @@ of the analysis:
 \end{corollary}
 \begin{proof}
 In \eqref{eq:mod conditions}, take $\func_j^{*} = \meas_j$ and $C :=
-(\fwd \prcov \fwd^*)^{-1}$ and use lemma \ref{lemma:sim diag}.
+(\fwd \prcov \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim diag}.
 \end{proof}
 At most $m$ of the eigenvectors of $\obs^*\obs$ have positive
 eigenvalue, because $k := \rank \obs^*\obs \leq m$. Denote the
@@ -843,7 +860,7 @@ corresponding non-zero eigenvalues of $\obs^*\obs$ by
 $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$. No
 assumption is made (yet) regarding the magnitudes of the corresponding
 $\{\lambda_i\}_{i=1}^{\infty}$. They are to be thought of as fixed but
-unknown. Using Sylvester's determinant theorem (the standard proof
+unknown. Using Sylvester's Determinant Theorem (the standard proof
 works for Hilbert spaces as well) we get:
 
 \begin{align}\label{eq:pre manipulations}
@@ -984,7 +1001,7 @@ said liquid by repeatedly adding a drop to whatever cylinder currently
 has the lowest level of liquid in it (lowest precision). The result of
 such a procedure is illustrated in figure \ref{fig:optimal vs
   not}. The analysis conducted in this section is summarized in
-theorem \ref{thm:char} below.
+Theorem \ref{thm:char} below.
 
 
 \begin{theorem}[Characterizing D-optimal designs with vanishing model error]\label{thm:char}
@@ -1107,7 +1124,7 @@ theorem \ref{thm:char} below.
 
 \section{Sensor Clusterization --- Vanishing Model Error}\label{section:clusterization}
 \subsection{Overview}
-In this section we use theorem \ref{thm:char} to explain how sensor
+In this section we use Theorem \ref{thm:char} to explain how sensor
 clusterization may arise in various scenarios. We first consider
 sequential designs, and then simultaneous designs.
 
@@ -1152,7 +1169,7 @@ eigenvalues of $(\fwd \prcov\fwd^*)^{-1}$ grow quickly.
 \subsection{Simultaneous Design}\label{subsec:clusterization simultaneous}
 In a simultaneous design scenario, the result is not as clear cut as
 in the sequential design case. We still rely on previous results ---
-namely corollary \ref{cor:same ev} and theorem \ref{thm:char}. An
+namely Corollary \ref{cor:same ev} and Theorem \ref{thm:char}. An
 illustration of two D-optimal designs scenarios for the same problem
 are presented in figure \ref{fig:clusterization} --- the first
 exhibits clusterization and second does not. As was discussed earlier

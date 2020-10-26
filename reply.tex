@@ -151,6 +151,9 @@ the paper requires a major revision before being considered for
 publication.  Below, I provide some comments, that hopefully will help
 improve the manuscript.  Also, provided are some recent references,
 the author may find useful.
+%
+\ydnote{The references are much appreciated. I extended the ``related
+  work'' section accordingly.}
 
 
 \subsection{General comments}
@@ -162,6 +165,7 @@ operator, and follow standard formulations adopted by the works in the
 references below. Moreover, when it comes to sensor placement,
 observations are almost surely pointwise in space/time. In this case,
 I don't see the benefit of consider infinite-dimensional formulation.
+%
 \ydnote{I was not able to arrive at the same results when the forward
   and observation operators were merged. A short remark on this was
   added. It is placed after equation (2.5). Specifically, we need it
@@ -328,8 +332,8 @@ to achieve this result? Please clarify.
   inside the KL divergence:
   $$
   \mathbb{E}_{\data}[KL(\post||\pr)] = \int KL(\post||\pr) \der
-  \mu(\data) = \int \int \log \frac{\der \post}{\der \pr}(x) \der
-  \post(x) \der \mu(\data)
+  \mu(\data) = \int \int \log \frac{\der \post}{\der \pr}(\param) \der
+  \post(\param) \der \mu(\data)
   $$
   where $\mu(\data)$ is the distribution of data (usually called
   evidence). I improved the notation to reflect the dependence of the
