@@ -31,17 +31,17 @@
 \date{\today}
 
 \begin{abstract}
-  We investigate the problem of sensor clusterization in optimal
+  We investigate the problem of sensor clusterization in D-optimal
   experimental design for infinite-dimensional Bayesian linear inverse
   problems. We suggest an analytically tractable model for such
   designs and reason how it may lead to sensor clusterization in the
   case of iid measurement noise. We also show that in the case of
   spatially correlated measurement error clusterization does not
   occur. As a part of the analysis we prove a Matrix Determinant Lemma
-  analog in infinite dimensions and a lemma for calculating
-  $\frac{\der \log \det (I + X(t))}{\der t}$ for certain
-  operator-valued functions. We also show how to decompose $M = AA^t$
-  with $A$ constrained to have unit norm columns.
+  in Hilbert spaces and a lemma for calculating $\frac{\der}{\der t}
+  \log \det (I + X(t))$ for certain operator-valued functions. We also
+  show how to decompose $M = AA^t$ with $A$ constrained to have unit
+  norm columns.
 \end{abstract}
 
 \maketitle
@@ -90,7 +90,7 @@ eigenvalues). Some difficulties arise in the process, but remedies can
 be found as shown in \cite{AlexanderianGloorGhattas14}.
 
 It seems counter intuitive that when one computes an optimal design
-using the D-optimal criterion, the optimization process results in
+using the D criterion, the optimization process results in
 measurements that are very similar. For example, if a measurement is
 thought of as measuring some function value at $\x \in \Omega
 \subseteq \R^d, d=1,2,3$ (with added error) then the optimization
@@ -149,10 +149,11 @@ using Lagrange multipliers (section \ref{section:D and grad}). Using
 this model we rigorously show how model error mitigates clusterization
 (section \ref{section:non vanishing}). We show how clusterization
 occurs in a sequential design scenario (section
-\ref{subsec:clusterization sequential}). Then, we show that designs
-that exhibit clusterization are just as optimal as clusterization free
-designs in a simultaneous D-optimal designs (section
-\ref{subsec:clusterization simultaneous}).
+\ref{subsec:clusterization sequential}). Then, we consider a
+simultaneous D-optimal design scenario (section
+\ref{subsec:clusterization simultaneous}). We show that designs that
+exhibit clusterization are just as optimal as clusterization free
+designs.
 
 A beautiful mathematical structure arises in D-optimal designs when no
 model error is present. The Lagrange multipliers problems is in fact a
@@ -542,7 +543,7 @@ next sequential step's prior.
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
 
 \subsection{Overview}
-We seek a formulation of the optimal design problem
+We seek a formulation of the D-optimal design problem
 \eqref{eq:optimization} using Lagrange multipliers. In section
 \ref{section:objective} we find the gradient of $\tar$ and record it
 in \eqref{eq:tar grad}. In section \ref{subsec:unit length} we suggest
@@ -550,7 +551,7 @@ using unit-norm constraints on rows of $\obs$ so that the optimization
 problem in \eqref{eq:optimization} is analytically tractable. We find
 gradients for the new constraints and record them in \eqref{eq:grad
   constraints}. Finally, in section \ref{subsec:necessary} we use
-these to formulate the optimal design problem as a Lagrange
+these to formulate the D-optimal design problem as a Lagrange
 multipliers problem in equation \eqref{eq:conditions}.
 
 
@@ -593,29 +594,15 @@ $T(\obs) := \obs^*\Sigma(\obs)\obs$. The first variation of $\tar
     % 
     % 
     &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
-      - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
-      &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
-      + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \ref{lemma:aux calc})}\\
-%%   \end{split}
-%% \end{align} 
-%% Taking adjoints and cyclic permutations we see that
-%% \begin{align*}
-%%   \tr \postcov \fwd^* V^* \Sigma^{-1} \obs \fwd 
-%%   &= \tr \postcov \fwd^* \obs^* \Sigma^{-1} V \fwd,
-%% \end{align*}
-%% and
-%% \begin{align*}
-%%   \tr \postcov \fwd^* \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \fwd
-%%   &= \tr \postcov \fwd^*  \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs \fwd.
-%% \end{align*}
-%% We use these in the first equality of the following derivation,
-%% which continues the one in \eqref{eq:precursor}.
-%% %
-%% \begin{align} \label{eq:tar var}
-%%   \begin{split}
-      %% \delta \tar(\obs) V 
-    &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V 
-    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \text{ (trace rules, $\frac{1}{2}$ prefactor disappears)} \\
+    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
+    &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
+    + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \ref{lemma:aux calc})}\\
+    %
+    %
+    %
+    &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V -
+    \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \text{
+        (cyclic property of trace)} \\
     %
     %
     % 
@@ -652,9 +639,9 @@ important in section \ref{subsec:necessary}.
 
 \subsection{Unit Length Constraints and their Gradients}\label{subsec:unit length}
 In this section we suggest relaxed constraints in
-\eqref{eq:constraints} and derive their gradient in \eqref{eq:grad
-  constraints}, for the purpose of using them in a Lagrange
-multipliers problem.
+\eqref{eq:constraints}. We then find their gradient in \eqref{eq:grad
+  constraints}. This is for using them in a Lagrange multipliers
+problem.
 
 As mentioned before, we cannot choose any $\obs$ when maximizing
 $\tar(\obs)$. Recall $\obs = (\meas_1,\dots,\meas_m)^t \in
@@ -743,17 +730,14 @@ we noted at the end of section \ref{section:objective}, the
 gradient $\nabla \phi_j(\obs)$ is a row vector.
 
 \subsection{Necessary Conditions for Optimal Design}\label{subsec:necessary}
-Necessary conditions for optimality are found using Lagrange
+Necessary conditions for D-optimality are found using Lagrange
 multipliers:
 \begin{align}
-  %\begin{split}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
   \label{eq:Lagrange mult1} \\
     &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
-  %\end{split}
 \end{align}
-%% This means that any optimal design satisfies \eqref{eq:Lagrange mult1}
-%% and \eqref{eq:Lagrange mult2}.
+
 Recall where the objects involved are defined: the observation operator,
 $\obs \in (\hilo^*)^m$. The objective $\tar:
 (\hilo^*)^m \to \R$ and its gradient is $\nabla \tar(\obs) \in
@@ -782,29 +766,29 @@ notation, we can write this more compactly as:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SECTION Analysis of Optimal Designs --- Vanishing Model Error
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Analysis of Optimal Designs --- Vanishing Model Error}\label{section:vanishing}
+\section{Analysis of D-Optimal Designs --- Vanishing Model Error}\label{section:vanishing}
 \subsection{Overview}
-In this section we analyze optimal designs when no model error is
+In this section we analyze D-optimal designs when no model error is
 present. We discuss sensor clusterization in section
 \ref{section:clusterization}. We prepare the ground by first deriving
 a nonlinear eigenvalue problem in $\obs$ for D-optimal designs in
 section \ref{subsec:eigenproblem}. This nonlienar eigenvalue problem
 is recorded in \eqref{eq:mod conditions}. Next, we characterize
-optimal designs as ones that make all eigenvalues equal in the above
+D-optimal designs as ones that make all eigenvalues equal in the above
 mentioned nonlinear eigenvalue problem. The derivation is presented in
 section \ref{subsec:characterization}.
 
 
-\subsection{The nonlinear Eigenvalue Problem}\label{subsec:eigenproblem}
+\subsection{The Nonlinear Eigenvalue Problem}\label{subsec:eigenproblem}
 $\modcov = 0$ implies $\Sigma= \sigma^2I$. The necessary first-order
-condition for optimality \eqref{eq:conditions} becomes
+condition for D-optimality \eqref{eq:conditions} becomes
 \begin{equation}\label{eq:eigenproblem}
   \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi, 
 \end{equation}
 with $\Xi$ diagonal. This looks like an eigenvalue problem for the
 self-adjoint operator $\sigma^{-2}\fwd \postcov \fwd^*$. The rows of
 $\obs$, namely $\meas_j,j=1,\dots, m$, are the eigenvectors. Note,
-however, that $\postcov$ depends on $\obs$ --- which makes
+however, that $\postcov$ depends on $\obs$. This makes
 \eqref{eq:eigenproblem} a nonlinear eigenvalue problem.
 
 Below, the expression for the posterior covariance \eqref{eq:postcov}
@@ -855,7 +839,7 @@ of the analysis:
 In \eqref{eq:mod conditions}, take $\func_j^{*} = \meas_j$ and $C :=
 (\fwd \prcov \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim diag}.
 \end{proof}
-At most $m$ of the eigenvectors of $\obs^*\obs$ have positive
+At most $m$ of the eigenvectors of $\obs^*\obs$ have a positive
 eigenvalue, because $k := \rank \obs^*\obs \leq m$. Denote the
 corresponding non-zero eigenvalues of $\obs^*\obs$ by
 $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$. No
@@ -906,19 +890,17 @@ By definition of the objective \eqref{eq:objective} and using
     &=\frac12 \sum_{i=1}^{k} \log (\sigma^2\lambda_i^{-1} + \eta_i), 
   \end{split}
 \end{align}
-up to an additive constant independent of $\obs$. Therefore, a
-D-optimal design maximizes
+and the last equality holds up to an additive constant independent of
+$\obs$. Therefore, a D-optimal design maximizes
 
 \begin{equation}\label{eq:true target}
   \sum_{i=1}^{k}\log (\sigma^2 \lambda_i^{-1} + \eta_i),
 \end{equation}
 
-with the norm constraints on $\meas_j,j=1,\dots,m$.
-%%  This implies that $\meas_i \in span\{\ev_j\}_{j=1}^k,i=1,\dots,
-%% m$.
-The problem of D-optimal design has now been cast to finite
-dimensions. This justifies using linear algebra. Lemma
-\ref{lemma:free} (proved in the appendix) does exactly that.
+with the norm constraints on $\meas_j,j=1,\dots,m$. The problem of
+D-optimal design has now been cast to finite dimensions. This
+justifies using linear algebra. Lemma \ref{lemma:free} (given a
+constructive proof in the appendix) does exactly that.
 \begin{restatable*}[Unit norm decomposition]{lemma}{free}\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
   = m$, $m \geq k$. We can find $\func_j \in \R^k,j=1,\dots,m$
@@ -931,102 +913,46 @@ $M = \diag(\eta_1,\dots,\eta_k)$. Lemma \ref{lemma:free} gives us $A$
 with unit norm columns such that $AA^T = M$. Take $\meas_i
 :=\sum_{j=1}^k A_{ji}\ev_j^*$. The constraints $\|\meas_i\| = 1,
 i=1,\dots,m$ are satisified by construction. Verifying $\obs^*\obs
-\ev_i = \eta_i \ev_i$ is not too difficult:
+\ev_i = \eta_i \ev_i$ is not too difficult.
 
-\begin{align*}
-  \begin{split}
-    \obs \ev_i &= (\meas_1,\dots,\meas_k)^t\ev_i\\
-    &= (\sum_{j=1}^kA_{j1}\ev_j^*,\dots,\sum_{j=1}^kA_{jk}\ev_j^*)^t\ev_i\\
-    &= (\sum_{j=1}^kA_{j1}\ev_j^*\ev_i,\dots,\sum_{j=1}^kA_{jk}\ev_j^*\ev_i)^t\\
-    &= (A_{i1},\dots,A_{ik})^t.
-  \end{split}
-\end{align*}
+%% \begin{align*}
+%%   \begin{split}
+%%     \obs \ev_i &= (\meas_1,\dots,\meas_k)^t\ev_i\\
+%%     &= (\sum_{j=1}^kA_{j1}\ev_j^*,\dots,\sum_{j=1}^kA_{jk}\ev_j^*)^t\ev_i\\
+%%     &= (\sum_{j=1}^kA_{j1}\ev_j^*\ev_i,\dots,\sum_{j=1}^kA_{jk}\ev_j^*\ev_i)^t\\
+%%     &= (A_{i1},\dots,A_{ik})^t.
+%%   \end{split}
+%% \end{align*}
 
-Now, 
+%% Now, 
 
-\begin{align*}
-  \begin{split}
-    \obs^*\obs \ev_i &= \obs^*(A_{i1},\dots,A_{ik})^t\\
-    &=(A_{i1},\dots,A_{ik}) \obs \text{ (by \eqref{eq:obs*})}\\
-    &=(A_{i1},\dots,A_{ik}) (\sum_{j=1}^kA_{j1}\ev_j^*,\dots,\sum_{j=1}^kA_{jk}\ev_j^*)^t\\
-    &=\sum_{l=1}^k A_{il} \sum_{j=1}^kA_{jl}\ev_j^* \\
-    %&=\sum_{j=1}^k  \sum_{l=1}^kA_{il}A_{jl}\ev_j^* \\
-    &=\sum_{j=1}^k  [AA^t]_{ij}\ev_j^* \\
-    %&=\eta_i\ev_i^*\\
-    &=\eta_i\ev_i^*. 
-  \end{split}
-\end{align*}
+%% \begin{align*}
+%%   \begin{split}
+%%     \obs^*\obs \ev_i &= \obs^*(A_{i1},\dots,A_{ik})^t\\
+%%     &=(A_{i1},\dots,A_{ik}) \obs \text{ (by \eqref{eq:obs*})}\\
+%%     &=(A_{i1},\dots,A_{ik}) (\sum_{j=1}^kA_{j1}\ev_j^*,\dots,\sum_{j=1}^kA_{jk}\ev_j^*)^t\\
+%%     &=\sum_{l=1}^k A_{il} \sum_{j=1}^kA_{jl}\ev_j^* \\
+%%     %&=\sum_{j=1}^k  \sum_{l=1}^kA_{il}A_{jl}\ev_j^* \\
+%%     &=\sum_{j=1}^k  [AA^t]_{ij}\ev_j^* \\
+%%     %&=\eta_i\ev_i^*\\
+%%     &=\eta_i\ev_i^*. 
+%%   \end{split}
+%% \end{align*}
 
 We have shown that we can realize any $\{\eta_i\}_{i=1}^k$, as long as
-$\sum+{i=1}^k \eta_i = m$. We now turn to understand which choice of
+$\sum_{i=1}^k \eta_i = m$. We now turn to understand which choice of
 $\{\eta_i\}_{i=1}^k$ is optimal. By concavity of $\log$, the fastest
-increase in the design criterion (equation \eqref{eq:true target}) is
-gained by increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is
-smallest. So, no weight should be given to (i.e. measurement taken in
-direction of) the $n$th eigenvector before $\sigma^2\lambda_i^{-1} +
-\eta_i \geq \sigma^2\lambda_n^{-1},\ \forall i \neq n$. Thus, we
-should choose $\{\eta_i\}_{i=1}^k$ as follows. First, order the
-eigenvalues $\lambda_1 \geq \lambda_2 \geq \dots$. We should increase
-$\sigma^2 \lambda_1^{-1} + \eta_1$ until it equals
+increase in the design criterion \eqref{eq:true target} is gained by
+increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is smallest. So,
+no weight should be given to (i.e. measurement taken in direction of)
+the $n$th eigenvector before $\sigma^2\lambda_i^{-1} + \eta_i \geq
+\sigma^2\lambda_n^{-1},\ \forall i \neq n$. Thus, we should choose
+$\{\eta_i\}_{i=1}^k$ as follows. First, order the eigenvalues
+$\lambda_1 \geq \lambda_2 \geq \dots$. We should increase $\sigma^2
+\lambda_1^{-1} + \eta_1$ until it equals
 $\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} +
 \eta_i,i=1,2$ are increased until $\sigma^2 \lambda_i^{-1} + \eta_i =
 \sigma^2\lambda_3^{-1},i=1,2$ and so forth.
-
-\begin{figure}%{r}{0.25\textwidth} 
-    %\centering
-    \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
-    \caption{Three graduated lab cylinders, corresponding to three
-      eigenvectors. Prior eigenvalues not shown.}
-    \label{fig:cylinder}
-\end{figure}
-
-The argument above has the important consequence (illustrated in
-figure \ref{fig:optimal vs not}) that the eigenvalues in the nonlinear
-eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
-perfect sense. We know the Lagrange multipliers $\xi_i,i=1,\dots,k$
-tell us how much we gain by relaxing the constraints and there is no
-reason for any eigenvector to give us more than any other (otherwise
-we would put more weight on the better eigenvector, as can be
-understood from the discussion in the following paragraph).
-
-
-One can understand D-optimal designs as follows: Imagine each
-eigenvector corresponds to a graduated lab cylinder (figure
-\ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
-liquid of $\sigma^2\lambda_i^{-1}$ volume units. This liquid
-represnets the prior precision, weighted by observation noise. The
-volume of the green liquid is increasing in $i$. A D-optimal design
-with $m$ measurements ignores cylinders indexed $m+1$ and above. It
-has blue liquid of $m$ volume units at its disposal. It distributes
-said liquid by repeatedly adding a drop to whatever cylinder currently
-has the lowest level of liquid in it (lowest precision). The result of
-such a procedure is illustrated in figure \ref{fig:optimal vs
-  not}. The analysis conducted in this section is summarized in
-Theorem \ref{thm:char} below.
-
-
-\begin{theorem}[Characterizing D-optimal designs with vanishing model error]\label{thm:char}
-  Let:
-  \begin{enumerate}
-  \item $\fwd, \prcov$ the forward and prior covariance operators, respectively.
-  \item $m, \sigma^2$ the number of measurements taken and observation
-    noise variance, respectively.
-  \item $\obs$ a D-optimal design operator.
-  \item $\{\lambda_i\}_{i=1}^\infty$ the eigenvalues of
-    $\fwd\prcov\fwd^*$ in decreasing order.
-  \item $\{\ev_i\}_{i=1}^\infty$ the corresponding eigenvectors.
-  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, where
-    $\obs$ maximizes $\tar(\obs)$.
-  \end{enumerate}
-  Then:
-  \begin{enumerate}
-  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
-  \item There exists $0 < k \leq m$ such that $\eta_i = 0$ for $i\geq k+1$.
-  \item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
-  \item If $k < m$, then $\sigma^2\lambda_i^{-1} + \eta_i \leq
-    \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
-  \end{enumerate}
-\end{theorem}
 
 
 \pgfplotstableread{
@@ -1086,14 +1012,15 @@ Theorem \ref{thm:char} below.
       
     \end{axis}
   \end{tikzpicture}
-  \caption{Characterizing an optimal design, compared to a sub-optimal
-    design. Both designs are allowed three measurements, which means
-    the blue area has accumulated height of $3$ in both plots. An
-    optimal design (left) increases precision (reduces uncertainty)
-    where it is lowest. A sub-optimal design (right) does not. In this
-    example, a measurement is taken partly in the direction of the
-    third eigenvector, where precision is bigger even compared to the
-    posterior precision of the optimal design on the left.}
+  \caption{Characterizing a D-optimal design, compared to a
+    sub-optimal design. Both designs are allowed three measurements,
+    which means the blue area has accumulated height of $3$ in both
+    plots. A D-optimal design (left) increases precision (reduces
+    uncertainty) where it is lowest. A sub-optimal design (right) does
+    not. In this example, a measurement is taken partly in the
+    direction of the third eigenvector. The precision for this
+    eigenvector is bigger even than the posterior precision of the
+    D-optimal design on the left.}
   \label{fig:optimal vs not}
 \end{figure}
 
@@ -1117,9 +1044,64 @@ Theorem \ref{thm:char} below.
 }\noclusterization
 
 
+The argument above has the important consequence (illustrated in
+figure \ref{fig:optimal vs not}) that the eigenvalues in the nonlinear
+eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
+perfect sense. We know the Lagrange multipliers $\xi_i,i=1,\dots,k$
+tell us how much we gain by relaxing the constraints and there is no
+reason for any eigenvector to give us more than any other (otherwise
+we would put more weight on the better eigenvector, as can be
+understood from the discussion in the following paragraph).
 
 
+One can understand D-optimal designs as follows: Imagine each
+eigenvector corresponds to a graduated lab cylinder (figure
+\ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
+liquid of $\sigma^2\lambda_i^{-1}$ volume units. This liquid
+represnets the prior precision, weighted by observation noise. The
+volume of the green liquid is increasing in $i$. A D-optimal design
+with $m$ measurements ignores cylinders indexed $m+1$ and above. It
+has blue liquid of $m$ volume units at its disposal. It distributes
+said liquid by repeatedly adding a drop to whatever cylinder currently
+has the lowest level of liquid in it (lowest precision). The result of
+such a procedure is illustrated in figure \ref{fig:optimal vs
+  not}. The analysis conducted in this section is summarized in
+Theorem \ref{thm:char} below.
 
+
+\begin{theorem}[Characterizing D-optimal designs with vanishing model error]\label{thm:char}
+  Let:
+  \begin{enumerate}
+  \item $\fwd, \prcov$ the forward and prior covariance operators, respectively.
+  \item $m, \sigma^2$ the number of measurements taken and observation
+    noise variance, respectively.
+  \item $\obs$ a D-optimal design operator.
+  \item $\tar$ as definded in \eqref{eq:objective}.
+  \item $\{\lambda_i\}_{i=1}^\infty$ eigenvalues of $\fwd\prcov\fwd^*$
+    in decreasing order.
+  \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
+  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$, where
+    $\obs$ maximizes $\tar(\obs)$.
+  \end{enumerate}
+  Then:
+  \begin{enumerate}
+  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
+  \item There exists $0 < k \leq m$ such that $\eta_i = 0$ for $i\geq
+    k+1$ and $k = \rank \obs^*\obs$.
+  \item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
+  \item If $k < m$, then $\sigma^2\lambda_i^{-1} + \eta_i \leq
+    \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
+  \end{enumerate}
+\end{theorem}
+
+
+\begin{figure}%{r}{0.25\textwidth} 
+    %\centering
+    \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
+    \caption{Three graduated lab cylinders, corresponding to three
+      eigenvectors. Prior eigenvalues not shown.}
+    \label{fig:cylinder}
+\end{figure}
 
 
 
@@ -1139,18 +1121,26 @@ design scenario is understood by specializing thorem \ref{thm:char} to
 one measurement each time. In this case $m=1$, so $k=1$, $\meas_1
 \parallel \ev_1$ and $\eta_1 = 1$. As hinted in section
 \ref{subsec:seq vs sim}, the posterior becomes the prior for the next
-step. Similar reasoning leads to:
+step. The eigenvectors of the new posterior are the same as for the
+previous one. A new measurement will be taken in the direction of
+eigenvector with smalles eigenvalue. This leads to:
 \begin{align*}
   \begin{split}
     \meas_2 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_2 \\
     \meas_2 \parallel \ev_2  &\text{ o.w. }
   \end{split}
 \end{align*}
-In the first case, we get clusterization. In the second, we consider $\meas_3$:
+In the first case, we get clusterization immediately. In the second,
+we consider $\meas_3$. Same reasoning leads to the conclusion that the
+eigenvectors of the new prior precision are the same. The eigenvalues,
+however, are $\lambda^{-1}_1 + \sigma^{-2}, \lambda^{-1}_2 +
+\sigma^{-2}, \lambda_3^{-1}, \dots$. A new measurement is taken in the
+direction of eigenvector of smallest precision (note that
+$\lambda^{-1}_1 + \sigma^{-2} < \lambda^{-1}_2 + \sigma^{-2}$):
 \begin{align*}
   \begin{split}
-    \meas_3 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_3 \\
-    %\meas_3 \parallel  \ev_2  &\text{ if } \\
+    \meas_3 \parallel \ev_1 &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 <
+    \sigma^2\lambda^{-1}_3 \\
     \meas_3 \parallel  \ev_3  &\text{ o.w. }
   \end{split}
 \end{align*}
@@ -1160,34 +1150,42 @@ some eigenvector of the prior $\fwd \prcov\fwd^*$. This eigenvector
 has the smallest eigenvalue of the previous step's posterior precision
 operator. If we do not encounter clusterization after $m$ such steps,
 this means that measurement $\meas_k$ was taken in the direction
-$\ev_k$ for $k=1,\dots,m$. Thus $\sigma^2\lambda_i^{-1} + 1 \geq
-\sigma^2\lambda_k^{-1}$ for $i=1,\dots,k-1$. This is will not happen if
-$\lambda_k^{-1}$ increase quickly --- in section \ref{subsec:abstract
-  OED} we assumed $\fwd$ is strongly smoothing, which means
-eigenvalues of $(\fwd \prcov\fwd^*)^{-1}$ grow quickly.
+$\ev_k$ for $k=1,\dots,m$. Thus:
+\begin{align}\label{eq:failure}
+  \begin{split}
+    \sigma^2\lambda_{k-1}^{-1} + 1 \geq \sigma^2\lambda_k^{-1}, \text{ for } 1\leq k \leq m
+    \Longrightarrow \lambda_m^{-1} - \lambda_{m-1}^{-1} \leq \sigma^{-2}.
+  \end{split}
+\end{align}
+
+But \eqref{eq:failure} implies $\{\lambda_i^{-1}\}_{i=1}^{\infty}$
+grows at most linearly. In section \ref{subsec:abstract OED} we
+assumed $\fwd$ is strongly smoothing, which means eigenvalues of
+$(\fwd \prcov\fwd^*)^{-1}$ grow quickly. Thus, if we take $m$ large
+enough, \eqref{eq:failure} will eventually fail and we will observe
+sensor clusterization.
 
 
 \subsection{Simultaneous Design}\label{subsec:clusterization simultaneous}
-In a simultaneous design scenario, the result is not as clear cut as
-in the sequential design case. We still rely on previous results ---
-namely Corollary \ref{cor:same ev} and Theorem \ref{thm:char}. An
-illustration of two D-optimal designs scenarios for the same problem
-are presented in figure \ref{fig:clusterization} --- the first
-exhibits clusterization and second does not. As was discussed earlier
-and illustrated in figure \ref{fig:optimal vs not}, an optimal design
-makes the precision ``flat'' where it is lowest. Clusterization may
-arise when two or more eigenvectors have equal precision. This
-happens, for example for eigenvectors $1$ and $2$ when considering
-measurements $\meas_i,i=1,2,3$. Taking three measurements, it is
-possible that $\meas_1$ is such that it equalizes the precision of
-eigenvectors $1$ and $2$. In this case, taking mesurements $\meas_2 =
-\meas_3 = \frac{1}{2}(\ev_1 + \ev_2)$ leads to an optimal design that
-exhibits clusterization. Similarly, taking $\meas_5 = \meas_6 =
-\frac{1}{3}(\ev_1 + \ev_2 + \ev_3)$ also gives rise to an optimal
-design that exhibits clusterization. It is important to note that
-there are (infinitely) many optimal designs that actually do not
-exhibit clusterization --- e.g. the second design presented in figure
-\ref{fig:clusterization}.
+In a simultaneous design scenario, the result is not simple as in the
+sequential design case. We now see that a design that exhibits
+clusterization is as optimal as one that does not. Corollary
+\ref{cor:same ev} tells us that we can realize any design we want
+(encoded in $\{\eta_i\}$), given the trace constraint for
+$\obs^*\obs$. Theorem \ref{thm:char} tells us that for D-optimality,
+we only need to make the posterior flat where we take measurements
+(recall figure \ref{fig:optimal vs not}). We are left with the freedom
+of assigning any part of $\eta_i$ to any measurement $\meas_j$. Two
+possible assignments for the same problem are illustrated in figure
+\ref{fig:clusterization}. The first exhibits clusterization and second
+does not. It is important to note that neither arises as a result of
+some numerical optimization scheme. Both designs are give the same
+design criterion $\tar$, because their posteriors are identical. By
+Theorem \ref{thm:char}, both are (possible) maximizers to the same
+D-optimal design problem. One exhibits clusterization, and one does
+not. It is possible that a real-life problem is more restricted than
+the model we consider here. Exactly in what way this happens is not
+clear and should be the subject of further research.
 
 
 \begin{figure}
@@ -1262,13 +1260,13 @@ exhibit clusterization --- e.g. the second design presented in figure
   \end{tikzpicture}
   \caption{Clusterization (left) and non-clusterization (right) in
     simultaneous D-optimal designs. Posterior precision per
-    eigenvector, after taking a measurement $\meas_i$ is plotted. An
-    optimal design reduces uncertainty where it is highest first. This
-    can be achieved by taking repeated measurements --- $\meas_2 =
-    \meas_3$ and $\meas_5 = \meas_6$ in the left design. This is not
-    necessary though, as can be seen in the right design. Both designs
-    achieve the same levels of uncertainty. The left one exhibits
-    clusterization. The right one does not.}
+    eigenvector after taking measurements $\meas_i$ is plotted. Both
+    designs are identical for all practical matters --- their
+    posteriors are identical. In the left panel we see how an optimal
+    design is achieved with repeated measurements. $\meas_2 = \meas_3$
+    and $\meas_5 = \meas_6$. This is not necessary though, as can be
+    seen in the right panel. Both designs achieve the same levels of
+    uncertainty. The left exhibits clusterization. The right does not.}
   \label{fig:clusterization}
 \end{figure}
 
@@ -1281,7 +1279,7 @@ exhibit clusterization --- e.g. the second design presented in figure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SECTION Analysis of Optimal Designs --- Non-Vanishing Model Error
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Analysis of Optimal Designs --- Non-Vanishing Model Error}\label{section:non vanishing}
+\section{Analysis of D-Optimal Designs --- Non-Vanishing Model Error}\label{section:non vanishing}
 In this section we show the effect model error has on the
 clusterization phenomenon. We will see that if $\modcov \neq 0$
 clustering will not occur. This is contrary to the previous case of
@@ -1313,21 +1311,12 @@ $$
 
 Hence no increase in the design criterion is achieved by taking a
 repeated measurement (in the limit $\sigma^2 \to 0$). This is clearly
-sub-optimal and $\obsm$ cannot be an optimal design. Thus, for small
+sub-optimal and $\obsm$ cannot be a D-optimal design. Thus, for small
 measurement error levels, the clusterization effect will be mitigated
 by the presence of a non-zero model error. Since the design criterion
 is not defined for $\sigma^2 = 0$ and identical measurements, we
 cannot make a statement regarding $\sigma^2 = 0$, except in the
 limiting sense described above.
-
-
-%% \section{Conclusion and Future Research Directions}\label{section:conclusion}
-%% Our relaxed model gives us insight to D-optimal designs. We see that
-%% in our setting, uncertainty is not reduced in any direction
-%% (eigenvector) before it is the largest uncertainty present. We show
-%% how and why repeated measurements can give rise to a D-optimal
-%% design. There is more work to be done in understanding exactly what
-%% causes such designs to be strictly better than others.
 
 
 \section{Acknowledgements}
