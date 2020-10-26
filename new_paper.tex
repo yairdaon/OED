@@ -130,14 +130,15 @@ Interest (QoI). The focus of the latter is reducing forward solves,
 using randomized linear algebra. Both studies present numerical
 techniques for finding optimal designs when model error is
 present. Both are restricted to linear inverse problems (although in
-the latter the authors use their method on a nonlinear problem with a
-Laplace approximation for the posterior). Both find an optimal design
-by first solving a continuous problem for sensor weights. Said
-solution is then sparsified to give a binary design. Both studies are
-successful in the task of Bayesian inversion. However, neither of
-these studies mentions any effect model errors can have on sensor
-clusterization. The current study is mostly theoretical and aims to
-fill the theoretical gap of understanding sensor clusterization.
+the latter the authors use their method on a nonlinear problem by
+taking a Laplace approximation for the posterior). Both find an
+optimal design by first solving a continuous problem for sensor
+weights. Said solution is then sparsified to give a binary
+design. Both studies are successful in the task of Bayesian
+inversion. However, neither of these studies mentions any effect model
+errors can have on sensor clusterization. The current study is mostly
+theoretical and aims to fill the theoretical gap of understanding
+sensor clusterization.
 
 
 \subsection{Contribution}
@@ -458,7 +459,7 @@ A D-optimal design maximizes expected KL divergence between posterior
 and prior. It is useful to recall the definition of KL divergence for
 an arbitrary prior measure:
 $$
-KL(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(x) \der \post(x).
+KL(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 $$
 
 The meaning of D-optimal design in infinite-dimensional Hilbert spaces
@@ -1330,9 +1331,11 @@ limiting sense described above.
 
 
 \section{Acknowledgements}
-This study is a part of my PhD thesis. It was written under the
-instruction of Prof. Georg Stadler in New York University's Courant
-Institute. I would like to thank him for his great mentorship.
+This study is a part of my PhD thesis. Most of it was written under
+the instruction of Prof. Georg Stadler in New York University's
+Courant Institute. I would like to thank him for his great
+mentorship. This work was supported by The Raymond and Beverly Sackler
+Post-Doctoral Scholarship.
 
 \appendix
 \section{General Lemmas}
