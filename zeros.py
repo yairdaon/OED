@@ -135,6 +135,16 @@ def main(m, k):
     assert len(norms) == m
     assert np.all(np.abs(norms - 1) < EPS) 
 
+
+    for vec in A.T:
+        pos_ind = np.all(np.abs(A.T - vec) < EPS, axis=1)
+        neg_ind = np.all(np.abs(A.T + vec) < EPS, axis=1)
+        ind = np.logical_or(pos_ind, neg_ind).astype(int)
+        assert ind.shape == (A.shape[1],)
+        if np.sum(ind) > 1:
+            print(ind)
+            #pdb.set_trace()
+    
     
 def get_A(M, m):
     k = M.shape[0]
@@ -209,8 +219,8 @@ if __name__ == '__main__':
     try:
         test_givens()
         test_theta()
-        for m in range(0,30,3):
-            for k in range(2, m+1, 2):
+        for m in range(0,10,3):
+            for k in range(2, m+1, 1):
                 print(m, k) 
                 main(k=k, m=m)
                        
