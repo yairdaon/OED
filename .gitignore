@@ -9,3 +9,6 @@
 *.out
 *.blg
 *.dvi
+.idea
+.ipynb_checkpoints
+__pycache__
