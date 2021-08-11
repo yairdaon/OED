@@ -3,7 +3,8 @@ import numpy as np
 from multiplier import FourierMultiplier
 
 
-class Prior(FourierMultiplier):  # Actually, negative Laplacian
+class Prior(FourierMultiplier):
+    """ Implement a negative Laplacian prior Delta^{gamma}, where gamma < 0"""
     def __init__(self, gamma, **kwargs):
         assert gamma < 0
         super().__init__(**kwargs)
@@ -24,22 +25,27 @@ class Prior(FourierMultiplier):  # Actually, negative Laplacian
         # self.ind = ind
         # self.ind = ind
 
-    def sample(self, return_coeffs=False):
-        if self.transform == 'fft':
-            coeffs = np.random.randn(self.N, 2).view(np.complex128)
-            coeffs = np.squeeze(coeffs)
-        else:
-            coeffs = np.random.randn(self.freqs.size)
-        coeffs *= self.multiplier
-        coeffs[0] = 0
+    def sample(self, return_coeffs=False, n_sample=1):
+        """ Generate a sample and return its coefficients if needed"""
+        assert n_sample > 0
+        coeffs = self.normal(n_sample)
+
+        coeffs = np.einsum('ij, j->ij', coeffs, np.power(self.multiplier, 0.5))
+        coeffs[:, 0] = 0
 
         u0 = self.coeff2u(coeffs)
-        return u0, coeffs if return_coeffs else u0
+        if return_coeffs:
+            return u0, coeffs
+        return u0
 
     def inverse(self, v):
-        return self(v, mult=self.inv_mult)
+        ''' A bit of a hack - change multiplier to inverse multiplier and back'''
+        tmp = self.multiplier
+        self.multiplier = self.inv_mult
+        ret = self(v)
+        self.multiplier = tmp
+        return ret
 
-    #         return Laplacian(gamma=-self.gamma, N=self.N, L=self.L)
 
     def __str__(self):
         return '$(-\Delta)^{' + str(self.gamma) + '}$'

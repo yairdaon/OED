@@ -1,6 +1,5 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from numpy.testing import assert_allclose
 from scipy.interpolate import interp1d
 
 from src.forward import Heat
@@ -18,17 +17,18 @@ def test_heat():
 
     fwd = Heat(N=N, L=L, alpha=alpha, time=time)
     prior = Prior(gamma=gamma, N=N, L=L)
-    meas = [0.2356323, 0.9822345, 1.451242, 1.886632215, 2.43244,
-            2.89235633, 1, 1.2]
+    meas = [0.23563, 0.9822345, 1.451242, 1.886632215,
+            2.43244, 2.8923563, 1.0, 1.2]
     obs = PointObservation(meas=meas, L=L, N=N)
 
     # IC
     u0, coeffs0 = prior.sample(return_coeffs=True)
+    u0 = np.squeeze(u0)
 
     # Analytic
     coeffsT = coeffs0 * fwd.multiplier
     uT = prior.coeff2u(coeffsT)
-
+    uT = np.squeeze(uT)
     # Numeric solution
     uT_numeric = fwd(u0)
 

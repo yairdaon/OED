@@ -10,11 +10,16 @@ plt.rcParams['figure.facecolor'] = 'black'
 plt.rcParams['text.color'] = 'white'
 
 
-k = 7
-obs = PointObservation(N=1400, L=2, meas=np.linspace(0, 2, 50))
-u = obs.eigenvector(k)
+def main():
+    k = 7
+    obs = PointObservation(N=1400, L=2, meas=np.linspace(0, 2, 50))
+    u = obs.eigenvector(k)
 
-fig = plt.figure(figsize=(6, 3))
-plt.plot(obs.x, u)
-plt.scatter(obs.meas, obs(u).real)
-plt.show()
+    fig = plt.figure(figsize=(6, 3))
+    plt.plot(obs.x, u)
+    plt.scatter(obs.meas, obs(u).real)
+    plt.show()
+
+
+if __name__ == '__main__':
+    main()
