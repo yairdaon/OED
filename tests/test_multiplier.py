@@ -1,22 +1,25 @@
 import numpy as np
 import pytest
 from matplotlib import pyplot as plt
+from numpy import allclose
 from numpy.testing import assert_allclose
 from probability import Prior
-from scipy.sparse.linalg import eigsh, eigs, aslinearoperator, gmres
+from scipy.sparse.linalg import eigsh, gmres, cg
 
-from src.forward import Heat
 from src.multiplier import FourierMultiplier
-from src.observations import DiagObservation
+
+from tests.helpers import align_eigenvectors
 
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
 @pytest.fixture
 def multiplier(transform):
+    """Create a multiplier object for testing with eigenvalues
+    (11, 10, ..., 1, 0, 0, 0, ...)"""
     multiplier = FourierMultiplier(L=3, N=500, transform=transform)
     multiplier.multiplier = np.zeros(multiplier.N)
-    multiplier.multiplier[:10] = np.arange(11,1,-1)
+    multiplier.multiplier[:10] = np.arange(10, 0, -1)
     return multiplier
 
 
@@ -29,7 +32,9 @@ def test_matvec(multiplier):
 
 @pytest.mark.parametrize('transform', ['dct', 'fft'])
 def test_matmat(multiplier):
-    M = np.random.randn(multiplier.N, multiplier.N)
+    """Test matmat is the same as matvec on every column"""
+    M = multiplier.normal(n_sample=10).T
+    assert M.shape == (multiplier.N, 10)
     matmat = multiplier(M)
     matvec = np.vstack([multiplier(col) for col in M.T]).T
     assert_allclose(matmat, matvec)
@@ -37,15 +42,21 @@ def test_matmat(multiplier):
 
 @pytest.mark.parametrize('transform', ['dct', 'fft'])
 def test_matrix_hermitian(multiplier):
+    """ Test matrix representation is hermitian"""
     matrix = multiplier.matrix
     assert_allclose(matrix, matrix.conjugate().T)
 
 
 @pytest.mark.parametrize('transform', ['dct', 'fft'])
 def test_linearoperator(multiplier):
-    b = multiplier.normal(n_sample=1)
-    b = np.squeeze(b)
-    x, info = gmres(multiplier, b)
+    b = sum([np.random.randn() * multiplier.eigenvector(i) for i in np.where(multiplier.multiplier)[0]])
+    x, _ = cg(multiplier, b)
+    b_hat = multiplier(x)
+    assert_allclose(b, b_hat)
+
+    x, _ = gmres(multiplier, b)
+    b_hat = multiplier(x)
+    assert_allclose(b, b_hat)
 
 
 @pytest.mark.parametrize('transform', ['dct', 'fft'])
@@ -64,53 +75,50 @@ def test_orthogonality(multiplier):
     assert_allclose(np.dot(forward, vector), multiplier.to_freq_domain(vector), rtol=0, atol=1e-9)
     assert_allclose(np.dot(inverse, vector), multiplier.to_time_domain(vector), rtol=0, atol=1e-9)
 
-    for i in range(multiplier.N):
+
+@pytest.mark.parametrize('transform', ['dct', 'fft'])
+def test_eigenvectors_agree(multiplier):
+    for i in range(multiplier.N//2, multiplier.N):
         eigenvector = np.zeros(multiplier.N)
         eigenvector[i] = 1
         eigenvector = multiplier.to_time_domain(eigenvector)
-        eigenvector = eigenvector / np.linalg.norm(eigenvector)
+        # eigenvector = eigenvector / np.linalg.norm(eigenvector)
         class_eigenvector = multiplier.eigenvector(i)
         diff = np.abs(eigenvector - class_eigenvector)
-        # assert_allclose(eigenvector, class_eigenvector, atol=1e-3, rtol=0)
-
-    # U = np.vstack(fwd.eigenfunction(i) for i in range(fwd.N))
-    #assert_allclose(U, forward)
+        assert allclose(diff, 0, atol=1e-3, rtol=0): # and allclose(diff1, 0, atol=1e-3, rtol=0)):
+    # U = np.vstack(multiplier.eigenvector(i) for i in range(multiplier.N))
+    # assert_allclose(U, forward)
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
 def test_eigen_norm(multiplier):
-
-    norms = []
+    """ Verify norm of eigenfunctions is 1 in the L2 sense and norm
+    of eigenvector is 1 in the standaed linear algebraic sense"""
     for i in range(multiplier.N):
         eigenvector = multiplier.eigenvector(i)
         assert not np.any(np.isnan(eigenvector))
+        assert abs(np.linalg.norm(eigenvector) - 1) < 1e-9
+
         eigenfunction = multiplier.eigenfunction(i)(multiplier.x)
-        norm = np.linalg.norm(eigenfunction)
-        norms.append(norm)
-    assert max(norms) - min(norms) < 1e-9
+        assert abs(multiplier.norm(eigenfunction) - 1) < 1e-9
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
 def test_eigenfunction(multiplier):
 
     number_eigenvectors = 4
-    comparison = multiplier.N // 5
     D, P = eigsh(multiplier, which='LM', k=number_eigenvectors)
     assert P.shape == (multiplier.N, number_eigenvectors)
-    P = P.T#[:number_eigenvectors,:]
-    P = np.einsum('ij, i -> ij', P, np.sign(P[:, comparison].real))
-    # assert np.all(P[:, comparison].real > 0)
-    # P = P[np.argsort(P[:, comparison].real)]
+    P = P[:, :number_eigenvectors].T
+    P = align_eigenvectors(P)
 
     eigs = np.vstack([multiplier.eigenvector(i) for i in range(multiplier.N)])
     eigs = eigs[:number_eigenvectors,:]
-    eigs = np.einsum('ij, i -> ij', eigs, np.sign(eigs[:, comparison].real))
-    # assert np.all(eigs[:, comparison].real > 0)
-    # eigs = eigs[np.argsort(eigs[:, comparison].real)]
+    eigs = align_eigenvectors(eigs)
 
+    assert P.shape == eigs.shape
     assert_allclose(np.linalg.norm(eigs, axis=1), 1)
     assert_allclose(np.linalg.norm(P, axis=1), 1)
-    assert P.shape == eigs.shape
 
     errors = np.abs(P - eigs)
     err = np.max(errors)
@@ -181,7 +189,3 @@ def test_coeff2u(transform):
     for sample, coefficient in zip(samples, coefficients):
         calculated_sample = sum(c * prior.eigenfunction(i)(prior.x) for i, c in enumerate(coefficient))
         assert_allclose(sample, calculated_sample, rtol=0, atol=1e-12)
-
-# def test_mult2time():
-#     pass
-

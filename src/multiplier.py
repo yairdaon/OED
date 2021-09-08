@@ -7,14 +7,12 @@ from functools import partial
 
 
 class Operator(LinearOperator):
-    def __init__(self, N=500, L=1, size=None):
+    def __init__(self, N=500, L=1, size=None, dtype=None):
         shape = (N, N) if size is None else (size, N)
-        super().__init__(dtype=np.float, shape=shape)
+        super().__init__(dtype=np.dtype(dtype), shape=shape)
         self.L = L
         self.N = N
-        self.shape = shape
         self.x = np.linspace(0, self.L, num=self.N, endpoint=False)
-        self.dtype = np.float
 
 
     def norm(self, v):
@@ -24,28 +22,28 @@ class Operator(LinearOperator):
 class FourierMultiplier(Operator):
 
     def __init__(self, transform='dct', **kwargs):
-        super().__init__(**kwargs)
-        self.freqs = fft.fftfreq(self.N, d=self.L / self.N)
+        dtype = 'complex' if transform == 'fft' else 'float'
+        super().__init__(**kwargs, dtype=dtype)
         self.multiplier = None # Need to implement this on particular case
         self.transform = transform
         if self.transform == 'dct':
-            self.to_freq_domain = partial(fft.dct, norm='ortho')
-            self.to_time_domain = partial(fft.idct, norm='ortho')
-            self.func = np.cos
+            self.freqs = fft.fftfreq(self.N, d=self.L / self.N)
+            self.to_freq_domain = partial(fft.dct, norm='ortho', type=2)
+            self.to_time_domain = partial(fft.dct, norm='ortho', type=3)
+            self.freqs = np.arange(self.N) / self.L
         # elif self.transform == 'dst':
         #     self.to_freq_domain = partial(fft.dst, norm='ortho')
         #     self.to_time_domain = partial(fft.idst, norm='ortho')
-        #     self.func = np.sin
         elif self.transform == 'fft':
+            self.freqs = fft.fftfreq(self.N, d=self.L / self.N)
             self.to_freq_domain = partial(fft.fft, norm='ortho')
             self.to_time_domain = partial(fft.ifft, norm='ortho')
-            self.func = lambda x: np.exp(2j * x)
 
     def eigenfunction(self, i):
         if self.transform == 'fft':
             eigen = lambda x: np.exp(2j * np.pi * self.freqs[i] * x)
         elif self.transform == 'dct':
-            eigen = lambda x: np.cos(np.pi*i/(2*self.N) + np.pi * self.freqs[i] * x)
+            eigen = lambda x: np.cos(np.pi*i/2/self.N + np.pi * self.freqs[i] * x)
         norm = np.linalg.norm(eigen(self.x)) * np.sqrt(self.L / self.N)
         return lambda x: eigen(x) / norm
 
