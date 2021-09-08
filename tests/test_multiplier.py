@@ -85,9 +85,16 @@ def test_eigenvectors_agree(multiplier):
         # eigenvector = eigenvector / np.linalg.norm(eigenvector)
         class_eigenvector = multiplier.eigenvector(i)
         diff = np.abs(eigenvector - class_eigenvector)
-        assert allclose(diff, 0, atol=1e-3, rtol=0): # and allclose(diff1, 0, atol=1e-3, rtol=0)):
-    # U = np.vstack(multiplier.eigenvector(i) for i in range(multiplier.N))
-    # assert_allclose(U, forward)
+        assert allclose(diff, 0, atol=1e-3, rtol=0)
+
+
+@pytest.mark.parametrize('transform', ['fft','dct'])
+def test_basis_matrix_agree(multiplier):
+    identity = np.eye(multiplier.N)
+    forward = multiplier.to_time_domain(identity, axis=0)
+    U = np.vstack(multiplier.eigenvector(i) for i in range(multiplier.N)).T
+    assert_allclose(U, forward, atol=1e-9, rtol=0)
+    assert_allclose(np.dot(U.conjugate().T, forward), identity, atol=1e-9, rtol=0)
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
