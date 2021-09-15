@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 
@@ -7,19 +8,22 @@ from src.observations import PointObservation
 from src.probability import Prior
 
 
-def test_heat():
-    np.random.seed(5842)
-    N = 3000
+@pytest.mark.parametrize("transform", ['dct', 'fft'])
+def test_heat(transform):
+    """Check that analytic and numerical solution are identical.
+    Check that we can measure correctly also."""
+    # np.random.seed(532842)
+    N = 300
     L = 3
     time = 3e-3
     alpha = 0.6
     gamma = -.6
 
-    fwd = Heat(N=N, L=L, alpha=alpha, time=time)
-    prior = Prior(gamma=gamma, N=N, L=L)
+    fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
+    prior = Prior(gamma=gamma, N=N, L=L, transform=transform)
     meas = [0.23563, 0.9822345, 1.451242, 1.886632215,
             2.43244, 2.8923563, 1.0, 1.2]
-    obs = PointObservation(meas=meas, L=L, N=N)
+    obs = PointObservation(meas=meas, L=L, N=N, transform=transform)
 
     # IC
     u0, coeffs0 = prior.sample(return_coeffs=True)
@@ -27,8 +31,8 @@ def test_heat():
 
     # Analytic
     coeffsT = coeffs0 * fwd.multiplier
-    uT = prior.coeff2u(coeffsT)
-    uT = np.squeeze(uT)
+    uT = prior.coeff2u(coeffsT).squeeze()
+    # uT = np.squeeze(uT)
     # Numeric solution
     uT_numeric = fwd(u0)
 

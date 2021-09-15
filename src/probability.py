@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.linalg import solve
 
 from multiplier import FourierMultiplier
 
@@ -31,7 +32,7 @@ class Prior(FourierMultiplier):
         coeffs = self.normal(n_sample)
 
         coeffs = np.einsum('ij, j->ij', coeffs, np.power(self.multiplier, 0.5))
-        coeffs[:, 0] = 0
+        # coeffs[:, 0] = 0
 
         u0 = self.coeff2u(coeffs)
         if return_coeffs:

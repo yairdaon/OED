@@ -1,25 +1,17 @@
 import numpy as np
 import pytest
-from numpy.testing import assert_allclose
-from scipy.interpolate import interp1d
 from matplotlib import pyplot as plt
-
+from numpy.testing import assert_allclose
 from observations import PointObservation, DiagObservation
+from scipy.interpolate import interp1d
+
+from tests.helpers import align_eigenvectors
 
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
-def align_eigenvectors(P):
-    P = np.einsum('ij, i -> ij', P, np.exp(-1j * np.angle(P[:, 0])))
-    assert np.all(P[:, 0].real > 0)
-    assert np.all(np.abs(P[:, 0].imag) < 1e-12)
-    ind = np.argsort(P[:, 1])
-    P = P[ind, :]
-    # P = np.sort(P, axis=0)
-    return P
-
-
 def test_point_observation():
+    """Test we can measure an observable correctly."""
     k = 7
     obs = PointObservation(N=1400, L=2, meas=np.linspace(0.1, 1.9, 50, endpoint=False))
     u = obs.eigenvector(k)
@@ -36,6 +28,9 @@ def test_point_observation():
 
 @pytest.mark.parametrize("transform", ['fft', 'dct'])
 def test_diagonal_observation_eigenvectors(transform):
+    """Test that a measurement operator with diagonal multiplier indeed has
+    the correct eigenvectors for OstarO (note that this is up to multiplication
+    by a complex unit)."""
     np.random.seed(342424)
     n = 3  # len(COLORS)
     singular_values = np.random.randn(n) ** 2

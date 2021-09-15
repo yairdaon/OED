@@ -13,10 +13,12 @@ class Operator(LinearOperator):
         self.L = L
         self.N = N
         self.x = np.linspace(0, self.L, num=self.N, endpoint=False)
+        self.h = self.L / self.N
+        self.sqrt_h = np.sqrt(self.h)
 
 
     def norm(self, v):
-        return np.sqrt(np.dot(v.conjugate(), v) * self.L / self.N)
+        return np.linalg.norm(v) * self.sqrt_h
 
 
 class FourierMultiplier(Operator):
@@ -27,7 +29,7 @@ class FourierMultiplier(Operator):
         self.multiplier = None # Need to implement this on particular case
         self.transform = transform
         if self.transform == 'dct':
-            self.freqs = fft.fftfreq(self.N, d=self.L / self.N)
+            self.freqs = fft.fftfreq(self.N, d=self.h)
             self.to_freq_domain = partial(fft.dct, norm='ortho', type=2)
             self.to_time_domain = partial(fft.dct, norm='ortho', type=3)
             self.freqs = np.arange(self.N) / self.L
@@ -35,7 +37,7 @@ class FourierMultiplier(Operator):
         #     self.to_freq_domain = partial(fft.dst, norm='ortho')
         #     self.to_time_domain = partial(fft.idst, norm='ortho')
         elif self.transform == 'fft':
-            self.freqs = fft.fftfreq(self.N, d=self.L / self.N)
+            self.freqs = fft.fftfreq(self.N, d=self.h)
             self.to_freq_domain = partial(fft.fft, norm='ortho')
             self.to_time_domain = partial(fft.ifft, norm='ortho')
 
@@ -44,7 +46,7 @@ class FourierMultiplier(Operator):
             eigen = lambda x: np.exp(2j * np.pi * self.freqs[i] * x)
         elif self.transform == 'dct':
             eigen = lambda x: np.cos(np.pi*i/2/self.N + np.pi * self.freqs[i] * x)
-        norm = np.linalg.norm(eigen(self.x)) * np.sqrt(self.L / self.N)
+        norm = self.norm(eigen(self.x))
         return lambda x: eigen(x) / norm
 
     def eigenvector(self, i):
@@ -52,9 +54,7 @@ class FourierMultiplier(Operator):
         return v / np.linalg.norm(v)
 
     def coeff2u(self, coeff):
-        eigenfunctions = np.vstack([self.eigenfunction(i)(self.x) for i in range(self.N)])
-        res = np.einsum('ik, kj->ij', coeff, eigenfunctions)
-        return res
+        return self.to_time_domain(coeff) / self.sqrt_h
 
     def normal(self, n_sample=1):
         if self.transform == 'fft':
