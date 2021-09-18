@@ -6,6 +6,7 @@ from joblib import delayed, Parallel
 from matplotlib import pyplot as plt
 
 from forward import Heat
+from numpy import allclose
 from numpy.testing import assert_allclose
 from observations import PointObservation
 from probability import Prior, Posterior
@@ -77,19 +78,44 @@ def test_prior_sample_covariance(prior):
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
-def test_posterior(prior):
-
-    sig = 0.000001
-    time = 5e-2
+def test_posterior_utility(prior):
+    sig = 1e-2
+    time = 2e-2
     alpha = 0.6
     L, N, transform = prior.L, prior.N, prior.transform
 
-    meas = np.random.uniform(low=0, high=L, size=500)
+    meas = np.random.uniform(low=0, high=L, size=50)
 
     np.random.seed(134567)
     obs = PointObservation(meas=meas, L=L, N=N, transform=transform)
     fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
-    # prior.multiplier[4:] = 0
+    post = Posterior(fwd=fwd,
+                     prior=prior,
+                     sigSqr=sig**2,
+                     L=L,
+                     N=N,
+                     transform=transform)
+    u0 = prior.sample(return_coeffs=False).squeeze()
+
+    uT = fwd(u0)
+    data = obs(uT) + np.random.normal(scale=sig, size=obs.shape[0])
+    post.update(obs, data)
+    utility = post.utility()
+    assert utility > 0
+
+@pytest.mark.parametrize("transform", ['dct', 'fft'])
+def test_posterior(prior):
+
+    sig = 1e-2
+    time = 2e-2
+    alpha = 0.6
+    L, N, transform = prior.L, prior.N, prior.transform
+
+    meas = np.random.uniform(low=0, high=L, size=50)
+
+    np.random.seed(134567)
+    obs = PointObservation(meas=meas, L=L, N=N, transform=transform)
+    fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
     post = Posterior(fwd=fwd,
                      prior=prior,
                      sigSqr=sig**2,
@@ -102,24 +128,28 @@ def test_posterior(prior):
     data = obs(uT) + np.random.normal(scale=sig, size=obs.shape[0])
     post.update(obs, data)
 
-    fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(6, 16))
-    ax[0].plot(fwd.x, u0.real, label='IC')
-    ax[0].plot(fwd.x, uT.real, label='FC')
-    ax[0].scatter(obs.meas, np.dot(post.A, post.to_freq_domain(u0)).real, label='Matrix FC')
-    ax[0].scatter(obs.meas, data.real, label='Measurements', marker='*', s=10, color='r', zorder=10)
-    line, = ax[0].plot(post.x, post.m, label='Posterior mean')
-    # ax[0].plot(post.x, post.m + 2*post.ptwise, color=line.get_color(), label='Posterior std', linestyle=':')
-    # ax[0].plot(post.x, post.m - 2*post.ptwise, color=line.get_color(), linestyle=':')
-    ax[0].legend()
+    err = np.abs(post.m - u0).max()
+    if err < 1e-2:
+        assert err < 1e-2
+    else:
+        fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(6, 16), sharex=True)
+        ax[0].plot(fwd.x, u0.real, label='IC')
+        ax[0].plot(fwd.x, uT.real, label='FC')
+        ax[0].scatter(obs.meas, np.dot(post.A, post.to_freq_domain(u0)).real, label='Matrix FC')
+        ax[0].scatter(obs.meas, data.real, label='Measurements', marker='*', s=10, color='r', zorder=10)
+        line, = ax[0].plot(post.x, post.m, label='Posterior mean')
+        ax[0].plot(post.x, post.m + 2*post.ptwise, color=line.get_color(), label='95% Posterior Interval', linestyle=':')
+        ax[0].plot(post.x, post.m - 2*post.ptwise, color=line.get_color(), linestyle=':')
+        ax[0].legend()
 
-    ax[1].plot(post.x, post.ptwise.real, label='posterior STD')
-    ax[1].scatter(obs.meas, np.zeros(obs.shape[0]), label='measurement locations on x-axis')
-    ax[1].legend()
-    fig.suptitle(f"Transform = {transform}")
+        ax[1].plot(post.x, post.ptwise, label='posterior STD')
+        ax[1].scatter(obs.meas, np.ones(obs.shape[0]) * post.ptwise.mean(), label='measurement locations on x-axis')
+        ax[1].legend()
+        fig.suptitle(f"Transform = {transform}, error = {err:.4f}")
 
-    # print(np.diag(post.Sigma)[:9])
-    # tra = post.to_freq_domain(post.m)
-    # plt.close()
-    # plt.plot(tra)
-    plt.tight_layout()
-    plt.show()
+        # print(np.diag(post.Sigma)[:9])
+        # tra = post.to_freq_domain(post.m)
+        # plt.close()
+        # plt.plot(tra)
+        plt.tight_layout()
+        plt.show()

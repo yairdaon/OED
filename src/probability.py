@@ -79,15 +79,13 @@ class Posterior(FourierMultiplier):
         Sigma_over_sigSqr = self.to_time_domain(self.to_time_domain(Sigma_over_sigSqr).conjugate().T).conjugate().T
         self.ptwise = np.sqrt(np.abs(np.diag(Sigma_over_sigSqr * self.sigSqr))).real
 
-    def utility(self, meas):
-        obs = PointObservation(meas=meas, N=self.N, L=self.L)
-        A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
-        AstarA = np.einsum('ji, jk->ik', A.conjugate(), A)
+    def utility(self):
         C_sqrt = np.sqrt(self.prior.multiplier)
-        tmp = np.einsum('i,ij,j->ij', C_sqrt, AstarA, C_sqrt.conjugate()) / self.sigSqr + np.eye(self.N)
-        utility = -np.linalg.slogdet(tmp)[1]
-        assert utility < 0
-        return {'meas': meas, 'utility': utility}
+        tmp = np.einsum('i,ij,j->ij', C_sqrt, self.AstarA, C_sqrt.conjugate()) / self.sigSqr + np.eye(self.N)
+        utility = np.linalg.slogdet(tmp)
+        assert utility[0].real > 0
+        assert abs(utility[0].imag) < 1e-14
+        return utility[1]
 
     def __le__(self, other):
         return self.utility <= other.utility
