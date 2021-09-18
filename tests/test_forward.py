@@ -31,7 +31,7 @@ def test_heat(transform):
 
     # Analytic
     coeffsT = coeffs0 * fwd.multiplier
-    uT = prior.coeff2u(coeffsT).squeeze()
+    uT = prior.to_time_domain(coeffsT).squeeze()
     # uT = np.squeeze(uT)
     # Numeric solution
     uT_numeric = fwd(u0)
@@ -42,8 +42,9 @@ def test_heat(transform):
     interpolant = interp1d(fwd.x, uT)
     measure_success = np.allclose(obs(uT), interpolant(obs.meas), atol=1e-2, rtol=0)
 
-    if not (numeric_success and inversion_success and measure_success):
-        assert True
+    success = numeric_success and inversion_success and measure_success
+    if success:
+        assert success
     else:
         plt.plot(fwd.x, u0.real, label='IC')
         plt.plot(fwd.x, uT.real, label='Analytic FC')
@@ -54,6 +55,8 @@ def test_heat(transform):
         # plt.plot(prior.x, prior.inverse(uT), label= prior.inv_str + 'FC')
         plt.scatter(obs.meas, obs(uT).real, label='Measurements of FC', marker='*', s=10, color='w', zorder=10)
         plt.legend()
+        title = f'{transform} successes: numeric {numeric_success} inversion {inversion_success} measure {measure_success}'
+        plt.title(title)
         plt.show()
-        assert False
+        assert success
 

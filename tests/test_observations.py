@@ -7,23 +7,29 @@ from scipy.interpolate import interp1d
 
 from tests.helpers import align_eigenvectors
 
+from src.probability import Prior
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
-def test_point_observation():
+@pytest.mark.parametrize("transform", ['fft', 'dct'])
+def test_point_observation(transform):
     """Test we can measure an observable correctly."""
-    k = 7
-    obs = PointObservation(N=1400, L=2, meas=np.linspace(0.1, 1.9, 50, endpoint=False))
-    u = obs.eigenvector(k)
-    measured = interp1d(obs.x, u)(obs.meas)
-
-    if np.allclose(measured, obs(u), rtol=0, atol=1e-3):
-        assert True
+    N, L = 2000, 3
+    prior = Prior(N=N, L=L, transform=transform, gamma=-1.6)
+    u = prior.sample(return_coeffs=False).squeeze()
+    measurements = np.linspace(0, L, 33, endpoint=False)
+    obs = PointObservation(N=N, L=L, meas=measurements)
+    measured = interp1d(prior.x, u)(obs.meas)
+    err = np.abs(measured - obs(u)).max()
+    if err < 1e-3:
+        assert err < 1e-3
     else:
         plt.figure(figsize=(6, 3))
         plt.plot(obs.x, u)
-        plt.scatter(obs.meas, obs(u).real)
+        plt.scatter(obs.meas, obs(u).real, color='r')
+        plt.title(f'Max abs err {err}')
         plt.show()
+        assert err < 1e-3
 
 
 @pytest.mark.parametrize("transform", ['fft', 'dct'])

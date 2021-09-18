@@ -17,7 +17,7 @@ def prior(transform):
     np.random.seed(253234236)
     N = 500
     L = 3
-    gamma = -.6
+    gamma = -1.8
     return Prior(gamma=gamma, N=N, L=L, transform=transform)
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
@@ -25,29 +25,45 @@ def test_prior_sample_from_coefficients(prior):
 
     sample, coefficients = prior.sample(return_coeffs=True)
     sample = sample.squeeze()
-    sample_from_cefficients = prior.coeff2u(coefficients.squeeze())
+    sample_from_cefficients = prior.to_time_domain(coefficients.squeeze())
     assert_allclose(sample, sample_from_cefficients)
-
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
 def test_prior_sample_mean(prior):
     """Test that sampling the prior we get zero mean."""
-    n_sample = 500000
+    n_sample = 5000
+    k = 10
+    get_mean = lambda : prior.sample(return_coeffs=False, n_sample=n_sample).mean(axis=0)
+    sample = sum(Parallel(n_jobs=6)(delayed(get_mean)() for _ in range(k))) / k
+    assert sample.shape == (prior.N,)
 
-    sample, coeff = prior.sample(return_coeffs=True, n_sample=n_sample)
-    assert sample.shape == (n_sample, prior.N)
-    assert coeff.shape == (n_sample, prior.N)
-
-    mean = np.mean(sample, axis=0)
-    assert mean.shape == (prior.N,)
-    assert_allclose(mean, np.zeros_like(mean), rtol=0, atol=1e-2)
+    assert_allclose(sample, np.zeros_like(sample), rtol=0, atol=1e-2)
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
 def test_prior_sample_covariance(prior):
     """Test the empirical covariance is the same as the matrix representation of the prior.
-    TODOs - check eigenvectors and eigenvalues agree???"""
+    TODOs - check eigenvectors and eigenvalues agree???
+
+    We compare the empiric covariance with the operator. The covariance operator is defined (see Wikipedia) as
+
+     C: H -> H , <Cx, y> = \int_H <x,z><y,z> dP(z).
+
+    We think of H as as discretization of L2. H contains functions that
+    are constant on every interval [nh, nh+h) and the inner product is
+
+    <x,y> = \int_0^L x(u)y*(u) du = h sum_i=1^N x_iy_i*.
+
+    Thus (\dot is the linear algebraic dot product):
+
+    h sum (Cx)_iy_i* = <Cx, y> = h^2 \int_H x\dotz y \dot z dP(z).
+
+    Taking x = e_i and y = e_j, we get that
+
+    C_ij = h E[z_i z_j].
+
+    On the left - the covariance operator. On the right - the empiric covariance."""
     n_sample = 50000
     k = 40
     function = lambda: np.cov(prior.sample(n_sample=n_sample), rowvar=False)
@@ -56,35 +72,24 @@ def test_prior_sample_covariance(prior):
     assert empiric_covariance.shape == (prior.N, prior.N)
     assert_allclose(empiric_covariance, empiric_covariance.conjugate().T)
 
-    operator_covariance = prior.matrix
-    empiric_ratio = np.mean(operator_covariance / empiric_covariance)
-    assert abs(empiric_ratio - prior.h) < 1e-4
-    assert_allclose(operator_covariance, empiric_covariance * prior.h, rtol=0, atol=1e-4)
-    # operator_covariance ~ empiric_covariance * h
+    # See details in the docs above.
+    assert_allclose(prior.matrix, empiric_covariance * prior.h, rtol=0, atol=1e-4)
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
-def test_prior_covariance_multiplier(prior):
-    operator_covariance = prior.matrix
-    covariance = prior.mult2time(np.diag(prior.multiplier))
-    assert covariance.shape == (prior.N, prior.N)
-    assert_allclose(covariance, operator_covariance, rtol=0, atol=1e-9)
 
 @pytest.mark.parametrize("transform", ['dct', 'fft'])
 def test_posterior(prior):
 
-    sig = 0.0000005
+    sig = 0.000001
     time = 5e-2
     alpha = 0.6
     L, N, transform = prior.L, prior.N, prior.transform
 
-    meas = np.linspace(0.05, L - 0.05, endpoint=False, num=7)
-    meas += np.random.normal(scale=0.01, size=meas.size)
-    meas = np.random.uniform(low=0.05, high=L-0.05, size=79)
+    meas = np.random.uniform(low=0, high=L, size=500)
 
     np.random.seed(134567)
     obs = PointObservation(meas=meas, L=L, N=N, transform=transform)
     fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
-    prior.multiplier[4:] = 0
+    # prior.multiplier[4:] = 0
     post = Posterior(fwd=fwd,
                      prior=prior,
                      sigSqr=sig**2,
@@ -94,10 +99,10 @@ def test_posterior(prior):
     u0 = prior.sample(return_coeffs=False).squeeze()
 
     uT = fwd(u0)
-    data = obs(uT) # + np.random.normal(scale=sig, size=obs.shape[0])
+    data = obs(uT) + np.random.normal(scale=sig, size=obs.shape[0])
     post.update(obs, data)
 
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(16, 6))
+    fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(6, 16))
     ax[0].plot(fwd.x, u0.real, label='IC')
     ax[0].plot(fwd.x, uT.real, label='FC')
     ax[0].scatter(obs.meas, np.dot(post.A, post.to_freq_domain(u0)).real, label='Matrix FC')
@@ -116,4 +121,5 @@ def test_posterior(prior):
     # tra = post.to_freq_domain(post.m)
     # plt.close()
     # plt.plot(tra)
+    plt.tight_layout()
     plt.show()

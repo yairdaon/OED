@@ -23,10 +23,10 @@ class PointObservation(Observation):
 
         if self.transform == 'fft':
             for k in range(self.N):
-                self.multiplier[:, k] = self.eigenfunction(k)(self.meas) / np.sqrt(self.N)
+                self.multiplier[:, k] = self.eigenfunction(k)(self.meas)
         elif self.transform in ('dct', 'dst'):
             for k in range(self.N):
-                self.multiplier[:, k] = self.eigenfunction(k)(self.meas) / np.sqrt(0.5 * self.N)
+                self.multiplier[:, k] = self.eigenfunction(k)(self.meas)
 
     def __str__(self):
         return 'Point observations ' + ', '.join([f'{me:.4f}' for me in self.meas])

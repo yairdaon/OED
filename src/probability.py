@@ -27,14 +27,15 @@ class Prior(FourierMultiplier):
         # self.ind = ind
 
     def sample(self, return_coeffs=False, n_sample=1):
-        """ Generate a sample and return its coefficients if needed"""
+        """ Generate a sample and return its coefficients if needed. This effectively uses the
+        Karhunen-Loeve expansion"""
         assert n_sample > 0
         coeffs = self.normal(n_sample)
 
         coeffs = np.einsum('ij, j->ij', coeffs, np.power(self.multiplier, 0.5))
         # coeffs[:, 0] = 0
 
-        u0 = self.coeff2u(coeffs)
+        u0 = self.to_time_domain(coeffs)
         if return_coeffs:
             return u0, coeffs
         return u0
@@ -71,7 +72,9 @@ class Posterior(FourierMultiplier):
         self.AstarA = np.einsum('ij, jk-> ik', self.A_H, self.A)
         self.precision = self.AstarA / self.sigSqr + np.diag(self.prior.inv_mult)
         Sigma = np.linalg.inv(self.precision)
+        Sigma = self.to_time_domain(self.to_time_domain(Sigma).conjugate().T).conjugate().T * self.h
 
+        # Because Sigma = (to_freq* to_time(multiplier)*)*
         #         self.A = A
         #         self.Sigma = Sigma
         #         self.precision = precision
@@ -84,7 +87,7 @@ class Posterior(FourierMultiplier):
         # mean[80:] = 0
 
         self.m = self.to_time_domain(mean)
-        self.ptwise = np.sqrt(np.abs(np.diag(self.mult2time(Sigma)))).real
+        self.ptwise = np.sqrt(np.abs(np.diag(Sigma))).real
 
     def utility(self, meas):
         obs = PointObservation(meas=meas, N=self.N, L=self.L)

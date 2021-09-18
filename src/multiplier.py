@@ -29,17 +29,30 @@ class FourierMultiplier(Operator):
         self.multiplier = None # Need to implement this on particular case
         self.transform = transform
         if self.transform == 'dct':
-            self.freqs = fft.fftfreq(self.N, d=self.h)
-            self.to_freq_domain = partial(fft.dct, norm='ortho', type=2)
-            self.to_time_domain = partial(fft.dct, norm='ortho', type=3)
+            # self.to_freq_domain = partial(fft.dct, norm='ortho', type=2)
+            # self.to_time_domain = partial(fft.dct, norm='ortho', type=3)
             self.freqs = np.arange(self.N) / self.L
         # elif self.transform == 'dst':
         #     self.to_freq_domain = partial(fft.dst, norm='ortho')
         #     self.to_time_domain = partial(fft.idst, norm='ortho')
         elif self.transform == 'fft':
             self.freqs = fft.fftfreq(self.N, d=self.h)
-            self.to_freq_domain = partial(fft.fft, norm='ortho')
-            self.to_time_domain = partial(fft.ifft, norm='ortho')
+            # self.to_freq_domain = partial(fft.fft, norm='ortho')
+            # self.to_time_domain = partial(fft.ifft, norm='ortho')
+
+    def to_freq_domain(self, x, axis=-1):
+        if self.transform == 'dct':
+            return fft.dct(x, norm='ortho', type=2, axis=axis) * self.sqrt_h
+        elif self.transform == 'fft':
+            return fft.fft(x, norm='ortho', axis=axis) * self.sqrt_h
+        # elif self.transform == 'dst':
+        #     return fft.dst(...)
+
+    def to_time_domain(self, x, axis=-1):
+        if self.transform == 'dct':
+            return fft.dct(x, norm='ortho', type=3, axis=axis) / self.sqrt_h
+        elif self.transform == 'fft':
+            return fft.ifft(x, norm='ortho', axis=axis) / self.sqrt_h
 
     def eigenfunction(self, i):
         if self.transform == 'fft':
@@ -50,11 +63,10 @@ class FourierMultiplier(Operator):
         return lambda x: eigen(x) / norm
 
     def eigenvector(self, i):
-        v = self.eigenfunction(i)(self.x)
-        return v / np.linalg.norm(v)
+        return self.eigenfunction(i)(self.x)
 
-    def coeff2u(self, coeff):
-        return self.to_time_domain(coeff) / self.sqrt_h
+    # def coeff2u(self, coeff):
+    #     return self.to_time_domain(coeff) / self.sqrt_h
 
     def normal(self, n_sample=1):
         if self.transform == 'fft':
@@ -65,14 +77,14 @@ class FourierMultiplier(Operator):
             Z = randn(n_sample, self.N)
         return Z
 
-    def mult2time(self, mult):
-        """mult is assumed 2D!!!"""
-        assert len(mult.shape) == 2
-        # M4 = ifft(mult, axis=0)
-        # M4 = ifft(M4.H, axis=0)
-        M = self.to_time_domain(mult, axis=0)
-        M = self.to_time_domain(M.conjugate().T, axis=0)
-        return M
+    # def mult2time(self, mult):
+    #     """mult is assumed 2D!!!"""
+    #     assert len(mult.shape) == 2
+    #     # M4 = ifft(mult, axis=0)
+    #     # M4 = ifft(M4.H, axis=0)
+    #     M = self.to_time_domain(mult, axis=0)
+    #     M = self.to_time_domain(M.conjugate().T, axis=0)
+    #     return M
 
     def _matvec(self, v):
         shp = v.shape
