@@ -68,26 +68,16 @@ class Posterior(FourierMultiplier):
 
     def update(self, obs, data):
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
-        self.A_H = self.A.T if self.transform == 'dct' else self.A.conjugate().T
-        self.AstarA = np.einsum('ij, jk-> ik', self.A_H, self.A)
-        self.precision = self.AstarA / self.sigSqr + np.diag(self.prior.inv_mult)
-        Sigma = np.linalg.inv(self.precision)
-        Sigma = self.to_time_domain(self.to_time_domain(Sigma).conjugate().T).conjugate().T * self.h
+        self.AstarA = np.einsum('ji, jk-> ik', self.A.conjugate(), self.A)
+        self.precision_sigSqr = self.AstarA + np.diag(self.prior.inv_mult) * self.sigSqr
+        self.Astar_data = np.einsum('ji, j->i', self.A.conjugate(), data)
 
-        # Because Sigma = (to_freq* to_time(multiplier)*)*
-        #         self.A = A
-        #         self.Sigma = Sigma
-        #         self.precision = precision
-        #         self.obs = obs
-        #         self.AstarA = AstarA
-        self.Astar_data = np.einsum('ij, j->i', self.A_H, data)
-        # Astar_data = self.to_freq_domain(Astar_data)
-        # print(np.linalg.cond(Sigma))
-        mean = solve(self.precision, self.Astar_data, assume_a='her') / self.sigSqr
-        # mean[80:] = 0
-
+        mean = solve(self.precision_sigSqr, self.Astar_data, assume_a='her')
         self.m = self.to_time_domain(mean)
-        self.ptwise = np.sqrt(np.abs(np.diag(Sigma))).real
+
+        Sigma_over_sigSqr = np.linalg.inv(self.precision_sigSqr)
+        Sigma_over_sigSqr = self.to_time_domain(self.to_time_domain(Sigma_over_sigSqr).conjugate().T).conjugate().T
+        self.ptwise = np.sqrt(np.abs(np.diag(Sigma_over_sigSqr * self.sigSqr))).real
 
     def utility(self, meas):
         obs = PointObservation(meas=meas, N=self.N, L=self.L)
