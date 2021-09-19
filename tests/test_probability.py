@@ -103,15 +103,15 @@ def test_posterior_utility(prior):
     utility = post.utility()
     assert utility > 0
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
+@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
 def test_posterior(prior):
 
-    sig = 1e-2
+    sig = 1e-9
     time = 2e-2
     alpha = 0.6
     L, N, transform = prior.L, prior.N, prior.transform
 
-    meas = np.random.uniform(low=0, high=L, size=50)
+    meas = np.random.uniform(low=0, high=L, size=5)
 
     np.random.seed(134567)
     obs = PointObservation(meas=meas, L=L, N=N, transform=transform)

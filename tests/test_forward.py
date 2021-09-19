@@ -8,7 +8,7 @@ from src.observations import PointObservation
 from src.probability import Prior
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
+@pytest.mark.parametrize("transform", ['dst', 'dct', 'fft'])
 def test_heat(transform):
     """Check that analytic and numerical solution are identical.
     Check that we can measure correctly also."""

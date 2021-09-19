@@ -11,7 +11,7 @@ from src.probability import Prior
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
-@pytest.mark.parametrize("transform", ['fft', 'dct'])
+@pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
 def test_point_observation(transform):
     """Test we can measure an observable correctly."""
     N, L = 2000, 3
@@ -32,7 +32,7 @@ def test_point_observation(transform):
         assert err < 1e-3
 
 
-@pytest.mark.parametrize("transform", ['fft', 'dct'])
+@pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
 def test_diagonal_observation_eigenvectors(transform):
     """Test that a measurement operator with diagonal multiplier indeed has
     the correct eigenvectors for OstarO (note that this is up to multiplication

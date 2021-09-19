@@ -31,7 +31,7 @@ def test_matvec(multiplier):
     assert matvec.max() - matvec.min() < 1e-9
 
 
-@pytest.mark.parametrize('transform', ['dct', 'fft'])
+@pytest.mark.parametrize('transform', ['dct', 'dst', 'fft'])
 def test_matmat(multiplier):
     """Test matmat is the same as matvec on every column"""
     M = multiplier.normal(n_sample=10).T
@@ -41,14 +41,14 @@ def test_matmat(multiplier):
     assert_allclose(matmat, matvec)
 
 
-@pytest.mark.parametrize('transform', ['dct', 'fft'])
+@pytest.mark.parametrize('transform', ['dct', 'dst', 'fft'])
 def test_matrix_hermitian(multiplier):
     """ Test matrix representation is hermitian"""
     matrix = multiplier.matrix
     assert_allclose(matrix, matrix.conjugate().T)
 
 
-@pytest.mark.parametrize('transform', ['dct', 'fft'])
+@pytest.mark.parametrize('transform', ['dct', 'dst', 'fft'])
 def test_linearoperator(multiplier):
     """Test a multiplier functions as a proper LinearOperator object. We check
     we can solve a linear system with GMRES and conjugate gradients.
@@ -67,8 +67,8 @@ def test_linearoperator(multiplier):
     assert_allclose(b, b_hat)
 
 
-@pytest.mark.xfail(reason="Need to consider a proper inner product")
-@pytest.mark.parametrize('transform', ['dct', 'fft'])
+# @pytest.mark.xfail(reason="Need to consider a proper inner product")
+@pytest.mark.parametrize('transform', ['dct', 'dst', 'fft'])
 def test_orthogonality(multiplier):
     """We check the matrices of to_freq_domain and to_time_domain are orthogonal / unitary up to a constant.
     We also check they are each others' inverse.
@@ -76,20 +76,21 @@ def test_orthogonality(multiplier):
     h = multiplier.h
     identity = np.eye(multiplier.N)
     forward = multiplier.to_freq_domain(identity, axis=0)
-    assert_allclose(np.dot(forward, forward.conjugate().T) / h , identity, atol=1e-9, rtol=0)
+    product = np.dot(forward, forward.conjugate().T) / h
+    assert_allclose(product, identity, atol=1e-7, rtol=0)
 
     inverse = multiplier.to_time_domain(identity, axis=0)
-    assert_allclose(np.dot(inverse, inverse.conjugate().T) * h, identity, atol=1e-9, rtol=0)
+    assert_allclose(np.dot(inverse, inverse.conjugate().T) * h, identity, atol=1e-7, rtol=0)
 
-    assert_allclose(np.dot(inverse, forward), identity, atol=1e-9, rtol=0)
-    assert_allclose(np.dot(forward, inverse), identity, atol=1e-9, rtol=0)
+    assert_allclose(np.dot(inverse, forward), identity, atol=1e-7, rtol=0)
+    assert_allclose(np.dot(forward, inverse), identity, atol=1e-7, rtol=0)
 
     vector = multiplier.normal().squeeze()
     assert_allclose(np.dot(forward, vector), multiplier.to_freq_domain(vector), rtol=0, atol=1e-9)
     assert_allclose(np.dot(inverse, vector), multiplier.to_time_domain(vector), rtol=0, atol=1e-9)
 
 
-@pytest.mark.parametrize('transform', ['dct', 'fft'])
+@pytest.mark.parametrize('transform', ['dct', 'dst', 'fft'])
 def test_eigenvectors_agree(multiplier):
     """We check that the eigenvectors we get from transforming the standard basis
     vectors are the same we get from the multiplier object iteslf."""
@@ -102,7 +103,7 @@ def test_eigenvectors_agree(multiplier):
         assert_allclose(diff, 0, atol=1e-11, rtol=0)
 
 
-@pytest.mark.parametrize('transform', ['fft', 'dct'])
+@pytest.mark.parametrize('transform', ['fft', 'dct', 'dst'])
 def test_basis_matrix_agree(multiplier):
     identity = np.eye(multiplier.N)
     forward = multiplier.to_time_domain(identity, axis=0)
@@ -110,7 +111,7 @@ def test_basis_matrix_agree(multiplier):
     assert_allclose(U, forward, atol=1e-9, rtol=0)
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
+@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
 def test_eigen_norm(multiplier):
     """ Verify norm of eigenfunctions is 1 in the L2 sense and norm
     of eigenvector is 1 in the standaed linear algebraic sense"""
@@ -123,7 +124,7 @@ def test_eigen_norm(multiplier):
         assert abs(multiplier.norm(eigenfunction) - 1) < 1e-9
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
+@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
 def test_eigenfunction(multiplier):
     """Test that eigenvectors we get from viewing multiplier as a LinearOperator
     (via the eigsh function) agree with the eigenvectors of the Multiplier object
@@ -176,7 +177,7 @@ def test_eigenfunction(multiplier):
         assert False
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
+@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
 def test_transformed_eigenvector_is_standard_basis_vector(multiplier):
     """Test that if we transform the kth eigenvector, we get the corresponding
     standard unit basis vector."""
@@ -198,7 +199,7 @@ def test_transformed_eigenvector_is_standard_basis_vector(multiplier):
         assert False
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft'])
+@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
 def test_eigenvector_and_eigenfunction_agree_to_normalization(transform):
     """Test that eigenvectors and eigenfunctions agree up to normalization."""
     multiplier = FourierMultiplier(N=100, L=1.53, transform=transform)
@@ -208,7 +209,7 @@ def test_eigenvector_and_eigenfunction_agree_to_normalization(transform):
         assert_allclose(ev, ef, rtol=0, atol=1e-9)
 
 
-# @pytest.mark.parametrize("transform", ['dct', 'fft'])
+# @pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
 # def test_coeff2u(transform):
 #     """Test the function that transforms a coefficient vector to a ***function***.
 #     We verify a sample and its coefficients are the same when we compare via coeff2u."""

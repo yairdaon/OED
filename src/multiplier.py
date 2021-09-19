@@ -29,36 +29,36 @@ class FourierMultiplier(Operator):
         self.multiplier = None # Need to implement this on particular case
         self.transform = transform
         if self.transform == 'dct':
-            # self.to_freq_domain = partial(fft.dct, norm='ortho', type=2)
-            # self.to_time_domain = partial(fft.dct, norm='ortho', type=3)
             self.freqs = np.arange(self.N) / self.L
-        # elif self.transform == 'dst':
-        #     self.to_freq_domain = partial(fft.dst, norm='ortho')
-        #     self.to_time_domain = partial(fft.idst, norm='ortho')
+        elif self.transform == 'dst':
+            self.freqs = np.arange(1,self.N+1) / self.L
         elif self.transform == 'fft':
             self.freqs = fft.fftfreq(self.N, d=self.h)
-            # self.to_freq_domain = partial(fft.fft, norm='ortho')
-            # self.to_time_domain = partial(fft.ifft, norm='ortho')
+
 
     def to_freq_domain(self, x, axis=-1):
         if self.transform == 'dct':
             return fft.dct(x, norm='ortho', type=2, axis=axis) * self.sqrt_h
         elif self.transform == 'fft':
             return fft.fft(x, norm='ortho', axis=axis) * self.sqrt_h
-        # elif self.transform == 'dst':
-        #     return fft.dst(...)
+        elif self.transform == 'dst':
+             return fft.dst(x, norm='ortho', type=2, axis=axis) * self.sqrt_h
 
     def to_time_domain(self, x, axis=-1):
         if self.transform == 'dct':
             return fft.dct(x, norm='ortho', type=3, axis=axis) / self.sqrt_h
         elif self.transform == 'fft':
             return fft.ifft(x, norm='ortho', axis=axis) / self.sqrt_h
+        elif self.transform == 'dst':
+            return fft.dst(x, norm='ortho', type=3, axis=axis) / self.sqrt_h
 
     def eigenfunction(self, i):
         if self.transform == 'fft':
             eigen = lambda x: np.exp(2j * np.pi * self.freqs[i] * x)
         elif self.transform == 'dct':
             eigen = lambda x: np.cos(np.pi*i/2/self.N + np.pi * self.freqs[i] * x)
+        elif self.transform == 'dst':
+            eigen = lambda x: np.sin(np.pi*(i+1)/2/self.N + np.pi * self.freqs[i] * x)
         norm = self.norm(eigen(self.x))
         return lambda x: eigen(x) / norm
 
