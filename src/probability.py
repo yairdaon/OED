@@ -102,12 +102,9 @@ class Posterior(FourierMultiplier):
         return utility[1]
 
     def observation(self, measurements):
-        return PointObservation(N=self.N,
-                                L=self.L,
-                                transform=self.transform,
+        return PointObservation(**self.specs,
                                 measurements=measurements)
 
     def minimization_target(self, measurements):
-        obs = self.observation(measurements)
-        return -self.utility(obs)
+        return -self.utility(measurements)
 

@@ -16,7 +16,6 @@ class Operator(LinearOperator):
         self.h = self.L / self.N
         self.sqrt_h = np.sqrt(self.h)
 
-
     def norm(self, v):
         return np.linalg.norm(v) * self.sqrt_h
 
@@ -35,6 +34,9 @@ class FourierMultiplier(Operator):
         elif self.transform == 'fft':
             self.freqs = fft.fftfreq(self.N, d=self.h)
 
+    @property
+    def specs(self):
+        return {"N": self.N, "L": self.L, "transform":self.transform}
 
     def to_freq_domain(self, x, axis=-1):
         if self.transform == 'dct':
