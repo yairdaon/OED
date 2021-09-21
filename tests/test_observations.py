@@ -18,15 +18,15 @@ def test_point_observation(transform):
     prior = Prior(N=N, L=L, transform=transform, gamma=-1.6)
     u = prior.sample(return_coeffs=False).squeeze()
     measurements = np.linspace(0, L, 33, endpoint=False)
-    obs = PointObservation(N=N, L=L, meas=measurements)
-    measured = interp1d(prior.x, u)(obs.meas)
+    obs = PointObservation(measurements=measurements, N=N, L=L)
+    measured = interp1d(prior.x, u)(obs.measurements)
     err = np.abs(measured - obs(u)).max()
     if err < 1e-3:
         assert err < 1e-3
     else:
         plt.figure(figsize=(6, 3))
         plt.plot(obs.x, u)
-        plt.scatter(obs.meas, obs(u).real, color='r')
+        plt.scatter(obs.measurements, obs(u).real, color='r')
         plt.title(f'Max abs err {err}')
         plt.show()
         assert err < 1e-3

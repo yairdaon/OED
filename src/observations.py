@@ -17,19 +17,14 @@ class Observation(FourierMultiplier):
 
 
 class PointObservation(Observation):
-    def __init__(self, meas=[], **kwargs):
-        super().__init__(**kwargs, size=len(meas))
-        self.meas = np.array(meas)
-
-        if self.transform == 'fft':
-            for k in range(self.N):
-                self.multiplier[:, k] = self.eigenfunction(k)(self.meas)
-        elif self.transform in ('dct', 'dst'):
-            for k in range(self.N):
-                self.multiplier[:, k] = self.eigenfunction(k)(self.meas)
+    def __init__(self, measurements=[], **kwargs):
+        super().__init__(**kwargs, size=len(measurements))
+        self.measurements = np.array(measurements)
+        for k in range(self.N):
+                self.multiplier[:, k] = self.eigenfunction(k)(self.measurements)
 
     def __str__(self):
-        return 'Point observations ' + ', '.join([f'{me:.4f}' for me in self.meas])
+        return 'Point observations ' + ', '.join([f'{me:.4f}' for me in self.measurements])
 
 
 class DiagObservation(Observation):

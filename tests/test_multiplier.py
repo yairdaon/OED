@@ -60,11 +60,11 @@ def test_linearoperator(multiplier):
     assert err < 1e-8
     x, _ = cg(multiplier, b)
     b_hat = multiplier(x)
-    assert_allclose(b, b_hat)
+    assert_allclose(b, b_hat, rtol=0, atol=1e-7)
 
     x, _ = gmres(multiplier, b)
     b_hat = multiplier(x)
-    assert_allclose(b, b_hat)
+    assert_allclose(b, b_hat, rtol=0, atol=1e-7)
 
 
 # @pytest.mark.xfail(reason="Need to consider a proper inner product")

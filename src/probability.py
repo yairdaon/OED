@@ -2,6 +2,7 @@ import numpy as np
 from scipy.linalg import solve
 
 from multiplier import FourierMultiplier
+from observations import PointObservation, Observation
 
 
 class Prior(FourierMultiplier):
@@ -11,20 +12,15 @@ class Prior(FourierMultiplier):
         super().__init__(**kwargs)
         ind = self.freqs != 0
         multiplier = np.ones(self.freqs.shape)
-        multiplier[ind] = np.power(np.pi ** 2 * self.freqs[ind] ** 2, gamma)
+        multiplier[ind] = np.power(np.pi**2 * self.freqs[ind]**2, gamma)
         inv_mult = np.ones(self.freqs.shape)
-        # (multiplier < 1e-4) #| (inv_mult < 1e-4) #| np.isnan(multiplier) | np.isnan(inv_mult) | (multiplier > 1e4) | (inv_mult > 1e4)
-        inv_mult[ind] = np.power(np.pi ** 2 * self.freqs[ind] ** 2, -gamma)
-        # ind[0] = True
-        # ind[-1] = True
-        # multiplier[ind] = 0
+        inv_mult[ind] = np.power(np.pi**2 * self.freqs[ind]**2, -gamma)
         self.multiplier = multiplier
-        # inv_mult[ind] = 0
+        assert not np.any(np.isnan(multiplier)), 'NaN in prior multiplier'
         self.inv_mult = inv_mult
+        assert not np.any(np.isnan(inv_mult)), 'NaN in prior inverse multiplier'
         self.gamma = gamma
-        # self.kwargs = kwargs
-        # self.ind = ind
-        # self.ind = ind
+        self.ind = ind
 
     def sample(self, return_coeffs=False, n_sample=1):
         """ Generate a sample and return its coefficients if needed. This effectively uses the
@@ -66,27 +62,52 @@ class Posterior(FourierMultiplier):
         self.prior = prior
         self.sigSqr = sigSqr
 
-    def update(self, obs, data):
+    def operators(self, obs):
+        if type(obs) in (list, tuple, np.ndarray):
+            obs = self.observation(obs)
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
+        assert not np.any(np.isnan(self.A)), 'NaN in A'
+        assert not np.any(np.isinf(self.A)), 'inf in A'
+
         self.AstarA = np.einsum('ji, jk-> ik', self.A.conjugate(), self.A)
-        self.precision_sigSqr = self.AstarA + np.diag(self.prior.inv_mult) * self.sigSqr
-        self.Astar_data = np.einsum('ji, j->i', self.A.conjugate(), data)
+        assert not np.any(np.isnan(self.AstarA)), 'NaN in AstarA'
+        assert not np.any(np.isinf(self.AstarA)), 'inf in AstarA'
 
-        mean = solve(self.precision_sigSqr, self.Astar_data, assume_a='her')
-        self.m = self.to_time_domain(mean)
+        self.precision = self.AstarA / self.sigSqr + np.diag(self.prior.inv_mult)
+        assert not np.any(np.isnan(self.precision)), 'NaN in precision'
+        assert not np.any(np.isinf(self.precision)), 'inf in precision'
 
-        Sigma_over_sigSqr = np.linalg.inv(self.precision_sigSqr)
-        Sigma_over_sigSqr = self.to_time_domain(self.to_time_domain(Sigma_over_sigSqr).conjugate().T).conjugate().T
-        self.ptwise = np.sqrt(np.abs(np.diag(Sigma_over_sigSqr * self.sigSqr))).real
+        return self
 
-    def utility(self):
+    def Astar_data(self, data):
+        return np.einsum('ji, j->i', self.A.conjugate(), data)
+
+    def mean_std(self, obs, data=None):
+        self.operators(obs)
+        Sigma = self.to_time_domain(solve(self.precision, self.to_freq_domain(np.eye(self.N), axis=0)), axis=0)
+        pointwise_std = np.sqrt(np.diag(Sigma).real) / self.sqrt_h
+        if data is None:
+            return pointwise_std
+        mean = solve(self.precision, self.Astar_data(data), assume_a='pos') / self.sigSqr
+        mean = self.to_time_domain(mean)
+        return mean, pointwise_std
+
+    def utility(self, obs):
+        self.operators(obs)
         C_sqrt = np.sqrt(self.prior.multiplier)
         tmp = np.einsum('i,ij,j->ij', C_sqrt, self.AstarA, C_sqrt.conjugate()) / self.sigSqr + np.eye(self.N)
         utility = np.linalg.slogdet(tmp)
         assert utility[0].real > 0
-        assert abs(utility[0].imag) < 1e-14
+        assert abs(utility[0].imag) < 1e-12, f'utility via slogdet {utility}'
         return utility[1]
 
-    def __le__(self, other):
-        return self.utility <= other.utility
+    def observation(self, measurements):
+        return PointObservation(N=self.N,
+                                L=self.L,
+                                transform=self.transform,
+                                measurements=measurements)
+
+    def minimization_target(self, measurements):
+        obs = self.observation(measurements)
+        return -self.utility(obs)
 

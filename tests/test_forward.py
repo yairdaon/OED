@@ -23,7 +23,7 @@ def test_heat(transform):
     prior = Prior(gamma=gamma, N=N, L=L, transform=transform)
     meas = [0.23563, 0.9822345, 1.451242, 1.886632215,
             2.43244, 2.8923563, 1.0, 1.2]
-    obs = PointObservation(meas=meas, L=L, N=N, transform=transform)
+    obs = PointObservation(measurements=meas, L=L, N=N, transform=transform)
 
     # IC
     u0, coeffs0 = prior.sample(return_coeffs=True)
@@ -40,7 +40,7 @@ def test_heat(transform):
     inversion_success = np.allclose(prior(prior.inverse(uT)), prior.inverse(prior(uT)), rtol=0, atol=1e-3)
 
     interpolant = interp1d(fwd.x, uT)
-    measure_success = np.allclose(obs(uT), interpolant(obs.meas), atol=1e-2, rtol=0)
+    measure_success = np.allclose(obs(uT), interpolant(obs.measurements), atol=1e-2, rtol=0)
 
     success = numeric_success and inversion_success and measure_success
     if success:
@@ -53,7 +53,7 @@ def test_heat(transform):
         plt.plot(prior.x, prior.inverse(prior(uT)).real + 0.075, label=prior.invstr + str(prior) + 'FC')
         plt.plot(prior.x, prior(uT).real, label=str(prior) + 'FC')
         # plt.plot(prior.x, prior.inverse(uT), label= prior.inv_str + 'FC')
-        plt.scatter(obs.meas, obs(uT).real, label='Measurements of FC', marker='*', s=10, color='w', zorder=10)
+        plt.scatter(obs.measurements, obs(uT).real, label='Measurements of FC', marker='*', s=10, color='w', zorder=10)
         plt.legend()
         title = f'{transform} successes: numeric {numeric_success} inversion {inversion_success} measure {measure_success}'
         plt.title(title)
