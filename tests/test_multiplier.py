@@ -209,12 +209,15 @@ def test_eigenvector_and_eigenfunction_agree_to_normalization(transform):
         assert_allclose(ev, ef, rtol=0, atol=1e-9)
 
 
-# @pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
-# def test_coeff2u(transform):
-#     """Test the function that transforms a coefficient vector to a ***function***.
-#     We verify a sample and its coefficients are the same when we compare via coeff2u."""
-#     prior = Prior(L=3, N=30, transform=transform, gamma=-0.6)
-#     samples, coefficients = prior.sample(return_coeffs=True, n_sample=3)
-#     for sample, coefficient in zip(samples, coefficients):
-#         calculated_sample = prior.coeff2u(coefficient)
-#         assert_allclose(sample, calculated_sample, rtol=0, atol=1e-12)
+@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
+def test_to_freq_from_right(transform):
+    multiplier = FourierMultiplier(N=100, L=1.53, transform=transform)
+    identity = np.eye(multiplier.N)
+    matrix = multiplier.to_freq_domain(identity, axis=0)
+
+    rand = multiplier.normal(multiplier.N)
+    assert rand.shape == (multiplier.N, multiplier.N)
+
+    rand_matrix = rand @ matrix
+    operator = multiplier.to_freq_domain_from_right(rand)
+    assert_allclose(rand_matrix, operator)

@@ -69,9 +69,10 @@ class Posterior(FourierMultiplier):
         assert not np.any(np.isnan(self.A)), 'NaN in A'
         assert not np.any(np.isinf(self.A)), 'inf in A'
 
-        self.AstarA = np.einsum('ji, jk-> ik', self.A.conjugate(), self.A)
+        self.AstarA = np.einsum('ik, kj-> ij', self.A.conjugate().T, self.A)
         assert not np.any(np.isnan(self.AstarA)), 'NaN in AstarA'
         assert not np.any(np.isinf(self.AstarA)), 'inf in AstarA'
+        assert np.allclose(self.AstarA.conjugate().T, self.AstarA, atol=1e-12, rtol=1e-3)
 
         self.precision = self.AstarA / self.sigSqr + np.diag(self.prior.inv_mult)
         assert not np.any(np.isnan(self.precision)), 'NaN in precision'

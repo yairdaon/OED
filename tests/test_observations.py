@@ -98,3 +98,25 @@ def test_diagonal_observation_eigenvectors(transform):
         plt.show()
         assert False
 
+
+@pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
+def test_random_U(transform):
+
+    for m in range(1,7):
+        singular_values = np.random.randn(m) ** 2
+        obs1 = DiagObservation(singular_values=singular_values,
+                              N=200,
+                              random_U=True,
+                              transform=transform)
+        obs2 = DiagObservation(singular_values=singular_values,
+                               N=200,
+                               random_U=True,
+                               transform=transform)
+        obs3 = DiagObservation(singular_values=singular_values,
+                               N=200,
+                               random_U=False,
+                               transform=transform)
+
+        assert_allclose(obs1.OstarO, obs2.OstarO)
+        assert_allclose(obs1.OstarO, obs3.OstarO)
+        assert_allclose(obs2.OstarO, obs3.OstarO)

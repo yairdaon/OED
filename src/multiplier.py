@@ -46,6 +46,9 @@ class FourierMultiplier(Operator):
         elif self.transform == 'dst':
              return fft.dst(x, norm='ortho', type=2, axis=axis) * self.sqrt_h
 
+    def to_freq_domain_from_right(self, x):
+        return self.to_time_domain(x.conjugate(), axis=1).conjugate() * self.h
+
     def to_time_domain(self, x, axis=-1):
         if self.transform == 'dct':
             return fft.dct(x, norm='ortho', type=3, axis=axis) / self.sqrt_h

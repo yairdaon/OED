@@ -8,10 +8,11 @@ from matplotlib import pyplot as plt
 from forward import Heat
 from numpy import allclose
 from numpy.testing import assert_allclose
-from observations import PointObservation
+from observations import PointObservation, DiagObservation
 from probability import Prior, Posterior
 from scipy.interpolate import interp1d
 from scipy.linalg import solve
+from scipy.stats import gaussian_kde
 
 
 @pytest.fixture
@@ -23,7 +24,7 @@ def prior(transform):
 
 @pytest.fixture
 def short_prior(transform):
-    N = 200
+    N = 700
     L = 3
     gamma = -1
     return Prior(gamma=gamma, N=N, L=L, transform=transform)
@@ -107,18 +108,18 @@ def test_prior_pointwise_std(prior):
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
-def test_posterior_utility(prior):
+def test_posterior_utility(short_prior):
     sig = 1e-2
     time = 2e-2
     alpha = 0.6
-    L, N, transform = prior.L, prior.N, prior.transform
+    L, N, transform = short_prior.L, short_prior.N, short_prior.transform
 
     meas = np.random.uniform(low=0, high=L, size=50)
 
     obs = PointObservation(measurements=meas, L=L, N=N, transform=transform)
     fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
     post = Posterior(fwd=fwd,
-                     prior=prior,
+                     prior=short_prior,
                      sigSqr=sig**2,
                      L=L,
                      N=N,
@@ -126,6 +127,23 @@ def test_posterior_utility(prior):
     info_gain = post.utility(obs)
     assert info_gain > 0
 
+    ms = list(range(2, 6))
+    fig, axes = plt.subplots(nrows=1, ncols=len(ms))
+    for m, ax in zip(ms, axes):
+        singular_values = np.random.randn(m) ** 2
+        f = lambda: post.utility(DiagObservation(singular_values=singular_values, **post.specs, random_U=True))
+        utilities = Parallel(n_jobs=7)(delayed(f)() for _ in range(2000))
+        utility = post.utility(DiagObservation(singular_values=singular_values, **post.specs))
+        # success = max(utilities) - min(utilities) < 1e-9
+        kde = gaussian_kde(utilities)
+        x = np.linspace(min(utilities), max(utilities), 100)
+        ax.plot(x, kde(x))
+        ax.hist(utilities, density=True)
+        ax.axvline(x=utility, color='k', ymin=0, ymax=1)
+        ax.set_title(f'm={m}')
+    plt.show()
+
+        #assert success
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
 def test_posterior(prior):

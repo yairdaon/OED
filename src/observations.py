@@ -34,9 +34,9 @@ class DiagObservation(Observation):
         assert len(self.singular_values.shape) == 1
         np.fill_diagonal(self.multiplier, self.singular_values)
         if random_U:
+            # From https://stackoverflow.com/questions/38426349/how-to-create-random-orthonormal-matrix-in-python-numpy
             H = np.random.randn(self.singular_values.shape[0], self.singular_values.shape[0])
-            Q, R = np.linalg.qr(
-                H)  # From https://stackoverflow.com/questions/38426349/how-to-create-random-orthonormal-matrix-in-python-numpy
+            Q, R = np.linalg.qr(H)
             Q = np.vdot(Q, np.diag(np.sign(np.diag(R))))
             self.multiplier = np.dot(Q, self.multiplier)
         O = self.to_time_domain(self.multiplier)
