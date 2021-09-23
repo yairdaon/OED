@@ -1,57 +1,55 @@
-import numpy as np
-import pytest
 from matplotlib import pyplot as plt
 from numpy.testing import assert_allclose
-from observations import PointObservation, DiagObservation
 from scipy.interpolate import interp1d
 
+from tests.examples import *
 from tests.helpers import align_eigenvectors
 
-from src.probability import Prior
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
-@pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
-def test_point_observation(transform):
+@pytest.mark.parametrize("transform", ['fft', 'dct', 'dst'])
+def test_point_observation_measurements(prior, point_observation):
     """Test we can measure an observable correctly."""
-    N, L = 2000, 3
-    prior = Prior(N=N, L=L, transform=transform, gamma=-1.6)
     u = prior.sample(return_coeffs=False).squeeze()
-    measurements = np.linspace(0, L, 33, endpoint=False)
-    obs = PointObservation(measurements=measurements, N=N, L=L)
-    measured = interp1d(prior.x, u)(obs.measurements)
-    err = np.abs(measured - obs(u)).max()
+    measured = interp1d(prior.x, u)(point_observation.measurements)
+    err = np.abs(measured - point_observation(u)).max()
     if err < 1e-3:
         assert err < 1e-3
     else:
         plt.figure(figsize=(6, 3))
-        plt.plot(obs.x, u)
-        plt.scatter(obs.measurements, obs(u).real, color='r')
-        plt.title(f'Max abs err {err}')
+        plt.plot(point_observation.x, u)
+        plt.scatter(point_observation.measurements,
+                    point_observation(u).real,
+                    color='r')
+        plt.title(f'{prior.transform} max abs err {err:.4f}')
         plt.show()
         assert err < 1e-3
 
 
+@pytest.mark.parametrize("transform", ['fft', 'dct', 'dst'])
+def test_diagonal_observation_on_eigenvectors(diag_obs):
+    for k, truth in enumerate(diag_obs.multiplier):
+        calculated = diag_obs._matvec(diag_obs.eigenvector(k))
+        calculated[k] = calculated[k] - truth
+        assert_allclose(calculated, np.zeros_like(calculated), rtol=0, atol=1e-13)
+
+
 @pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
-def test_diagonal_observation_eigenvectors(transform):
+def test_diagonal_observation_eigenvectors(diag_obs):
     """Test that a measurement operator with diagonal multiplier indeed has
     the correct eigenvectors for OstarO (note that this is up to multiplication
     by a complex unit)."""
-    np.random.seed(342424)
-    n = 3  # len(COLORS)
-    singular_values = np.random.randn(n) ** 2
-    # singular_values[1] = 0
-    obs = DiagObservation(singular_values=singular_values,
-                          N=200,
-                          random_U=True,
-                          transform=transform)
+    n = diag_obs.shape[0]
+    OstarO = diag_obs.OstarO
+    assert_allclose(OstarO, OstarO.conjugate().T, rtol=0, atol=1e-12)
 
-    D, P = np.linalg.eig(obs.OstarO)
+    D, P = np.linalg.eig(diag_obs.OstarO) # np.linalg.eigh does not work for some reason
     xtra = P[:, n]
-    P = P[:, :n].T.conjugate()
+    P = P[:, :n].T # So that eigenvectors are in rows
     P = align_eigenvectors(P)
 
-    eigs = np.vstack([obs.eigenvector(i) for i in range(n)])
+    eigs = np.vstack([diag_obs.eigenvector(i) for i in range(n)])
     eigs = align_eigenvectors(eigs)
 
     assert_allclose(np.linalg.norm(eigs, axis=1), 1)
@@ -72,22 +70,22 @@ def test_diagonal_observation_eigenvectors(transform):
             imag_diff = np.max(np.abs(p.imag - eig.imag))
             real_diff = f'{i} Error = {real_diff:.4f}'
             imag_diff = f'{i} Error = {imag_diff:.4f}'
-            ax[0, 0].plot(obs.x, p.real, color='r', label=i)
-            ax[0, 1].plot(obs.x, p.imag, color='r', label=i)
-            ax[1, 0].plot(obs.x, eig.real, color=color, linestyle='-', label=real_diff)
-            ax[1, 0].plot(obs.x, p.real, color=color, linestyle=':')
-            ax[1, 1].plot(obs.x, eig.imag, color=color, linestyle='-', label=imag_diff)
-            ax[1, 1].plot(obs.x, p.imag, color=color, linestyle=':')
-        ax[0, 0].plot(obs.x, xtra, label='$n+1$', color='k')
-        ax[0, 1].plot(obs.x, xtra, label='$n+1$', color='k')
+            ax[0, 0].plot(diag_obs.x, p.real, color='r', label=i)
+            ax[0, 1].plot(diag_obs.x, p.imag, color='r', label=i)
+            ax[1, 0].plot(diag_obs.x, eig.real, color=color, linestyle='-', label=real_diff)
+            ax[1, 0].plot(diag_obs.x, p.real, color=color, linestyle=':')
+            ax[1, 1].plot(diag_obs.x, eig.imag, color=color, linestyle='-', label=imag_diff)
+            ax[1, 1].plot(diag_obs.x, p.imag, color=color, linestyle=':')
+        ax[0, 0].plot(diag_obs.x, xtra, label='$n+1$', color='k')
+        ax[0, 1].plot(diag_obs.x, xtra, label='$n+1$', color='k')
         ax[1, 0].legend()
         ax[1, 1].legend()
         OstarO = "OstarO"  # r"$\mathcal{O}^{*}\mathcal{O}$"
         # ax[0].set_title(f"First $n={n}$ eigs of a diagonalizable " + OstarO)
         ax[0, 0].set_title(f"First $n+1={n + 1}$ eigs of " + OstarO + '  (real)')
         ax[0, 1].set_title(f"First $n+1={n + 1}$ eigs of " + OstarO + '  (imaginary)')
-        ax[1, 0].set_title(f"First $n={n}$ modes of {obs.transform} (real)")
-        ax[1, 1].set_title(f"First $n={n}$ modes of {obs.transform} (imaginary)")
+        ax[1, 0].set_title(f"First $n={n}$ modes of {diag_obs.transform} (real)")
+        ax[1, 1].set_title(f"First $n={n}$ modes of {diag_obs.transform} (imaginary)")
 
         # ind = np.where(np.abs(D) > 1e-9)[0]
         # ax[3].plot(np.arange(n), D[:n], label="e_i") # "'$\mathbf{e}_i$')
@@ -99,24 +97,17 @@ def test_diagonal_observation_eigenvectors(transform):
         assert False
 
 
-@pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
-def test_random_U(transform):
+@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+def test_diag_observation_singular_values(diag_obs):
+    _, S, _ = np.linalg.svd(diag_obs.matrix)
+    S = np.sort(S)
+    singular_values = np.sort(diag_obs.singular_values())
+    assert abs(np.sum(S) - np.sum(singular_values)) < 1e-9
+    assert_allclose(S, singular_values, rtol=1e-7, atol=1e-12)
 
-    for m in range(1,7):
-        singular_values = np.random.randn(m) ** 2
-        obs1 = DiagObservation(singular_values=singular_values,
-                              N=200,
-                              random_U=True,
-                              transform=transform)
-        obs2 = DiagObservation(singular_values=singular_values,
-                               N=200,
-                               random_U=True,
-                               transform=transform)
-        obs3 = DiagObservation(singular_values=singular_values,
-                               N=200,
-                               random_U=False,
-                               transform=transform)
 
-        assert_allclose(obs1.OstarO, obs2.OstarO)
-        assert_allclose(obs1.OstarO, obs3.OstarO)
-        assert_allclose(obs2.OstarO, obs3.OstarO)
+@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+def test_point_observation_singular_values(many_point_observation):
+    m = many_point_observation.shape[0]
+    singular_values = many_point_observation.singular_values()
+    assert abs(np.sum(singular_values) - m) < 1e-3

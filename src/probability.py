@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.linalg import solve
 
-from multiplier import FourierMultiplier
-from observations import PointObservation, Observation
+from src.multiplier import FourierMultiplier
+from src.observations import PointObservation, DiagObservation
 
 
 class Prior(FourierMultiplier):
@@ -61,10 +61,11 @@ class Posterior(FourierMultiplier):
         self.fwd = fwd
         self.prior = prior
         self.sigSqr = sigSqr
+        self.C_sqrt_fwd = np.sqrt(prior.multiplier) * fwd.multiplier
+        assert np.all(np.abs(self.C_sqrt_fwd.imag) < 1e-12)
+        assert np.all(self.C_sqrt_fwd.real >= 0)
 
     def operators(self, obs):
-        if type(obs) in (list, tuple, np.ndarray):
-            obs = self.observation(obs)
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
         assert not np.any(np.isnan(self.A)), 'NaN in A'
         assert not np.any(np.isinf(self.A)), 'inf in A'
@@ -94,18 +95,26 @@ class Posterior(FourierMultiplier):
         return mean, pointwise_std
 
     def utility(self, obs):
-        self.operators(obs)
-        C_sqrt = np.sqrt(self.prior.multiplier)
-        tmp = np.einsum('i,ij,j->ij', C_sqrt, self.AstarA, C_sqrt.conjugate()) / self.sigSqr + np.eye(self.N)
-        utility = np.linalg.slogdet(tmp)
-        assert utility[0].real > 0
-        assert abs(utility[0].imag) < 1e-12, f'utility via slogdet {utility}'
-        return utility[1]
+        if 'Diagonal' in str(obs):
+            n = obs.shape[0]
+            tmp = self.C_sqrt_fwd**2 * obs.multiplier**2 / self.sigSqr + 1
+            return np.sum(np.log(tmp))
+        elif 'Point' in str(obs):
+            OstarO = obs.multiplier.conjugate().T @ obs.multiplier
+            tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd, OstarO, self.C_sqrt_fwd)
+            tmp = tmp / self.sigSqr + np.eye(self.N)
+            utility = np.linalg.slogdet(tmp)
+            assert tmp.shape == (self.N, self.N)
+            assert OstarO.shape == (self.N, self.N)
+            assert utility[0].real > 0
+            assert abs(utility[0].imag) < 1e-12, f'utility via slogdet {utility}'
+            return utility[1]
+        else:
+            raise ValueError(f"unacceptable {obs}")
 
-    def observation(self, measurements):
-        return PointObservation(**self.specs,
-                                measurements=measurements)
 
     def minimization_target(self, measurements):
-        return -self.utility(measurements)
+        obs = PointObservation(**self.specs,
+                               measurements=measurements)
+        return -self.utility(obs)
 

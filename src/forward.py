@@ -1,6 +1,6 @@
 import numpy as np
 
-from multiplier import FourierMultiplier
+from src.multiplier import FourierMultiplier
 
 
 class Heat(FourierMultiplier):

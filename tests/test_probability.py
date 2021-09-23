@@ -1,45 +1,14 @@
-from itertools import product
-
-import numpy as np
-import pytest
 from joblib import delayed, Parallel
 from matplotlib import pyplot as plt
-
-from forward import Heat
-from numpy import allclose
 from numpy.testing import assert_allclose
-from observations import PointObservation, DiagObservation
-from probability import Prior, Posterior
-from scipy.interpolate import interp1d
-from scipy.linalg import solve
+from probability import Posterior
 from scipy.stats import gaussian_kde
 
-
-@pytest.fixture
-def prior(transform):
-    N = 2000
-    L = 3
-    gamma = -2
-    return Prior(gamma=gamma, N=N, L=L, transform=transform)
-
-@pytest.fixture
-def short_prior(transform):
-    N = 700
-    L = 3
-    gamma = -1
-    return Prior(gamma=gamma, N=N, L=L, transform=transform)
-
-
-@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
-def test_prior_matrix(short_prior):
-    matrix = short_prior.matrix
-    plt.imshow(matrix.real)
-    plt.show()
+from tests.examples import *
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
 def test_prior_sample_from_coefficients(prior):
-
     sample, coefficients = prior.sample(return_coeffs=True)
     sample = sample.squeeze()
     sample_from_cefficients = prior.to_time_domain(coefficients.squeeze())
@@ -104,90 +73,47 @@ def test_prior_pointwise_std(prior):
     plt.title(f'transform = {prior.transform}')
     plt.xlabel('x')
     plt.ylabel('prior pointwise standard deviation')
-    plt.show()
+    # plt.show()
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
-def test_posterior_utility(short_prior):
-    sig = 1e-2
-    time = 2e-2
-    alpha = 0.6
-    L, N, transform = short_prior.L, short_prior.N, short_prior.transform
+def test_posterior_utility(posterior, point_observation, diag_obs):
+    assert posterior.utility(diag_obs) > 0
+    assert posterior.utility(point_observation) > 0
 
-    meas = np.random.uniform(low=0, high=L, size=50)
-
-    obs = PointObservation(measurements=meas, L=L, N=N, transform=transform)
-    fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
-    post = Posterior(fwd=fwd,
-                     prior=short_prior,
-                     sigSqr=sig**2,
-                     L=L,
-                     N=N,
-                     transform=transform)
-    info_gain = post.utility(obs)
-    assert info_gain > 0
-
-    ms = list(range(2, 6))
-    fig, axes = plt.subplots(nrows=1, ncols=len(ms))
-    for m, ax in zip(ms, axes):
-        singular_values = np.random.randn(m) ** 2
-        f = lambda: post.utility(DiagObservation(singular_values=singular_values, **post.specs, random_U=True))
-        utilities = Parallel(n_jobs=7)(delayed(f)() for _ in range(2000))
-        utility = post.utility(DiagObservation(singular_values=singular_values, **post.specs))
-        # success = max(utilities) - min(utilities) < 1e-9
-        kde = gaussian_kde(utilities)
-        x = np.linspace(min(utilities), max(utilities), 100)
-        ax.plot(x, kde(x))
-        ax.hist(utilities, density=True)
-        ax.axvline(x=utility, color='k', ymin=0, ymax=1)
-        ax.set_title(f'm={m}')
-    plt.show()
-
-        #assert success
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
-def test_posterior(prior):
-
-    sig = 1e-2
-    time = 2e-2
-    alpha = 0.6
-    L, N, transform = prior.L, prior.N, prior.transform
-
+def test_posterior(posterior, point_observation):
     # meas = np.random.uniform(low=0, high=L, size=33)
     # meas = np.array([prior.L/2, prior.L/2.1])
-    meas = np.random.choice(prior.x, size=33, replace=True)
-    obs = PointObservation(measurements=meas, L=L, N=N, transform=transform)
-    fwd = Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
-    post = Posterior(fwd=fwd,
-                     prior=prior,
-                     sigSqr=sig**2,
-                     L=L,
-                     N=N,
-                     transform=transform)
-    u0 = prior.sample(return_coeffs=False).squeeze()
 
-    uT = fwd(u0)
-    data = obs(uT) + np.random.normal(scale=sig, size=obs.shape[0])
-    mean, pointwise_std = post.mean_std(obs, data)
+    u0 = posterior.prior.sample(return_coeffs=False).squeeze()
 
-    err = np.abs(mean - u0).max()
-    if err < 1e-2:
-        assert err < 1e-2
-    else:
+    uT = posterior.fwd(u0)
+    data = point_observation(uT) + np.random.normal(scale=np.sqrt(posterior.sigSqr), size=point_observation.shape[0])
+    mean, pointwise_std = posterior.mean_std(point_observation, data)
+
+    top_bar, bottom_bar = mean + 2 * pointwise_std, mean - 2 * pointwise_std
+    in_bars = np.mean((u0 < top_bar) & (u0 > bottom_bar))
+
+    if in_bars < 0.92:
         fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(6, 16), sharex=True)
-        ax[0].plot(fwd.x, u0.real, label='IC')
-        ax[0].plot(fwd.x, uT.real, label='FC')
-        ax[0].scatter(obs.measurements, np.dot(post.A, post.to_freq_domain(u0)).real, label='Matrix FC')
-        ax[0].scatter(obs.measurements, data.real, label='Measurements', marker='*', s=10, color='r', zorder=10)
-        line, = ax[0].plot(post.x, mean, label='Posterior mean')
-        ax[0].plot(post.x, mean + 2*pointwise_std, color=line.get_color(), label='95% Posterior Interval', linestyle=':')
-        ax[0].plot(post.x, mean - 2*pointwise_std, color=line.get_color(), linestyle=':')
+        ax[0].plot(posterior.x, u0.real, label='IC')
+        ax[0].plot(posterior.x, uT.real, label='FC')
+        ax[0].scatter(point_observation.measurements, np.dot(posterior.A, posterior.to_freq_domain(u0)).real,
+                      label='Matrix FC')
+        ax[0].scatter(point_observation.measurements, data.real, label='Measurements', marker='*', s=10, color='r',
+                      zorder=10)
+        line, = ax[0].plot(posterior.x, mean, label='Posterior mean')
+        ax[0].plot(posterior.x, top_bar, color=line.get_color(), label='95% Posterior Interval', linestyle=':')
+        ax[0].plot(posterior.x, bottom_bar, color=line.get_color(), linestyle=':')
         ax[0].legend()
 
-        ax[1].plot(post.x, pointwise_std, label='posterior STD')
-        ax[1].scatter(obs.measurements, np.ones(obs.shape[0]) * pointwise_std.mean(), label='measurement locations on x-axis')
+        ax[1].plot(posterior.x, pointwise_std, label='posterior STD')
+        ax[1].scatter(point_observation.measurements, np.ones(point_observation.shape[0]) * pointwise_std.mean(),
+                      label='measurement locations on x-axis')
         ax[1].legend()
-        fig.suptitle(f"Transform = {transform}, error = {err:.4f}")
+        fig.suptitle(f"Transform = {posterior.transform}, in error bars = {in_bars:.4f}")
 
         # print(np.diag(post.Sigma)[:9])
         # tra = post.to_freq_domain(post.m)
@@ -195,3 +121,4 @@ def test_posterior(prior):
         # plt.plot(tra)
         plt.tight_layout()
         plt.show()
+        assert False
