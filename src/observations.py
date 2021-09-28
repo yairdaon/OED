@@ -31,10 +31,9 @@ class PointObservation(Observation):
     def matrix(self):
         return self.to_freq_domain_from_right(self.multiplier)
 
-    def singular_values(self):
+    def eigenvalues(self):
         O = self.multiplier
-        singular_values = np.maximum(0, np.linalg.eigh(O @ O.conjugate().T)[0])
-        return np.sqrt(singular_values) * self.sqrt_h
+        return np.linalg.eigh(O @ O.conjugate().T)[0] * self.h
 
 
 class DiagObservation(Observation):

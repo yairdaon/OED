@@ -1,3 +1,4 @@
+import pandas as pd
 from joblib import delayed, Parallel
 from matplotlib import pyplot as plt
 from numpy.testing import assert_allclose
@@ -122,3 +123,24 @@ def test_posterior(posterior, point_observation):
         plt.tight_layout()
         plt.show()
         assert False
+
+
+@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("m", range(2, 7))
+def test_unique_optimal(posterior, m):
+    n_runs = 34
+    res = Parallel(n_jobs=7)(delayed(posterior.optimal)(m=m) for _ in range(n_runs))
+    successes = [r for r in res if r['success']]
+    failures = [r for r in res if not r['success']]
+
+    n_success = len(successes)
+    n_failures = len(failures)
+    plt.scatter(np.arange(n_success), [r['utility'] for r in successes], label='success')
+    plt.scatter(np.arange(n_success, n_success + n_failures), [r['utility'] for r in failures], label='failures')
+    plt.ylim(0, 2*np.mean([r['utility'] for r in res]))
+    plt.show()
+
+
+@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+def test_optimal_n_iterations(posterior):
+    posterior.optimal(m=3, n_iterations=5)

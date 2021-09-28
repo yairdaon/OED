@@ -5,7 +5,7 @@ from multiplier import FourierMultiplier
 from observations import DiagObservation, PointObservation
 from probability import Prior, Posterior
 
-N = 2000
+N = 600
 L = 3
 time = 3e-3
 alpha = 0.6
@@ -55,7 +55,7 @@ def point_observation(transform):
 
 @pytest.fixture
 def many_point_observation(transform):
-    return PointObservation(measurements=np.random.uniform(0, L, 7),
+    return PointObservation(measurements=np.random.uniform(0, L, 11),
                             L=L,
                             N=10000,
                             transform=transform)

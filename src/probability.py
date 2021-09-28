@@ -1,5 +1,8 @@
 import numpy as np
 from scipy.linalg import solve
+from scipy.optimize import minimize
+from functools import partial
+from joblib import Parallel, delayed
 
 from src.multiplier import FourierMultiplier
 from src.observations import PointObservation, DiagObservation
@@ -62,8 +65,51 @@ class Posterior(FourierMultiplier):
         self.prior = prior
         self.sigSqr = sigSqr
         self.C_sqrt_fwd = np.sqrt(prior.multiplier) * fwd.multiplier
+        self.optimal_diagonal = None
         assert np.all(np.abs(self.C_sqrt_fwd.imag) < 1e-12)
         assert np.all(self.C_sqrt_fwd.real >= 0)
+
+
+    def set_optimal_diagonal(self, m, plot=False):
+        """Plots and returns the optimal design multiplier"""
+        eigenvalues = self.prior.inv_mult * self.sigSqr
+        data = []
+        for k in range(1, m + 8):
+            eigs = eigenvalues[:k]
+            uniform = (np.sum(eigs) + m / self.sqrt_h) / k
+            extra = uniform - eigs
+            # assert abs(np.sum(extra) - num_observations) < 1e-9
+            if np.any(extra < 0):
+                break
+            data.append({'eigs': eigs, 'extra': extra})
+
+        if plot:
+            N = k
+
+            fig, axes = plt.subplots(ncols=N - 1, figsize=(10, 5), sharex=True, sharey=True)
+            axes = axes if hasattr(axes, '__getitem__') else [axes]
+            width = 0.35
+            for ax, dd in zip(axes, data):
+                ax.bar(range(N), eigenvalues[:N], width, label=r'$\sigma^2 \lambda_i^{-1}$', color='b')
+
+                k = dd['extra'].size
+                ax.bar(range(k), dd['eigs'], width, color='b')
+                ax.bar(range(k), dd['extra'], width, bottom=dd['eigs'], label=r'$\eta_i$', color='r')
+                ax.set_ylim((0, m))
+
+                if k > 0:
+                    ax.set_yticklabels([])
+                    ax.set_yticks([])
+                    ax.axes.get_yaxis().set_visible(False)
+
+            axes[0].legend()
+            fig.suptitle(f"{m} observations")
+            plt.tight_layout()
+            plt.show()
+        extra = data[-1]['extra']
+        self.optimal_diagonal_matrix = np.zeros((m, self.N))
+        np.fill_diagonal(self.optimal_diagonal_matrix, extra)
+        self.optimal_diagonal = DiagObservation(multiplier=extra, **self.specs)
 
     def operators(self, obs):
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
@@ -104,17 +150,31 @@ class Posterior(FourierMultiplier):
             tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd, OstarO, self.C_sqrt_fwd)
             tmp = tmp / self.sigSqr + np.eye(self.N)
             utility = np.linalg.slogdet(tmp)
-            assert tmp.shape == (self.N, self.N)
-            assert OstarO.shape == (self.N, self.N)
-            assert utility[0].real > 0
-            assert abs(utility[0].imag) < 1e-12, f'utility via slogdet {utility}'
+            # assert tmp.shape == (self.N, self.N)
+            # assert OstarO.shape == (self.N, self.N)
+            # assert utility[0].real > 0
+            # assert abs(utility[0].imag) < 1e-12, f'utility via slogdet {utility}'
             return utility[1]
         else:
             raise ValueError(f"unacceptable {obs}")
 
+    def close2diagonal(self, measurements):
+        obs = PointObservation(**self.specs,
+                               measurements=measurements)
+        return np.linalg.norm(obs.multiplier-self.optimal_diagonal_matrix)
+
+
+    def optimal(self, m, target=None,  n_iterations=1):
+        target = self.minimization_target if target is None else target
+        bounds = [(0, self.L)] * m
+        parallelized = partial(minimize, bounds=bounds)
+        res = Parallel(n_jobs=6)(delayed(parallelized)(target, x0=np.random.uniform(0, self.L, m)) for _ in range(n_iterations))
+        res = min(res, key=lambda x: x['fun'])
+        res['obs'] = PointObservation(**self.specs, measurements=res['x'])
+        res['utility'] = self.utility(res['obs'])
+        return res
 
     def minimization_target(self, measurements):
         obs = PointObservation(**self.specs,
                                measurements=measurements)
         return -self.utility(obs)
-

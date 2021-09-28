@@ -110,4 +110,5 @@ def test_diag_observation_singular_values(diag_obs):
 def test_point_observation_singular_values(many_point_observation):
     m = many_point_observation.shape[0]
     singular_values = many_point_observation.singular_values()
-    assert abs(np.sum(singular_values) - m) < 1e-3
+    err = abs(np.sum(singular_values**2) - m)
+    assert err < 1e-3, err
