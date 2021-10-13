@@ -144,3 +144,9 @@ def test_unique_optimal(posterior, m):
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
 def test_optimal_n_iterations(posterior):
     posterior.optimal(m=3, n_iterations=5)
+
+
+def test_default_posterior():
+    post = Posterior()
+    assert post.fwd is not None
+    assert post.fwd is not None

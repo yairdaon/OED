@@ -2,11 +2,13 @@ import numpy as np
 
 from src.multiplier import FourierMultiplier
 
-
 class Heat(FourierMultiplier):
     """Run forward heat equation for some time"""
 
-    def __init__(self, time, alpha=1, **kwargs):
+    def __init__(self,
+                 time=3e-3,
+                 alpha=0.6,
+                 **kwargs):
         super().__init__(**kwargs)
         self.alpha = alpha
         self.time = time

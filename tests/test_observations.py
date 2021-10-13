@@ -107,8 +107,8 @@ def test_diag_observation_singular_values(diag_obs):
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
-def test_point_observation_singular_values(many_point_observation):
+def test_point_observation_eigenvalues(many_point_observation):
     m = many_point_observation.shape[0]
-    singular_values = many_point_observation.singular_values()
-    err = abs(np.sum(singular_values**2) - m)
+    eigenvalues = many_point_observation.eigenvalues()
+    err = abs(np.sum(eigenvalues) - m)
     assert err < 1e-3, err
