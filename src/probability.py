@@ -75,45 +75,23 @@ class Posterior(FourierMultiplier):
         assert np.all(self.C_sqrt_fwd.real >= 0)
 
 
-    def make_optimal_diagonal(self, m, plot=False):
+    def make_optimal_diagonal(self, m):
         """Plots and returns the optimal design multiplier"""
         eigenvalues = self.prior.inv_mult * self.sigSqr
         data = []
         for k in range(1, m + 8):
             eigs = eigenvalues[:k]
-            uniform = (np.sum(eigs) + m / self.sqrt_h) / k
+            uniform = (np.sum(eigs) + m) / k
             extra = uniform - eigs
             # assert abs(np.sum(extra) - num_observations) < 1e-9
             if np.any(extra < 0):
                 break
             data.append({'eigs': eigs, 'extra': extra})
 
-        # if plot:
-        #     N = k
-        #
-        #     fig, axes = plt.subplots(ncols=N - 1, figsize=(10, 5), sharex=True, sharey=True)
-        #     axes = axes if hasattr(axes, '__getitem__') else [axes]
-        #     width = 0.35
-        #     for ax, dd in zip(axes, data):
-        #         ax.bar(range(N), eigenvalues[:N], width, label=r'$\sigma^2 \lambda_i^{-1}$', color='b')
-        #
-        #         k = dd['extra'].size
-        #         ax.bar(range(k), dd['eigs'], width, color='b')
-        #         ax.bar(range(k), dd['extra'], width, bottom=dd['eigs'], label=r'$\eta_i$', color='r')
-        #         ax.set_ylim((0, m))
-        #
-        #         if k > 0:
-        #             ax.set_yticklabels([])
-        #             ax.set_yticks([])
-        #             ax.axes.get_yaxis().set_visible(False)
-        #
-        #     axes[0].legend()
-        #     fig.suptitle(f"{m} observations")
-        #     plt.tight_layout()
-        #     plt.show()
         self.optimal_diagonal = data[-1]['extra']
         self.optimal_diagonal_matrix = np.zeros((m, self.N))
         np.fill_diagonal(self.optimal_diagonal_matrix, self.optimal_diagonal)
+        assert abs(np.sum(self.optimal_diagonal) - m) < 1e-12
 
     def operators(self, obs):
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
@@ -151,16 +129,11 @@ class Posterior(FourierMultiplier):
         tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd, OstarO, self.C_sqrt_fwd)
         tmp = tmp / self.sigSqr + np.eye(self.N)
         utility = np.linalg.slogdet(tmp)
-        # assert tmp.shape == (self.N, self.N)
-        # assert OstarO.shape == (self.N, self.N)
-        # assert utility[0].real > 0
-        # assert abs(utility[0].imag) < 1e-12, f'utility via slogdet {utility}'
-        return utility[1]
+        assert abs(utility[0] - 1) < 1e-7
+        return abs(utility[0]) * utility[1]
 
     def diagonal_utility(self, diag):
-        tmp = np.zeros(self.N)
-        tmp[:diag.size] = diag
-        tmp = self.C_sqrt_fwd ** 2 * tmp ** 2 / self.sigSqr + 1
+        tmp = (self.C_sqrt_fwd[:diag.size] * diag) ** 2 / self.sigSqr + 1
         return np.sum(np.log(tmp))
 
     def close2diagonal(self, measurements):
@@ -170,19 +143,36 @@ class Posterior(FourierMultiplier):
 
     def optimize(self,
                 m,
-                target=None,
+                target='utility',
                 n_iterations=1,
                 n_jobs=6,
-                eps=0):
-        target = self.minimization_point if target is None else target
+                eps=0,
+                full=False):
+
+        f = self.minimization_point if target == 'utility' else self.close2diagonal
         bounds = [(0+eps, self.L-eps)] * m
         parallelized = partial(minimize, bounds=bounds)
         x0s = np.random.uniform(low=0, high=self.L, size=(n_iterations, m))
-        res = Parallel(n_jobs=n_jobs)(delayed(parallelized)(target, x0=x0) for x0 in x0s)
-        res = min(res, key=lambda x: x['fun'])
-        res['obs'] = PointObservation(**self.specs, measurements=np.sort(res['x']))
-        res['utility'] = self.point_utility(res['x'])
-        return res
+        results = Parallel(n_jobs=n_jobs)(delayed(parallelized)(f, x0=x0) for x0 in x0s)
+        agg = []
+        for res in results:
+            x = np.sort(res['x'])
+            obs = PointObservation(**self.specs, measurements=x)
+            tmp = {}
+            tmp['x'] = x
+            tmp['sum_eigenvalues'] = np.sum(obs.eigenvalues())
+            tmp['utility'] = self.point_utility(res['x'])
+            tmp['diag_dist'] = self.close2diagonal(res['x'])
+            tmp['target'] = target
+            tmp['m'] = m
+            tmp['transform'] = self.transform
+            tmp['N'] = self.N
+            tmp['L'] = self.L
+            tmp['success'] = res['success']
+            tmp['fun'] = res['fun']
+            agg.append(tmp)
+        return agg if full else min(agg, key=lambda x: x['fun'])
+
 
     def minimization_point(self, measurements):
         return -self.point_utility(measurements)

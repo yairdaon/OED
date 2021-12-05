@@ -1,8 +1,10 @@
 import os
 
 import numpy as np
+import pandas as pd
 from joblib import Parallel, delayed
 from matplotlib import pyplot as plt
+from observations import PointObservation
 from scipy.stats import gaussian_kde
 from src.forward import Heat
 from src.probability import Posterior, Prior
@@ -15,17 +17,19 @@ from src.probability import Posterior, Prior
 # plt.rcParams['text.color'] = 'white'
 
 def main(n_jobs=6):
-    L, N = np.pi, 1200
+    L, N = np.pi, 800
     specs = {'N': N, 'L': L}
-    ms = [3 , 5, 7, 37, 61]
+    ms = [3, 5, 7] #, 37, 61]
     transforms = ['dct', 'fft']
-    fig1, axes1 = plt.subplots(figsize=(30,16), nrows=len(transforms), ncols=len(ms))
-    # fig2, axes2 = plt.subplots(figsize=(18, 18), nrows=len(transforms), ncols=len(ms))
+    fig1, axes1 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
+    fig2, axes2 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
+    figs = [fig1, fig2]
+    axess = [axes1, axes2]
 
     for col, m in enumerate(ms):
 
-        for row, transform in enumerate(transforms):
-            print('m =', m, transform)
+        for transform, fig, axes in zip(transforms, figs, axess):
+            print('\nm =', m, transform)
 
             specs['transform'] = transform
             prior = Prior(gamma=-2, **specs)
@@ -33,43 +37,63 @@ def main(n_jobs=6):
             post = Posterior(fwd=forward, prior=prior, sigSqr=1e-2, **specs)
 
             # Optimal diagonal
-            post.make_optimal_diagonal(m, plot=False)
+            post.make_optimal_diagonal(m)
             diagonal_utility = post.diagonal_utility(post.optimal_diagonal)
-            print(f"Utility: Diag={diagonal_utility:3.3f}", end=' ')
+            # ax.scatter(diagonal_utility, kde(diagonal_utility), label='optimal diagonal')
+            print(f"utility: Diag={diagonal_utility:3.3f}", end=' ')
+
+            # Random point measurements
+            measurements = np.random.uniform(low=0, high=L, size=(100, m))
+            utilities = Parallel(n_jobs=n_jobs)(delayed(post.minimization_point)(x) for x in measurements)
+            utilities = -np.array(utilities)
+            distances = Parallel(n_jobs=n_jobs)(delayed(post.close2diagonal)(x) for x in measurements)
+            f = lambda x: np.sum(PointObservation(measurements=x, **post.specs).eigenvalues())
+            sum_eigenvalues = Parallel(n_jobs=n_jobs)(delayed(f)(x) for x in measurements)
+            random = pd.DataFrame({'utility': utilities,
+                                   'diag_dist': distances,
+                                   'target': 'random',
+                                   'm': m,
+                                   'transform': transform,
+                                   'L': L,
+                                   'N': N,
+                                   'sum_eigenvalues': sum_eigenvalues})
+            random['x'] = [x for x in measurements]
 
             # Optimal approximate point
             approx = post.optimize(m=m,
-                                   target=post.close2diagonal,
-                                   n_iterations=3*n_jobs,
-                                   n_jobs=n_jobs)
-            print(f"Approx={approx['utility']:3.3f}", end=' ')
+                                   target='diag',
+                                   n_iterations=1*n_jobs,
+                                   n_jobs=n_jobs,
+                                   full=True)
+            approx = pd.DataFrame(approx)
+            print(f"Approx={approx.utility.min():3.3f}", end=' ')
 
             # Optimal point
-            point = post.optimize(m=m, target=post.minimization_point)
+            point = post.optimize(m=m, target='utility')
             print(f"Point={point['utility']:3.3f}")
 
-            pt_sum = np.sum(point['obs'].eigenvalues())
+            pt_sum = point['sum_eigenvalues']
             diag_sum = np.sum(post.optimal_diagonal)
-            approx_sum = np.sum(approx['obs'].eigenvalues())
+            approx_sum = np.sum(approx.loc[0, 'sum_eigenvalues'])
+            print(f"Sum    : Diag={diag_sum:3.3f} Approx={approx_sum:3.3f} Point={pt_sum:3.3f} ")
 
-            print(f"Sum    : Diag={diag_sum:3.3f} approx={approx_sum:3.3f} Point={pt_sum:3.3f} ")
+            for row, target in enumerate(['utility', 'diag_dist']):
+                kde = gaussian_kde(random[target])
+                xx = np.linspace(random[target].min()*0.9, random[target].max()*1.1, num=1000, endpoint=True)
+                ax = axes[row, col]
 
-            random_measurements = np.random.uniform(low=0, high=L, size=(10000, m))
-            random_utilities = Parallel(n_jobs=n_jobs)(delayed(post.minimization_point)(x) for x in random_measurements)
-            random_utilities = -np.array(random_utilities)
-            kde = gaussian_kde(random_utilities)
-            xx = np.linspace(min(random_utilities), max(random_utilities), num=1000)
-            ax = axes1[row, col]
-            ax.hist(random_utilities, density=True, alpha=0.3, label='hist')
-            ax.plot(xx, kde(xx), label='random')
-            # ax.scatter(diagonal_utility, kde(diagonal_utility), label='optimal diagonal')
-            ax.scatter(approx['utility'], kde(approx['utility']), label='point approximating diagonal')
-            ax.scatter(point['utility'], kde(point['utility']), label='optimal point', color='r')
-            ax.legend()
-            ax.set_title(f'{m} measurements with {transform}')
-            plt.tight_layout()
-            plt.savefig(f'pix/utilities.png')
-            print(f'finish {transform} {m}')
+                ax.hist(random.utility, density=True, alpha=0.3, label='hist')
+                ax.plot(xx, kde(xx), label='random')
+
+                ax.scatter(approx.utility, kde(approx.utility), label='point approximating diagonal')
+
+                ax.scatter(point['utility'], kde(point['utility']), label='optimal point', color='r')
+
+                ax.legend()
+                ax.set_title(f'{m} measurements with {transform}')
+                fig.tight_layout()
+                fig.savefig(f'pix/{transform}.png')
+        print(f'finish {transform} {m}')
 
 
 if __name__ == '__main__':
