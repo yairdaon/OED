@@ -379,10 +379,11 @@ Gaussian measure on $\hilo$ with covariance operator $\modcov$. Then
 there is measurement / independent error $\eps \sim \normal(0,
 \sigma^2 I_m)$, with $I_m$ the $m \times m$ identity. Both error terms
 and the prior are assumed independent of each other. The observation
-and forward operators are merged $\tmp := \obs \fwd$. Since we need to
-separate the observation operator $\obs$ from the forward operator
-$\fwd$ we write this explicitly in \eqref{eq:inverse problem}. We now
-turn to understand the terms present in \eqref{eq:inverse problem}.
+and forward operators are typically merged $\tmp := \obs \fwd$. Since
+we need to separate the observation operator $\obs$ from the forward
+operator $\fwd$ we write this explicitly in \eqref{eq:inverse
+  problem}. We now turn to understand the terms present in
+\eqref{eq:inverse problem}.
 
 
 \subsubsection{Dynamics and Observation Operators}\label{subsec:dynamics}
@@ -492,7 +493,7 @@ result is summarized, using our notation, in the following theorem:
 \end{definition}
 
 The intuition behind definition \ref{def:d optimality} is
-straightforward. From \eqref{eq:objective} and \eqref{eq:objective}:
+straightforward. From \eqref{eq:postcov} and \eqref{eq:objective}:
 \begin{align*}
   \begin{split}
     \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) &= \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
@@ -785,8 +786,8 @@ condition for D-optimality \eqref{eq:conditions} becomes
 with $\Xi$ diagonal. This looks like an eigenvalue problem for the
 self-adjoint operator $\sigma^{-2}\fwd \postcov \fwd^*$. The rows of
 $\obs$, namely $\meas_j,j=1,\dots, m$, are the eigenvectors. Note,
-however, that $\postcov$ depends on $\obs$. This makes
-\eqref{eq:eigenproblem} a nonlinear eigenvalue problem.
+however, that $\postcov$ depends on $\obs$, and so
+\eqref{eq:eigenproblem} is a nonlinear eigenvalue problem.
 
 Below, the expression for the posterior covariance \eqref{eq:postcov}
 justifies the second equality. Some calculations delegated to Lemma
@@ -802,13 +803,13 @@ trivial if $\fwd$ is invertible):
   %
   %
   %
-  &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^*
+  &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^*.
   \end{split}
 \end{align}  
-The term $(\fwd \prcov \fwd^*)^{-1}$ is the prior precision in $\hilo$
-($\fwd\prcov\fwd^*$ is invertible, as mentioned in section
-\ref{section:prelim}). $(\fwd\prcov\fwd^*)^{-1} + \sigma^{-2} \obs^*
-\obs$ is the posterior precision in $\hilo$.
+The term $(\fwd \prcov \fwd^*)^{-1}$ is the prior precision in
+$\hilo$, and $\fwd\prcov\fwd^*$ is invertible, as mentioned in
+section \ref{section:prelim}. $(\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}
+\obs^* \obs$ is the posterior precision in $\hilo$.
 
 \subsection{Characterizing D-Optimal Designs}\label{subsec:characterization}
 Denote eigenvalues of $\fwd \prcov \fwd^*$ by
@@ -861,7 +862,7 @@ works for Hilbert spaces as well) we get:
 \end{align}
 
 By definition of the objective \eqref{eq:objective}, \eqref{eq:pre
-  manipulations} and Corollary \ref{cor:samve ev}:
+  manipulations} and Corollary \ref{cor:same ev}:
 \begin{align}\label{eq:mod objective}
   \begin{split}
     \tar ( \obs ) &=\frac12 \log \det \left( I + \sigma^{-2}
@@ -1562,14 +1563,12 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
 \end{lemma}
 \begin{proof}
   The proof is boring and amounts to using Woodbury's matrix identity
-  twice and a regularization trick. The standard proof for this
-  identity works in infinite dimensions, as long as all terms are well
-  defined. Unfortunately, $\obs^*\obs$ is not invertible, so we force
-  it to be. Throughout, we let $X := \fwd\prcov \fwd^*$ and $Y_{\eps}
-  := \obs^*\obs + \eps I$, for some small $\eps > 0$. Note that now
-  $Y_{\eps}$ is invertible. Recall Woodbury's matrix identity:
+  twice and a regularization trick. The standard proof for Woodbury's
+  matrix identity works in infinite dimensions, as long as all terms
+  are well defined. Unfortunately, $\obs^*\obs$ is not invertible, so
+  we force it to be. Recall Woodbury's matrix identity:
   $$
-  (A + UCV)^{-1} = A^{-1} + A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}.
+  (A + UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}.
   $$
 
   Taking $A := \prcov^{-1}, U := \fwd^*, V := \fwd$ and $C :=
@@ -1583,10 +1582,12 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
       &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
     \end{split}
   \end{align*}
-  Note that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of
-  a two positive definite operators. Now, taking $A := X^{-1}, C :=
-  \sigma^2Y_{\eps}^{-1}, U := I$ and $V := I$ and using Wodbury's matrix
-  identity in reverse order:
+  Let $X := \fwd\prcov \fwd^*$ and $Y_{\eps} := \obs^*\obs + \eps I$,
+  for some small $\eps > 0$, so that $Y_{\eps}$ is invertible.  Note
+  that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of two
+  positive definite operators. Now, taking $A := X^{-1}, C :=
+  \sigma^2Y_{\eps}^{-1}, U := I$ and $V := I$ and using Wodbury's
+  matrix identity in reverse order:
   \begin{align*}
     \begin{split}
       X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X &= (X^{-1} + \sigma^{-2}Y_{\eps})^{-1} \\
@@ -1977,9 +1978,8 @@ Lemma \ref{lemma:design increase} implies the following two corollaries.
     &= V^* \Sigma^{-1} \obs 
     - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
     &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs
-    + \obs^* \Sigma^{-1} V,
+    + \obs^* \Sigma^{-1} V.
   \end{align*}
-  as required.
 \end{proof}
 
 \biggerbetter

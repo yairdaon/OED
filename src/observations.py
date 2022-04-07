@@ -14,7 +14,7 @@ class PointObservation(Observation):
         self.measurements = np.array(measurements)
         self.multiplier = np.zeros(self.shape, dtype=self.dtype)
         for k in range(self.N):
-                self.multiplier[:, k] = self.eigenfunction(k)(self.measurements)
+            self.multiplier[:, k] = self.eigenfunction(k)(self.measurements)
 
     def __str__(self):
         return 'Point observations at ' + ', '.join([f'{me:.4f}' for me in self.measurements])

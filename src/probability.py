@@ -70,28 +70,28 @@ class Posterior(FourierMultiplier):
         self.prior = Prior(**self.specs) if prior is None else prior
         self.sigSqr = sigSqr
         self.C_sqrt_fwd = np.sqrt(self.prior.multiplier) * self.fwd.multiplier
-        self.optimal_diagonal = None
         assert np.all(np.abs(self.C_sqrt_fwd.imag) < 1e-12)
         assert np.all(self.C_sqrt_fwd.real >= 0)
 
 
     def make_optimal_diagonal(self, m):
         """Plots and returns the optimal design multiplier"""
-        eigenvalues = self.prior.inv_mult * self.sigSqr
-        data = []
-        for k in range(1, m + 8):
+        eigenvalues = self.prior.inv_mult * self.sigSqr / np.abs(self.fwd.multiplier)**2
+        # import pdb; pdb.set_trace()
+        k = 1
+        while True:
             eigs = eigenvalues[:k]
             uniform = (np.sum(eigs) + m) / k
-            extra = uniform - eigs
-            # assert abs(np.sum(extra) - num_observations) < 1e-9
-            if np.any(extra < 0):
+            if np.any(eigs >= uniform):
                 break
-            data.append({'eigs': eigs, 'extra': extra})
+            k += 1
+            self.optimal_diagonal_O = np.sqrt(uniform - eigs)
+            
+        self.optimal_diagonal_O_matrix = np.zeros((m, self.N))
+        np.fill_diagonal(self.optimal_diagonal_O_matrix, self.optimal_diagonal_O)
 
-        self.optimal_diagonal = data[-1]['extra']
-        self.optimal_diagonal_matrix = np.zeros((m, self.N))
-        np.fill_diagonal(self.optimal_diagonal_matrix, self.optimal_diagonal)
-        assert abs(np.sum(self.optimal_diagonal) - m) < 1e-12
+        power = np.sum(self.optimal_diagonal_O**2)
+        #assert abs(power - m) < 1e-12, (power, m)
 
     def operators(self, obs):
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
@@ -133,13 +133,16 @@ class Posterior(FourierMultiplier):
         return abs(utility[0]) * utility[1]
 
     def diagonal_utility(self, diag):
-        tmp = (self.C_sqrt_fwd[:diag.size] * diag) ** 2 / self.sigSqr + 1
+        #tmp = self.C_sqrt_fwd.copy()
+        #tmp[:diag.size] = tmp[:diag.size] * diag
+        tmp = self.C_sqrt_fwd[:diag.size] * diag
+        tmp = tmp ** 2 / self.sigSqr + 1
         return np.sum(np.log(tmp))
 
     def close2diagonal(self, measurements):
         obs = PointObservation(**self.specs,
                                measurements=measurements)
-        return np.linalg.norm(obs.multiplier-self.optimal_diagonal_matrix)
+        return np.linalg.norm(obs.multiplier-self.optimal_diagonal_O_matrix)
 
     def optimize(self,
                 m,
@@ -161,8 +164,8 @@ class Posterior(FourierMultiplier):
             tmp = {}
             tmp['x'] = x
             tmp['sum_eigenvalues'] = np.sum(obs.eigenvalues())
-            tmp['utility'] = self.point_utility(res['x'])
-            tmp['diag_dist'] = self.close2diagonal(res['x'])
+            tmp['utility'] = -res['fun'] if target == 'utility' else self.point_utility(res['x']) 
+            tmp['diag_dist'] = res['fun'] if 'diag' in target else self.close2diagonal(res['x'])
             tmp['target'] = target
             tmp['m'] = m
             tmp['transform'] = self.transform
