@@ -1,9 +1,10 @@
 import numpy as np
 import pytest
-from forward import Heat
-from multiplier import FourierMultiplier
-from observations import DiagObservation, PointObservation
-from probability import Prior, Posterior
+
+from src.forward import Heat
+from src.multiplier import FourierMultiplier
+from src.observations import DiagObservation, PointObservation
+from src.probability import Prior, Posterior
 
 N = 600
 L = 3

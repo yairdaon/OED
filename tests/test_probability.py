@@ -2,9 +2,9 @@ import pandas as pd
 from joblib import delayed, Parallel
 from matplotlib import pyplot as plt
 from numpy.testing import assert_allclose
-from probability import Posterior
 from scipy.stats import gaussian_kde
 
+from src.probability import Posterior
 from tests.examples import *
 
 
@@ -74,7 +74,7 @@ def test_prior_pointwise_std(prior):
     plt.title(f'transform = {prior.transform}')
     plt.xlabel('x')
     plt.ylabel('prior pointwise standard deviation')
-    # plt.show()
+    plt.show()
 
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
@@ -129,7 +129,7 @@ def test_posterior(posterior, point_observation):
 @pytest.mark.parametrize("m", range(2, 7))
 def test_unique_optimal(posterior, m):
     n_runs = 34
-    res = Parallel(n_jobs=7)(delayed(posterior.optimal)(m=m) for _ in range(n_runs))
+    res = Parallel(n_jobs=7)(delayed(posterior.optimize)(m=m) for _ in range(n_runs))
     successes = [r for r in res if r['success']]
     failures = [r for r in res if not r['success']]
 
@@ -143,7 +143,7 @@ def test_unique_optimal(posterior, m):
 
 @pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
 def test_optimal_n_iterations(posterior):
-    posterior.optimal(m=3, n_iterations=5)
+    posterior.optimize(m=3, n_iterations=5)
 
 
 def test_default_posterior():

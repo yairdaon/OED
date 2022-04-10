@@ -56,7 +56,7 @@ class Prior(FourierMultiplier):
     def invstr(self):
         return '$(-\Delta)^{' + str(-self.gamma) + '}$'
 
-
+        
 class Posterior(FourierMultiplier):
     ''' Based on Stuart 2.16a and 2.16b'''
 

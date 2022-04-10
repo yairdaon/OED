@@ -17,7 +17,7 @@ from src.probability import Posterior, Prior
 # plt.rcParams['text.color'] = 'white'
 
 def main(n_jobs=6):
-    L, N = np.pi, 800
+    L, N = 1, 800
     specs = {'N': N, 'L': L}
     ms = [1, 2, 3, 5, 7, 10, 12]
     transforms = ['fft']
