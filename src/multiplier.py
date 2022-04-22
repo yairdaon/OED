@@ -7,7 +7,7 @@ from functools import partial
 
 
 class Operator(LinearOperator):
-    def __init__(self, N=500, L=1, size=None, dtype=None):
+    def __init__(self, N=500, L=1, size=None, dtype=None, **kwargs):
         shape = (N, N) if size is None else (size, N)
         super().__init__(dtype=np.dtype(dtype), shape=shape)
         self.L = L

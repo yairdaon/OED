@@ -39,8 +39,10 @@ class PointObservation(Observation):
 class DiagObservation(Observation):
     def __init__(self, multiplier, random_U=False, **kwargs):
         super().__init__(**kwargs, size=len(multiplier))
-        self.multiplier = np.zeros(self.N)
-        self.multiplier[:self.shape[0]] = multiplier
+        l = len(multiplier)
+        self.multiplier = np.zeros(l)
+        self.multiplier[:l] = multiplier
+        # np.fill_diagonal(self.multiplier, multiplier)
         assert np.all(self.multiplier.imag < 1e-14)
         assert np.all(self.multiplier.real >= 0)
 
@@ -68,7 +70,11 @@ class DiagObservation(Observation):
     def singular_values(self):
         return self.multiplier * self.sqrt_h
 
+    def __call__(self, v):
+        v_hat = self.to_freq_domain(v)
+        return self.to_time_domain(v_hat * self.multiplier)
+    
     def __str__(self):
-        return 'Diagonal observation with singular values ' + ', '.join([f'{s:.4f}' for s in self.multiplier])
+        return 'Diagonal observation with singular values ' + ', '.join([f'{s:.4f}' for s in self.multiplier[:10]]) + '...'
 
 

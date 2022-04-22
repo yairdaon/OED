@@ -77,15 +77,17 @@ class Posterior(FourierMultiplier):
     def make_optimal_diagonal(self, m):
         """Plots and returns the optimal design multiplier"""
         eigenvalues = self.prior.inv_mult * self.sigSqr / np.abs(self.fwd.multiplier)**2
-        # import pdb; pdb.set_trace()
+        eigenvalues -= eigenvalues.min()
+        print(eigenvalues)
         k = 1
         while True:
             eigs = eigenvalues[:k]
             uniform = (np.sum(eigs) + m) / k
             if np.any(eigs >= uniform):
                 break
-            k += 1
             self.optimal_diagonal_O = np.sqrt(uniform - eigs)
+            k += 1
+          
             
         self.optimal_diagonal_O_matrix = np.zeros((m, self.N))
         np.fill_diagonal(self.optimal_diagonal_O_matrix, self.optimal_diagonal_O)
@@ -130,7 +132,7 @@ class Posterior(FourierMultiplier):
         tmp = tmp / self.sigSqr + np.eye(self.N)
         utility = np.linalg.slogdet(tmp)
         assert abs(utility[0] - 1) < 1e-7
-        return abs(utility[0]) * utility[1]
+        return utility[1]
 
     def diagonal_utility(self, diag):
         #tmp = self.C_sqrt_fwd.copy()
