@@ -8,7 +8,7 @@ from src.probability import Posterior
 from tests.examples import *
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_prior_sample_from_coefficients(prior):
     sample, coefficients = prior.sample(return_coeffs=True)
     sample = sample.squeeze()
@@ -16,7 +16,7 @@ def test_prior_sample_from_coefficients(prior):
     assert_allclose(sample, sample_from_cefficients)
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_prior_sample_mean(short_prior):
     """Test that sampling the prior we get zero mean."""
     n_sample = 25000
@@ -28,7 +28,7 @@ def test_prior_sample_mean(short_prior):
     assert_allclose(sample, np.zeros_like(sample), rtol=0, atol=1e-2)
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_prior_sample_covariance(short_prior):
     """Test the empirical covariance is the same as the matrix representation of the prior.
     TODOs - check eigenvectors and eigenvalues agree???
@@ -65,7 +65,7 @@ def test_prior_sample_covariance(short_prior):
     assert_allclose(short_prior.matrix, empiric_covariance * short_prior.h, rtol=0, atol=1e-4)
 
 
-@pytest.mark.parametrize("transform", ['dct', 'dst', 'fft'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_prior_pointwise_std(prior):
     Sigma = np.einsum('i, ij->ij', prior.multiplier, prior.to_freq_domain(np.eye(prior.N), axis=0))
     Sigma = prior.to_time_domain(Sigma, axis=0)
@@ -77,13 +77,13 @@ def test_prior_pointwise_std(prior):
     plt.show()
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_posterior_utility(posterior, point_observation, diag_obs):
     assert posterior.utility(diag_obs) > 0
     assert posterior.utility(point_observation) > 0
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_posterior(posterior, point_observation):
     # meas = np.random.uniform(low=0, high=L, size=33)
     # meas = np.array([prior.L/2, prior.L/2.1])
@@ -125,7 +125,7 @@ def test_posterior(posterior, point_observation):
         assert False
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 @pytest.mark.parametrize("m", range(2, 7))
 def test_unique_optimal(posterior, m):
     n_runs = 34
@@ -141,7 +141,7 @@ def test_unique_optimal(posterior, m):
     plt.show()
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_optimal_n_iterations(posterior):
     posterior.optimize(m=3, n_iterations=5)
 

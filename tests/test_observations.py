@@ -8,34 +8,33 @@ from tests.helpers import align_eigenvectors
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
-@pytest.mark.parametrize("transform", ['fft', 'dct', 'dst'])
-def test_point_observation_measurements(prior, point_observation):
+@pytest.mark.parametrize("transform", TRANSFORMS)
+def test_point_observation_measurements(prior, point_observation, fwd):
     """Test we can measure an observable correctly."""
-    u = prior.sample(return_coeffs=False).squeeze()
-    measured = interp1d(prior.x, u)(point_observation.measurements)
-    err = np.abs(measured - point_observation(u)).max()
-    if err < 1e-3:
-        assert err < 1e-3
-    else:
+    sample = prior.sample(return_coeffs=False)
+    sample = fwd(sample.squeeze())
+    measured = interp1d(prior.x, sample)(point_observation.measurements)
+    err = np.abs(measured - point_observation(sample)).max()
+    if err > 1e-3:
         plt.figure(figsize=(6, 3))
-        plt.plot(point_observation.x, u)
+        plt.plot(point_observation.x, sample)
         plt.scatter(point_observation.measurements,
-                    point_observation(u).real,
+                    point_observation(sample).real,
                     color='r')
         plt.title(f'{prior.transform} max abs err {err:.4f}')
         plt.show()
-        assert err < 1e-3
+    assert err < 1e-3
 
 
-@pytest.mark.parametrize("transform", ['fft', 'dct', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_diagonal_observation_on_eigenvectors(diag_obs):
-    for k, truth in enumerate(diag_obs.multiplier):
+    for k, truth in enumerate(diag_obs.multiplier[:100]):
         calculated = diag_obs._matvec(diag_obs.eigenvector(k))
         calculated[k] = calculated[k] - truth
-        assert_allclose(calculated, np.zeros_like(calculated), rtol=0, atol=1e-13)
+        assert_allclose(calculated, np.zeros_like(calculated), rtol=0, atol=1e-11)
 
 
-@pytest.mark.parametrize("transform", ['dst', 'fft', 'dct'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_diagonal_observation_eigenvectors(diag_obs):
     """Test that a measurement operator with diagonal multiplier indeed has
     the correct eigenvectors for OstarO (note that this is up to multiplication
@@ -97,7 +96,7 @@ def test_diagonal_observation_eigenvectors(diag_obs):
         assert False
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_diag_observation_singular_values(diag_obs):
     _, S, _ = np.linalg.svd(diag_obs.matrix)
     S = np.sort(S)
@@ -106,7 +105,7 @@ def test_diag_observation_singular_values(diag_obs):
     assert_allclose(S, singular_values, rtol=1e-7, atol=1e-12)
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_point_observation_eigenvalues(many_point_observation):
     m = many_point_observation.shape[0]
     eigenvalues = many_point_observation.eigenvalues()

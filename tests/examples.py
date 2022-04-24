@@ -6,12 +6,12 @@ from src.multiplier import FourierMultiplier
 from src.observations import DiagObservation, PointObservation
 from src.probability import Prior, Posterior
 
-N = 600
+N = 15000
 L = 3
 time = 3e-3
 alpha = 0.6
-gamma = -.6
-
+gamma = -1.2
+TRANSFORMS = ['fft', 'dct']
 
 @pytest.fixture
 def multiplier(transform):
@@ -49,8 +49,9 @@ def fwd(transform):
 
 @pytest.fixture
 def point_observation(transform):
-    meas = [0.23563, 0.9822345, 1.451242, 1.886632215,
-            2.43244, 2.8923563, 1.0, 1.2]
+    meas = [0.23563, 0.3822345, 0.451242, 0.886632215,
+            0.53244, 0.9923563, 0.1, 0.2]
+    meas = np.array(meas) * L
     return PointObservation(measurements=meas, L=L, N=N, transform=transform)
 
 

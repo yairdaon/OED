@@ -15,7 +15,7 @@ class PointObservation(Observation):
         self.multiplier = np.zeros(self.shape, dtype=self.dtype)
         for k in range(self.N):
             self.multiplier[:, k] = self.eigenfunction(k)(self.measurements)
-
+        
     def __str__(self):
         return 'Point observations at ' + ', '.join([f'{me:.4f}' for me in self.measurements])
 
@@ -39,9 +39,8 @@ class PointObservation(Observation):
 class DiagObservation(Observation):
     def __init__(self, multiplier, random_U=False, **kwargs):
         super().__init__(**kwargs, size=len(multiplier))
-        l = len(multiplier)
-        self.multiplier = np.zeros(l)
-        self.multiplier[:l] = multiplier
+        self.multiplier = np.zeros(self.N)
+        self.multiplier[:len(multiplier)] = multiplier
         # np.fill_diagonal(self.multiplier, multiplier)
         assert np.all(self.multiplier.imag < 1e-14)
         assert np.all(self.multiplier.real >= 0)

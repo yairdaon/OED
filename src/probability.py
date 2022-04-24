@@ -78,7 +78,7 @@ class Posterior(FourierMultiplier):
         """Plots and returns the optimal design multiplier"""
         eigenvalues = self.prior.inv_mult * self.sigSqr / np.abs(self.fwd.multiplier)**2
         eigenvalues -= eigenvalues.min()
-        print(eigenvalues)
+
         k = 1
         while True:
             eigs = eigenvalues[:k]

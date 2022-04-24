@@ -4,7 +4,7 @@ from scipy.interpolate import interp1d
 from tests.examples import *
 
 
-@pytest.mark.parametrize("transform", ['dct', 'fft', 'dst'])
+@pytest.mark.parametrize("transform", TRANSFORMS)
 def test_heat(fwd, prior, point_observation):
     """Check that analytic and numerical solution are identical.
     Check that we can measure correctly also."""
