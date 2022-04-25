@@ -9,6 +9,26 @@ COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
 
 @pytest.mark.parametrize('transform', TRANSFORMS)
+def test_norms(multiplier):
+    K = 20
+    norms_block = multiplier.norms()
+    norms_naive = np.array([multiplier.norm(multiplier.eigenfunction(k, False)(multiplier.x)) for k in range(K)])
+    assert_allclose(norms_block[:K], norms_naive)
+
+    
+@pytest.mark.parametrize('transform', TRANSFORMS)
+def test_block(multiplier):
+    K = 200
+    block = multiplier.block(multiplier.x)
+    eigen = np.vstack([multiplier.eigenfunction(k, normalize=False)(multiplier.x) for k in range(K)])
+    assert_allclose(block[:K,:], eigen, rtol=0, atol=1e-11)
+
+    normalized_block = multiplier.normalized_block(multiplier.x)
+    normalized_eigen = np.vstack([multiplier.eigenfunction(k, normalize=True)(multiplier.x) for k in range(K)])
+    assert_allclose(normalized_block[:K,:], normalized_eigen, rtol=0, atol=1e-11)
+
+    
+@pytest.mark.parametrize('transform', TRANSFORMS)
 def test_matvec(multiplier):
     """Test that if we input a constant vector, the output is also constant (???)"""
     v = np.ones(multiplier.N)

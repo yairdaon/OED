@@ -6,7 +6,7 @@ from src.multiplier import FourierMultiplier
 from src.observations import DiagObservation, PointObservation
 from src.probability import Prior, Posterior
 
-N = 15000
+N = 8000
 L = 3
 time = 3e-3
 alpha = 0.6
@@ -33,6 +33,11 @@ def diag_obs(transform):
 
 
 @pytest.fixture
+def point_observation(transform):
+    meas = np.random.uniform(low=0,high=1, size=8) * L
+    return PointObservation(measurements=meas, L=L, N=N, transform=transform)
+
+@pytest.fixture
 def prior(transform):
     return Prior(gamma=gamma, N=N, L=L, transform=transform)
 
@@ -47,12 +52,6 @@ def fwd(transform):
     return Heat(N=N, L=L, alpha=alpha, time=time, transform=transform)
 
 
-@pytest.fixture
-def point_observation(transform):
-    meas = [0.23563, 0.3822345, 0.451242, 0.886632215,
-            0.53244, 0.9923563, 0.1, 0.2]
-    meas = np.array(meas) * L
-    return PointObservation(measurements=meas, L=L, N=N, transform=transform)
 
 
 @pytest.fixture

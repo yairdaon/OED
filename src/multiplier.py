@@ -34,6 +34,7 @@ class FourierMultiplier(Operator):
         elif self.transform == 'fft':
             self.freqs = fft.fftfreq(self.N, d=self.h)
 
+            
     @property
     def specs(self):
         return {"N": self.N, "L": self.L, "transform":self.transform}
@@ -46,9 +47,11 @@ class FourierMultiplier(Operator):
         elif self.transform == 'dst':
              return fft.dst(x, norm='ortho', type=2, axis=axis) * self.sqrt_h
 
+         
     def to_freq_domain_from_right(self, x):
         return self.to_time_domain(x.conjugate(), axis=1).conjugate() * self.h
 
+    
     def to_time_domain(self, x, axis=-1):
         if self.transform == 'dct':
             return fft.dct(x, norm='ortho', type=3, axis=axis) / self.sqrt_h
@@ -57,15 +60,36 @@ class FourierMultiplier(Operator):
         elif self.transform == 'dst':
             return fft.dst(x, norm='ortho', type=3, axis=axis) / self.sqrt_h
 
-    def eigenfunction(self, i):
+        
+    def eigenfunction(self, i, normalize=True):
         if self.transform == 'fft':
             eigen = lambda x: np.exp(2j * np.pi * self.freqs[i] * x)
         elif self.transform == 'dct':
             eigen = lambda x: np.cos(np.pi*i/2/self.N + np.pi * self.freqs[i] * x)
         elif self.transform == 'dst':
             eigen = lambda x: np.sin(np.pi*(i+1)/2/self.N + np.pi * self.freqs[i] * x)
-        norm = self.norm(eigen(self.x))
+
+        norm = self.norm(eigen(self.x)) if normalize else 1
         return lambda x: eigen(x) / norm
+
+    def block(self, x):
+        tmp = np.einsum('i, j -> ij', self.freqs, x).T
+        i = np.arange(self.N)
+        if self.transform == 'fft':
+            return np.exp(2j * np.pi * tmp).T
+        elif self.transform == 'dct':
+            return np.cos(np.pi*i/2/self.N + np.pi * tmp).T
+        elif self.transform == 'dst':
+            return np.sin(np.pi*(i+1)/2/self.N + np.pi * tmp).T
+
+    def normalized_block(self, x):
+        block = self.block(x)
+        norms = self.norms()
+        return np.einsum("ij, i-> ij", block, 1/norms)
+        
+    def norms(self):
+        return np.linalg.norm(self.block(self.x), axis=1) * self.sqrt_h
+
 
     def eigenvector(self, i):
         return self.eigenfunction(i)(self.x)
