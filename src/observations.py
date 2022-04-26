@@ -69,9 +69,18 @@ class DiagObservation(Observation):
     def singular_values(self):
         return self.multiplier * self.sqrt_h
 
-    def __call__(self, v):
-        v_hat = self.to_freq_domain(v)
-        return self.to_time_domain(v_hat * self.multiplier)
+    # def _matvec(self, v):
+    #     v_hat = self.to_freq_domain(v)
+    #     return v_hat * self.multiplier
+
+    # def _matmat(self, M):
+    #     """M = PDP*, where P* == to_freq_domain, D == (diagonal) multiplier
+    #     P == to_time_domain. We find OM """
+
+    #     M_hat = self.to_freq_domain(M, axis=0)
+    #     DM_hat = np.einsum('i, ij-> ij', self.multiplier, M_hat)
+    #     return DM_hat
+
     
     def __str__(self):
         return 'Diagonal observation with singular values ' + ', '.join([f'{s:.4f}' for s in self.multiplier[:10]]) + '...'

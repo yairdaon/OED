@@ -123,8 +123,8 @@ class FourierMultiplier(Operator):
         return Av.reshape(*shp)
 
     def _matmat(self, M):
-        """M = PDP*, where P* == to_freq_domain, D == (diagonal) multiplier
-        P == to_time_domain """
+        """A = PDP*, where P* == to_freq_domain, D == (diagonal) multiplier
+        P == to_time_domain. We find AM """
 
         M_hat = self.to_freq_domain(M, axis=0)
         AM_hat = np.einsum('i, ij-> ij', self.multiplier, M_hat)

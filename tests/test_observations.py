@@ -5,8 +5,6 @@ from scipy.interpolate import interp1d
 from tests.examples import *
 from tests.helpers import align_eigenvectors
 
-COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
-
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
 def test_point_observation_measurements(prior, point_observation, fwd):
@@ -28,23 +26,20 @@ def test_point_observation_measurements(prior, point_observation, fwd):
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
 def test_diagonal_observation_on_eigenvectors(diag_obs):
-    for k, truth in enumerate(diag_obs.multiplier[:100]):
+    for k, eigenvalue in enumerate(diag_obs.multiplier[:10]):
         calculated = diag_obs._matvec(diag_obs.eigenvector(k))
-        calculated[k] = calculated[k] - truth
+        calculated[k] = calculated[k] - eigenvalue
         assert_allclose(calculated, np.zeros_like(calculated), rtol=0, atol=1e-11)
 
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
 def test_diagonal_observation_eigenvectors(diag_obs):
-    """Test that a measurement operator with diagonal multiplier indeed has
-    the correct eigenvectors for OstarO (note that this is up to multiplication
-    by a complex unit)."""
     n = diag_obs.shape[0]
     k = int(diag_obs.N // np.pi)
     OstarO = diag_obs.OstarO
     assert_allclose(OstarO, OstarO.conjugate().T, rtol=0, atol=1e-12)
 
-    D, P = np.linalg.eig(diag_obs.OstarO) # np.linalg.eigh does not work for some reason
+    D, P = np.linalg.eig(diag_obs.OstarO)
     xtra = P[:, n]
     P = P[:, :n].T # So that eigenvectors are in rows
     P = align_eigenvectors(P, k)

@@ -12,6 +12,8 @@ time = 3e-3
 alpha = 0.6
 gamma = -1.2
 TRANSFORMS = ['fft', 'dct']
+COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
+
 
 @pytest.fixture
 def multiplier(transform):

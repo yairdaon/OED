@@ -95,6 +95,53 @@ def test_orthogonality(multiplier):
     assert_allclose(np.dot(inverse, vector), multiplier.to_time_domain(vector), rtol=0, atol=1e-9)
 
 
+@pytest.mark.parametrize('k', range(12))
+@pytest.mark.parametrize('transform', TRANSFORMS)
+def test_eigenvector(multiplier, k):
+    eigenvalue = multiplier.multiplier[k]
+    v = multiplier.eigenvector(k)
+    Mv = multiplier(v)
+    err = np.max(np.abs(Mv - eigenvalue*v))
+    assert err < 1e-12
+
+    
+@pytest.mark.parametrize('transform', TRANSFORMS)
+def test_eig_on_matrix(multiplier):
+    M = multiplier.matrix
+    D, P = np.linalg.eig(M)
+    assert_allclose(D, multiplier.multiplier, atol=1e-12)
+
+    n = 6
+    eigs = multiplier.normalized_block(multiplier.x)[:n, :]
+    eigs = align_eigenvectors(eigs, 1)
+    P = align_eigenvectors(P[:,:n].T, 1)
+    assert P.shape == eigs.shape
+    
+    err = np.max(np.abs(eigs - P))
+    if err > 1e-9:
+        fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 9))
+        for i in range(n):
+            color = COLORS[i]
+            p = P[i, :]
+            eig = eigs[i, :]
+            real_diff = np.max(np.abs(p.real - eig.real))
+            imag_diff = np.max(np.abs(p.imag - eig.imag))
+            real_diff = f'{i} Error = {real_diff:.4f}'
+            imag_diff = f'{i} Error = {imag_diff:.4f}'
+            ax[0].plot(multiplier.x, eig.real, color=color, linestyle='-', label=real_diff)
+            ax[0].plot(multiplier.x, p.real, color=color, linestyle=':')
+            ax[1].plot(multiplier.x, eig.imag, color=color, linestyle='-', label=imag_diff)
+            ax[1].plot(multiplier.x, p.imag, color=color, linestyle=':')
+        ax[0].legend()
+        ax[1].legend()
+        ax[0].set_title(f"First $n={n}$ modes of {multiplier.transform} (real)")
+        ax[1].set_title(f"First $n={n}$ modes of {multiplier.transform} (imaginary)")
+        plt.tight_layout()
+        plt.show()
+    
+    assert err < 1e-9
+                
+    
 @pytest.mark.parametrize('transform', TRANSFORMS)
 def test_eigenvectors_agree(multiplier):
     """We check that the eigenvectors we get from transforming the standard basis
