@@ -78,9 +78,13 @@ def test_prior_pointwise_std(prior):
 
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
-def test_posterior_utility(posterior, point_observation, diag_obs):
-    assert posterior.utility(diag_obs) > 0
-    assert posterior.utility(point_observation) > 0
+def test_posterior_point_utility_positive(posterior):
+    assert posterior.point_utility(np.random.randn(5)**2) > 0
+
+    
+@pytest.mark.parametrize("transform", TRANSFORMS)
+def test_posterior_diag_utility_positive(posterior):
+    assert posterior.diag_utility(np.random.uniform(0,L, 8)) > 0
 
 
 @pytest.mark.parametrize("transform", TRANSFORMS)

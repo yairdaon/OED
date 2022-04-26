@@ -18,24 +18,24 @@ from src.probability import Posterior, Prior
 
 def main(n_jobs=6):
     L, N = 1, 800
-    specs = {'N': N, 'L': L}
     ms = [1, 2, 3, 5, 7, 10, 12]
-    transforms = ['fft']
-    fig1, axes1 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
-    fig2, axes2 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
-    figs = [fig1, fig2]
-    axess = [axes1, axes2]
+    transforms = ['fft', 'dct']
+    # fig1, axes1 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
+    # fig2, axes2 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
+    # figs = [fig1, fig2]
+    # axess = [axes1, axes2]
 
     for col, m in enumerate(ms):
 
-        for transform, fig, axes in zip(transforms, figs, axess):
+        for transform in transforms:#, fig, axes in zip(transforms, figs, axess):
             print('\nm =', m, transform)
 
-            specs['transform'] = transform
-            prior = Prior(gamma=-2, **specs)
-            forward = Heat(time=3e-1, alpha=0.6, **specs)
-            post = Posterior(fwd=forward, prior=prior, sigSqr=1e-2, **specs)
+            prior = Prior(gamma=-2, N=N, L=L, transform=transform)
+            forward = Heat(time=3e-1, alpha=0.6, N=N, L=L, transform=transform)
+            post = Posterior(fwd=forward, prior=prior, sigSqr=1e-2, N=N, L=L, transform=transform)
 
+            sample = prior.sample().ravel()
+        
             # Optimal diagonal
             post.make_optimal_diagonal(m)
             diagonal_utility = post.diagonal_utility(post.optimal_diagonal_O)
@@ -72,6 +72,11 @@ def main(n_jobs=6):
             point = post.optimize(m=m, target='utility')
             print(f"Point={point['utility']:3.3f}")
 
+            #import pdb; pdb.set_trace()
+            point_obs = PointObservation(measurements=point['x'], N=N, L=L, transform=transform)
+            plt.plot(prior.x, sample)
+            plt.scatter(point_obs.measurements, point_obs(sample))
+            plt.show()
             pt_sum = point['sum_eigenvalues']
             diag_sum = np.sum(post.optimal_diagonal_O**2)
             # approx_sum = np.sum(approx.loc[0, 'sum_eigenvalues'])

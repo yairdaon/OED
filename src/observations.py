@@ -8,6 +8,7 @@ class Observation(FourierMultiplier):
         O = self.matrix
         return np.einsum('ki, kj->ij', O.conjugate(), O)
 
+    
 class PointObservation(Observation):
     def __init__(self, measurements=[], **kwargs):
         super().__init__(**kwargs, size=len(measurements))

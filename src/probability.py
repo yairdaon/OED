@@ -58,7 +58,7 @@ class Prior(FourierMultiplier):
 
         
 class Posterior(FourierMultiplier):
-    ''' Based on Stuart 2.16a and 2.16b'''
+    ''' Based on Andrew Stuart's Acta Numerica paper 2.16a and 2.16b'''
 
     def __init__(self,
                  fwd=None,
@@ -134,13 +134,14 @@ class Posterior(FourierMultiplier):
         assert abs(utility[0] - 1) < 1e-7
         return utility[1]
 
-    def diagonal_utility(self, diag):
+    def diag_utility(self, diag):
         #tmp = self.C_sqrt_fwd.copy()
         #tmp[:diag.size] = tmp[:diag.size] * diag
         tmp = self.C_sqrt_fwd[:diag.size] * diag
         tmp = tmp ** 2 / self.sigSqr + 1
         return np.sum(np.log(tmp))
 
+                
     def close2diagonal(self, measurements):
         obs = PointObservation(**self.specs,
                                measurements=measurements)

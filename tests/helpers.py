@@ -1,14 +1,23 @@
 import numpy as np
 
 
-def align_eigenvectors(P, k=0):
-    """P contains vectors in its rows. We normalize thesm to norm 1 and real positive first entry"""
-    P = np.einsum('ij, i -> ij', P, np.exp(-1j * np.angle(P[:, k])) / np.linalg.norm(P, axis=1))
-    assert np.all(P[:, k].real >= 0)
+def align_eigenvectors(P, k=1):
+    """P contains vectors in its rows. We normalize thesm to norm 1 and
+    real positive k-th entry.
+
+    Note: we create ind with an index that has to be != k. After
+    normalization all(P[:, k] == 1) for FFT. Thus, sorting makes no
+    sense at k.
+
+    """
+    assert k != 0
+    aligner = np.exp(-1j * np.angle(P[:, k])) #/ np.linalg.norm(P, axis=1)
+    P = np.einsum('i, ij -> ij', aligner, P)
+    P = P / np.linalg.norm(P, axis=1)[:, np.newaxis] 
+    assert np.all(P[:, k].real > 0)
     assert np.all(np.abs(P[:, k].imag) < 1e-12)
-    ind = np.argsort(P[:, 1])
+    ind = np.argsort(P[:, 0].real) # See docstring
     P = P[ind, :]
-    # P = np.sort(P, axis=0)
     return P
 
 

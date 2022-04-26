@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy.interpolate import interp1d
 
 # from importlib import reload
 # import src.probability
@@ -9,6 +10,7 @@ from matplotlib import pyplot as plt
 from src.probability import Prior, Posterior
 from src.multiplier import FourierMultiplier
 from src.observations import PointObservation, DiagObservation
+from src.forward import Heat
 
 class TestPrior(Prior):
     def __init__(self,
@@ -38,33 +40,36 @@ class TestForward(FourierMultiplier):
 
 def main():
     sigSqr = 1e-1
-    fwd_eigs = 1 / np.array([2])
-    prior_eigs = np.array([0.05])
+    prior_eigs = np.array([0.05, 0.01, 1, 0.2, 0.9, 1, 2, 0.0003])
+    fwd_eigs = 1 / np.arange(1, prior_eigs.size+1)
     f_gamma_f_eigs = fwd_eigs**2 * prior_eigs
     diagonal_O = np.array([1])
     psi = sum(np.log(1 + eig * dia**2 /sigSqr) for eig, dia in zip(f_gamma_f_eigs, diagonal_O))
-    
-    L, N = np.pi, 100
-    m = 1
+   
+    L, N = np.sqrt(np.pi), 10000
+    # m = 1
     ms = [1, 2, 3, 5, 7, 10, 12]
-    transforms = ['fft']
+    transforms = ['dct', 'fft']
     for transform in transforms:
-        prior = TestPrior(N=N, L=L, transform=transform, eigenvalues=prior_eigs)
-        fwd = TestForward(N=N, L=L, transform=transform, eigenvalues=fwd_eigs)
-        post = Posterior(fwd=fwd, prior=prior, sigSqr=sigSqr, N=N, L=L, transform=transform)
+        for m in ms:
+            prior = TestPrior(N=N, L=L, transform=transform, eigenvalues=prior_eigs)
+            fwd = TestForward(L=L, N=N, transform=transform)
+            meas = np.random.uniform(0, L, size=m)
+            pt = PointObservation(measurements=meas, N=N, L=L, transform=transform)
+            post = Posterior(prior=prior, fwd=fwd, N=N, L=L, transform=transform, sigSqr=sigSqr)
+
+            # sample = fwd(prior.sample().squeeze())
+            
+            post.make_optimal_diagonal(m)
+            diagonal_utility = post.diagonal_utility(diagonal_O)
+            point_utility = post.point_utility(meas)
+            print(f"Point {point_utility:2.7f}, diagonal {diagonal_utility:2.7f}, analytic {psi:2.7f}")
         
-        #post.make_optimal_diagonal(m)
-        diagonal_utility = post.diagonal_utility(diagonal_O)
-        point_utility = post.point_utility([4])
-        print(f"Point {point_utility:2.7f}, diagonal {diagonal_utility:2.7f}, analytic {psi:2.7f}")
-        
-        point_obs = PointObservation(measurements=[2], N=N, L=L, transform=transform)
-        diag_obs = DiagObservation(multiplier=diagonal_O,  N=N, L=L, transform=transform)
-        sample = prior.sample(n_sample=1).ravel()
-        diag_obs(sample)
-        point_obs(sample)
-        import pdb; pdb.set_trace()
-        
+            diag_obs = DiagObservation(multiplier=diagonal_O,  N=N, L=L, transform=transform)
+          
+            diag_obs(sample)
+            point_obs(sample)
+            import pdb;pdb.set_trace()
 if __name__ == '__main__':
     try:
         main()

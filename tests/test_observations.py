@@ -40,16 +40,17 @@ def test_diagonal_observation_eigenvectors(diag_obs):
     the correct eigenvectors for OstarO (note that this is up to multiplication
     by a complex unit)."""
     n = diag_obs.shape[0]
+    k = int(diag_obs.N // np.pi)
     OstarO = diag_obs.OstarO
     assert_allclose(OstarO, OstarO.conjugate().T, rtol=0, atol=1e-12)
 
     D, P = np.linalg.eig(diag_obs.OstarO) # np.linalg.eigh does not work for some reason
     xtra = P[:, n]
     P = P[:, :n].T # So that eigenvectors are in rows
-    P = align_eigenvectors(P)
+    P = align_eigenvectors(P, k)
 
-    eigs = np.vstack([diag_obs.eigenvector(i) for i in range(n)])
-    eigs = align_eigenvectors(eigs)
+    eigs = np.vstack(diag_obs.eigenvector(i) for i in range(n))
+    eigs = align_eigenvectors(eigs, k)
 
     assert_allclose(np.linalg.norm(eigs, axis=1), 1)
     assert_allclose(np.linalg.norm(P, axis=1), 1)
@@ -75,8 +76,8 @@ def test_diagonal_observation_eigenvectors(diag_obs):
             ax[1, 0].plot(diag_obs.x, p.real, color=color, linestyle=':')
             ax[1, 1].plot(diag_obs.x, eig.imag, color=color, linestyle='-', label=imag_diff)
             ax[1, 1].plot(diag_obs.x, p.imag, color=color, linestyle=':')
-        ax[0, 0].plot(diag_obs.x, xtra, label='$n+1$', color='k')
-        ax[0, 1].plot(diag_obs.x, xtra, label='$n+1$', color='k')
+        ax[0, 0].plot(diag_obs.x, xtra, label='$n+1$', color='k', alpha=0.2)
+        ax[0, 1].plot(diag_obs.x, xtra, label='$n+1$', color='k', alpha=0.2)
         ax[1, 0].legend()
         ax[1, 1].legend()
         OstarO = "OstarO"  # r"$\mathcal{O}^{*}\mathcal{O}$"
@@ -86,6 +87,8 @@ def test_diagonal_observation_eigenvectors(diag_obs):
         ax[1, 0].set_title(f"First $n={n}$ modes of {diag_obs.transform} (real)")
         ax[1, 1].set_title(f"First $n={n}$ modes of {diag_obs.transform} (imaginary)")
 
+        ax[1, 0].scatter(diag_obs.x[k], 0, color='k')
+        ax[1, 1].scatter(diag_obs.x[k], 0, color='k')
         # ind = np.where(np.abs(D) > 1e-9)[0]
         # ax[3].plot(np.arange(n), D[:n], label="e_i") # "'$\mathbf{e}_i$')
         # ax[3].plot(np.arange(n), np.zeros(n), label='y=0')

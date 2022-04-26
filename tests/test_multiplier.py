@@ -99,20 +99,17 @@ def test_orthogonality(multiplier):
 def test_eigenvectors_agree(multiplier):
     """We check that the eigenvectors we get from transforming the standard basis
     vectors are the same we get from the multiplier object iteslf."""
-    for i in range(multiplier.N):
-        eigenfunction = np.zeros(multiplier.N)
-        eigenfunction[i] = 1
-        eigenfunction = multiplier.to_time_domain(eigenfunction)
-        class_eigenfunction = multiplier.eigenfunction(i)(multiplier.x)
-        diff = np.abs(eigenfunction - class_eigenfunction)
-        assert_allclose(diff, 0, atol=1e-11, rtol=0)
+    class_eigenfunction = multiplier.normalized_block(multiplier.x)
+    eigenfunction = multiplier.to_time_domain(np.eye(multiplier.N), axis=1)
+    diff = np.abs(eigenfunction - class_eigenfunction)
+    assert_allclose(diff, 0, atol=1e-11, rtol=0)
 
 
 @pytest.mark.parametrize('transform', TRANSFORMS)
 def test_basis_matrix_agree(multiplier):
     identity = np.eye(multiplier.N)
-    forward = multiplier.to_time_domain(identity, axis=0)
-    U = np.vstack(multiplier.eigenvector(i) for i in range(multiplier.N)).T
+    forward = multiplier.to_time_domain(identity, axis=1)
+    U = multiplier.normalized_block(multiplier.x)
     assert_allclose(U, forward, atol=1e-9, rtol=0)
 
 
@@ -141,7 +138,7 @@ def test_eigenfunction(multiplier):
     P = P[:, :number_eigenvectors].T
     P = align_eigenvectors(P)
 
-    eigs = np.vstack([multiplier.eigenvector(i) for i in range(multiplier.N)])
+    eigs = multiplier.normalized_block(multiplier.x)
     eigs = eigs[:number_eigenvectors, :]
     eigs = align_eigenvectors(eigs)
 
@@ -208,7 +205,7 @@ def test_transformed_eigenvector_is_standard_basis_vector(multiplier):
 def test_eigenvector_and_eigenfunction_agree_to_normalization(transform):
     """Test that eigenvectors and eigenfunctions agree up to normalization."""
     multiplier = FourierMultiplier(N=100, L=1.53, transform=transform)
-    for i in range(multiplier.N):
+    for i in range(20):
         ef = multiplier.eigenfunction(i)(multiplier.x)
         ev = multiplier.eigenvector(i)
         assert_allclose(ev, ef, rtol=0, atol=1e-9)
@@ -222,7 +219,7 @@ def test_to_freq_from_right(transform):
 
     rand = multiplier.normal(n_sample=multiplier.N//2)
     assert rand.shape == (multiplier.N//2, multiplier.N)
-
+    
     rand_matrix = rand @ matrix
     operator = multiplier.to_freq_domain_from_right(rand)
     assert_allclose(rand_matrix, operator)

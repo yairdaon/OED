@@ -6,7 +6,7 @@ from src.multiplier import FourierMultiplier
 from src.observations import DiagObservation, PointObservation
 from src.probability import Prior, Posterior
 
-N = 8000
+N = 500
 L = 3
 time = 3e-3
 alpha = 0.6
@@ -25,7 +25,7 @@ def multiplier(transform):
 
 @pytest.fixture
 def diag_obs(transform):
-    obs = DiagObservation(multiplier=np.abs(np.random.randn(6)),
+    obs = DiagObservation(multiplier=1+np.abs(np.random.randn(3)),
                           N=N,
                           L=L,
                           transform=transform)
