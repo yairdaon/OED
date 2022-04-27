@@ -44,7 +44,7 @@ def test_diagonal_observation_eigenvectors(diag_obs):
     P = P[:, :n].T # So that eigenvectors are in rows
     P = align_eigenvectors(P, k)
 
-    eigs = np.vstack(diag_obs.eigenvector(i) for i in range(n))
+    eigs = np.vstack([diag_obs.eigenvector(i) for i in range(n)])
     eigs = align_eigenvectors(eigs, k)
 
     assert_allclose(np.linalg.norm(eigs, axis=1), 1)

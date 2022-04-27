@@ -72,7 +72,7 @@ class Posterior(FourierMultiplier):
         self.C_sqrt_fwd = np.sqrt(self.prior.multiplier) * self.fwd.multiplier
         assert np.all(np.abs(self.C_sqrt_fwd.imag) < 1e-12)
         assert np.all(self.C_sqrt_fwd.real >= 0)
-
+        
 
     def make_optimal_diagonal(self, m):
         """Plots and returns the optimal design multiplier"""
@@ -94,6 +94,7 @@ class Posterior(FourierMultiplier):
 
         power = np.sum(self.optimal_diagonal_O**2)
         #assert abs(power - m) < 1e-12, (power, m)
+
 
     def operators(self, obs):
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
@@ -155,6 +156,7 @@ class Posterior(FourierMultiplier):
                 eps=0,
                 full=False):
 
+        self.make_optimal_diagonal(m)
         f = self.minimization_point if target == 'utility' else self.close2diagonal
         bounds = [(0+eps, self.L-eps)] * m
         parallelized = partial(minimize, bounds=bounds)

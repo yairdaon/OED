@@ -63,11 +63,11 @@ def test_linearoperator(multiplier):
     M = multiplier.matrix
     err = np.abs(M - M.conjugate().T).max()
     assert err < 1e-8
-    x, _ = cg(multiplier, b)
+    x, _ = cg(multiplier, b, atol=0)
     b_hat = multiplier(x)
     assert_allclose(b, b_hat, rtol=0, atol=1e-7)
 
-    x, _ = gmres(multiplier, b)
+    x, _ = gmres(multiplier, b, atol=0)
     b_hat = multiplier(x)
     assert_allclose(b, b_hat, rtol=0, atol=1e-7)
 
