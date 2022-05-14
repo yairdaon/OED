@@ -17,7 +17,7 @@ from src.probability import Posterior, Prior
 # plt.rcParams['text.color'] = 'white'
 
 def main(n_jobs=6):
-    L, N = 1, 800
+    L, N = np.pi*10, 800
     ms = [1, 2, 3, 5, 7, 10, 12]
     transforms = ['fft', 'dct']
     # fig1, axes1 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
@@ -27,7 +27,7 @@ def main(n_jobs=6):
 
     for col, m in enumerate(ms):
 
-        for transform in transforms:#, fig, axes in zip(transforms, figs, axess):
+        for transform in ['fft']:#transforms:#, fig, axes in zip(transforms, figs, axess):
             print('\nm =', m, transform)
 
             prior = Prior(gamma=-2, N=N, L=L, transform=transform)
@@ -38,7 +38,7 @@ def main(n_jobs=6):
         
             # Optimal diagonal
             post.make_optimal_diagonal(m)
-            diagonal_utility = post.diagonal_utility(post.optimal_diagonal_O)
+            diagonal_utility = post.diag_utility(post.optimal_diagonal_O)
             # ax.scatter(diagonal_utility, kde(diagonal_utility), label='optimal diagonal')
             print(f"utility: Diag={diagonal_utility:3.3f}", end=' ')
 
@@ -74,9 +74,9 @@ def main(n_jobs=6):
 
             #import pdb; pdb.set_trace()
             point_obs = PointObservation(measurements=point['x'], N=N, L=L, transform=transform)
-            plt.plot(prior.x, sample)
-            plt.scatter(point_obs.measurements, point_obs(sample))
-            plt.show()
+            # plt.plot(prior.x, sample)
+            # plt.scatter(point_obs.measurements, point_obs(sample))
+            # plt.show()
             pt_sum = point['sum_eigenvalues']
             diag_sum = np.sum(post.optimal_diagonal_O**2)
             # approx_sum = np.sum(approx.loc[0, 'sum_eigenvalues'])

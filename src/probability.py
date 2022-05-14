@@ -76,7 +76,7 @@ class Posterior(FourierMultiplier):
 
     def make_optimal_diagonal(self, m):
         """Plots and returns the optimal design multiplier"""
-        eigenvalues = self.prior.inv_mult * self.sigSqr / np.abs(self.fwd.multiplier)**2
+        eigenvalues = self.sigSqr / np.abs(self.fwd.multiplier)**2 / np.abs(self.prior.multiplier)
         eigenvalues -= eigenvalues.min()
 
         k = 1
@@ -136,9 +136,8 @@ class Posterior(FourierMultiplier):
         return utility[1]
 
     def diag_utility(self, diag):
-        #tmp = self.C_sqrt_fwd.copy()
-        #tmp[:diag.size] = tmp[:diag.size] * diag
-        tmp = self.C_sqrt_fwd[:diag.size] * diag
+        tmp = self.C_sqrt_fwd.copy()
+        tmp[:diag.size] = tmp[:diag.size] * diag
         tmp = tmp ** 2 / self.sigSqr + 1
         return np.sum(np.log(tmp))
 

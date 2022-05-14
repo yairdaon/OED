@@ -97,7 +97,7 @@ def test_posterior(posterior, point_observation):
     uT = posterior.fwd(u0)
     data = point_observation(uT) + np.random.normal(scale=np.sqrt(posterior.sigSqr), size=point_observation.shape[0])
     mean, pointwise_std = posterior.mean_std(point_observation, data)
-
+    
     top_bar, bottom_bar = mean + 2 * pointwise_std, mean - 2 * pointwise_std
     in_bars = np.mean((u0 < top_bar) & (u0 > bottom_bar))
 
@@ -130,19 +130,25 @@ def test_posterior(posterior, point_observation):
 
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
-@pytest.mark.parametrize("m", range(2, 7))
+@pytest.mark.parametrize("m", [2, 6, 12])
 def test_unique_optimal(posterior, m):
-    n_runs = 34
-    res = Parallel(n_jobs=7)(delayed(posterior.optimize)(m=m) for _ in range(n_runs))
+    n_jobs = 7
+    res = Parallel(n_jobs=n_jobs)(delayed(posterior.optimize)(m=m) for _ in range(n_jobs))
     successes = [r for r in res if r['success']]
     failures = [r for r in res if not r['success']]
-
+    utilities = [x['utility'] for x in successes]
+    
     n_success = len(successes)
     n_failures = len(failures)
-    plt.scatter(np.arange(n_success), [r['utility'] for r in successes], label='success')
-    plt.scatter(np.arange(n_success, n_success + n_failures), [r['utility'] for r in failures], label='failures')
-    plt.ylim(0, 2*np.mean([r['utility'] for r in res]))
-    plt.show()
+    if np.std(utilities) > 1e-2 * np.mean(utilities):
+        plt.scatter(np.arange(n_success), [r['utility'] for r in successes], label='success', color='b')
+        plt.scatter(np.arange(n_success, n_success + n_failures), [r['utility'] for r in failures], label='failures', color='r')
+        plt.ylim(0, 2*np.mean([r['utility'] for r in res]))
+        plt.title(f"test_unique_optimal transform={posterior.transform} m={m}. All y-values should equal")
+        plt.xlabel("Attempt number")
+        plt.ylabel("utility")
+        plt.legend()
+        plt.show()
 
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
