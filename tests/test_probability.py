@@ -88,26 +88,26 @@ def test_posterior_diag_utility_positive(posterior):
 
 
 @pytest.mark.parametrize("transform", TRANSFORMS)
-def test_posterior(posterior, point_observation):
+def test_posterior(posterior, many_point):
     # meas = np.random.uniform(low=0, high=L, size=33)
     # meas = np.array([prior.L/2, prior.L/2.1])
 
     u0 = posterior.prior.sample(return_coeffs=False).squeeze()
 
     uT = posterior.fwd(u0)
-    data = point_observation(uT) + np.random.normal(scale=np.sqrt(posterior.sigSqr), size=point_observation.shape[0])
-    mean, pointwise_std = posterior.mean_std(point_observation, data)
+    data = many_point(uT) + np.random.normal(scale=np.sqrt(posterior.sigSqr), size=many_point.shape[0])
+    mean, pointwise_std = posterior.mean_std(many_point, data)
     
     top_bar, bottom_bar = mean + 2 * pointwise_std, mean - 2 * pointwise_std
     in_bars = np.mean((u0 < top_bar) & (u0 > bottom_bar))
 
-    if in_bars < 0.92:
+    if in_bars < 0.95:
         fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(6, 16), sharex=True)
         ax[0].plot(posterior.x, u0.real, label='IC')
         ax[0].plot(posterior.x, uT.real, label='FC')
-        ax[0].scatter(point_observation.measurements, np.dot(posterior.A, posterior.to_freq_domain(u0)).real,
+        ax[0].scatter(many_point.measurements, np.dot(posterior.A, posterior.to_freq_domain(u0)).real,
                       label='Matrix FC')
-        ax[0].scatter(point_observation.measurements, data.real, label='Measurements', marker='*', s=10, color='r',
+        ax[0].scatter(many_point.measurements, data.real, label='Measurements', marker='*', s=10, color='r',
                       zorder=10)
         line, = ax[0].plot(posterior.x, mean, label='Posterior mean')
         ax[0].plot(posterior.x, top_bar, color=line.get_color(), label='95% Posterior Interval', linestyle=':')
@@ -115,7 +115,7 @@ def test_posterior(posterior, point_observation):
         ax[0].legend()
 
         ax[1].plot(posterior.x, pointwise_std, label='posterior STD')
-        ax[1].scatter(point_observation.measurements, np.ones(point_observation.shape[0]) * pointwise_std.mean(),
+        ax[1].scatter(many_point.measurements, np.ones(many_point.shape[0]) * pointwise_std.mean(),
                       label='measurement locations on x-axis')
         ax[1].legend()
         fig.suptitle(f"Transform = {posterior.transform}, in error bars = {in_bars:.4f}")

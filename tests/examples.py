@@ -11,6 +11,7 @@ L = 3
 time = 3e-3
 alpha = 0.6
 gamma = -1.2
+delta = 0.5
 TRANSFORMS = ['fft', 'dct']
 COLORS = ['r', 'g', 'b', 'k', 'c', 'm', 'y']
 
@@ -39,14 +40,21 @@ def point_observation(transform):
     meas = np.random.uniform(low=0,high=1, size=8) * L
     return PointObservation(measurements=meas, L=L, N=N, transform=transform)
 
+
+@pytest.fixture
+def many_point(transform):
+    meas = np.random.uniform(low=0,high=1, size=120) * L
+    return PointObservation(measurements=meas, L=L, N=N, transform=transform)
+
+
 @pytest.fixture
 def prior(transform):
-    return Prior(gamma=gamma, N=N, L=L, transform=transform)
+    return Prior(gamma=gamma, delta=delta, N=N, L=L, transform=transform)
 
 
 @pytest.fixture
 def short_prior(transform):
-    return Prior(gamma=gamma, N=300, L=L, transform=transform)
+    return Prior(gamma=gamma, delta=delta, N=300, L=L, transform=transform)
 
 
 @pytest.fixture
@@ -68,7 +76,7 @@ def many_point_observation(transform):
 def posterior(transform):
     sig = 1e-2
     forward = Heat(N=N, L=L, transform=transform, alpha=alpha, time=time)
-    pr = Prior(N=N, L=L, transform=transform, gamma=gamma)
+    pr = Prior(N=N, L=L, transform=transform, gamma=gamma, delta=delta)
     return Posterior(fwd=forward,
                      prior=pr,
                      sigSqr=sig**2,

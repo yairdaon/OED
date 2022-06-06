@@ -35,6 +35,8 @@ class PointObservation(Observation):
         O = self.multiplier
         return np.linalg.eigh(O @ O.conjugate().T)[0] * self.h
 
+    def pow(self):
+        return np.sum(self.eigenvalues()**2)
 
 class DiagObservation(Observation):
     def __init__(self, multiplier, random_U=False, **kwargs):

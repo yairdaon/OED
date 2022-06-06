@@ -1,11 +1,12 @@
 import os
-
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 from matplotlib import pyplot as plt
 from src.observations import PointObservation
 from scipy.stats import gaussian_kde
+from pdb import set_trace
+
 from src.forward import Heat
 from src.probability import Posterior, Prior
 
@@ -17,9 +18,10 @@ from src.probability import Posterior, Prior
 # plt.rcParams['text.color'] = 'white'
 
 def main(n_jobs=6):
-    L, N = np.pi*10, 800
-    ms = [1, 2, 3, 5, 7, 10, 12]
-    transforms = ['fft', 'dct']
+    L, N = 1, 100
+    ms = [1,3, 20]
+    transforms = ['fft']
+    # transforms.append('dct')
     # fig1, axes1 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
     # fig2, axes2 = plt.subplots(figsize=(30, 16), nrows=len(transforms), ncols=len(ms))
     # figs = [fig1, fig2]
@@ -27,14 +29,14 @@ def main(n_jobs=6):
 
     for col, m in enumerate(ms):
 
-        for transform in ['fft']:#transforms:#, fig, axes in zip(transforms, figs, axess):
+        for transform in transforms:#, fig, axes in zip(transforms, figs, axess):
             print('\nm =', m, transform)
 
-            prior = Prior(gamma=-2, N=N, L=L, transform=transform)
-            forward = Heat(time=3e-1, alpha=0.6, N=N, L=L, transform=transform)
-            post = Posterior(fwd=forward, prior=prior, sigSqr=1e-2, N=N, L=L, transform=transform)
-
-            sample = prior.sample().ravel()
+            prior = Prior(gamma=-1.1, N=N, L=L, transform=transform)
+            forward = Heat(time=3e-2, alpha=0.6, N=N, L=L, transform=transform)
+            post = Posterior(fwd=forward, prior=prior, sigSqr=1, N=N, L=L, transform=transform)
+            # set_trace()
+            # sample = prior.sample().ravel()
         
             # Optimal diagonal
             post.make_optimal_diagonal(m)
@@ -69,14 +71,11 @@ def main(n_jobs=6):
             # print(f"Approx={approx.utility.min():3.3f}", end=' ')
 
             # Optimal point
-            point = post.optimize(m=m, target='utility')
+            point = post.optimize(m=m, target='utility', n_jobs=1)
             print(f"Point={point['utility']:3.3f}")
-
+            # obs = point['object']
+            #print(obs.multiplier.shape, obs.norm(obs.multiplier))
             #import pdb; pdb.set_trace()
-            point_obs = PointObservation(measurements=point['x'], N=N, L=L, transform=transform)
-            # plt.plot(prior.x, sample)
-            # plt.scatter(point_obs.measurements, point_obs(sample))
-            # plt.show()
             pt_sum = point['sum_eigenvalues']
             diag_sum = np.sum(post.optimal_diagonal_O**2)
             # approx_sum = np.sum(approx.loc[0, 'sum_eigenvalues'])

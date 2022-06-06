@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
+from pdb import set_trace as stahp
 
 # from importlib import reload
 # import src.probability
@@ -14,20 +15,21 @@ from src.forward import Heat
 
 class TestPrior(Prior):
     def __init__(self,
-                 eigenvalues=[1],
+                 eigenvalues,
                  **kwargs):
         super().__init__(**kwargs)
         eigenvalues = np.array(eigenvalues)
         self.gamma = None
+        self.delta = None
         self.multiplier = np.zeros(self.N)
         self.multiplier[:eigenvalues.size] = eigenvalues
         self.inv_mult = np.full(self.N, np.inf)
         self.inv_mult[:eigenvalues.size] = 1/eigenvalues
-        self.ind = None
+        
 
 class TestForward(FourierMultiplier):
     def __init__(self,
-                 eigenvalues=[1],
+                 eigenvalues,
                  **kwargs):
             
         super().__init__(**kwargs)
@@ -39,37 +41,43 @@ class TestForward(FourierMultiplier):
         return f'Test Forward operator'
 
 def main():
+    n = 3
+    N = 1000
+    L = 1
     sigSqr = 1e-1
-    prior_eigs = np.array([0.05, 0.01, 1, 0.2, 0.9, 1, 2, 0.0003])
-    fwd_eigs = 1 / np.arange(1, prior_eigs.size+1)
-    f_gamma_f_eigs = fwd_eigs**2 * prior_eigs
-    diagonal_O = np.array([1])
-    psi = sum(np.log(1 + eig * dia**2 /sigSqr) for eig, dia in zip(f_gamma_f_eigs, diagonal_O))
-   
-    L, N = np.sqrt(np.pi), 10000
-    # m = 1
+    prior_eigs = np.ones(n)#np.power(2., -np.arange(n))
+    fwd_eigs = np.ones(n)
     ms = [1, 2, 3, 5, 7, 10, 12]
     transforms = ['dct', 'fft']
     for transform in transforms:
+        print('\n\n')
+        print(transform)
         for m in ms:
             prior = TestPrior(N=N, L=L, transform=transform, eigenvalues=prior_eigs)
-            fwd = TestForward(L=L, N=N, transform=transform)
+            fwd = TestForward(N=N, L=L, transform=transform, eigenvalues=fwd_eigs)
+            post = Posterior(prior=prior, fwd=fwd, N=N, L=L, transform=transform, sigSqr=sigSqr)
+            diagonal_O = post.make_optimal_diagonal(m)
+            # print(diagonal_O)
+            eigs = prior.multiplier ** 2 * fwd.multiplier
+            psi = sum(np.log(1 + eig * dia**2 /sigSqr) for eig, dia in zip(eigs, diagonal_O))
+            
             meas = np.random.uniform(0, L, size=m)
             pt = PointObservation(measurements=meas, N=N, L=L, transform=transform)
-            post = Posterior(prior=prior, fwd=fwd, N=N, L=L, transform=transform, sigSqr=sigSqr)
-
-            # sample = fwd(prior.sample().squeeze())
-            
+            # [plt.plot(pt.x, pt.to_time_domain(y)) for y in pt.multiplier]
+            # plt.scatter(meas, np.ones(m))
+            # plt.show()
+            sample = fwd(prior.sample().squeeze())
+            post.optimize_diag(m=m)
             post.make_optimal_diagonal(m)
-            diagonal_utility = post.diagonal_utility(diagonal_O)
+            diagonal_utility = post.diag_utility(diagonal_O)
             point_utility = post.point_utility(meas)
-            print(f"Point {point_utility:2.7f}, diagonal {diagonal_utility:2.7f}, analytic {psi:2.7f}")
+            print(f"{m}: Point {point_utility:2.7f}, diagonal {diagonal_utility:2.7f}, analytic {psi:2.7f}")
         
-            diag_obs = DiagObservation(multiplier=diagonal_O,  N=N, L=L, transform=transform)
+            # diag_obs = DiagObservation(multiplier=diagonal_O,  N=N, L=L, transform=transform)
           
-            diag_obs(sample)
-            point_obs(sample)
-            import pdb;pdb.set_trace()
+            # do = diag_obs(sample)
+            # po = point_obs(sample)
+            # import pdb;pdb.set_trace()
 if __name__ == '__main__':
     try:
         main()

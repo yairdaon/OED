@@ -1,8 +1,10 @@
 import numpy as np
 from scipy.linalg import solve
-from scipy.optimize import minimize
+from scipy.optimize import minimize, LinearConstraint
 from functools import partial
 from joblib import Parallel, delayed
+from matplotlib import pyplot as plt
+import pdb
 
 from src.multiplier import FourierMultiplier
 from src.observations import PointObservation, DiagObservation
@@ -11,20 +13,17 @@ from src.forward import Heat
 
 class Prior(FourierMultiplier):
     """ Implement a negative Laplacian prior Delta^{gamma}, where gamma < 0"""
-    def __init__(self, gamma=-0.6, **kwargs):
+    def __init__(self, gamma=-0.6, delta=0.5, **kwargs):
         assert gamma < 0
         super().__init__(**kwargs)
-        ind = self.freqs != 0
-        multiplier = np.ones(self.freqs.shape)
-        multiplier[ind] = np.power(np.pi**2 * self.freqs[ind]**2, gamma)
-        inv_mult = np.ones(self.freqs.shape)
-        inv_mult[ind] = np.power(np.pi**2 * self.freqs[ind]**2, -gamma)
+        inv_mult = np.power(np.pi**2 * self.freqs**2, -gamma) + delta
+        multiplier = 1 / inv_mult 
         self.multiplier = multiplier
         assert not np.any(np.isnan(multiplier)), 'NaN in prior multiplier'
         self.inv_mult = inv_mult
         assert not np.any(np.isnan(inv_mult)), 'NaN in prior inverse multiplier'
         self.gamma = gamma
-        self.ind = ind
+        # self.ind = ind
 
     def sample(self, return_coeffs=False, n_sample=1):
         """ Generate a sample and return its coefficients if needed. This effectively uses the
@@ -76,9 +75,14 @@ class Posterior(FourierMultiplier):
 
     def make_optimal_diagonal(self, m):
         """Plots and returns the optimal design multiplier"""
-        eigenvalues = self.sigSqr / np.abs(self.fwd.multiplier)**2 / np.abs(self.prior.multiplier)
-        eigenvalues -= eigenvalues.min()
-
+        eigenvalues = self.sigSqr / self.C_sqrt_fwd**2
+        # ind = np.argsort(eigenvalues)
+        # eigenvalues = eigenvalues[ind]
+        # pdb.set_trace()
+        #plt.plot(eigenvalues[ind])
+        # plt.plot(np.minimum(eigenvalues, 10))
+        # plt.show()
+        #print(eigenvalues[:3], eigenvalues[-3:])
         k = 1
         while True:
             eigs = eigenvalues[:k]
@@ -88,13 +92,13 @@ class Posterior(FourierMultiplier):
             self.optimal_diagonal_O = np.sqrt(uniform - eigs)
             k += 1
           
-            
+
         self.optimal_diagonal_O_matrix = np.zeros((m, self.N))
         np.fill_diagonal(self.optimal_diagonal_O_matrix, self.optimal_diagonal_O)
 
         power = np.sum(self.optimal_diagonal_O**2)
-        #assert abs(power - m) < 1e-12, (power, m)
-
+        assert abs(power - m) < 1e-12, (power, m)
+        return self.optimal_diagonal_O
 
     def operators(self, obs):
         self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
@@ -132,12 +136,15 @@ class Posterior(FourierMultiplier):
         tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd, OstarO, self.C_sqrt_fwd)
         tmp = tmp / self.sigSqr + np.eye(self.N)
         utility = np.linalg.slogdet(tmp)
-        assert abs(utility[0] - 1) < 1e-7
+        assert abs(utility[0] - 1) < 1e-7, abs(utility[0])
+        # [plt.plot(self.x, x) for x in self.to_freq_domain(obs.multiplier)]
+        # plt.scatter(obs.measurements, 1+np.zeros_like(obs.measurements))
+        # plt.show()
         return utility[1]
 
     def diag_utility(self, diag):
-        tmp = self.C_sqrt_fwd.copy()
-        tmp[:diag.size] = tmp[:diag.size] * diag
+        tmp = self.C_sqrt_fwd.copy()[:diag.size]
+        tmp = tmp*diag
         tmp = tmp ** 2 / self.sigSqr + 1
         return np.sum(np.log(tmp))
 
@@ -148,12 +155,12 @@ class Posterior(FourierMultiplier):
         return np.linalg.norm(obs.multiplier-self.optimal_diagonal_O_matrix)
 
     def optimize(self,
-                m,
-                target='utility',
-                n_iterations=1,
-                n_jobs=6,
-                eps=0,
-                full=False):
+                 m,
+                 target='utility',
+                 n_iterations=1,
+                 n_jobs=6,
+                 eps=0,
+                 full=False):
 
         self.make_optimal_diagonal(m)
         f = self.minimization_point if target == 'utility' else self.close2diagonal
@@ -177,9 +184,55 @@ class Posterior(FourierMultiplier):
             tmp['L'] = self.L
             tmp['success'] = res['success']
             tmp['fun'] = res['fun']
+            tmp['object'] = obs
+            agg.append(tmp)
+        return agg if full else min(agg, key=lambda x: x['fun'])
+
+
+    def minimization_diag(self, diag):
+        return -self.diag_utility(np.sqrt(diag))
+
+    
+    def optimize_diag(self,
+                      m,
+                      n_iterations=1,
+                      n_jobs=6,
+                      full=False):
+
+        f = self.minimization_diag
+        constraints = {'type': 'eq',
+                       'fun': lambda x: np.sum(x) - m, 
+                       'jac': lambda x: np.ones_like(x)}
+
+        #constraints = LinearConstraint(A=np.ones((1,self.N)), lb=[0], ub=[m])
+        #import pdb; pdb.set_trace()
+        parallelized = partial(minimize, constraints=constraints)
+        x0s = np.random.uniform(low=0, high=m, size=(n_iterations, m))
+        results = Parallel(n_jobs=n_jobs)(delayed(parallelized)(f, x0=x0) for x0 in x0s)
+        agg = []
+        for res in results:
+            x = res['x']
+            obs = DiagObservation(**self.specs, multiplier=x)
+            tmp = {}
+            tmp['x'] = x
+            tmp['sum_eigenvalues'] = np.sum(obs.multiplier**2)
+            tmp['utility'] = -res['fun']
+            tmp['m'] = m
+            tmp['transform'] = self.transform
+            tmp['N'] = self.N
+            tmp['L'] = self.L
+            tmp['success'] = res['success']
+            tmp['object'] = obs
+            tmp['fun'] = res['fun']
             agg.append(tmp)
         return agg if full else min(agg, key=lambda x: x['fun'])
 
 
     def minimization_point(self, measurements):
         return -self.point_utility(measurements)
+
+    def __str__(self):
+        return f'Posterior with prior {self.prior} and {self.fwd}'
+
+    def __repr__(self):
+        return str(self)

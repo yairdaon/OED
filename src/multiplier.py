@@ -16,8 +16,8 @@ class Operator(LinearOperator):
         self.h = self.L / self.N
         self.sqrt_h = np.sqrt(self.h)
 
-    def norm(self, v):
-        return np.linalg.norm(v) * self.sqrt_h
+    def norm(self, v, axis=-1):
+        return np.linalg.norm(v, axis=axis) * self.sqrt_h
 
 
 class FourierMultiplier(Operator):
@@ -33,7 +33,7 @@ class FourierMultiplier(Operator):
             self.freqs = np.arange(1,self.N+1) / self.L
         elif self.transform == 'fft':
             self.freqs = fft.fftfreq(self.N, d=self.h)
-
+        
             
     @property
     def specs(self):
