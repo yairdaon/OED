@@ -1,3 +1,7 @@
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+
 %%
 %% Place here your \usepackage's. Some recommended packages are already included.
 %%
@@ -11,14 +15,12 @@
 %\usepackage{graphpap} % \defines the \graphpaper command
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 \usepackage[english]{babel} % English language/hyphenation
-%\usepackage{amsmath, amsfonts, amsthm} % Math package
+
 
 \usepackage{cite}
 % makes color citations
 \usepackage[colorlinks=true,urlcolor=blue,citecolor=red,linkcolor=red,bookmarks=true]{hyperref}
 \usepackage{color}
-\usepackage{pgfplots}
-\usepackage{tikz}
 \usepackage{paralist}
 %% \usepackage{graphics} %% add this and next lines if pictures should be in esp format
 %% \usepackage{epsfig} %For pictures: screened artwork should be set up with an 85 or 100 line screen
@@ -43,7 +45,7 @@
 
 %% % Fonts and symbols:
 \usepackage{amsfonts}
-\usepackage{amssymb}
+
 
 % Formatting tools:
 %\usepackage{relsize} % relative font size selection, provides commands \textsmalle, \textlarger
@@ -69,6 +71,7 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\closure}[1]{\ensuremath{\overline{#1}}}
 \newcommand{\M}{\mathcal{M}}
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem*{main}{Main Theorem}
@@ -80,6 +83,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}{Remark}
 \newtheorem*{notation}{Notation}
+
 \newcommand{\ep}{\varepsilon}
 %\newcommand{\eps}[1]{{#1}_{\varepsilon}}
 \newcommand{\bs}{\boldsymbol}

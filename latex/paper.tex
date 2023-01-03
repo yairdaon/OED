@@ -1,5 +1,4 @@
 \documentclass{amsart}
-
 \input{definitions}
 
 \numberwithin{equation}{section}
@@ -184,6 +183,63 @@ for calculating the increase in the design criterion per observation
 --- Lemma \ref{lemma:design increase} and Corollary \ref{cor:zero mod
   err}.
 
+\begin{restatable}[D-optimal designs with vanishing model error]{theorem}{main}\label{thm:char}
+  Let:
+  \begin{enumerate}
+  \item $\fwd:\hilp \to \hilo$ a linear forward operator,
+    $\prcov:\hilp \to \hilp$ prior covariance operator, $\obs: \hilo
+    \to \mathbb{R}^m$ observation operator, where $m \in \mathbb{N}$
+    is the number of observations taken.
+    \item $\sigma^2 \in \mathbb{R}_{+}$ observation noise variance,
+      $\data = \obs \fwd \param + \eps$, where $\eps \in \mathbb{R}^m$
+      is iid $\mathcal{N}(0, \sigma^2)$ noise, $\pr \sim
+      \mathcal{N}(0, \prcov)$ prior measure, $\post$ the posterior
+      measure.
+  \item A D-optimality utility function
+    \cite{AlexanderianGloorGhattas14}:
+    \begin{align*}
+      \begin{split}
+        \tar(\obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
+        % 
+        % 
+        % 
+        &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
+        \obs^* \obs \fwd \prcov^{1/2}).
+    \end{split}
+  \end{align*}
+  \item A D-optimal design operator $\obs$:
+    $$
+    \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs)
+    $$ 
+  \item $\{\lambda_i\}_{i=1}^\infty$ eigenvalues of $\fwd\prcov\fwd^*$
+    in decreasing order of magnitude.
+  %% \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
+  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$.
+  \end{enumerate}
+
+  Then:
+  \begin{enumerate}
+  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously
+    diagonalizable.
+  \item $k := \rank \obs^*\obs \leq m$.
+  \item     
+    \begin{equation*}
+      \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). %= \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
+    \end{equation*}
+  \item 
+    \begin{equation*}
+      k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+      \lambda_j^{-1} \right \}.
+    \end{equation*}
+  \item
+    \begin{equation*}
+        \eta_i = \begin{cases}
+          \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
+          0 & i > k 
+        \end{cases}.
+    \end{equation*}
+  \end{enumerate}
+\end{restatable}
 
 \subsection{Limitations}\label{subsec:limitations}
 There are two main drawbacks of the study presented here. Our relaxed
@@ -857,27 +913,36 @@ assumption regarding the ordering of $\{\lambda_i\}$, we can denote
 the corresponding non-zero eigenvalues of $\obs^*\obs$ by
 $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
+%% \begin{definition}
+%%   Let $\{\lambda_i\}_{i=1}^{\infty}$ eigenvalues of $\fwd \prcov
+%%   \fwd^*$ sorted in descending order. Let $\eta \in
+%%   \mathbb{R}_+^m$. The \emph{utility proxy} $\bar{\tar}$ is defined
+%%   as:
+%%   \begin{equation*}
+%%     \bar{\tar}(\eta) := \frac12 \sum_{i=1}^m \log(1 + \sigma^{-2}\lambda_i\eta_i).
+%%   \end{equation*}
+%% \end{definition}
+
 \begin{corollary}\label{cor:true target}
   Let $\obs$ with $m$ observations satisfy the nonlinear eigenvalue
   problem \eqref{eq:eigenproblem}. Let $\{\eta_i\}_{i=1}^{\infty}$
   eigenvalues of $\obs^*\obs$ and $\{\lambda_i\}_{i=1}^{\infty}$ the
-  corresponding eigenvalues of $\fwd \prcov \fwd^*$. Then $k:=\rank
-  \obs^*\obs \leq m$ and $\obs^*\obs$ has exactly $k$ positive
-  eigenvalues.
-
-  Without loss of generality, let $\eta_i > 0$ for $i\leq k$ and
-  $\eta_i = 0$ for $i > k$. Then:
-  \begin{equation*}
-    \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i).
-  \end{equation*}
-  where $C$ dependes only on $\sigma^2$ and on
-  $\{\lambda_i\}_{i=1}^{\infty}$.
- 
+  corresponding eigenvalues of $\fwd \prcov \fwd^*$. Let $k:=\rank
+  \obs^*\obs$. Without loss of generality, let $\eta_i > 0$ for $i\leq
+  k$ and $\eta_i = 0$ for $i > k$. Then:
+  \begin{enumerate}
+    \item $k \leq m$ and $\obs^*\obs$ has exactly $k$ positive
+      eigenvalues.
+    \item
+      \begin{equation*}
+        \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i) = \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
+      \end{equation*}
+    \item Let $\obs$ a D-optimal design. Then $\eta_i > 0$ for
+      eigenvectors corresponding to the $k$ largest $\lambda_i$.
+  \end{enumerate}
 \end{corollary}
 \begin{proof}
-  The first part is trivial. Since $k \leq m$, then $\obs^*\obs$ has
-  at most $k$ nonzero eigenvalues $\eta_1, \dots, \eta_k$. Then:
-  
+  Part (1) is trivial. To see part (2) holds: 
   \begin{align}
     \begin{split}
       \tar(\obs) &= \frac12\log \det \left (I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
@@ -897,133 +962,181 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       %
       %
       %
-      &=\frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i).
+      &=\frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). 
       %
       %
       %% &=\frac12 \sum_{i=1}^{k} \log(\sigma^2\lambda_i^{-1} + \eta_i) - k\log \sigma + \frac12\sum_{i=1}^k \log \lambda_i.
     \end{split}
   \end{align}
+  Part (3) holds since $\log$ is increasing and $\eta_i \geq 0$.
 \end{proof}
 
-In light of Corollary \ref{cor:true target} we define:
-\begin{definition}
-  The \emph{utility proxy} $\bar{\tar}$ is defined for $\eta \in
-  \mathbb{R}_+^k$, $\lambda \in \mathbb{R}_+^k$ and $\sigma^2 >0$ as:
-  \begin{equation*}
-    \bar{\tar}(\eta, \lambda, \sigma^2) := \sum_{i=1}^k \log(1 + \sigma^{-2}\lambda_i\eta_i).
-  \end{equation*}
-\end{definition}
+\begin{proposition}\label{prop:optimizer}
+  Let $\{\lambda_i\}_{i=1}^{\infty}$ the sorted eigenvectors of $\fwd
+  \prcov\fwd^*$, $k\in \mathbb{N}^+$ and
+  %% Let
+  %%   \begin{equation}
+  %%   k = \argmax \left \{ k:\lambda_k^{-1} \leq \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+  %%   \lambda_j^{-1} \right \}.
+  %% \end{equation}
 
-\begin{observation}
-  The utility proxy $\bar{\tar}$ is increasing in $\lambda$. Thus, in
-  a D-optimal design $\lambda$ are the $k$ largest eigenvalues of
-  $\fwd \prcov \fwd^*$.
-\end{observation}
+  \begin{equation}
+  \eta_i = \begin{cases}
+    \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & i \leq k \\
+    0 & i > k 
+  \end{cases}.
+  \end{equation}
 
-\begin{proposition}
-  Fix $\lambda, \sigma^2$ and let
-  $$
-  \eta_i = \frac{1}{k} \left ( m - k \sigma^2 \lambda_i^{-1} + \sigma^2 \sum_{j=1}^k \lambda_j^{-1} \right ).
-  $$
-
-  If $\eta_i > 0,\ i=1,\dots, k$, then $\eta_1,\dots,\eta_k$ maximize
-  the utility proxy $\bar{\tar}(\eta; \lambda, \sigma^2)$.
+  Let $\obs$ an observation operator such that $\obs^*\obs$ has the
+  same eigenvectors as $\fwd \prcov \fwd^*$. If $\eta_i > 0$ for
+  $i\leq k$ and $\obs^*\obs$ has eigenvalues $\eta_i$, then $\obs$
+  maximizes $\tar$ subject to $\sum_{i=1}^m \eta_i = m$ and $\rank
+  \obs = k$.
 \end{proposition}
 \begin{proof}
-  Let $\Phi(\eta) = \sum \eta_i - m$. Using Lagrange multipliers:
+  Below, we use a slight abuse of notation and cast the entire
+  optimization problem of $\tar$ to the first $m$ eigenvectors of
+  $\fwd\ \prcov \fwd^*$. We treat $\eta$ as if it is $m-$dimensional,
+  since by \ref{}, $\eta_i = 0, i > m$. This abuse of notation gives
+  us the freedom to think of the problem at hand in $m-$dimensions. We
+  will now find the optimal $\eta_i$'s.
+
+  First, let $A := \{i: \eta_i > 0\}$. A choice of $A$ where $\eta_i
+  =0, \eta_j >0$ for some $1 \leq i < j \leq m$ is not optimal (just
+  switch $\eta_j$ and $\eta_i$ and recall $\{\lambda_i\}$ are arranged
+  in descending order). Thus, since $\rank \obs = k$ we conclude that,
+  $\eta_i=0, i>k$.
+
+  Let $\Phi(\eta) = \sum_{i=1}^k \eta_i - m$ and $\Omega_j(\eta) =
+   -\eta_j$. Then
   \begin{align*}
     \begin{split}
-      \frac{\der}{\der \eta_i} \bar{\tar}(\eta, \lambda, \sigma^2) &=
-      \frac{1}{\sigma^{2}\lambda_i^{-1} + \eta_i} \\
+      \frac{\partial \tar}{\partial \eta_i}  &=
+       \frac12 \frac{\sigma^{-2}\lambda_i}{1 + \sigma^{-2} \lambda_i\eta_i} = \frac12 \frac{1}{\sigma^{2}\lambda_i^{-1} + \eta_i} \\
       %
       %
       %
-      \frac{\der\Phi}{\der \eta_i} &= 1.
+      \frac{\partial\Phi}{\partial \eta_i} &= 1 \\
+      %
+      %
+      %
+      \frac{\partial \Omega_j}{\partial \eta_i} &= -\delta_{ij}      
     \end{split}
   \end{align*}
 
-  Denote $c := \sigma^{2}\lambda_i^{-1} + \eta_i$. Summing,
-  substituting $\sum \eta_i = m$ and dividng by $k$:
+  From the KKT conditions, there are $\alpha, \beta_i$ such that for $i=1,\dots,m$:
+  \begin{align}
+    \begin{split}
+      -\frac12 \frac{1}{\sigma^{2}\lambda_i^{-1} + \eta_i} + \alpha - \beta_i  &= 0 \\
+      %
+      %
+      %
+      \eta_i &\geq 0\\
+      %
+      %
+      %
+      \beta_i &\geq 0\\
+      %
+      %
+      %
+      \beta_i \eta_i &= 0\\
+      %
+      %
+      %
+      \sum_{i=1}^m \eta_i &= m 
+    \end{split}
+  \end{align}
+
+  Then, for $1 \leq i \leq k$:
+  \begin{align*}
+    \begin{split}
+      \beta_i &= 0\\
+      %
+      %
+      %
+      \sigma^{2}\lambda_i^{-1} + \eta_i  &= \frac{1}{2\alpha}%  \text{ for }  1 \leq i \leq k.\\
+      %
+      %
+      %
+      %% \sigma^{-2} \lambda_i &= 2\alpha - 2\beta_i, i \in B \\
+    \end{split}
+  \end{align*}
+  
+  Summing, substituting $\sum_{i=1}^m \eta_i = \sum_{i=1}^k \eta_i =
+  m$, and dividng by $k$:
   $$
-  c = \frac{m}{k} + \sigma^2 \frac{1}{k} \sum_j \lambda_j^{-1}.
+  \frac{1}{2\alpha} = \frac{m}{k} + \frac{\sigma^2}{k} \sum_{j=1}^k \lambda_j^{-1}.
+  %\Rightarrow \alpha = \left ( \frac{2m}{k} + \frac{2\sigma^2}{k}
+  %\sum_{i\in A} \lambda_i^{-1} \right )^{-1}.
   $$
 
   Consequently:
-  \begin{align*}
+  \begin{align} \label{eq:etas}
     \begin{split}
-      \eta_i &= c - \sigma^2 \lambda_i^{-1} \\
+      \eta_i &= \frac{1}{2\alpha} - \sigma^2 \lambda_i^{-1}\\
       %
       %
       %
-      &= \frac{m}{k} + \sigma^2 \frac{1}{k} \sum_j \lambda_j^{-1} - \sigma^2 \lambda_i^{-1} \\
+      &=\frac{m}{k} + \frac{\sigma^2}{k} \sum_{j=1}^k \lambda_j^{-1} - \sigma^2 \lambda_i^{-1}.%\\
       %
       %
       %
-      &= \frac{1}{k} \left ( m - k \sigma^2\lambda_i^{-1} + \sigma^2 \sum_{j=1}^k \lambda_j^{-1} \right ).
+      %% &= \frac{m}{k} + \frac{\sigma^2}{k} \sum_{j \in A, j\neq i} \lambda_j^{-1} - \frac{k-1}{k}\sigma^2 \lambda_i^{-1}\\
+      %% ,\ i \in A.
     \end{split}
-  \end{align*}
+  \end{align}
 \end{proof}
+An immediate corollary from Proposition \ref{prop:} and the formula
+for posterior eigenvalues is:
+\begin{corollary}
+  If $\obs$ is optimal and $k := \rank \obs$, then:
+  \begin{enumerate}
+    \item The pushforwad/pullback (??) $\fwd \post$ covariance is
+      $((\fwd \prcov \fwd^*)^{-1} + \sigma^{\pm 2} \obs^*\obs)$.
+    \item The eigenvalues of said operator are
+      \begin{equation}
+        \eta_i = \begin{cases}
+          \frac{m}{k} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & i \leq k \\
+          \lambda_i^{-1} & i > k 
+        \end{cases}.
+      \end{equation}
+  \end{enumerate}
+\end{corollary}
+%% Thus, for a given $A$, we know which $\eta_i$ are optimal.
 
+  %% Now, fix some $k$ and consider the constrained optimzation problem
+  %% of maximizing $\tar$ subject to $\sum_{i=1}^k\eta_i=m$ (without the
+  %% constraints $\eta_i \geq 0$). It is easy to verify via Lagrange
+  %% multipliers that \eqref{eq:etas} are still optimal. Returning to our
+  %% original constrained optimization problem, where $\eta_i \geq 0$,
+  %% the optimal $\eta_i$'s are defined by \eqref{eq:etas}, where $k$
+  %% takes the largest possible value for which \eqref{eq:etas} defines
+  %% nonnegative $\eta_i$'s.
 
-%% We now turn our attention to maximizing $\bar{\tar}$ in $\eta$. The only
-%% constraint on $\eta$ arises from the unit norm contraint on rows of
-%% $\obs$, which implies that $\tr{\obs^*\obs} = \sum_i \eta_i= m$.
-%% \begin{proposition}
-%%   Fix $\lambda \in \mathbb{R}_+^k, \sigma^2 > 0$. Then
-%%   $$
-%%   \eta = \arg\max_{\sum_i \eta_i = m} \Phi(\eta; \lambda, \sigma^2)
-%%   $$ 
-%% \end{proposition}
+  %% By definition, $k$ satisfies $\eta_i > 0, i=1,\dots k$. Rearranging
+  %% \eqref{eq:etas} for $\eta_i > 0$, we get that the following must
+  %% hold:
+  %% \begin{equation*} \label{eq:k}
+  %% \lambda_i^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k}
+  %% \sum_{j=1}^{k} \lambda_j^{-1}, i=1,\dots, k.
+  %% \end{equation*}
 
-%% \begin{proof}
-%%   Lagrange multipliers:
-%%   \begin{align*}
-%%     \begin{split}
-%%       \frac{d}{d\eta_i} \Phi(\eta; \lambda, \sigma^2) &= \frac{1}{\sigma^2\lambda_i^{-1} + \eta_i}, \\
-%%       %
-%%       %
-%%       %
-%%       \frac{d}{d\eta_i} (\sum_i \eta_i - m)  &= 1.
-%%     \end{split}
-%%   \end{align*}
-
-%%   Denote the Lagrange multiplier $c$. Then
-%%   \begin{align*}
-%%     \begin{split}
-%%       \sigma^2\lambda_i^{-1} + \eta_i &= \frac{1}{c}, \\
-%%       %
-%%       %
-%%       %
-%%       \sum_i \eta_i &= m.
-%%     \end{split}
-%%   \end{align*}
-
-%%   and so
+  %% Since $\lambda_i$ are arranged in descending order, it suffices to
+  %% verify that
+  %% \begin{equation*}% \label{eq:k}
+  %%   \lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+  %%   \lambda_j^{-1}.
+  %% \end{equation*}
   
-%%   \begin{align*}
-%%     \begin{split}
-%%       \sigma^2\sum_{i=1}^k\lambda_i^{-1} + m &= kc^{-1} \\
-%%       %
-%%     \end{split}
-%%   \end{align*}
+  %% Thus:
+  %% \begin{equation*}
+  %%   k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+  %%   \lambda_j^{-1} \right \}.
+  %% \end{equation*}
 
-%% \end{proof}
-
-%% Corollary \ref{cor:same ev} implies that instead of considering
-%% $\obs$ when searching for a D-optimal design, we can restrict
-%% ourselves to $k \leq m$ eigenvalues of $\obs^*\obs$ corresponding
-%% to the first $k$ eigenvalues of $\fwd \prcov \fwd^*$.
-
-The nonlinear eigenvalue problem \eqref{eq:eigenproblem} gives rise to
-necessary conditions for D-optimality. Thus, in order to find the
-global maximizer of $\tar$, we need to choose $k$, then choose $k$
-eigenvalues $\lambda_1, \dots, \lambda_k$ and corresponding $\eta_1,
-\dots, \eta_k$ to maximize $\sum_i \log( \sigma^2\lambda_i^{-1} +
-\eta_i)$. It is not clear, however, if we can in fact choose
-observation vectors to manifest any $\eta_1, \dots, \eta_k$
-combination. The following lemma answers this in the
-affirmitive. Moreover, the proof is constructive.
-
+We are almost ready to state and prove Theorem \ref{thm:char} that
+characterizes D-optimal designs. We just need one final lemma, whose
+proof is delegated to the appendix:
 \begin{restatable*}[Unit norm decomposition]{lemma}{free}\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
   = m$, $m \geq k$. We can find $\func_j \in \R^k,j=1,\dots,m$
@@ -1032,59 +1145,25 @@ affirmitive. Moreover, the proof is constructive.
 \end{restatable*}
 
 
-with the norm constraints on $\meas_j,j=1,\dots,m$. We would like to
-make all $\eta_i$ as large as possible.  The problem of D-optimal
-design has now been cast to finite dimensions. This justifies using
-linear algebra. Lemma \ref{lemma:free} (a constructive proof is given
-in the appendix) does exactly that.
+\main
 
-Take any $\{\eta_i\}_{i=1}^{k}$, with $\sum_{i=1}^k \eta_i = m$. Let
-$M = \diag(\eta_1,\dots,\eta_k)$. Lemma \ref{lemma:free} gives us $A$
-with unit norm columns such that $AA^T = M$. Take $\meas_i
-:=\sum_{j=1}^k A_{ji}\ev_j^*$. The constraints $\|\meas_i\| = 1,
-i=1,\dots,m$ are satisified by construction. Verifying $\obs^*\obs
-\ev_i = \eta_i \ev_i$ is not too difficult.
-
-%% \begin{align*}
-%%   \begin{split}
-%%     \obs \ev_i &= (\meas_1,\dots,\meas_k)^t\ev_i\\
-%%     &= (\sum_{j=1}^kA_{j1}\ev_j^*,\dots,\sum_{j=1}^kA_{jk}\ev_j^*)^t\ev_i\\
-%%     &= (\sum_{j=1}^kA_{j1}\ev_j^*\ev_i,\dots,\sum_{j=1}^kA_{jk}\ev_j^*\ev_i)^t\\
-%%     &= (A_{i1},\dots,A_{ik})^t.
-%%   \end{split}
-%% \end{align*}
-
-%% Now, 
-
-%% \begin{align*}
-%%   \begin{split}
-%%     \obs^*\obs \ev_i &= \obs^*(A_{i1},\dots,A_{ik})^t\\
-%%     &=(A_{i1},\dots,A_{ik}) \obs \text{ (by \eqref{eq:obs*})}\\
-%%     &=(A_{i1},\dots,A_{ik}) (\sum_{j=1}^kA_{j1}\ev_j^*,\dots,\sum_{j=1}^kA_{jk}\ev_j^*)^t\\
-%%     &=\sum_{l=1}^k A_{il} \sum_{j=1}^kA_{jl}\ev_j^* \\
-%%     %&=\sum_{j=1}^k  \sum_{l=1}^kA_{il}A_{jl}\ev_j^* \\
-%%     &=\sum_{j=1}^k  [AA^t]_{ij}\ev_j^* \\
-%%     %&=\eta_i\ev_i^*\\
-%%     &=\eta_i\ev_i^*. 
-%%   \end{split}
-%% \end{align*}
-
-We have shown that we can construct $\obs$ such that it has
-eigenvectors and eigenvalues $\{\ev_i, \eta_i\}_{i=1}^k$, as long as
-$\sum_{i=1}^k \eta_i = m$. We now turn to understand which choice of
-$\{\eta_i\}_{i=1}^k$ is optimal. By concavity of $\log$, the fastest
-increase in the design criterion \eqref{eq:true target} is gained by
-increasing $\sigma^2\lambda_i^{-1} + \eta_i$ where it is smallest. So,
-no weight should be given to (i.e. observation taken in direction of)
-the $n$th eigenvector before $\sigma^2\lambda_i^{-1} + \eta_i \geq
-\sigma^2\lambda_n^{-1},\ \forall i \neq n$. Thus, we should choose
-$\{\eta_i\}_{i=1}^k$ as follows. First, order the eigenvalues
-$\lambda_1 \geq \lambda_2 \geq \dots$. We should increase $\sigma^2
-\lambda_1^{-1} + \eta_1$ until it equals
-$\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} +
-\eta_i,i=1,2$ are increased until $\sigma^2 \lambda_i^{-1} + \eta_i =
-\sigma^2\lambda_3^{-1},i=1,2$ and so forth.
-
+\begin{proof}
+  Part (1) was proved in Corollary \ref{cor:same ev}. Parts (2) and
+  (3) were proved in Corollary \ref{cor:true target}. Parts (4) and
+  (5) were proved in \ref{prop:optimizer}. The only missing part is
+  showing that we can indeed find $\obs$ such that $\obs^*\obs$ has
+  the required eigenvalues. To this end, we utilize Lemma
+  \ref{lemma:free}: let $M = \diag(\eta_1, \dots, \eta_k)$, diagonal
+  with respect to the first $k$ eigenvectors of $\fwd \prcov
+  \fwd^*$. We take $\obs := A$ from the Lemma \ref{lemma:free}, and
+  this concludes the proof.
+\end{proof}
+\begin{corollary}
+  In a D-optimal design, the posterior precision for eigenvector $i$
+  is $\eta_i + \sigma^2 \lambda_i^{-1} = \frac{m}{k} + \sigma^2
+  \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1}$. The posterior precision is
+  constant for $1 \leq i \leq k$.
+\end{corollary}
 
 \pgfplotstableread{
   Label     prior  optimal  sub-optimal 
@@ -1143,15 +1222,15 @@ $\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} +
       
     \end{axis}
   \end{tikzpicture}
-  \caption{Characterizing a D-optimal design, compared to a
-    sub-optimal design. Both designs are allowed three observations,
-    which means the blue area has accumulated height of $3$ in both
-    plots. A D-optimal design (left) increases precision (reduces
-    uncertainty) where it is lowest. A sub-optimal design (right) does
-    not. In this example, a observation is taken partly in the
-    direction of the third eigenvector. The precision for this
-    eigenvector is bigger even than the posterior precision of the
-    D-optimal design on the left.}
+  \caption{As an illustration of Corollary \ref{cor:equal eigs}, a
+    D-optimal design is compared with a sub-optimal design. Both
+    designs are allowed three observations. Thus, the blue area has
+    accumulated height of $3$ in both plots. A D-optimal design (left)
+    increases precision (reduces uncertainty) where it is lowest. A
+    sub-optimal design (right) does not. In this example, an
+    observation is taken partly in the direction of the third
+    eigenvector. The precision for this eigenvector is bigger even
+    than the posterior precision of the D-optimal design on the left.}
   \label{fig:optimal vs not}
 \end{figure}
 
@@ -1174,58 +1253,18 @@ $\sigma^2\lambda_2^{-1}$. Then, $\sigma^2 \lambda_i^{-1} +
   4         3.5    0      0       0      0      0           0          0.001
 }\noclusterization
 
-
-The argument above has the important consequence (illustrated in
-figure \ref{fig:optimal vs not}) that the eigenvalues in the nonlinear
-eigenvalue problem \eqref{eq:eigenproblem} are all equal! This makes
-perfect sense. We know the Lagrange multipliers $\xi_i,i=1,\dots,k$
-tell us how much we gain by relaxing the constraints and there is no
-reason for any eigenvector to give us more than any other (otherwise
-we would put more weight on the better eigenvector, as can be
-understood from the discussion in the following paragraph).
-
-
-One can understand D-optimal designs as follows: Imagine each
-eigenvector corresponds to a graduated lab cylinder (figure
-\ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
-liquid of $\sigma^2\lambda_i^{-1}$ volume units. This liquid
-represnets the prior precision, weighted by observation noise. The
-volume of the green liquid is increasing in $i$. A D-optimal design
-with $m$ observations ignores cylinders indexed $m+1$ and above. It
-has blue liquid of $m$ volume units at its disposal. It distributes
-said liquid by repeatedly adding a drop to whatever cylinder currently
-has the lowest level of liquid in it (lowest precision). The result of
-such a procedure is illustrated in figure \ref{fig:optimal vs
-  not}. The analysis conducted in this section is summarized in
-Theorem \ref{thm:char} below.
-
-
-\begin{theorem}[Characterizing D-optimal designs with vanishing model error]\label{thm:char}
-  Let:
-  \begin{enumerate}
-  \item $\fwd, \prcov$ the forward and prior covariance operators, respectively.
-  \item $m, \sigma^2$ the number of observations taken and observation
-    noise variance, respectively.
-  \item A D-optimal design operator $\obs$:
-    $$
-    \obs = \arg\max_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs)
-    $$ 
-  \item $\{\lambda_i\}_{i=1}^\infty$ eigenvalues of $\fwd\prcov\fwd^*$
-    in decreasing order of magnitude.
-  %% \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
-  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$.
-  \end{enumerate}
-  Then:
-  \begin{enumerate}
-  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously diagonalizable.
-  \item There exists $0 < k \leq m$ such that $\eta_i = 0$ for $i\geq
-    k+1$ and $k\leq\rank \obs^*\obs$.
-  \item $\sigma^2\lambda_i^{-1} + \eta_i$ are equal for all $1 \leq i \leq k$.
-  \item If $k < m$, then $\sigma^2\lambda_i^{-1} + \eta_i \leq
-    \sigma^2\lambda_{k+1}^{-1}, i=1,\dots,k$.
-  \end{enumerate}
-\end{theorem}
-
+Here is a way to understand D-optimal designs with vanishing model
+error: Imagine each eigenvector corresponds to a graduated lab
+cylinder (Figure \ref{fig:cylinder}). Each cylinder $i$ is filled,
+a-priori, with green liquid of $\sigma^2\lambda_i^{-1}$ volume
+units. This liquid represnets the prior precision, weighted by
+observation noise. The volume of the green liquid is increasing in
+$i$. A D-optimal design with $m$ observations ignores cylinders
+indexed $m+1$ and above. It has blue liquid of volume $m$ units at its
+disposal. It distributes said liquid by repeatedly adding a drop to
+whatever cylinder currently has the lowest level of liquid in it
+(lowest precision). The result of such a procedure is illustrated in
+Figure \ref{fig:optimal vs not}.
 
 \begin{figure}%{r}{0.25\textwidth} 
     %\centering
@@ -1244,18 +1283,19 @@ clusterization may arise in various scenarios. We first consider
 sequential designs, and then simultaneous designs.
 
 
-
 \subsection{Sequential Design}\label{subsec:clusterization sequential}
-Recall the sequential optimal design scheme from section
-\ref{subsec:seq vs sim} and the definition of $\obs_k$ from
-\eqref{eq:def obs_k}. The way clusterization can occur in sequential
-design scenario is understood by specializing thorem \ref{thm:char} to
-one observation each time. In this case $m=1$, so $k=1$, $\meas_1
-\parallel \ev_1$ and $\eta_1 = 1$. As hinted in section
-\ref{subsec:seq vs sim}, the posterior becomes the prior for the next
-step. The eigenvectors of the new posterior are the same as for the
-previous one. A new observation will be taken in the direction of
-eigenvector with smalles eigenvalue. This leads to:
+In a sequential optimal design problem, each measurement is taken
+after results of previous measurements are recorded. In each step
+$m=1$, so $k=1$. In this case, Theorem \ref{thm:char} implies each
+measurement is taken along the direction of the eigenvector of $\fwd
+\prcov \fwd^*$ with lowest posterior precision. If $\lambda_i$
+decrease fast enough (e.g. exponentially), the
+
+, $\meas_1 \parallel \ev_1$ and $\eta_1 = 1$. As hinted in
+section \ref{subsec:seq vs sim}, the posterior becomes the prior for
+the next step. The eigenvectors of the new posterior are the same as
+for the previous one. A new observation will be taken in the direction
+of eigenvector with smalles eigenvalue. This leads to:
 \begin{align*}
   \begin{split}
     \meas_2 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_2 \\
@@ -1734,8 +1774,9 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{lemma}[Increase due to a Observation]\label{lemma:design increase}
-  Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm := (\meas_1,\dots,\meas_{m-1})^t$. Then
+\begin{lemma}[Increase due to an observation]\label{lemma:design increase}
+  Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
+  (\meas_1,\dots,\meas_{m-1})^t$. Then
   \begin{align*}
     \tar( \obs ) - \tar (\obsm ) &=
     \frac12 \log \left ( 1 + \frac{
