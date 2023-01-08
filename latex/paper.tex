@@ -990,7 +990,7 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   Let $\obs$ an observation operator such that $\obs^*\obs$ has the
   same eigenvectors as $\fwd \prcov \fwd^*$. If $\eta_i > 0$ for
   $i\leq k$ and $\obs^*\obs$ has eigenvalues $\eta_i$, then $\obs$
-  maximizes $\tar$ subject to $\sum_{i=1}^m \eta_i = m$ and $\rank
+  maximizes $\tar$ subject to $\sum_{i=1}^m \eta_i = m$ and to $\rank
   \obs = k$.
 \end{proposition}
 \begin{proof}
@@ -1086,13 +1086,13 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
     \end{split}
   \end{align}
 \end{proof}
-An immediate corollary from Proposition \ref{prop:} and the formula
+An immediate corollary from Proposition \ref{prop:optimizer} and the formula
 for posterior eigenvalues is:
 \begin{corollary}
   If $\obs$ is optimal and $k := \rank \obs$, then:
   \begin{enumerate}
-    \item The pushforwad/pullback (??) $\fwd \post$ covariance is
-      $((\fwd \prcov \fwd^*)^{-1} + \sigma^{\pm 2} \obs^*\obs)$.
+    \item The covariance of the pushforwad $\fwd_{*} \post$ is $((\fwd
+      \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs)^{-1}$.
     \item The eigenvalues of said operator are
       \begin{equation}
         \eta_i = \begin{cases}
