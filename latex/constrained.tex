@@ -1,0 +1,219 @@
+\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+
+\subsection{Overview}
+We seek a formulation of the D-optimal design problem of
+\cite{AlexanderianGloorGhattas14} (Theorem \ref{thm:d optimality})
+using Lagrange multipliers. In Section \ref{section:objective} we find
+the gradient of $\tar$ and record it in \eqref{eq:tar grad}. In
+Section \ref{subsec:unit norm} we suggest using unit-norm constraints
+on rows of $\obs$ so that the optimization problem is analytically
+tractable. We find gradients for the new constraints and record them
+in \eqref{eq:grad constraints}. Finally, in Section
+\ref{subsec:necessary} we formulate the D-optimal design problem as a
+Lagrange multipliers problem in equation \eqref{eq:conditions}.
+
+
+\subsection{The Objective and its Gradient}\label{section:objective}
+In order to use Lagrange multipliers, we need to find the gradient of
+$\tar$. Said gradient is recorded in \eqref{eq:tar grad} below. We
+start by recording Lemmas \ref{lemma:lax}, \ref{lemma:aux calc},
+proved in the appendix:
+
+\begin{restatable*}[Generalized from \cite{Lax07}]{lemma}{lax}\label{lemma:lax}
+  Let $Y(t)$ be a differentiable operator-valued function. Assume 
+  $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
+  \begin{equation*}
+    \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
+  \end{equation*}
+\end{restatable*}
+
+\begin{restatable*}[Auxilliary Calculations]{lemma}{aux}\label{lemma:aux calc}
+  Let $T(\obs) := \obs^* \Sigma^{-1}(\obs)\obs$, with $\Sigma(\obs)$
+  defined as in \eqref{eq:Sigma}. Then:
+  \begin{align*}
+    \delta T(\obs)V &= V^* \Sigma^{-1} \obs 
+    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
+    &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs
+    + \obs^* \Sigma^{-1} V.
+  \end{align*}
+\end{restatable*}
+
+The first variation of $\tar (\obs)$ in the direction $V$ is:
+\begin{align}\label{eq:tar var}
+  \begin{split}
+    \delta \tar(\obs) V 
+    :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (by definition of variation)}\\
+    % 
+    % 
+    % 
+    &= \frac12 \frac{\der}{\der \tau} \Big |_{\tau=0} \log \det 
+    (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (by \eqref{eq:objective})}\\
+    % 
+    % 
+    % 
+    &= \frac12 \tr{( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
+    \obs\fwd \prcov^{1/2} )^{-1}
+    \frac{\der}{\der \tau} \Big |_{\tau=0}
+    \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (by \ref{lemma:lax})}\\
+    % 
+    % 
+    % 
+    &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
+    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
+    &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
+    + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \ref{lemma:aux calc})}\\
+    %
+    %
+    %
+    &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V -
+    \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \text{
+        (cyclic property of trace)} \\
+    %
+    %
+    % 
+    &= \tr{\postcov \fwd^* \obs^* \Sigma^{-1} V 
+    ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
+    % 
+    %
+    %
+    &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
+    \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
+  \end{split}
+\end{align} 
+Denote
+\begin{align}\label{eq:tar grad}
+  \nabla \tar(\obs) &:= (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
+  \postcov \fwd^* \obs^*\Sigma^{-1},
+\end{align}
+the gradient of $\tar (\obs )$ and we now justify this definition.
+Since the trace of $A := V \nabla \tar(\obs) \in \R^{m \times m}$ is
+just $\ttr A = \sum_{j=1}^m e_j^t A e_j$ (with $e_j$ the $j$th standard
+basis vector), we see that
+\begin{align*}
+  \delta \tar(\obs)V = \tr{V \nabla \tar(\obs)} = \sum_{j=1}^m
+  V_j(\nabla \tar(\obs)_j),
+\end{align*}
+with $V_j \in \hilo^*$ and $\nabla \tar(\obs)_j \in \hilo^{**} =
+\hilo, j=1,\dots,m$. Thus, $\nabla \tar( \obs ) \in \hilo^m$ is indeed
+the correct gradient and the notation \eqref{eq:tar grad} is
+justified. The gradient $\nabla \tar(\obs)$ should be viewed as a row
+vector, as the product $V \nabla \tar$ is in $\R^{m \times m}$. This
+will prove important in section \ref{subsec:necessary}.
+
+\subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
+In this section we suggest relaxed constraints in
+\eqref{eq:constraints}, and their gradient in \eqref{eq:grad
+  constraints}.
+
+As mentioned before, we cannot choose any $\obs$ when maximizing
+$\tar(\obs)$. Recall $\obs = (\meas_1,\dots,\meas_m)^t \in
+(\hilo^*)^m$ and each $\meas_j,j=1,\dots,m$ must be chosen from some
+allowed set of functionals in $\hilo^*$. %% This set differs based on
+%% the kind of sensors we have at our disposal and the properties of
+%% $\hilo$, as discussed in section \ref{subsec:dynamics}.
+Proposition \ref{prop:bigger better} below (proof in the appendix)
+gives better understanding of the constraints.
+\begin{restatable*}{proposition}{biggerbetter}\label{prop:bigger better}
+  Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$, $\sigma^2
+  > 0$ and $\lambda > 1$. Then $\tar(\obs)$ increases if we use
+  $\lambda \meas_j$ in $\obs$ instead of $\meas_j$.
+\end{restatable*}
+The idea behind Proposition \ref{prop:bigger better} is simple: making
+the norm of rows of $\obs$ large is equivalent to making $\sigma^2$
+small. %% Viewed another way, it increases the Signal to Noise Ratio
+%% (SNR) --- which is always desirable when taking any observation
+%% prone to error.  This can be understood easily from the formulation
+%% of the inverse problem $\data = \obs \fwd \param + \obs \eps' +
+%% \eps$, where $\eps'$ can be taken as model error and $\eps$ is iid
+%% observation error.
+
+Note that for point evaluations, the norm of the observation
+functional is always one:
+\begin{align*}
+  \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
+    |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
+  }{
+    \sup|u|}
+  = \sup_{0 \neq u \in C(\Omega)} \frac{|u(\x)|}{ \sup|u|} = 1,
+  \forall \x \in \Omega.
+\end{align*}
+Following this, and in light of Proposition \ref{prop:bigger better},
+we consider observation vectors in the unit ball in $\hilo^*$. The
+unit norm constraints can be written using \eqref{eq:obs*} as a series
+of $m$ equality constraints (one for each observation) on $\obs$ as
+\begin{align}\label{eq:constraints}
+  \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,j=1,\dots,m.
+\end{align}
+The first variations are:
+\begin{align*}
+  \delta \phi_j(\obs)V  
+  &= \frac12\lim_{\tau \to 0}\tau^{-1}
+  ( \|(\obs + \tau V)^*e_j \|_{\hilp}^2 - \|\obs ^*e_j \|_{\hilp}^2  ) \\
+  %
+  %
+  %
+  &= \frac12\lim_{\tau \to 0}\tau^{-1}
+  ( \langle (\obs + \tau V)^*e_j, (\obs + \tau V)^*e_j \rangle_{\hilp} - 
+  \langle \obs^*e_j, \obs^*e_j \rangle_{\hilp} ) \\
+  % 
+  % 
+  %
+  &= \frac12\lim_{\tau \to 0}\tau^{-1}
+  (2\tau \langle \obs^*e_j,V^*e_j \rangle_{\hilp} 
+  +\tau^2 \langle V^*e_j, V^*e_j \rangle_{\hilp} ) \\
+  %
+  %
+  % 
+  &= \langle \obs^*e_j,V^*e_j \rangle_{\hilp} \\
+  %
+  %
+  % 
+  &= \langle V \obs^*e_j,e_j \rangle_{\R^m} \\
+  %
+  %
+  %
+  &= e_j^t V \obs^* e_j \\
+  % 
+  %
+  %
+  &= \tr{V \obs^* e_je_j^t}.
+\end{align*}
+The same arguments justifying \eqref{eq:tar grad} hold here, and thus, by \eqref{eq:obs*}:
+\begin{align}\label{eq:grad constraints}
+\nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
+\end{align}
+where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
+Section \ref{section:objective}, the gradient $\nabla \phi_j(\obs)$ is
+best thought of as a row vector.
+
+\subsection{Necessary Conditions for Optimal Design}\label{subsec:necessary}
+Necessary conditions for D-optimality are found from Lagrange
+multipliers:
+\begin{align}
+  &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
+  \label{eq:Lagrange mult1} \\
+    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
+\end{align}
+
+Recall where the objects involved are defined: the observation
+operator, $\obs \in (\hilo^*)^m$. The objective $\tar: (\hilo^*)^m \to
+\R$ and its gradient is $\nabla \tar(\obs) \in \hilo^m$. Similarly,
+$\phi_j: (\hilo^*)^m \to \R$ and $\nabla \phi_j(\obs) \in \hilo^m$.
+
+Substituting \eqref{eq:tar grad} and \eqref{eq:grad constraints} in
+\eqref{eq:Lagrange mult1}:
+\begin{equation*}
+  (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
+  = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
+\end{equation*}
+Let $\Xi := \diag(\xi_j)$. Then, with some abuse of notation, this can
+be written more compactly as:
+\begin{equation}\label{eq:conditions}
+  ( I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*  \Sigma^{-1}
+  = \obs^* \Xi.
+\end{equation}
+
+
+
+
+

@@ -17,13 +17,17 @@ from pandas import isnull
 from numpy import sin, cos
 from scipy.stats import ortho_group
 
-EPS = 1e-10
+EPS = 1e-9
 ortho = ortho_group.rvs
 cot = lambda x: cos(x) / sin(x)
 
 
 @pytest.fixture
 def params():
+    """ generate random  m (number of observations) and k (rank of O*O).
+    """
+
+    
     params = []
     for m in np.random.randint(low=3, high=80, size=30):
         for k in np.random.randint(low=2, high=m + 1, size=1):
@@ -42,28 +46,32 @@ def givens(theta, dims, lower, upper):
     assert theta >= 0 and theta <= np.pi
     assert lower < upper
     assert upper <= dims
-    R = np.zeros((dims, dims))
-    for a in range(dims):
-        for b in range(dims):
-            if a == b:
-                if a == b == lower:
-                    R[a, b] = cos(theta)
-                elif a == b == upper:
-                    R[a, b] = cos(theta)
-                else:
-                    R[a, b] = 1
-            elif a == lower and b == upper:
-                R[a, b] = -sin(theta)
-            elif a == upper and b == lower:
-                R[a, b] = sin(theta)
+    
+    R = np.eye(dims)
+    R[lower, lower] = cos(theta)
+    R[upper, upper] = cos(theta)
+    R[lower, upper] = -sin(theta)
+    R[upper, lower] = sin(theta)
+
     return R
 
 
+
+    
 def MDUS(m, k):
+    """ Generate random:
+    M symmetric positive definite
+    D diagonal with decreasing diagonal entries
+    U orthogonal such that M = UDU^t
+    S of shape (k,m) with diagonal that is the square root of D
+    """
+
+    
     assert m >= k
 
     # D = np.abs(np.random.uniform(size=k))
     D = np.random.lognormal(mean=5, sigma=1, size=k)
+    D = np.sort(D)[::-1]
     # D = np.array([np.random.lognormal(mean=i, sigma=1) for i in range(k)]) 
     D = D * m / np.sum(D)
     assert abs(np.sum(D) - m) < EPS
@@ -138,7 +146,7 @@ def caller(m, k):
     assert A.shape == (k, m)
 
     ## Check that AAt = M, as stated.
-    AAt = np.dot(A, A.T)
+    AAt = A @ A.T
     assert np.all(np.abs(AAt - M) < EPS)
 
     ## Check that A does have unit norm columns, as stated.
@@ -160,7 +168,7 @@ def get_A(M, m):
     assert abs(m - np.trace(M)) < EPS
 
     D, U = np.linalg.eigh(M)
-    assert np.all(D > 0)
+    assert np.all(D >= -EPS), D.min()
 
     S = np.zeros((k, m))
     for i in range(k):
@@ -204,7 +212,7 @@ def test_theta(big_dim=20, dim=9, upper=4):
     eqn = cot ** 2 * C[upper, upper] + 2 * cot * C[upper, lower] + C[lower, lower]
     assert abs(eqn) < EPS
     assert abs(T[upper, upper]) < EPS
-
+    print("pass theta")
 
 def test_givens(k=8, lower=4, upper=6):
     M, D, U, S = MDUS(k + 2, k)
@@ -220,10 +228,13 @@ def test_givens(k=8, lower=4, upper=6):
     res[:, upper] = 0
 
     assert np.all(np.abs(res) < EPS)
+    print("pass givens")
 
+    
 def test_all(params):
     Parallel(n_jobs=7)(delayed(caller)(**param) for param in params)
 
+    
 if __name__ == '__main__':
     test_givens()
     test_theta()

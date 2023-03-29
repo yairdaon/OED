@@ -1,0 +1,65 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION Analysis of Optimal Designs --- Non-Vanishing Model Error
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sensor Clusterization --- Non-Vanishing Model Error}\label{section:non vanishing}
+In this section we show the effect model error has on the
+clusterization phenomenon. We will see that if $\modcov \neq 0$
+clusterization will not occur. This is in contrast to the case of
+vanishing model error presented in Section \ref{section:vanishing}.
+
+Denote $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
+(\meas_1,\dots,\meas_{m-1})^t$. Also, denote $\Sigmam := \Sigma
+(\obsm)$ and $\postcovm$ the posterior covariance that arises when
+$\obsm$ is our observation operator.
+\begin{restatable*}{corollary}{samemeas}\label{cor:same meas}
+  If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
+  \begin{equation*}
+    \tar(\obs) - \tar(\obsm) =
+    \log \left ( 1 + \frac{\sigma^2
+      \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1} e_j,
+      \obsm^* \Sigmam^{-1}e_j \rangle
+    }{
+      2 - \sigma^2 e_j^t\Sigmam^{-1}e_j 
+    }       
+    \right ),
+  \end{equation*}
+  where $e_j\in \mathbb{R}^{m-1}$ is the $j^{\text{th}}$ standard unit
+  vector.
+\end{restatable*}
+We delegate the proof of Corollary \ref{cor:same meas} to the
+appendix. Recall from \eqref{eq:Sigma} that $\Sigma(\obs) = \obs
+\modcov \obs^* + \sigma^2I$ and let $u := \obsm (\obsm \modcov \obsm^*
++ \sigma^2 I)^{-1}e_j$. Then
+
+\begin{align*}
+  \begin{split}
+    \lim_{\sigma^2 \to 0} u &= \obsm (\obsm \modcov \obsm^*)^{-1}e_j\\
+    \lim_{\sigma^2 \to 0} \postcovm &= (\prcov^{-1} + \fwd^* \obsm^* \obsm \modcov \obsm^* \obsm \fwd)^{-1} \text{ (From \eqref{eq:postcov})}.
+  \end{split}
+\end{align*}
+
+Consequently, 
+\begin{equation*}
+   \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1}
+    e_j, \obsm^* \Sigmam^{-1}e_j \rangle 
+  %
+  %
+  = \langle \fwd \postcovm \fwd^* u, u \rangle
+\end{equation*}
+
+is bounded, and
+
+
+
+\begin{equation*}
+\lim_{\sigma^2 \to 0} \tar(\obs) -\tar(\obsm) = 0.
+\end{equation*}
+
+Hence no increase in $\tar$ is achieved by taking a repeated
+observation (in the limit $\sigma^2 \to 0$). This is clearly
+sub-optimal and $\obs$ cannot give rise to a D-optimal design. Thus,
+for small observation error levels, the clusterization effect is
+mitigated by the presence of a non-zero model error. Since the design
+criterion is not defined for $\sigma^2 = 0$ and identical
+observations, we cannot make a statement regarding $\sigma^2 = 0$,
+except in the limiting sense described above.

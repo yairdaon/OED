@@ -1,0 +1,320 @@
+\section{Introduction}\label{section:OED intro}
+Experimental design is an important part of many scientific
+investigations. When considering an inverse problem, one can often
+specify sensor locations (e.g.\ in geophysics and oceanography
+applications), certain wavelengths (e.g.\ in MRI) or wave reflections
+from the ground (e.g.\ searching for oil or using a radar). Whatever
+the allowed set of observations is, one should select the optimal
+observations to take, in order to increase accuracy, reduce costs, or
+both.
+
+Designing experiments is usually done by optimizing some \emph{design
+criterion}. This is true both for frequentists
+\cite{silvey2013,Ucinski05} as well as for Bayesians
+\cite{Chaloner1995}. See \cite{Chaloner1995} for an investigation of
+the analogy between the two approaches. Although there is a plethora
+of design criteria, we focus on just one of these, commonly referred
+to as \emph{D-optimal design}. It has a simple and appealing
+motivation in the Bayesian context as explained in
+\cite{Chaloner1995}: Consider a linear model in finite dimensions,
+with Gaussian prior and noise. Under this model, maximizing the
+expected information gain (KL divergence \cite{CoverThomas91}) between
+posterior and prior amounts to minimizing the determinant of the
+posterior covariance matrix. In a frequentist setting, a D-optimal
+design minimizes the volume of the uncertainty ellipsoid \cite[page
+  16]{Ucinski05}, but this is done for the Fisher information matrix
+and not the posterior covariance. However, \cite{Chaloner1995} shows
+that the latter is just a regularized version of the former.
+
+The previous discussion is classical for experimental design when
+inference takes place over a finite (not too large) number of
+parameters. The subject of optimal experimental design for function
+inference in a Bayesian context was pioneered by
+\cite{AlexanderianGloorGhattas14, AlexanderianPetraStadlerEtAl16,
+  AlexanderianPetraStadlerEtAl14}. Similarly to the finite dimensional
+case, it can be shown that a D-optimal design arises naturally for
+linear models when one wishes to maximize the KL divergence between
+posterior and prior. This amounts to minimizing the determinant of the
+posterior covariance operator (understood as a product of its
+eigenvalues). Some difficulties arise in the process, but remedies can
+be found as shown in \cite{AlexanderianGloorGhattas14}.
+
+It seems counter intuitive that when one computes an optimal design
+using the D criterion, the optimization process results in
+observations that are very similar. For example, if an observation is
+thought of as measuring some function value at $\x \in \Omega
+\subseteq \R^d, d=1,2,3$ (with added error) then the optimization
+procedure sometimes places sensors in very close proximity to each
+other (as can be seen in figure \ref{fig:clusterization
+  illustration}). Following \cite{Ucinski05}, we refer to this
+phenomenon as \emph{sensor clusterization}.
+
+\subsection{Related Work}
+The phenomenon of sensor clusterization seems to be known in several
+different contexts. In a frequentist and finite-dimensional context,
+\cite{fedorov1996} and \cite[chapter 2.4.3]{Ucinski05} discuss this
+phenomenon and suggest an approach called clusterization-free design.
+In such designs, the user enforces observation locations to be far
+from each other. One way to do this is by introducing correlated
+errors which, philosophically, accounts for both observation error and
+model error. Another method considered is imposing distance
+constraints between observations. A somewhat different approach is
+suggested in \cite[page 49]{fedorov2012}, where close by design
+observations are merged --- a procedure which obviously does not avoid
+clusterization. The same problem arises in time-series analysis for
+pharmacokinetic experiments. The authors of \cite{hooker2009} suggest
+modeling auto-correlation time in the noise model, which is equivalent
+to the correlated errors mentioned above.
+
+Any of the above mentioned approaches might serve as a remedy and push
+sensors away from each other. Yet, none offers any insight as to why
+clusterization occurs. Also, as better models are employed, model
+error is decreased and the clusterization phenomenon will eventually
+reappear. While these approaches are practical and help us avoid the
+problem, they do not provide insight as to why sensors are clustering.
+
+Similarly, in the inverse problems community, work is mostly
+computational and less theoretic. Model errors were considered in
+\cite{attia2020, koval2020}. The former study is focused on inferring a
+Quantity of Interest (QoI). The focus of the latter is reducing
+forward solves, using randomized linear algebra. Both studies present
+numerical techniques for finding optimal designs when model error is
+present. Both are restricted to linear inverse problems (although in
+the latter the authors use their method on a nonlinear problem by
+taking a Laplace approximation for the posterior). Both find an
+optimal design by first solving a continuous problem for sensor
+weights. Said solution is then sparsified to give a binary
+design. Both studies are successful in the task of Bayesian
+inversion. However, neither of these studies mention any effect model
+errors can have on sensor clusterization. The current study is mostly
+theoretical and aims to fill the gap of understanding sensor
+clusterization.
+
+
+\subsection{Contribution}
+We propose and thoroughly study a relaxed and analytically tractable
+model for understanding D-optimal designs. Under this model, D-optimal
+designs are solutions of a constrained optimization problem,
+formulated using Lagrange multipliers (section \ref{section:D and
+  grad}). This allows us to rigorously show how model error mitigates
+clusterization (section \ref{section:non vanishing}). We show that
+designs that exhibit clusterization are just as optimal as
+clusterization free designs.
+
+A beautiful mathematical structure arises in D-optimal designs when no
+model error is present. The Lagrange multipliers problems is in fact a
+nonlinear eigenvalue problem for the observations and prior
+covariance. The operator for which eigenvectors and eigenvalues are
+sought is a sum of two operators. The first is the prior
+covariance. The second is an outer product of the observations (see
+section \ref{section:vanishing} for details and exact statement). This
+structure helps us shed light on D-optimal designs. We characterize
+these designs in Theorem \ref{thm:char}. One insight we prove is that
+a D-optimal design reduces uncertainties where they are highest
+first. Other interestig phenomena arise, but they require setting
+notation, and are discussed later.
+
+In the process, we generalize several lemmas from linear algebra to
+infinite-dimensional settings. We prove a Matrix Determinant Lemma in
+\ref{lemma:MDL}. We generalize a lemma due to Lax \cite{Lax07} for
+calculating $\frac{\der}{\der t} \log \det (I + X(t))$, for an
+operator valued function $X(t)$ in \ref{lemma:lax}. We also prove
+lemmas in linear algebra. One constructs a decomposition $M = AA^t$
+where $A$ has unit norm columns \ref{lemma:free}. Another shows
+simultaneous diagonizability of the prior and outer product in the
+nonlinear eigenvalue problem referenced above \ref{lemma:sim diag}. We
+also provide other tools for understanding D-optimal designs in
+infinite-dimensional Bayesian inverse problems.%%  Among these are tools
+%% for calculating the increase in the design criterion per observation
+%% --- Lemma \ref{lemma:design increase} and Corollary \ref{cor:zero mod err}.
+
+\begin{restatable}[D-optimal designs with vanishing model error]{theorem}{main}\label{thm:char}
+  Let:
+  \begin{enumerate}
+  \item $\fwd:\hilp \to \hilo$ a linear forward operator,
+    $\prcov:\hilp \to \hilp$ prior covariance operator, $\obs: \hilo
+    \to \mathbb{R}^m$ observation operator, where $m \in \mathbb{N}$
+    is the number of observations taken.
+    \item $\sigma^2 \in \mathbb{R}_{+}$ observation noise variance,
+      $\data = \obs \fwd \param + \eps$, where $\eps \in \mathbb{R}^m$
+      is iid $\mathcal{N}(0, \sigma^2)$ noise, $\pr \sim
+      \mathcal{N}(0, \prcov)$ prior measure, $\post$ the posterior
+      measure.
+  \item A D-optimality utility function
+    \cite{AlexanderianGloorGhattas14}:
+    \begin{align*}
+      \begin{split}
+        \tar(\obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
+        % 
+        % 
+        % 
+        &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
+        \obs^* \obs \fwd \prcov^{1/2}).
+    \end{split}
+  \end{align*}
+  \item A D-optimal design operator $\obs$:
+    $$
+    \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs)
+    $$ 
+  \item $\{\lambda_i\}_{i=1}^\infty$ eigenvalues of $\fwd\prcov\fwd^*$
+    in decreasing order of magnitude.
+  %% \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
+  \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$.
+  \end{enumerate}
+
+  Then:
+  \begin{enumerate}
+  \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously
+    diagonalizable.
+  \item $k := \rank \obs^*\obs \leq m$.
+  \item     
+    \begin{equation*}
+      \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). %= \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
+    \end{equation*}
+  %% \item 
+  %%   \begin{equation*}
+  %%     k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+  %%     \lambda_j^{-1} \right \}.
+  %%   \end{equation*}
+  \item
+    \begin{equation*}
+        \eta_i = \begin{cases}
+          \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
+          0 & i > k 
+        \end{cases}.
+    \end{equation*}
+  \end{enumerate}
+\end{restatable}
+
+\subsection{Limitations}\label{subsec:limitations}
+There are two main drawbacks of the study presented here. Our relaxed
+model does not consider any specific set of allowed
+observations. Rather, we take observations in the unit ball in some
+Hilbert space. This allows considerably less restrictive observations
+than any real-life problem does. The second drawback is that we do not
+show rigorously that clusterization necessarily occurs in a
+simultaneous design. We only show that it is as reasonable as no
+clusterization.
+
+
+\subsection{An Example of Clusterization}\label{subsec:example}
+\begin{figure}
+  \begin{tikzpicture}[thick, scale=1.3, every node/.style={scale=0.99}]
+    \begin{axis}
+      [
+      title={Posterior Pointwise Standard Deviations and D-Optimal Sensor Locations},  
+      xmin = 0,
+      xmax = 3.14,
+      xlabel = {$x$},
+      ylabel = posterior std,
+      ymin   = 0,
+      %compat = 1.3,
+      % ymax   = 130,
+      % ytick = \empty,
+      legend cell align=left,
+      % legend style={at={(0.45,0.2)}}
+      legend pos= outer north east 
+      ]
+      % \draw[black!30!white, thin] (50,0) -- (50,130);
+      % 
+      %% \addplot [thin, black, mark=none] table{stdv-heat-sens1-var1.txt};
+      %% \addlegendentry{1 sensors};
+      
+      %% \addplot [thin, blue, mark=none] table{stdv-heat-sens2-var1.txt};
+      %% \addlegendentry{2 sensors};
+      
+      %% \addplot [thin, red, mark=none] table{stdv-heat-sens3-var1.txt};
+      %% \addlegendentry{3 sensors};
+      
+      \addplot [thin, green, mark=none] table{stdv-heat-sens4-var1.txt};
+      \addlegendentry{4 sensors};
+      
+      \addplot [thin, purple, mark=none] table{stdv-heat-sens5-var1.txt};
+      \addlegendentry{5 sensors};
+      
+      \addplot [thin, cyan, mark=none] table{stdv-heat-sens6-var1.txt};
+      \addlegendentry{6 sensors};
+
+  
+      %% \addplot [black,  only marks, mark=x, mark size=1.5] 
+      %% table{locs-heat-sens1-var1.txt}; 
+      %% \addplot [blue,   only marks, mark=x, mark size=1.5]
+      %% table{locs-heat-sens2-var1.txt}; 
+      %% \addplot [red,    only marks, mark=x, mark size=1.5]
+      %% table{locs-heat-sens3-var1.txt};
+      \addplot [green,  only marks, mark=*, mark size=1.5] 
+      table{locs-heat-sens4-var1.txt}; 
+      \addplot [purple, only marks, mark=*, mark size=1.5] 
+      table{locs-heat-sens5-var1.txt}; 
+      \addplot [cyan,   only marks, mark=*, mark size=1.5] 
+      table{locs-heat-sens6-var1.txt}; 
+  
+      
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The clusterization effect for the 1D heat equation
+    described in section \ref{subsec:example}. Posterior pointwise
+    standard deviations (lines) are plotted over the domain $[0,
+      \pi]$, for varying numbers of sensors. Sensor locations
+    (circles) were chosen to minimize (an expression analogous to) the
+    determinant of the posterior covariance. The clusterization effect
+    can be clearly seen for six sensors. Only four observation
+    locations are used --- two pairs of sensors are so close they are
+    indistinguishable.}
+  \label{fig:clusterization illustration}
+\end{figure}
+
+In section \ref{section:prelim} we present a more abstract and general
+formulation of the inverse problem we consider. But, for the purpose
+of illustration, we present clusterization via a toy model --- the 1D
+heat equation in $[0,\pi]$ with a homogeneous Dirichlet boundary
+condition.
+
+The 1D heat equation is:
+\begin{subequations}\label{eq:heat equation}
+  \begin{alignat}{2}
+    u_t &= \Delta u &&\qquad \text{in } [0,\pi] \times [0,\infty),\\
+      u &= 0 &&\qquad \text{on } \{0, \pi\} \times [0,\infty),\\
+        u &= u_0 &&\qquad \text{on }[0,\pi] \times \{0\}.
+  \end{alignat}
+\end{subequations}
+
+We would like to infer the initial condition $u_0$. For that purpose,
+we measure $u$ at some set of locations $\x_j \in [0,\pi], j=1,
+\dots,m$ and a final time $T > 0$. We assume centered Gaussian
+observation error, so we observe $v(\x_j,T) = u(\x_j,T) + \eps(\x_j)$
+with $\eps(\x_j) \sim \normal(0, \sigma^2), \sigma > 0$ iid. We model
+the initial condition as $u_0 \sim \normal(0,\prcov)$, for $\prcov =
+(-\Delta)^{-1}$ with a homogeneous Dirichlet boundary condition. If It
+is well known \cite{Tarantola05} that for linear problems, with
+Gaussian prior and error, the posterior is also Gaussian with a
+covariance that does not depend on the observed data. The posterior
+covariance $\postcov$ is known to have a closed form formula, even in
+infinite dimensions \cite{Stuart10}. We denote by $\fwd$ the dynamics
+operator, so that $u( \cdot,T) = \fwd u_0$, and the observation
+operator $\obs$ so that $u(\x_j,T) = (\obs u)_j, j=1,\dots,m$. The
+posterior covariance is known and depends only on $\prcov, \fwd, \obs$
+and $\sigma^2$ (see section \ref{section:prelim} and
+\eqref{eq:postcov} specifically).
+
+We consider generalization of the information-theoretic design
+criterion presented in the introduction to infinite dimensions
+(section \ref{subsec:D optimal design} below). We choose
+$\x_j,j=1,\dots,m$ to minimize (an expression analogous to) the
+determinant of the posterior covariance operator. We will see later
+how this corresponds to maximizing expected information gain.
+
+The clusterization effect is illustrated in figure
+\ref{fig:clusterization illustration}. Posterior pointwise standard
+deviations are plotted over the domain $[0, \pi]$. Since the posterior
+covariance does not depend on data, the plot has no reference to
+actual data observed. The posterior covariance does, however, depend
+on location of the observation taken. In figure
+\ref{fig:clusterization illustration}, observation locations are
+marked by circles. These were chosen to minimize (an expression
+analogous to) the determinant of the posterior covariance. The
+clusterization effect can be clearly seen for six sensors. It looks
+like only four observations were taken. The reason is that two pairs
+of sensors are so close they are indistinguishable.
+
+

@@ -1,7 +1,7 @@
 \appendix
 \section{General Lemmas}
 
-The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax97}
+The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax07}
 \lax
 \begin{proof}
   Consider a differentiable operator-valued function $X(t)$ such that
@@ -102,7 +102,7 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
 \end{lemma}
 \begin{proof}
   In this proof we rely on definitions and results from
-  \cite{Simon77}. First, consider $B := I + xy^*$ for some $x,y \in
+  \cite{simon1977}. First, consider $B := I + xy^*$ for some $x,y \in
   \hil$. We construct an eigenbasis for $B$ and use that to show $\det
   B = 1 + \langle x, y \rangle$. First let $x_1 := x$.  Now, if $x
   \parallel y$, take $\{x_n \}_{n=2}^{\infty}$ an orthogonal basis for
@@ -440,58 +440,58 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
   and the conclusion follows.
 \end{proof}
 
-Lemma \ref{lemma:design increase} implies the following two corollaries.
-\begin{corollary}[Gain for No Model Error]\label{cor:zero mod err}
-  If $\modcov = 0$, then
-  \begin{equation*}
-    \tar( \obs ) - \tar (\obsm )
-    = -\frac12 \log (1 - \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle ).
-  \end{equation*}
-\end{corollary}
-\begin{proof}
-  Note that this is not immediate by substituting $\modcov = 0$ in the
-  conclusion of Lemma \ref{lemma:design increase}, since we make a
-  claim for $\postcov$, and not $\postcovm$. Let us first review
-  \eqref{eq:u} and note that since $\modcov = 0$ the covariance
-  $\Sigmam = \sigma^2I_{m-1}$ and $w = 0$, so $c - w^t\Sigmam^{-1}w =
-  \sigma^2$:
-  \begin{align*}
-    u :&=-\sigma^{-1}\prcov^{1/2} \fwd^* \meas_m\\
-    %
-    %
-    u^* :&= -\sigma^{-1} \meas_m \fwd \prcov^{1/2}.
-  \end{align*}
-  From \eqref{eq:M plus I}:
-  \begin{equation*}
-    I + \M(\obsm) = I +\M(\obs) - uu^*,
-  \end{equation*}
-  and thus:
-  \begin{equation*}
-    \left \langle \left ( I +\M(\obs) \right )^{-1} u, u \right \rangle
-    = \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle.
-  \end{equation*}
-  Analogously to \eqref{eq:M postcov} we note that
-  \begin{equation*}
-    \prcov^{1/2} \left ( I + \M(\obs) \right )^{-1} \prcov^{1/2} = \postcov.
-  \end{equation*}
-  Using Lemma \ref{lemma:MDL} we conclude
-  \begin{align*}
-    \tar( \obs ) - \tar( \obs )
-    &= \frac12 \log \det \left (I +\M(\obs) \right ) / \det \left (I + \M(\obsm) \right ) \\
-    %
-    %
-    %
-    &= \frac12 \log \det \left (I +\M(\obs) \right ) / \det \left (I + \M(\obs) - uu^* \right ) \\
-    %
-    %
-    %
-    &=-\frac12 \log (1 - \langle (I+\M(\obs))^{-1}u, u \rangle \\
-    %
-    %
-    %
-    &= -\frac12 \log (1 - \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle ).
-  \end{align*}
-\end{proof}
+Lemma \ref{lemma:design increase} implies the following corollary:
+%% \begin{corollary}[Gain for No Model Error]\label{cor:zero mod err}
+%%   If $\modcov = 0$, then
+%%   \begin{equation*}
+%%     \tar( \obs ) - \tar (\obsm )
+%%     = -\frac12 \log (1 - \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle ).
+%%   \end{equation*}
+%% \end{corollary}
+%% \begin{proof}
+%%   Note that this is not immediate by substituting $\modcov = 0$ in the
+%%   conclusion of Lemma \ref{lemma:design increase}, since we make a
+%%   claim for $\postcov$, and not $\postcovm$. Let us first review
+%%   \eqref{eq:u} and note that since $\modcov = 0$ the covariance
+%%   $\Sigmam = \sigma^2I_{m-1}$ and $w = 0$, so $c - w^t\Sigmam^{-1}w =
+%%   \sigma^2$:
+%%   \begin{align*}
+%%     u :&=-\sigma^{-1}\prcov^{1/2} \fwd^* \meas_m\\
+%%     %
+%%     %
+%%     u^* :&= -\sigma^{-1} \meas_m \fwd \prcov^{1/2}.
+%%   \end{align*}
+%%   From \eqref{eq:M plus I}:
+%%   \begin{equation*}
+%%     I + \M(\obsm) = I +\M(\obs) - uu^*,
+%%   \end{equation*}
+%%   and thus:
+%%   \begin{equation*}
+%%     \left \langle \left ( I +\M(\obs) \right )^{-1} u, u \right \rangle
+%%     = \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle.
+%%   \end{equation*}
+%%   Analogously to \eqref{eq:M postcov} we note that
+%%   \begin{equation*}
+%%     \prcov^{1/2} \left ( I + \M(\obs) \right )^{-1} \prcov^{1/2} = \postcov.
+%%   \end{equation*}
+%%   Using Lemma \ref{lemma:MDL} we conclude
+%%   \begin{align*}
+%%     \tar( \obs ) - \tar( \obs )
+%%     &= \frac12 \log \det \left (I +\M(\obs) \right ) / \det \left (I + \M(\obsm) \right ) \\
+%%     %
+%%     %
+%%     %
+%%     &= \frac12 \log \det \left (I +\M(\obs) \right ) / \det \left (I + \M(\obs) - uu^* \right ) \\
+%%     %
+%%     %
+%%     %
+%%     &=-\frac12 \log (1 - \langle (I+\M(\obs))^{-1}u, u \rangle \\
+%%     %
+%%     %
+%%     %
+%%     &= -\frac12 \log (1 - \sigma^{-2} \langle \fwd \postcov \fwd^* \meas_m, \meas_m \rangle ).
+%%   \end{align*}
+%% \end{proof}
 
 \samemeas
 \begin{proof} \label{cor:same meas proof}
