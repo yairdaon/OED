@@ -10,19 +10,19 @@ problem. Results are summarized in Theorem \ref{thm:char}.
 
 
 %% \subsection{The Nonlinear Eigenvalue Problem}\label{subsec:eigenproblem}
-$\modcov = 0$ implies $\Sigma= \sigma^2I$. The necessary first-order
-condition for D-optimality \eqref{eq:conditions} becomes
+The necessary first-order condition for D-optimality
+\eqref{eq:conditions}, when $\Sigma= \sigma^2I$ (i.e. when $\modcov =
+0$) becomes
 \begin{equation}\label{eq:eigenproblem}
   \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi,
 \end{equation}
 with $\Xi$ diagonal. We think of \eqref{eq:eigenproblem} as an
 eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
-are eigenvectors. However, that $\postcov$ depends on $\obs$ and thus,
-we refer to \eqref{eq:eigenproblem} as a nonlinear eigenvalue problem.
-
-The following two lemmas allow us to gain better understanding of the
-nonlinear eigenvalue problem.
+are eigenvectors. However, $\postcov$ depends on $\obs$ and thus, we
+refer to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue
+problem. The following two lemmas allow us to gain better
+understanding of the nonlinear eigenvalue problem.
 
 \begin{restatable*}[Two applications of Woodbury Matrix Identity]{lemma}{woodbury}\label{lemma:twice woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
@@ -36,7 +36,6 @@ nonlinear eigenvalue problem.
   \end{align*}  
 \end{restatable*}
 
-
 %% The term $(\fwd \prcov \fwd^*)^{-1}$ is the prior precision in
 %% $\hilo$, and $\fwd\prcov\fwd^*$ is invertible, as mentioned in
 %% Section \ref{section:prelim}. $(\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}
@@ -48,7 +47,7 @@ nonlinear eigenvalue problem.
 %% $\{\lambda_i\}_{i=1}^{\infty}$, and note they are positive. Lemma
 %% \ref{lemma:sim diag} is crucial for the rest of the analysis:
 
-\begin{restatable*}[Simultaneous diagonizability for the nonlinear eigenvalue problem]{lemma}{simdiag}\label{lemma:sim diag}
+\begin{restatable*}[Simultaneous diagonizability]{lemma}{simdiag}\label{lemma:sim diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
@@ -59,11 +58,11 @@ nonlinear eigenvalue problem.
   diagonalizable.
 \end{restatable*}
 
-\begin{corollary}[Eigenvectors of a D-optimal design]\label{cor:same ev}
+\begin{proposition}[Eigenvectors of a D-optimal design]\label{prop:same ev}
   Let $\obs$ satisfy the nonlinear eigenvalue problem
   \eqref{eq:eigenproblem}. Then $\obs^*\obs$ has the same eigenvectors
   as $\fwd \prcov \fwd^*$.
-\end{corollary}
+\end{proposition}
 \begin{proof}
   \begin{align}\label{eq:mod conditions}
     \begin{split}
@@ -83,24 +82,11 @@ nonlinear eigenvalue problem.
   \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim diag}.
 \end{proof}
 
-Corollary \ref{cor:same ev} implies we only need to consider $\obs$
-such that at most $m$ of the eigenvectors of $\obs^*\obs$ have a
-positive eigenvalue, because $k := \rank \obs^*\obs \leq m$. Since we
-made no assumption regarding the ordering of $\{\lambda_i\}$, we can
-denote the corresponding non-zero eigenvalues of $\obs^*\obs$ by
-$\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
+Since we made no assumption regarding the ordering of $\{\lambda_i\}$,
+we can denote the corresponding non-zero eigenvalues of $\obs^*\obs$
+by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
-%% \begin{definition}
-%%   Let $\{\lambda_i\}_{i=1}^{\infty}$ eigenvalues of $\fwd \prcov
-%%   \fwd^*$ sorted in descending order. Let $\eta \in
-%%   \mathbb{R}_+^m$. The \emph{utility proxy} $\bar{\tar}$ is defined
-%%   as:
-%%   \begin{equation*}
-%%     \bar{\tar}(\eta) := \frac12 \sum_{i=1}^m \log(1 + \sigma^{-2}\lambda_i\eta_i).
-%%   \end{equation*}
-%% \end{definition}
-
-\begin{corollary}\label{cor:true target}
+\begin{proposition}\label{prop:true target}
   Let $\obs$ with $m$ observations satisfy the nonlinear eigenvalue
   problem \eqref{eq:eigenproblem}. Let $\{\eta_i\}_{i=1}^{\infty}$
   eigenvalues of $\obs^*\obs$ and $\{\lambda_i\}_{i=1}^{\infty}$ the
@@ -117,7 +103,7 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
     \item Let $\obs$ a D-optimal design. Then $\eta_i > 0$ for
       eigenvectors corresponding to the $k$ largest $\lambda_i$.
   \end{enumerate}
-\end{corollary}
+\end{proposition}
 \begin{proof}
   Part (1) is trivial. To see part (2) holds: 
   \begin{align}
@@ -131,7 +117,7 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       %
       %
       %
-      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Corollary \ref{cor:same ev})} \\
+      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same ev})} \\
       %
       %
       %
@@ -163,36 +149,9 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   where $A:= \{1\leq i \leq m: \eta_i > 0\}$ and $A^c = \{1,\dots, m\}
     \backslash A$, and $|A|$ is the cardinality of $A$.
 \end{proposition}
+
+
 \begin{proof}
-%% \begin{proposition}\label{prop:optimizer}
-%%   Let $\{\lambda_i\}_{i=1}^{\infty}$ the sorted eigenvectors of $\fwd
-%%   \prcov\fwd^*$, $k\in \mathbb{N}^+$ and
-%%   %% Let
-%%   %%   \begin{equation}
-%%   %%   k = \argmax \left \{ k:\lambda_k^{-1} \leq \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
-%%   %%   \lambda_j^{-1} \right \}.
-%%   %% \end{equation}
-
-%%   \begin{equation}
-%%   \eta_i = \begin{cases}
-%%     \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & i \leq k \\
-%%     0 & i > k 
-%%   \end{cases}.
-%%   \end{equation}
-
-%%   Let $\obs$ an observation operator such that $\obs^*\obs$ has the
-%%   same eigenvectors as $\fwd \prcov \fwd^*$. If $\eta_i > 0$ for
-%%   $i\leq k$ and $\obs^*\obs$ has eigenvalues $\eta_i$, then $\obs$
-%%   maximizes $\tar$ subject to $\sum_{i=1}^m \eta_i = m$ and to $\rank
-%%   \obs = k$.
-%% \end{proposition}
-  %% \begin{proof}
-  %% et $A := \{i: \eta_i > 0\}$. A choice of $A$ where $\eta_i =0,
-  %% \eta_j >0$ for some $1 \leq i < j \leq m$ is not optimal (just
-  %% switch $\eta_j$ and $\eta_i$ and recall $\{\lambda_i\}$ are arranged
-  %% in descending order). Thus, since $\rank \obs = k$ we conclude that,
-  %% $\eta_i=0, i>k$.
-
   Let $\Phi(\eta) = \sum_{i=1}^k \eta_i - m$ and $\Omega_j(\eta) =
    -\eta_j$. Then
   \begin{align*}
@@ -273,35 +232,6 @@ $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{align}
 \end{proof}
 
-\begin{corollary}\label{cor:descending}
-  In Proposition \ref{prop:kkt}, if $\lambda_i$ are arranged in
-  descending order, then $A= \{1,\dots,k\}$ for some $1 \leq k \leq
-  m$.
-\end{corollary}
-
-\begin{corollary}\label{cor:eigenvalues}
-  If $\obs$ is optimal and $k := \rank \obs$, then:
-  \begin{enumerate}
-    \item The covariance of the pushforwad $\fwd_{*} \post$ is $((\fwd
-      \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs)^{-1}$.
-    \item The eigenvalues of said operator are
-      \begin{equation}
-        \eta_i = \begin{cases}
-          \frac{m}{k} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & i \leq k \\
-          \lambda_i^{-1} & i > k 
-        \end{cases}.
-      \end{equation}
-  \end{enumerate}
-\end{corollary}
-
-\begin{proof}
-  Recall from \eqref{eq:postcov}, that the posterior covariance is
-  $\postcov^{-1} = \prcov^{-1} +
-  \sigma^{-2}\fwd^*\obs^*\obs\fwd$. Part (1) now follows from Lemma
-  \ref{lemma:twice woodbury}. Part (2) follows from Proposition
-  \ref{prop:kkt} and Corollary \ref{cor:descending}.
-\end{proof}
-
 We are almost ready to state and prove Theorem \ref{thm:char} that
 characterizes D-optimal designs. We just need one final lemma, whose
 proof is delegated to the appendix:
@@ -312,26 +242,29 @@ proof is delegated to the appendix:
   $AA^t = M$.
 \end{restatable*}
 
-
-\main*
+\char*
 
 \begin{proof}
-  Part (1) was proved in Corollary \ref{cor:same ev}. Parts (2) and
-  (3) were proved in Corollary \ref{cor:true target}. Part (4) is a
-  consequence of Corollary \ref{cor:eigenvalues}, with the caveat that
-  we did not show that finding $\obs$ so that $\obs^*\obs$ has the
-  desired eigenvalues is feasible. To this end, we utilize Lemma
-  \ref{lemma:free}: let $M = \diag(\eta_1, \dots, \eta_k)$, diagonal
-  with respect to the first $k$ eigenvectors of $\fwd \prcov
-  \fwd^*$. We take $\obs := A$ from the Lemma \ref{lemma:free}, and
-  this concludes the proof.
+  Part (1) is immediate for any observation operator $\obs$ that
+  satisfies the unit norm constraint on observation vectors. Part (2)
+  was proved in Proposition \ref{prop:same ev}. Part (3) was proved in
+  Proposition \ref{prop:true target}.
+  
+  Part (4) is a consequence of Propositions \ref{prop:true target} and
+  \ref{prop:kkt}, with the caveat that we did not show that finding
+  $\obs$ so that $\obs^*\obs$ has the desired eigenvalues is
+  feasible. To this end, we utilize Lemma \ref{lemma:free}: let $M =
+  \diag(\eta_1, \dots, \eta_k)$, diagonal with respect to the first $k$
+  eigenvectors of $\fwd \prcov \fwd^*$. We take $\obs := A$ from the
+  Lemma \ref{lemma:free}.
+  
+  Recall from \eqref{eq:postcov}, that the posterior precision is
+  $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\obs^*\obs\fwd$. The
+  first statement in part (5) now follows from Lemma \ref{lemma:twice
+    woodbury}, while the second statement follows from parts (1) and
+  (4).
 \end{proof}
 
-\begin{corollary}\label{cor:equal eigs}
-  In a D-optimal design, the posterior covariance of the pushforward
-  $\fwd_{*} \post$ is constant for eigenvectors $1 \leq i \leq k$
-  where $k =\rank \obs$.
-\end{corollary}
 
 \pgfplotstableread{
   Label     prior  optimal  sub-optimal 
@@ -390,31 +323,34 @@ proof is delegated to the appendix:
       
     \end{axis}
   \end{tikzpicture}
-  \caption{As an illustration of Corollary \ref{cor:equal eigs}, a
-    D-optimal design is compared with a sub-optimal design. Both
-    designs are allowed three observations. Thus, the blue area has
+  \caption{A comparison of the eigenvalues of the pushforward
+    posterior precision $(\fwd\prcov\fwd^*)^{-1}
+    + \sigma^{-2}\obs^*\obs$ for a D-optimal design (left) and a
+    sub-optimal design (right). Both designs are allowed three
+    observations. We assume $\sigma^2=1$ and thus, the blue area has
     accumulated height of $3$ in both plots. A D-optimal design (left)
     increases precision (reduces uncertainty) where it is lowest. A
-    sub-optimal design (right) does not. In this example, an
-    observation is taken partly in the direction of the third
-    eigenvector. The precision for this eigenvector is bigger even
-    than the posterior precision of the D-optimal design on the left.}
+    sub-optimal design (right) does not.
+    %% In this example, an observation is taken partly in the
+    %% direction of the third eigenvector. The precision for this
+    %% eigenvector is bigger even than the posterior precision of the
+    %% D-optimal design on the left.
+  }
   \label{fig:optimal vs not}
 \end{figure}
 
 
 Here is a way to understand D-optimal designs with vanishing model
-error: Imagine each eigenvector corresponds to a graduated lab
-cylinder (Figure \ref{fig:cylinder}). Each cylinder $i$ is filled,
-a-priori, with green liquid of $\sigma^2\lambda_i^{-1}$ volume
-units. This liquid represnets the prior precision, weighted by
-observation noise. The volume of the green liquid is increasing in
-$i$. A D-optimal design with $m$ observations ignores cylinders
-indexed $m+1$ and above. It has blue liquid of volume $m$ units at its
-disposal. It distributes said liquid by repeatedly adding a drop to
-whatever cylinder currently has the lowest level of liquid in it
-(lowest precision). The result of such a procedure is illustrated in
-Figure \ref{fig:optimal vs not}.
+error: Imagine each eigenvector of $\fwd \prcov \fwd^*$ corresponds to
+a graduated lab cylinder (Figure \ref{fig:cylinder}). Each cylinder
+$i$ is filled, a-priori, with green liquid of $\lambda_i^{-1}$ volume
+units. This liquid represnets the prior precision, and the volume of
+the green liquid is increasing in $i$. A D-optimal design with $m$
+observations ignores cylinders indexed $m+1$ and above. It has blue
+liquid of volume $\sigma^{-2}m$ units at its disposal. It distributes
+said liquid by repeatedly adding a drop to whatever cylinder currently
+has the lowest level of liquid in it (lowest precision). The result of
+such a procedure is illustrated in Figure \ref{fig:optimal vs not}.
 
 \begin{figure}%{r}{0.25\textwidth} 
     %\centering
@@ -427,35 +363,56 @@ Figure \ref{fig:optimal vs not}.
 
 
 \section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
-Corollary \ref{cor:same ev} tells us that we can realize any design we
-want (encoded in $\{\eta_i\}$), given the trace constraint
-$\tr{\obs^*\obs} = m$ is satisfied. From Theorem \ref{thm:char} we
-know we only need to make the posterior flat where we take
-observations (recall figure \ref{fig:optimal vs not}). We are left
-with the freedom of assigning any part of $\eta_i$ to any observation
-$\meas_j$. Two possible assignments for the same problem are
-illustrated in figure \ref{fig:clusterization}. The first exhibits
-clusterization, the second does not. It is important to note that
-neither arises as a result of some numerical optimization scheme. Both
-designs give the same design criterion $\tar$, because their
-posteriors are identical. By Theorem \ref{thm:char}, both are
-maximizers of the same D-optimal design problem. One exhibits
-clusterization, and one does not. Of course, a real-life problem is
-more restricted than the model we consider here. Such restriction is
-the likely cause of clusterization obseved in, e.g., the toy model of
-section \ref{subsec:example}. Exactly how this happens is not
-clear. At this point it is the subject of speculation and should be
-further studied in the future.
+We saw that the necessary conditions for a design $\obs$ with $m$
+observations to be D-optimal are (1), (2) and (4) of Theorem
+\ref{thm:char}. As long as these requirements are satisfied, $\obs$ is
+D-optimal. These requirements, however, still leave some freedom in
+choosing $\obs$. This freedom may give rise to clusterization, as
+illustrated in Figure \ref{fig:clusterization} and explained below.
+
+Consider an inverse problem with $\lambda_1^{-1} = 0.1, \lambda_2^{-1}
+= 0.2$ and $\sigma^2=1$. In \eqref{eq:two designs}, we suggest two
+D-optimal designs $\obs_1, \obs_2$ such that $\obs_1^*\obs_1 =
+\obs_2^*\obs_2$. The former exhibits clusterization ($\meas_3 =
+\meas_5 = \ev_1$), while the latter does not. Since both of these
+designs are D-optimal, clusterization does not pose any obstruction to
+D-optimality.
+
+\begin{equation}\label{eq:two designs}
+  \obs_1 =
+  \begin{pmatrix}
+    \sqrt{0.275}\ev_1 - \sqrt{0.725}\ev_2 \\
+    \sqrt{0.275}\ev_1 + \sqrt{0.725}\ev_2 \\
+    \ev_1 \\
+    \ev_2 \\
+    \ev_1 \\    
+  \end{pmatrix},
+  \obs_2 =
+  \begin{pmatrix}
+    \sqrt{\frac{3}{8}}\ev_1 - \sqrt{\frac{5}{8}}\ev_2 \\
+    \sqrt{\frac{3}{8}}\ev_1 + \sqrt{\frac{5}{8}}\ev_2 \\
+    \sqrt{\frac{2}{5}}\ev_1 - \sqrt{\frac{3}{5}}\ev_2 \\
+    \sqrt{\frac{2}{5}}\ev_1 + \sqrt{\frac{3}{5}}\ev_2 \\
+    \ev_1 \\    
+  \end{pmatrix}
+\end{equation}
 
 A computer implementation of Lemma \ref{lemma:free} (see code in
-Supplementary material) generates the design presented in left panel
-Figure \ref{fig:clusterization}, which exhibits clusterization, over
-the clusterization-free design presented in the right panel of Figure
-\ref{fig:clusterization}. Modifying the numerical values of the prior
-does not result in a clusterization-free design. Thus, the preference
-to clusterization of Lemma \ref{lemma:free} is robust and
-clusterization is a generic property of the model presented in this
-study.
+Supplementary material) generates $\obs_1$, which exhibits
+clusterization. Modifying the numerical values of the prior does not
+break the clusterization. Thus, the preference to clusterization of
+Lemma \ref{lemma:free} is robust. The vast majority of randomized
+numerical simulations (see code in Supplementary material) also give
+rise to D-optimal designs that exhibit clustrization. We conclude that
+clusterization is a generic property of the relaxed model presented in
+this study.
+
+%% Of course, a real-life problem is more restricted than the model we
+%% consider here. Such restriction is the likely cause of clusterization
+%% obseved in, e.g., the toy model of section
+%% \ref{subsec:example}. Exactly how this happens is not clear. At this
+%% point it is the subject of speculation and should be further studied
+%% in the future.
 
 \pgfplotstableread{
   Label    prior  $o_1o_2$  $o_3$   $o_4$   $o_5$    topper
@@ -467,9 +424,9 @@ study.
 
 \pgfplotstableread{
   Label    prior  $o_1o_2$  $o_3o_4$   $o_5$     topper
-  1         0.1       0.95        0.6        1         0.001
-  2         0.2       1.0         1.4        0.        0.001
-  3         3.5        0          0          0         0.001
+  1         0.1    0.75     0.8        1         0.001
+  2         0.2    1.25     1.2        0         0.001
+  3         3.5    0        0          0         0.001
 }\noclusterization
 
 \begin{figure}
@@ -542,15 +499,18 @@ study.
       %% \addlegendentry{$o_6$}   
     \end{axis}
   \end{tikzpicture}
-  \caption{Clusterization (left) and non-clusterization (right) in
-    D-optimal designs. Posterior precision per eigenvector after
-    taking observations $\meas_i$ is plotted. Both designs are
-    identical for all practical matters --- their posteriors are
-    equal. In the left panel we see how an optimal design is achieved
-    with repeated observations. $\meas_3 = \meas_5$. This is not
-    necessary though, as can be seen in the right panel. Both designs
-    achieve the same levels of uncertainty. The left exhibits
-    clusterization. The right does not.}
+  \caption{Clusterization (left, $\obs_1$ in \eqref{eq:two designs})
+    and non-clusterization (right, $\obs_2$ in \eqref{eq:two designs})
+    in D-optimal designs. Posterior precision per eigenvector is
+    plotted for $\obs_1$ and $\obs_2$ from \eqref{eq:two
+      designs}. Both designs are identical for all practical matters
+    --- their posteriors are equal. The left panel shows a D-optimal
+    design with clusterization: $\meas_3 = \meas_5$. The right panel
+    shows a D-optimal design without clusterization. The contribution
+    to the posterior precision due to $\meas_1$ and $\meas_2$ is
+    denoted $\meas_1\meas_2$. These contributions are plotted together
+    because $\meas_1$ and $\meas_2$ are not in the direction of any
+    eigenvector. Similarly for $\meas_3\meas_4$.}
   \label{fig:clusterization}
 \end{figure}
 

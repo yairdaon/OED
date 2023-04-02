@@ -146,7 +146,7 @@
 \newcommand{\sspar}{\param_{\textup{SmallScale}}}
 \newcommand{\normal}{\mathcal{N}}
 \newcommand{\pr}{\mu_{\textup{pr}}} %Prior measure
-\newcommand{\post}{\mu_{\textup{post}}^{\data}} % Posterior measure
+\newcommand{\post}{\mu_{\textup{post}}^{\data, \obs}} % Posterior measure
 \newcommand{\prmean}{\param_{\textup{pr}}} % Prior mean
 \newcommand{\postmean}{\param_{\textup{post}}} % Posterior mean
 \newcommand{\postcov}{\Gamma_{\textup{post}}} % Posterior covariance
@@ -193,3 +193,6 @@
 %% Hack
 \newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
 \usepackage{cancel}
+
+\usepackage{comment}% http://ctan.org/pkg/comment
+%\excludecomment{proof}

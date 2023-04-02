@@ -1,15 +1,16 @@
 \section{Preliminaries and Notation}\label{section:prelim}
 
 \subsection{Overview}
-In this section we define notations that will be used throughout the
-paper. The theoretical foundations for inverse problems over function spaces
-can be found in \cite{Stuart10}.
+In this section I will define notations that will be used throughout
+the paper. The theoretical foundations for inverse problems over
+function spaces can be found in \cite{Stuart10}. Most of the notations
+are summarized in the conditions of Theorem \ref{thm:char}.
 
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
 Let $\hilp$ and $\hilo$ be separable Hilbert spaces (the subscripts p
-and o are for ``parameter'' and ``observation'', respectfully). We
-denote $\hilo^*$ the Hilbert space of all linear functionals on
+and o are for ``parameter'' and ``observation'', respectfully). Denote
+$\hilo^* \simeq \hilo$ the Hilbert space of all linear functionals on
 $\hilo$. Consider $\fwd: \hilp \to \hilo$, a linear operator (the
 ``forward operator''). We are interested in forward operators that are
 strongly smoothing (have fast decaying modes --- the heat operator
@@ -60,8 +61,8 @@ $\eps' \sim \normal(0,\modcov)$, modeled as a centered Gaussian
 measure on $\hilo$ with covariance operator $\modcov$. Then there is
 observation error $\eps \sim \normal(0, \sigma^2 I_m)$, with $I_m$ the
 $m \times m$ identity. Both error terms and the prior are assumed
-independent of each other. The observation and forward operators are
-typically merged $\tmp := \obs \fwd$
+independent of each other. In the literature, it is common for the
+observation and forward operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}. Since we need to separate the
 observation operator $\obs$ from the forward operator $\fwd$ in order
 to carry out the analysis in the following sections, we explicitly
@@ -81,14 +82,14 @@ $\hilo = L^2([-\pi, \pi])$, consider $\ell_1(x) := (2\pi
 \eps)^{-\frac{1}{2}}\exp(-\frac{x^2}{2\eps^2})$ and $\ell_2(x)
 :=\eps^{-1}\mathbf{1}_{[-\frac{\eps}{2}, \frac{\eps}{2}]}$. Both
 $\ell_1$ and $\ell_2$ approximate a point measurement at $0$ for small
-$\eps$ and, crucially, $\ell_1, \ell_2 \in \hilo^*$. It is important
-to note that although $\|\ell\|_1 = \|\ell_2\|_1=1$, unfortunately
-$\|\ell_1\|_2^2 = (4\pi \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 =
-\eps^{-1}$.
+$\eps$ and, crucially, $\ell_1, \ell_2 \in \hilo^*$.
+%% It is important to note that although $\|\ell\|_1 =
+%% \|\ell_2\|_1=1$, unfortunately $\|\ell_1\|_2^2 = (4\pi
+%% \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 = \eps^{-1}$.
 
 
 \subsubsection{Error Terms}
-Considering the sum of the error terms, it is easy to see that
+Considering the sum of the error terms, it is easy to verify that
 $\bar{\eps} := \obs \eps' + \eps \in \R^m$. It is a centered Gaussian
 random vector and its covariance matrix is
 \begin{align}\label{eq:Sigma}
@@ -126,10 +127,10 @@ reflect the spatial (or other) variability we imagine $\err \sspar$
 has. Such small scale phenomenon can arise as a modeling issue, where
 we might not model the system in its entirety. It can also arise from
 a numerical source, where our discretization of the system is not fine
-enough to capture all small scale phenomena. In section
-\ref{section:non vanishing}, we will see that assuming some
-correlation in the error mitigates the clusterization phenomenon, as
-reported in the literature \cite{Ucinski05}.
+enough to capture all small scale phenomena.
+%%  In section \ref{section:non vanishing}, we will see that assuming
+%% some correlation in the error mitigates the clusterization
+%% phenomenon, as reported in the literature \cite{Ucinski05}.
 
 Finally, it is useful to record a known result regarding the posterior
 covariance operator of our inverse problem:
@@ -141,8 +142,9 @@ covariance operator of our inverse problem:
 
 \subsection{D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
 A D-optimal design maximizes expected KL divergence between posterior
-and prior. It is useful to recall the definition of KL divergence for
-an arbitrary prior measure:
+and prior measures, denoted $\post$ and $\pr$, respecively. It is
+useful to recall the definition of KL divergence for an arbitrary
+prior measure:
 $$
 KL(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 $$
@@ -161,7 +163,7 @@ result is summarized, using our notation, in the following theorem:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
-  on $\hilo$ for the Bayesian linear inverse problem $\data = \obs
+  on $\hilp$ for the Bayesian linear inverse problem $\data = \obs
   \fwd\param + \obs \eps' + \eps$ discussed above. Then
   \begin{align}\label{eq:objective}
     \begin{split}
