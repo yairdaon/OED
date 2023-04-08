@@ -44,7 +44,7 @@ observations that are very similar. For example, if an observation is
 thought of as measuring some function value at $\x \in \Omega
 \subseteq \R^d, d=1,2,3$ (with added error) then the optimization
 procedure sometimes places sensors in very close proximity to each
-other (as can be seen in figure \ref{fig:clusterization
+other (as can be seen in Figure \ref{fig:clusterization
   illustration}). Following \cite{Ucinski05}, we refer to this
 phenomenon as \emph{sensor clusterization}.
 
@@ -91,12 +91,12 @@ clusterization.
 
 
 \subsection{Contribution}
-I propose and study a relaxed and analytically tractable model for
+We propose and study a relaxed and analytically tractable model for
 D-optimal designs. Under this model, D-optimal designs are solutions
 of a constrained optimization problem, formulated using Lagrange
 multipliers. This allows me to rigorously show how model error
-mitigates clusterization (section \ref{section:non vanishing}). I show
-that designs that exhibit clusterization are indeed optimal.
+mitigates clusterization (Section \ref{section:non vanishing}). We
+show that designs that exhibit clusterization are indeed optimal.
 
 %% A beautiful mathematical structure arises in D-optimal designs
 
@@ -106,13 +106,16 @@ down to a nonlinear eigenvalue problem.
 %% sum of two operators. The first is the prior covariance. The second
 %% is an outer product of the observations (see section
 %% \ref{section:vanishing} for details and exact statement).
-This structure helps me characterize D-optimal designs. The key idea
-is that a D-optimal design reduces uncertainties where they are
+This structure helps us to characterize D-optimal designs. The key
+idea is that a D-optimal design reduces uncertainties where they are
 highest first. This is the main conclusion of Theorem \ref{thm:char}
 stated below.
 
+
 \begin{restatable}[D-optimal designs with vanishing model error]{theorem}{char}\label{thm:char}
-%% \begin{theorem}[D-optimal designs with vanishing model error]\label{thm:char}
+  %% \begin{theorem}[D-optimal designs with vanishing model error]\label{thm:char}
+  %% Let Notation \ref{not:setup}. Further, let
+
   Let:
   \begin{itemize}
   \item $\hilp, \hilo$ Hilbert spaces.
@@ -141,13 +144,13 @@ stated below.
     in decreasing order of magnitude.
   %% \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
   \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$.
+  \item $\obs$ a D-optimal design operator
+    \begin{equation*}
+      \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs).
+    \end{equation*}
   \end{itemize}
 
-  If $\obs$ is a D-optimal design operator
-    \begin{equation*}
-      \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs), 
-    \end{equation*}
-    then:
+  Then:
   \begin{enumerate}
   \item  $\tr{\obs^*\obs} = m$.
   \item $\obs^*\obs$ and $\fwd\prcov\fwd^*$ are simultaneously
@@ -212,21 +215,21 @@ stated below.
 %%   =\rank \obs$.
 %% \end{restatable*}
 
-In the process, I generalize several lemmas from linear algebra to
-infinite-dimensional settings. I prove a Matrix Determinant Lemma in
-\ref{lemma:MDL}. I generalize a lemma due to Lax \cite{Lax07} for
+In the process, We generalize several lemmas from linear algebra to
+infinite-dimensional settings. We prove a Matrix Determinant Lemma in
+\ref{lemma:MDL}. We generalize a lemma due to Lax \cite{Lax07} for
 calculating $\frac{\der}{\der t} \log \det (I + X(t))$, for an
-operator valued function $X(t)$ in \ref{lemma:lax}. I show how to
+operator valued function $X(t)$ in \ref{lemma:lax}. We show how to
 decompose a symmetric positive definite matrix $m$ as $M = AA^t$,
 where $A$ has unit norm columns in Lemma \ref{lemma:free}.
 
 \subsection{Limitations}\label{subsec:limitations}
 Two main drawbacks of the study presented here are: First, the relaxed
 model does not consider any specific set of allowed
-observations. Rather, I take observations in the unit ball in some
+observations. Rather, we take observations in the unit ball in some
 Hilbert space. This allows considerably less restrictive observations
-than any real-life problem does. The second drawback is that I do not
-show rigorously that clusterization necessarily occurs, I only show
+than any real-life problem does. The second drawback is that we do not
+show rigorously that clusterization necessarily occurs, we only show
 that it is as reasonable as no clusterization.
 
 
@@ -286,7 +289,7 @@ that it is as reasonable as no clusterization.
     \end{axis}
   \end{tikzpicture}
   \caption{The clusterization effect for the 1D heat equation
-    described in section \ref{subsec:example}. Posterior pointwise
+    described in Section \ref{subsec:example}. Posterior pointwise
     standard deviations (lines) are plotted over the domain $[0,
       \pi]$, for varying numbers of sensors. Sensor locations
     (circles) were chosen to minimize (an expression analogous to) the
@@ -297,9 +300,9 @@ that it is as reasonable as no clusterization.
   \label{fig:clusterization illustration}
 \end{figure}
 
-In section \ref{section:prelim}, I present a more abstract and general
-formulation of the inverse problem I consider. But, for the purpose of
-illustration, I present clusterization via a toy model --- the 1D heat
+In Section \ref{section:prelim}, we present a more abstract and general
+formulation of the inverse problem we consider. But, for the purpose of
+illustration, we present clusterization via a toy model --- the 1D heat
 equation in $[0,\pi]$ with a homogeneous Dirichlet boundary condition.
 
 The 1D heat equation is:
@@ -326,21 +329,21 @@ has a closed form formula, even in infinite dimensions
 $u( \cdot,T) = \fwd u_0$, and the observation operator $\obs$ so that
 $u(\x_j,T) = (\obs u)_j, j=1,\dots,m$. The posterior covariance is
 known and depends only on $\prcov, \fwd, \obs$ and $\sigma^2$ (see
-section \ref{section:prelim} and \eqref{eq:postcov} specifically).
+Section \ref{section:prelim} and \eqref{eq:postcov} specifically).
 
 We consider generalization of the information-theoretic design
 criterion presented in the introduction to infinite dimensions
-(section \ref{subsec:D optimal design} below). We choose
+(Section \ref{subsec:D optimal design} below). We choose
 $\x_j,j=1,\dots,m$ to minimize (an expression analogous to) the
 determinant of the posterior covariance operator. We will see later
 how this corresponds to maximizing expected information gain.
 
-The clusterization effect is illustrated in figure
+The clusterization effect is illustrated in Figure
 \ref{fig:clusterization illustration}. Posterior pointwise standard
 deviations are plotted over the domain $[0, \pi]$. Since the posterior
 covariance does not depend on data, the plot has no reference to
 actual data observed. The posterior covariance does, however, depend
-on location of the observation taken. In figure
+on location of the observation taken. In Figure
 \ref{fig:clusterization illustration}, observation locations are
 marked by circles. These were chosen to minimize (an expression
 analogous to) the determinant of the posterior covariance. The

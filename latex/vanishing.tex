@@ -2,17 +2,15 @@
 %% SECTION Analysis of Optimal Designs --- Vanishing Model Error
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Characterization of D-Optimal Designs with Vanishing Model Error}\label{section:vanishing}
-In this section we analyze D-optimal designs when no model error is
-present. We first derive a nonlinear eigenvalue problem in $\obs$ for
-D-optimal designs, and then we characterize D-optimal designs as ones
-that make all eigenvalues equal in the nonlinear eigenvalue
-problem. Results are summarized in Theorem \ref{thm:char}.
+We now turn to analyze D-optimal designs when $\modcov = 0$. Our goal
+is to prove Theorem \ref{thm:char} --- a characterization of D-optimal
+designs.
 
 
 %% \subsection{The Nonlinear Eigenvalue Problem}\label{subsec:eigenproblem}
-The necessary first-order condition for D-optimality
-\eqref{eq:conditions}, when $\Sigma= \sigma^2I$ (i.e. when $\modcov =
-0$) becomes
+The necessary first-order condition for D-optimality summarized in
+Theorem \ref{thm:constrained}, when $\Sigma= \sigma^2I$ (i.e. when
+$\modcov = 0$) becomes
 \begin{equation}\label{eq:eigenproblem}
   \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi,
 \end{equation}
@@ -21,10 +19,10 @@ eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
 are eigenvectors. However, $\postcov$ depends on $\obs$ and thus, we
 refer to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue
-problem. The following two lemmas allow us to gain better
-understanding of the nonlinear eigenvalue problem.
+problem. The following Proposition and Lemma are proved in the
+appendix:
 
-\begin{restatable*}[Two applications of Woodbury Matrix Identity]{lemma}{woodbury}\label{lemma:twice woodbury}
+\begin{restatable*}[Two applications of Woodbury Matrix Identity]{proposition}{woodbury}\label{prop:twice woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
   \begin{align*}
     \begin{split}
@@ -35,17 +33,6 @@ understanding of the nonlinear eigenvalue problem.
     \end{split}
   \end{align*}  
 \end{restatable*}
-
-%% The term $(\fwd \prcov \fwd^*)^{-1}$ is the prior precision in
-%% $\hilo$, and $\fwd\prcov\fwd^*$ is invertible, as mentioned in
-%% Section \ref{section:prelim}. $(\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}
-%% \obs^* \obs$ is the posterior precision in $\hilo$.
-
-%% \subsection{Characterizing D-Optimal Designs}\label{subsec:characterization}
-%% %% Denote corresponding eigenvectors $\{\ev_i\}_{i=1}^{\infty}$.
-%% Denote eigenvalues of $\fwd \prcov \fwd^*$ by
-%% $\{\lambda_i\}_{i=1}^{\infty}$, and note they are positive. Lemma
-%% \ref{lemma:sim diag} is crucial for the rest of the analysis:
 
 \begin{restatable*}[Simultaneous diagonizability]{lemma}{simdiag}\label{lemma:sim diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
@@ -74,7 +61,7 @@ understanding of the nonlinear eigenvalue problem.
       %
       %
       %
-      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Lemma \ref{lemma:twice woodbury})}.
+      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice woodbury})}.
     \end{split}
   \end{align}
 
@@ -232,9 +219,9 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{align}
 \end{proof}
 
-We are almost ready to state and prove Theorem \ref{thm:char} that
-characterizes D-optimal designs. We just need one final lemma, whose
-proof is delegated to the appendix:
+We are almost ready to prove Theorem \ref{thm:char} that characterizes
+D-optimal designs. We just need one final lemma, whose proof is
+delegated to the appendix:
 \begin{restatable*}[Unit norm decomposition]{lemma}{free}\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
   = m$, $m \geq k$. We can find $\func_j \in \R^k,j=1,\dots,m$
@@ -260,7 +247,7 @@ proof is delegated to the appendix:
   
   Recall from \eqref{eq:postcov}, that the posterior precision is
   $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\obs^*\obs\fwd$. The
-  first statement in part (5) now follows from Lemma \ref{lemma:twice
+  first statement in part (5) now follows from Lemma \ref{prop:twice
     woodbury}, while the second statement follows from parts (1) and
   (4).
 \end{proof}
@@ -324,13 +311,13 @@ proof is delegated to the appendix:
     \end{axis}
   \end{tikzpicture}
   \caption{A comparison of the eigenvalues of the pushforward
-    posterior precision $(\fwd\prcov\fwd^*)^{-1}
-    + \sigma^{-2}\obs^*\obs$ for a D-optimal design (left) and a
+    posterior precision $(\fwd\prcov\fwd^*)^{-1} +
+    \sigma^{-2}\obs^*\obs$ for a D-optimal design (left) and a
     sub-optimal design (right). Both designs are allowed three
     observations. We assume $\sigma^2=1$ and thus, the blue area has
-    accumulated height of $3$ in both plots. A D-optimal design (left)
-    increases precision (reduces uncertainty) where it is lowest. A
-    sub-optimal design (right) does not.
+    accumulated height of $3$ in both plots. The D-optimal design
+    (left) increases precision (equivalently, reduces uncertainty)
+    where it is lowest. The sub-optimal design (right) does not.
     %% In this example, an observation is taken partly in the
     %% direction of the third eigenvector. The precision for this
     %% eigenvector is bigger even than the posterior precision of the
@@ -374,15 +361,15 @@ Consider an inverse problem with $\lambda_1^{-1} = 0.1, \lambda_2^{-1}
 = 0.2$ and $\sigma^2=1$. In \eqref{eq:two designs}, we suggest two
 D-optimal designs $\obs_1, \obs_2$ such that $\obs_1^*\obs_1 =
 \obs_2^*\obs_2$. The former exhibits clusterization ($\meas_3 =
-\meas_5 = \ev_1$), while the latter does not. Since both of these
-designs are D-optimal, clusterization does not pose any obstruction to
+\meas_5 = \ev_1$), while the latter does not. Both of these designs
+are D-optimal, hence clusterization poses no obstruction to
 D-optimality.
 
 \begin{equation}\label{eq:two designs}
   \obs_1 =
   \begin{pmatrix}
-    \sqrt{0.275}\ev_1 - \sqrt{0.725}\ev_2 \\
-    \sqrt{0.275}\ev_1 + \sqrt{0.725}\ev_2 \\
+    \sqrt{\frac{11}{40}}\ev_1 - \sqrt{\frac{29}{40}}\ev_2 \\
+    \sqrt{\frac{11}{40}}\ev_1 + \sqrt{\frac{29}{40}}\ev_2 \\
     \ev_1 \\
     \ev_2 \\
     \ev_1 \\    
@@ -398,14 +385,16 @@ D-optimality.
 \end{equation}
 
 A computer implementation of Lemma \ref{lemma:free} (see code in
-Supplementary material) generates $\obs_1$, which exhibits
-clusterization. Modifying the numerical values of the prior does not
-break the clusterization. Thus, the preference to clusterization of
-Lemma \ref{lemma:free} is robust. The vast majority of randomized
-numerical simulations (see code in Supplementary material) also give
-rise to D-optimal designs that exhibit clustrization. We conclude that
-clusterization is a generic property of the relaxed model presented in
-this study.
+Supplementary material) generates $\obs_1$ as a solution to the
+D-optimal design problem mentioned in the previous
+paragraph. Modifying the numerical values of the prior does not break
+the clusterization. Thus, the preference to clusterization of Lemma
+\ref{lemma:free} is robust. The vast majority of randomized numerical
+simulations (see code in Supplementary material) also give rise to
+D-optimal designs that exhibit clustrization. We conclude that
+clusterization poses no obstruction to D-optimality in the relaxed
+model presented in this study. Moreover, sensor clusterization is
+generic, as far as one accepts the model presented in this study.
 
 %% Of course, a real-life problem is more restricted than the model we
 %% consider here. Such restriction is the likely cause of clusterization
@@ -504,13 +493,14 @@ this study.
     in D-optimal designs. Posterior precision per eigenvector is
     plotted for $\obs_1$ and $\obs_2$ from \eqref{eq:two
       designs}. Both designs are identical for all practical matters
-    --- their posteriors are equal. The left panel shows a D-optimal
-    design with clusterization: $\meas_3 = \meas_5$. The right panel
-    shows a D-optimal design without clusterization. The contribution
-    to the posterior precision due to $\meas_1$ and $\meas_2$ is
-    denoted $\meas_1\meas_2$. These contributions are plotted together
-    because $\meas_1$ and $\meas_2$ are not in the direction of any
-    eigenvector. Similarly for $\meas_3\meas_4$.}
+    --- their posteriors are equal. In the left panel, a D-optimal
+    design with clusterization is illustrated: $\meas_3 = \meas_5$. In
+    the right panel, a D-optimal design without clusterization is
+    illustrated. The contribution to the posterior precision due to
+    $\meas_1$ and $\meas_2$ is denoted $\meas_1\meas_2$. These
+    contributions are plotted together because $\meas_1$ and $\meas_2$
+    are not in the direction of any eigenvector. Similarly for
+    $\meas_3\meas_4$.}
   \label{fig:clusterization}
 \end{figure}
 

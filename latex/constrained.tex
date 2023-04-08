@@ -1,23 +1,27 @@
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
 
-\subsection{Overview}
-We seek a formulation of the D-optimal design problem of
-\cite{AlexanderianGloorGhattas14} (Theorem \ref{thm:d optimality})
-using Lagrange multipliers. In Section \ref{section:objective} we find
-the gradient of $\tar$ and record it in \eqref{eq:tar grad}. In
-Section \ref{subsec:unit norm} we suggest using unit-norm constraints
-on rows of $\obs$ so that the optimization problem is analytically
-tractable. We find gradients for the new constraints and record them
-in \eqref{eq:grad constraints}. Finally, in Section
+We seek a formulation of the D-optimal design problem
+\cite{AlexanderianGloorGhattas14} via Lagrange multipliers. In Section
+\ref{section:objective} we find the gradient of $\tar$. In Section
+\ref{subsec:unit norm} we suggest unit-norm constraints on rows of
+$\obs$ and find gradients for the these constraints. Finally, in Section
 \ref{subsec:necessary} we formulate the D-optimal design problem as a
-Lagrange multipliers problem in equation \eqref{eq:conditions}.
+Lagrange multipliers problem.
 
 
 \subsection{The Objective and its Gradient}\label{section:objective}
-In order to use Lagrange multipliers, we need to find the gradient of
-$\tar$. Said gradient is recorded in \eqref{eq:tar grad} below. We
-start by recording Lemmas \ref{lemma:lax}, \ref{lemma:aux calc},
-proved in the appendix:
+Recall that:
+
+
+\begin{definition}\label{def:var}
+  Let $F$ a real valued function of $\obs$. The first variation of $F$
+  at $\obs$ in the direction $V$ is:
+  \begin{equation*}
+    \delta F(\obs) V := \frac{\der}{\der \tau}\Big |_{\tau=0}  F( \obs + \tau V).
+  \end{equation*}
+\end{definition}
+
+We now record two Lemmas whose proofs are delgated to the appendix.
 
 \begin{restatable*}[Generalized from \cite{Lax07}]{lemma}{lax}\label{lemma:lax}
   Let $Y(t)$ be a differentiable operator-valued function. Assume 
@@ -28,8 +32,15 @@ proved in the appendix:
 \end{restatable*}
 
 \begin{restatable*}[Auxilliary Calculations]{lemma}{aux}\label{lemma:aux calc}
-  Let $T(\obs) := \obs^* \Sigma^{-1}(\obs)\obs$, with $\Sigma(\obs)$
-  defined as in \eqref{eq:Sigma}. Then:
+  Let
+  \begin{align*}
+    \begin{split}
+      \Sigma(\obs) &= \obs\modcov\obs^* + \sigma^2, \\
+      T(\obs) &= \obs^* \Sigma^{-1}(\obs)\obs.
+    \end{split}
+  \end{align*}
+
+  Then
   \begin{align*}
     \delta T(\obs)V &= V^* \Sigma^{-1} \obs 
     - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
@@ -42,7 +53,7 @@ The first variation of $\tar (\obs)$ in the direction $V$ is:
 \begin{align}\label{eq:tar var}
   \begin{split}
     \delta \tar(\obs) V 
-    :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (by definition of variation)}\\
+    :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (by Definition \ref{def:var})}\\
     % 
     % 
     % 
@@ -80,15 +91,16 @@ The first variation of $\tar (\obs)$ in the direction $V$ is:
     \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
   \end{split}
 \end{align} 
+
 Denote
 \begin{align}\label{eq:tar grad}
   \nabla \tar(\obs) &:= (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
-  \postcov \fwd^* \obs^*\Sigma^{-1},
+  \postcov \fwd^* \obs^*\Sigma^{-1}.
 \end{align}
-the gradient of $\tar (\obs )$ and we now justify this definition.
-Since the trace of $A := V \nabla \tar(\obs) \in \R^{m \times m}$ is
-just $\ttr A = \sum_{j=1}^m e_j^t A e_j$ (with $e_j$ the $j$th standard
-basis vector), we see that
+We refer to $\nabla \tar(\obs)$ as the gradient of $\tar (\obs
+)$. Next we justify this name. Since the trace of $A := V \nabla
+\tar(\obs) \in \R^{m \times m}$ is just $\ttr A = \sum_{j=1}^m e_j^t A
+e_j$ (with $e_j$ the $j$th standard basis vector), we see that
 \begin{align*}
   \delta \tar(\obs)V = \tr{V \nabla \tar(\obs)} = \sum_{j=1}^m
   V_j(\nabla \tar(\obs)_j),
@@ -101,34 +113,29 @@ vector, as the product $V \nabla \tar$ is in $\R^{m \times m}$. This
 will prove important in section \ref{subsec:necessary}.
 
 \subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
-In this section we suggest relaxed constraints in
-\eqref{eq:constraints}, and their gradient in \eqref{eq:grad
-  constraints}.
+In a real-life optimal design problem we cannot choose any measurement
+operator $\obs$. We now seek generic constraints on $\obs$ for which
+finding a D-optimal design is analytically tractable. We start with a
+proposition (proof in the appendix).
 
-As mentioned before, we cannot choose any $\obs$ when maximizing
-$\tar(\obs)$. Recall $\obs = (\meas_1,\dots,\meas_m)^t \in
-(\hilo^*)^m$ and each $\meas_j,j=1,\dots,m$ must be chosen from some
-allowed set of functionals in $\hilo^*$. %% This set differs based on
-%% the kind of sensors we have at our disposal and the properties of
-%% $\hilo$, as discussed in section \ref{subsec:dynamics}.
-Proposition \ref{prop:bigger better} below (proof in the appendix)
-gives better understanding of the constraints.
 \begin{restatable*}{proposition}{biggerbetter}\label{prop:bigger better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
   $\sigma^2 > 0$ and $|\zeta| > 1$. Then $\tar(\obs)$ increases if we
   use $\zeta \meas_j$ in $\obs$ instead of $\meas_j$.
 \end{restatable*}
-The idea behind Proposition \ref{prop:bigger better} is simple: making
-the norm of rows of $\obs$ large is equivalent to making $\sigma^2$
-small. %% Viewed another way, it increases the Signal to Noise Ratio
+
+%% the kind of sensors we have at our disposal and the properties of
+%% $\hilo$, as discussed in section \ref{subsec:dynamics}.
+ %% Viewed another way, it increases the Signal to Noise Ratio
 %% (SNR) --- which is always desirable when taking any observation
 %% prone to error.  This can be understood easily from the formulation
 %% of the inverse problem $\data = \obs \fwd \param + \obs \eps' +
 %% \eps$, where $\eps'$ can be taken as model error and $\eps$ is iid
 %% observation error.
 
-Note that for point evaluations, the norm of the observation
-functional is always one:
+The idea of Proposition \ref{prop:bigger better} is that $\tar$ is
+increasing in the norm of observation vectors. Further, note that the
+norm of point evaluations, for example, is always one:
 \begin{align*}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
     |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
@@ -137,10 +144,11 @@ functional is always one:
   = \sup_{0 \neq u \in C(\Omega)} \frac{|u(\x)|}{ \sup|u|} = 1,
   \forall \x \in \Omega.
 \end{align*}
-Following this, and in light of Proposition \ref{prop:bigger better},
-we consider observation vectors in the unit ball in $\hilo^*$. The
-unit norm constraints can be written using \eqref{eq:obs*} as a series
-of $m$ equality constraints (one for each observation) on $\obs$ as
+
+Thus, it is reasonable to consider observation vectors restricted to
+the unit ball in $\hilo^*$. The unit norm constraints can be written
+using \eqref{eq:obs*} as a series of $m$ equality constraints (one for
+each observation) on $\obs$ as
 \begin{align}\label{eq:constraints}
   \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,j=1,\dots,m.
 \end{align}
@@ -178,7 +186,8 @@ The first variations are:
   %
   &= \tr{V \obs^* e_je_j^t}.
 \end{align*}
-The same arguments justifying \eqref{eq:tar grad} hold here, and thus, by \eqref{eq:obs*}:
+The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
+
 \begin{align}\label{eq:grad constraints}
 \nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
 \end{align}
@@ -186,8 +195,8 @@ where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
 Section \ref{section:objective}, the gradient $\nabla \phi_j(\obs)$ is
 best thought of as a row vector.
 
-\subsection{Necessary Conditions for Optimal Design}\label{subsec:necessary}
-Necessary conditions for D-optimality are found from Lagrange
+\subsection{Necessary Conditions for D-Optimality}\label{subsec:necessary}
+We find necessary conditions for D-optimality via Lagrange
 multipliers:
 \begin{align}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
@@ -195,24 +204,32 @@ multipliers:
     &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
 \end{align}
 
-Recall where the objects involved are defined: the observation
-operator, $\obs \in (\hilo^*)^m$. The objective $\tar: (\hilo^*)^m \to
-\R$ and its gradient is $\nabla \tar(\obs) \in \hilo^m$. Similarly,
-$\phi_j: (\hilo^*)^m \to \R$ and $\nabla \phi_j(\obs) \in \hilo^m$.
+%% Recall where the objects involved are defined: the observation
+%% operator, $\obs \in (\hilo^*)^m$. The objective $\tar: (\hilo^*)^m \to
+%% \R$ and its gradient is $\nabla \tar(\obs) \in \hilo^m$. Similarly,
+%% $\phi_j: (\hilo^*)^m \to \R$ and $\nabla \phi_j(\obs) \in \hilo^m$.
 
 Substituting \eqref{eq:tar grad} and \eqref{eq:grad constraints} in
 \eqref{eq:Lagrange mult1}:
-\begin{equation*}
+\begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
-\end{equation*}
-Let $\Xi := \diag(\xi_j)$. Then, with some abuse of notation, this can
-be written more compactly as:
-\begin{equation}\label{eq:conditions}
-  ( I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*  \Sigma^{-1}
-  = \obs^* \Xi.
 \end{equation}
+Let $\Xi := \diag(\xi_j)$. We can write \eqref{eq:constrained} more
+compactly as:
 
+\begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
+  Let:
+  \begin{equation*}
+    \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs).
+  \end{equation*}
+  
+  Then:
+  \begin{equation*}
+    ( I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*  \Sigma^{-1}
+    = \obs^* \Xi.
+  \end{equation*}
+\end{theorem}
 
 
 

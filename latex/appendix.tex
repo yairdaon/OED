@@ -8,12 +8,10 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
   $X(0) = 0$ and $X(t)$ is positive, self-adjoint and trace-class for
   every $t\in \R$. We denote the eigenvalues of this operator by
   $\lambda_k(X(t))$ and sometimes drop the dependence on $X(t)$, so
-  $\lambda_k = \lambda_k(X(t))$.  Then $\det (I+X(t)) =
-  \prod_{k=1}^{\infty} (1+\lambda_k) < \infty$ where the bound holds
-  by the arguments given in \cite{AlexanderianGloorGhattas14}. The
-  full derivative is
-  \begin{align*}
-    \frac{\der \det (I+X(t))}{\der t} 
+  $\lambda_k = \lambda_k(X(t))$.  Then $\det (I+X(t))
+  = \prod_{k=1}^{\infty} (1+\lambda_k) < \infty$ and this is finite by
+  the arguments given in \cite{AlexanderianGloorGhattas14}. The full
+  derivative is \begin{align*} \frac{\der \det (I+X(t))}{\der t}
     % 
     % 
     % 
@@ -222,35 +220,45 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \woodbury
 \begin{proof}
-  The proof is boring and amounts to using Woodbury's matrix identity
-  twice and a regularization trick. The standard proof for Woodbury's
-  matrix identity works in infinite dimensions, as long as all terms
-  are well defined. Unfortunately, $\obs^*\obs$ is not invertible, so
-  we force it to be. Recall Woodbury's matrix identity:
+  The proof amounts to using Woodbury's matrix identity twice and a
+  regularization trick. The standard proof for Woodbury's matrix
+  identity works in infinite dimensions, as long as all terms are well
+  defined. Unfortunately, $\obs^*\obs$ is not invertible, so we force
+  it to be. Recall Woodbury's matrix identity:
   $$
   (A + UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}.
   $$
 
-  Taking $A := \prcov^{-1}, U := \fwd^*, V := \fwd$ and $C :=
-  \sigma^{-2} (\obs^*\obs+\eps I)$ we get:
-  \begin{align*}
-    \begin{split}
-      \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* &=
-      \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^* \\
+  Denote $A := \prcov^{-1}$, $U := \fwd^*$, $V := \fwd$, $C :=
+  \sigma^{-2} (\obs^*\obs+\eps I)$ for some $\eps > 0$. Then:
+  %% \begin{align*}
+  %%   \begin{split}
+  \begin{equation}\label{eq:first}
+  \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^* \\
       %
       %
-      &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
-    \end{split}
-  \end{align*}
-  Let $X := \fwd\prcov \fwd^*$ and $Y_{\eps} := \obs^*\obs + \eps I$,
-  for some small $\eps > 0$, so that $Y_{\eps}$ is invertible.  Note
-  that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of two
-  positive definite operators. Now, taking $A := X^{-1}, C :=
-  \sigma^2Y_{\eps}^{-1}, U := I$ and $V := I$ and using Wodbury's
-  matrix identity in reverse order:
+      %% &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
+  %%   \end{split}
+  %% \end{align*}
+  \end{equation}
+   Now denote $X := \fwd\prcov \fwd^*$ and $Y_{\eps} := \obs^*\obs +
+   \eps I$, and $Y_{\eps}$ is invertible. Then \eqref{eq:first}
+   becomes:
+   \begin{equation}\label{eq:second}
+     \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
+   \end{equation}
+
+   Note that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of
+   two positive definite operators. Now, taking $A := X^{-1}, C :=
+   \sigma^2Y_{\eps}^{-1}, U := I$ and $V := I$ and using Wodbury's
+   matrix identity in reverse order:
   \begin{align*}
     \begin{split}
-      X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X &= (X^{-1} + \sigma^{-2}Y_{\eps})^{-1} \\
+      \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X \\
+      %
+      %
+      %
+      &= (X^{-1} + \sigma^{-2}Y_{\eps})^{-1} \\
       %
       %
       %
@@ -286,16 +294,17 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
   \end{align*}
 \end{lemma}
 \begin{proof}
-  We use the Schur complement to write one inverse in terms of the other and
-  introduce notations to make the derivation cleaner. Note that we think of
-  $\obsm$ and $\obsm^*$ as column and row vectors (respectively).
+  We use the Schur complement:
+  %% to write one inverse in terms of the other: and introduce
+  %%  notations to make the derivation cleaner. Note that we think of
+  %%  $\obsm$ and $\obsm^*$ as column and row vectors (respectively).
   \begin{align*}
     \Sigma( \obs ) &= \Sigma = 
     \begin{bmatrix}
       \Sigma (\obsm )           & \obsm \modcov \meas_m \\
       \meas_m \modcov \obsm^*   & \sigma^2 + \meas_m \modcov \meas_m
     \end{bmatrix}
-    =
+    : =
     \begin{bmatrix}
       \Sigmam   & w \\
       w^t       & c
@@ -330,8 +339,8 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
     \prcov^{\frac12}    
   \end{align*}
   %
-  and note that, using our understanding of what is a column vector and
-  what is a row vector:
+  and note that:%% , using our understanding of what is a column vector and
+  %% what is a row vector:
   %
   \begin{align*}
     \M(\obs) &= \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2} \\
@@ -399,8 +408,7 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
     \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
   \end{equation}
   The increase in the design criterion gained by including $\meas_m$
-  in the design is found by using Lemma \ref{lemma:MDL} the above
-  results:
+  is then: 
   %
   \begin{align*}
     \tar( \obs ) - \tar( \obsm )
@@ -415,9 +423,9 @@ The following lemma is generalized from \cite[Chapter 9, Theorem 4, pp. 127]{Lax
     %
     %
     %
-    &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ).
+    &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ) \text{ (Lemma \ref{lemma:MDL})}.
   \end{align*}
-  Using \eqref{eq:u}:
+  Using \eqref{eq:u} and \eqref{eq:M postcov}:
   \begin{align*}
     &\left \langle \left (I+\M (\obsm)\right )^{-1}u, u \right \rangle\\
     &= \frac{
