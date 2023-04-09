@@ -8,108 +8,105 @@ the allowed set of observations is, one should select the optimal
 observations to take, in order to increase accuracy, reduce costs, or
 both.
 
-Designing experiments is usually done by optimizing some \emph{design
-criterion}. This is true both for frequentists
-\cite{silvey2013,Ucinski05} as well as for Bayesians
-\cite{Chaloner1995} (see \cite{Chaloner1995} for an investigation of
-the analogy between the two approaches). Among the plethora of design
-criteria, \emph{D-optimal design} have one of the simplest and most
-appealing motivation in the Bayesian context \cite{Chaloner1995}: a
-D-optimal design maximizes the expected information gain (KL
-divergence \cite{CoverThomas91}) between posterior and prior. For a
-linear model in finite dimensions, with Gaussian prior and noise, a
-D-optimal design minimizes the determinant of the posterior covariance
-matrix. In a frequentist setting, a D-optimal design minimizes the
-volume of the uncertainty ellipsoid \cite[page 16]{Ucinski05}, but
-this is done for the Fisher information matrix and not the posterior
-covariance. However, \cite{Chaloner1995} show that the latter is just
-a regularized version of the former.
+The problem of choosing the best set of measurements is known as the
+problem of \emph{optimal experimental design}. Optimal designs are
+found by optimizing some \emph{design criterion}. Many design criteria
+exist, and in this study we focus on the Bayesian \emph{D-optimality
+criterion}. The D-optimality criterion has a simple and appealing
+motivation \cite{Chaloner1995}: a D-optimal design maximizes the
+expected information gain (KL divergence \cite{CoverThomas91}) between
+posterior and prior. For a linear model in finite dimensions, with
+Gaussian prior and iid Gaussian noise, a D-optimal design minimizes
+the determinant of the posterior covariance matrix\footnote{In a
+frequentist setting, a D-optimal design minimizes the determinant of
+the Fisher information matrix \cite[page 16]{Ucinski05}, so the
+Bayesian criterion is just a regularized version of the frequentist
+criterion \cite{Chaloner1995}.}.
 
-The previous discussion is classical for experimental design when
-inference takes place over a finite (not too large) number of
-parameters. The subject of optimal experimental design on function
-spaces in a Bayesian context was pioneered by
-\cite{AlexanderianGloorGhattas14, AlexanderianPetraStadlerEtAl16,
+Bayesian D-optimal designs for inverse problems on function spaces
+were first studied by \cite{AlexanderianGloorGhattas14,
+  AlexanderianPetraStadlerEtAl16,
   AlexanderianPetraStadlerEtAl14}. Similarly to the finite dimensional
-case, a D-optimal design still maximizes the KL divergence between
-posterior and prior. For a linear model with Gaussian prior and noise,
-this amounts to minimizing the determinant of the posterior covariance
-operator (understood as a product of its eigenvalues). Some
-difficulties arise in the process, but remedies can be found as shown
-in \cite{AlexanderianGloorGhattas14}.
+case, a D-optimal design maximizes the KL divergence between posterior
+and prior measures. For a linear inverse problem with Gaussian prior
+and iid Gaussian noise, a D-optimal design minimizes an expression
+analogous to the determinant of the posterior covariance operator,
+understood as a product of its eigenvalues.
+%% Some difficulties arise in the process, but remedies can be found
+%% as shown in \cite{AlexanderianGloorGhattas14}.
 
-It seems counter intuitive that when one computes an optimal design
-using the D-optimality criterion, the optimization process results in
-observations that are very similar. For example, if an observation is
-thought of as measuring some function value at $\x \in \Omega
-\subseteq \R^d, d=1,2,3$ (with added error) then the optimization
-procedure sometimes places sensors in very close proximity to each
-other (as can be seen in Figure \ref{fig:clusterization
-  illustration}). Following \cite{Ucinski05}, we refer to this
-phenomenon as \emph{sensor clusterization}.
+When one computes an optimal design using the D-optimality criterion,
+the optimization process sometimes results in observations that are
+very similar. For example, if an observation is thought of as
+measuring some function value at $\x \in \Omega \subseteq \R^d,
+d=1,2,3$ (with added error) then the optimization procedure sometimes
+places sensors in very close proximity to each other (as can be seen
+in Figure \ref{fig:clusterization illustration}). Following
+\cite{Ucinski05}, we refer to this phenomenon as \emph{sensor
+clusterization}.
 
-\subsection{Related Work}
-The phenomenon of sensor clusterization seems to be known in several
-different contexts. In a frequentist and finite-dimensional context,
-\cite{fedorov1996} and \cite[chapter 2.4.3]{Ucinski05} discuss this
-phenomenon and suggest an approach called clusterization-free design.
-In such designs, the user enforces observation locations to be far
-from each other. One way to do this is by introducing correlated
-errors which account for both observation error and model
-error. Another method considered is imposing distance constraints
-between observations. A somewhat different approach is suggested in
-\cite[page 49]{fedorov2012}, where close observations are merged --- a
-procedure which obviously does not avoid clusterization. The same
-problem arises in time-series analysis for pharmacokinetic
-experiments. The authors of \cite{hooker2009} suggest modeling
-auto-correlation time in the noise model, which is equivalent to the
-correlated errors mentioned above.
+Sensor clusterization is intuitively undesirable. Selecting a small
+set of sensors may lead to incomplete or biased data, as certain parts
+of the system or environment may be overlooked or
+underrepresented. This can result in inaccurate or unreliable
+estimates of the unknown parameters of interest, potentially leading
+to incorrect conclusions or decisions.
 
-Any of the above mentioned approaches might serve as a remedy and push
-sensors away from each other. Yet, none offers any insight as to why
-clusterization occurs. Also, as better models are employed, model
-error is decreased and the clusterization phenomenon will eventually
-reappear. While these approaches are practical and help us avoid the
-problem, they do not provide insight as to why sensors are clustering.
+%% \subsection{Related Work}
+Several remedies are suggested in the literature to phenomenon of
+sensor clusterization. In a frequentist and finite-dimensional
+context, \cite{fedorov1996} and \cite[chapter 2.4.3]{Ucinski05}
+discuss the clusterization phenomenon and suggest an approach called
+clusterization-free design. In such designs, the user enforces
+observation locations to be far from each other. One way to do this is
+by introducing correlated errors which account for both observation
+error and model error. Another method considered is imposing distance
+constraints between observations. A somewhat different approach is
+suggested in \cite[page 49]{fedorov2012}, where close observations are
+merged --- a procedure which obviously does not avoid
+clusterization. The same problem arises in time-series analysis for
+pharmacokinetic experiments. The authors of \cite{hooker2009} suggest
+modeling auto-correlation time in the noise model, which is equivalent
+to the correlated errors mentioned above. Any of the above mentioned
+approaches might serve as a remedy and push sensors away from each
+other. Yet, none offers any insight as to why clusterization
+occurs. Also, as better models are employed, model error is decreased
+and the clusterization phenomenon will eventually reappear. While
+these approaches are practical and help us avoid sensor
+clusterization, they do not provide insight as to why sensors are
+clustering.
 
-In the inverse problems community, work is mostly computational and
-less theoretic. Model errors were considered in \cite{attia2020,
-  koval2020}. The former study is focused on inferring a Quantity of
-Interest (QoI). The focus of the latter is reducing forward solves,
-using randomized linear algebra. Both studies present numerical
-techniques for finding optimal designs when model error is
+Model errors were also considered for inverse problems in
+\cite{attia2020, koval2020}. The former study is focused on inferring
+a Quantity of Interest (QoI). The focus of the latter is reducing
+forward solves, using randomized linear algebra. Both studies present
+numerical techniques for finding optimal designs when model error is
 present. Both are restricted to linear inverse problems (although in
 the latter the authors use their method on a nonlinear problem by
 taking a Laplace approximation for the posterior). Both find an
 optimal design by first solving a continuous problem for sensor
 weights. Said solution is then sparsified to give a binary
 design. Both studies are successful in the task of Bayesian
-inversion. However, neither of these studies mention any effect model
-errors can have on sensor clusterization. This study is mostly
-theoretical and aims to fill the gap of understanding sensor
-clusterization.
+inversion. Neither \cite{attia2020}, nor \cite{koval2020} mention any
+effect model errors can have on sensor clusterization.
 
 
 \subsection{Contribution}
-We propose and study a relaxed and analytically tractable model for
-D-optimal designs. Under this model, D-optimal designs are solutions
-of a constrained optimization problem, formulated using Lagrange
-multipliers. This allows me to rigorously show how model error
-mitigates clusterization (Section \ref{section:non vanishing}). We
-show that designs that exhibit clusterization are indeed optimal.
+The current study aims to fill the gap of understanding sensor
+clusterization in infinte dimensional Bayesian linear inverse
+problems. We propose and study a relaxed and analytically tractable
+model for D-optimal designs. Under this model, D-optimal designs are
+solutions of a constrained optimization problem, formulated using
+Lagrange multipliers. The Lagrange multipliers formulation allows us
+to rigorously show how model error mitigates clusterization (Section
+\ref{section:non vanishing}), and why designs that exhibit
+clusterization are indeed optimal when no model error is considered.
 
-%% A beautiful mathematical structure arises in D-optimal designs
-
-When no model error is present, the Lagrange multipliers problem boils
-down to a nonlinear eigenvalue problem.
-%% The operator for which eigenvectors and eigenvalues are sought is a
-%% sum of two operators. The first is the prior covariance. The second
-%% is an outer product of the observations (see section
-%% \ref{section:vanishing} for details and exact statement).
-This structure helps us to characterize D-optimal designs. The key
-idea is that a D-optimal design reduces uncertainties where they are
-highest first. This is the main conclusion of Theorem \ref{thm:char}
-stated below.
+As a byproduct, the Lagrange multipliers problem for no model error
+results in a characterization of D-optimal designs. The key idea is
+that a D-optimal design reduces uncertainties where they are highest
+first. This is the conclusion of part (5) of Theorem \ref{thm:char},
+which we state below and prove in Section \ref{section:vanishing}:
 
 
 \begin{restatable}[D-optimal designs with vanishing model error]{theorem}{char}\label{thm:char}
@@ -185,52 +182,27 @@ stated below.
 %\end{theorem}
 \end{restatable}
 
-
-%% \begin{restatable*}[Flat posterior covariance]{corollary}{flatpost}\label{cor:equal eigs}
-%%  %\begin{corollary}\label{cor:eigenvalues}
-%%   If $\obs$ is D-optimal and $k := \rank \obs$, then:
-%%   \begin{enumerate}
-%%     \item The covariance of the pushforwad $\fwd_{*} \post$ is $\left ( (\fwd
-%%       \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right )^{-1}$.
-%%     \item The eigenvalues of said operator are
-%%       \begin{equation}
-%%         \theta_i =
-%%         \begin{cases}
-%%           \left(\frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}\frac{m}{k} \right )^{-1} & i \leq k \\
-%%           \lambda_i &  i > k 
-%%         \end{cases}
-%%       \end{equation}
-%%     \item The eigenvectors of said operator are the eigenvectors of
-%%       $\fwd \prcov \fwd^*$
-%%   \end{enumerate}
-%% \end{restatable*}%\end{corollary}
-
-%% \begin{restatable*}[Flat posterior covariance]{corollary}{flatpost}\label{cor:equal eigs}
-%%   Consider a D-optimal design $\obs$ for a Bayesian linear inverse
-%%   problem where $\fwd$ is the forward operator and $\pr$ is the
-%%   prior. Then the eigenvectors of the covariance of the pushforward of
-%%   the posterior $\fwd_{*} \post$ equal the eigenvectors of the
-%%   covariance of the pushforward of the prior. Moreover, the
-%%   eigenvalues are constant for eigenvectors $1 \leq i \leq k$ where $k
-%%   =\rank \obs$.
-%% \end{restatable*}
-
-In the process, We generalize several lemmas from linear algebra to
-infinite-dimensional settings. We prove a Matrix Determinant Lemma in
-\ref{lemma:MDL}. We generalize a lemma due to Lax \cite{Lax07} for
-calculating $\frac{\der}{\der t} \log \det (I + X(t))$, for an
-operator valued function $X(t)$ in \ref{lemma:lax}. We show how to
-decompose a symmetric positive definite matrix $m$ as $M = AA^t$,
-where $A$ has unit norm columns in Lemma \ref{lemma:free}.
+In the process of proving Theorem \ref{thm:char}, we prove a novel
+lemma in linear algebra: We show how to decompose a symmetric positive
+definite matrix $M$ as $M = AA^t$, where $A$ has unit norm columns
+(Lemma \ref{lemma:lax}). We also generalize two lemmas from linear
+algebra to infinite-dimensional settings: In Lemma \ref{lemma:MDL} we
+prove a matrix determinant lemma in Hilbert spaces, and in Lemma
+\ref{lemma:lax} we generalize a lemma \cite{Lax07} for calculating
+$\frac{\der}{\der t} \log \det (I + X(t))$, where $X(t)$ is an
+operator valued function.
 
 \subsection{Limitations}\label{subsec:limitations}
-Two main drawbacks of the study presented here are: First, the relaxed
-model does not consider any specific set of allowed
-observations. Rather, we take observations in the unit ball in some
-Hilbert space. This allows considerably less restrictive observations
-than any real-life problem does. The second drawback is that we do not
-show rigorously that clusterization necessarily occurs, we only show
-that it is as reasonable as no clusterization.
+The study presented here is not free from drawbacks. First, our
+relaxed model does not correspond to any real-life problem. It is
+generic enough to be analytically tractable, but one may argue it is
+to far removed from any real application. To these claims I would
+argue that Mathematics has a long history of studying models that are
+bare-bones simplifications of real systems, e.g. the Ising model
+\cite{cipra1987} the Lorenz system \cite{brin}, the SIR model
+\cite{keeling2008}, to name a few. The second drawback of our model is
+that we do not show rigorously that clusterization necessarily occurs,
+we only show that it does not pose any obstruction to D-optimality.
 
 
 \subsection{An Example of Clusterization}\label{subsec:example}
