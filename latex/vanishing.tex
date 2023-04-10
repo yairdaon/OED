@@ -1,13 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SECTION Analysis of Optimal Designs --- Vanishing Model Error
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Characterization of D-Optimal Designs with Vanishing Model Error}\label{section:vanishing}
+\section{D-Optimal Designs with Vanishing Model Error}\label{section:vanishing}
 We now turn to analyze D-optimal designs when $\modcov = 0$. Our goal
 is to prove Theorem \ref{thm:char} --- a characterization of D-optimal
 designs.
 
-
-%% \subsection{The Nonlinear Eigenvalue Problem}\label{subsec:eigenproblem}
 The necessary first-order condition for D-optimality summarized in
 Theorem \ref{thm:constrained}, when $\Sigma= \sigma^2I$ (i.e. when
 $\modcov = 0$) becomes
@@ -349,7 +347,7 @@ such a procedure is illustrated in Figure \ref{fig:optimal vs not}.
 
 
 
-\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
+\subsection{Clusterization poses no obstruction to D-optimality}\label{subsec:clusterization}
 We saw that the necessary conditions for a design $\obs$ with $m$
 observations to be D-optimal are (1), (2) and (4) of Theorem
 \ref{thm:char}. As long as these requirements are satisfied, $\obs$ is
@@ -503,70 +501,3 @@ generic, as far as one accepts the model presented in this study.
     $\meas_3\meas_4$.}
   \label{fig:clusterization}
 \end{figure}
-
-
-%% may arise in various scenarios. We first consider
-%% sequential designs, and then simultaneous designs.
-
-
-%% \subsection{Sequential Design}\label{subsec:clusterization sequential}
-%% In a sequential optimal design problem, a decision is made on each
-%% measurement with all previous measurements fixed. In each step $m=1$,
-%% so $k=1$. In this case, Theorem \ref{thm:char} implies each
-%% measurement is taken along the direction of the eigenvector of $\fwd
-%% \prcov \fwd^*$ with lowest posterior precision. If $\lambda_i$
-%% decrease fast enough (e.g. exponentially), then $\lambda_i^{-1}$
-%% increase exponentially. Then, at some point, a measurement will be
-%% taken along an already measured eigenvector. This situation is
-%% measurement clusterization.
-
-%% , $\meas_1 \parallel \ev_1$ and $\eta_1 = 1$. As hinted in
-%% section \ref{subsec:seq vs sim}, the posterior becomes the prior for
-%% the next step. The eigenvectors of the new posterior are the same as
-%% for the previous one. A new observation will be taken in the direction
-%% of eigenvector with smalles eigenvalue. This leads to:
-%% \begin{align*}
-%%   \begin{split}
-%%     \meas_2 \parallel \ev_1  &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 < \sigma^2\lambda^{-1}_2 \\
-%%     \meas_2 \parallel \ev_2  &\text{ o.w. }
-%%   \end{split}
-%% \end{align*}
-%% In the first case, we get clusterization immediately. In the second,
-%% we consider $\meas_3$. Same reasoning leads to the conclusion that the
-%% eigenvectors of the new prior precision are the same. The eigenvalues,
-%% however, are $\lambda^{-1}_1 + \sigma^{-2}, \lambda^{-1}_2 +
-%% \sigma^{-2}, \lambda_3^{-1}, \dots$. A new observation is taken in the
-%% direction of eigenvector of smallest precision (note that
-%% $\lambda^{-1}_1 + \sigma^{-2} < \lambda^{-1}_2 + \sigma^{-2}$):
-%% \begin{align*}
-%%   \begin{split}
-%%     \meas_3 \parallel \ev_1 &\text{ if } \sigma^2 \lambda^{-1}_1 + 1 <
-%%     \sigma^2\lambda^{-1}_3 \\
-%%     \meas_3 \parallel  \ev_3  &\text{ o.w. }
-%%   \end{split}
-%% \end{align*}
-%% Again, the first case results in clusterization. The sequential design
-%% proceeds in this fashion. Every $\meas_i$ is taken in the direction
-%% some eigenvector of the prior $\fwd \prcov\fwd^*$. This eigenvector
-%% has the smallest eigenvalue of the previous step's posterior precision
-%% operator. If we do not encounter clusterization after $m$ such steps,
-%% this means that observation $\meas_k$ was taken in the direction
-%% $\ev_k$ for $k=1,\dots,m$. Thus:
-%% \begin{align}\label{eq:failure}
-%%   \begin{split}
-%%     \sigma^2\lambda_{k-1}^{-1} + 1 \geq \sigma^2\lambda_k^{-1}, \text{ for } 1\leq k \leq m
-%%     \Longrightarrow \lambda_m^{-1} - \lambda_{m-1}^{-1} \leq \sigma^{-2}.
-%%   \end{split}
-%% \end{align}
-
-%% But \eqref{eq:failure} implies $\{\lambda_i^{-1}\}_{i=1}^{\infty}$
-%% grows at most linearly. In section \ref{subsec:abstract OED} we
-%% assumed $\fwd$ is strongly smoothing, which means eigenvalues of
-%% $(\fwd \prcov\fwd^*)^{-1}$ grow quickly. Thus, if we take $m$ large
-%% enough, \eqref{eq:failure} will eventually fail and we will observe
-%% sensor clusterization.
-
-
-%% \subsection{Simultaneous Design}\label{subsec:clusterization simultaneous}
-%% If the eigenvalues $\lambda_i$ decrease quickly enough, we will
-%% observe clusterizaion.

@@ -197,9 +197,9 @@ The study presented here is not free from drawbacks. First, our
 relaxed model does not correspond to any real-life problem. It is
 generic enough to be analytically tractable, but one may argue it is
 to far removed from any real application. To these claims I would
-argue that Mathematics has a long history of studying models that are
-bare-bones simplifications of real systems, e.g. the Ising model
-\cite{cipra1987} the Lorenz system \cite{brin}, the SIR model
+argue that Mathematicians have a long history of studying models that
+are bare-bones simplifications of real systems, e.g. the Ising model
+\cite{cipra1987} the Lorenz system \cite{brin}, and the SIR model
 \cite{keeling2008}, to name a few. The second drawback of our model is
 that we do not show rigorously that clusterization necessarily occurs,
 we only show that it does not pose any obstruction to D-optimality.
@@ -260,21 +260,19 @@ we only show that it does not pose any obstruction to D-optimality.
       
     \end{axis}
   \end{tikzpicture}
-  \caption{The clusterization effect for the 1D heat equation
-    described in Section \ref{subsec:example}. Posterior pointwise
-    standard deviations (lines) are plotted over the domain $[0,
-      \pi]$, for varying numbers of sensors. Sensor locations
-    (circles) were chosen to minimize (an expression analogous to) the
-    determinant of the posterior covariance. The clusterization effect
-    can be clearly seen for six sensors. Only four observation
-    locations are used --- two pairs of sensors are so close they are
+  \caption{Sensor clusterization for inferring the initial condition
+    of the 1D heat equation. Posterior pointwise standard deviations
+    (lines) are plotted over the domain $[0, \pi]$, for varying
+    numbers of sensors. Sensor locations (circles) were chosen to
+    optimize the D-optimality criterion. Sensor clusterization can be
+    clearly seen for six sensors. Only four observation locations are
+    used --- two pairs of sensors are so close together they are
     indistinguishable.}
   \label{fig:clusterization illustration}
 \end{figure}
 
-In Section \ref{section:prelim}, we present a more abstract and general
-formulation of the inverse problem we consider. But, for the purpose of
-illustration, we present clusterization via a toy model --- the 1D heat
+For the purpose of illustration, we present clusterization via a toy
+inverse problem --- inferring the initial condition of the 1D heat
 equation in $[0,\pi]$ with a homogeneous Dirichlet boundary condition.
 
 The 1D heat equation is:
@@ -286,9 +284,9 @@ The 1D heat equation is:
   \end{alignat}
 \end{subequations}
 
-The goal is to infer the initial condition $u_0$. For that purpose, we
-measure $u$ at some set of locations $\x_j \in [0,\pi], j=1, \dots,m$
-and a final time $T > 0$. We assume centered Gaussian observation
+Our goal here is to infer the initial condition $u_0$. We measure
+$u(\x_j, T)$ at some set of locations $\x_j \in [0,\pi], j=1, \dots,m$
+and a final time $T > 0$. We assume iid centered Gaussian observation
 error, so we observe $v(\x_j,T) = u(\x_j,T) + \eps(\x_j)$ with
 $\eps(\x_j) \sim \normal(0, \sigma^2)$ iid, $\sigma^2 > 0$. We model
 the initial condition as $u_0 \sim \normal(0,\prcov)$, for $\prcov =
@@ -297,30 +295,28 @@ known \cite{Tarantola05} that for linear problems, with Gaussian prior
 and error, the posterior is also Gaussian with a covariance that does
 not depend on the observed data. The posterior covariance $\postcov$
 has a closed form formula, even in infinite dimensions
-\cite{Stuart10}. We denote by $\fwd$ the dynamics operator, so that
-$u( \cdot,T) = \fwd u_0$, and the observation operator $\obs$ so that
+\cite{Stuart10}. We denote by $\fwd$ the forward operator, so that $u(
+\cdot,T) = \fwd u_0$, and the observation operator $\obs$ so that
 $u(\x_j,T) = (\obs u)_j, j=1,\dots,m$. The posterior covariance is
 known and depends only on $\prcov, \fwd, \obs$ and $\sigma^2$ (see
 Section \ref{section:prelim} and \eqref{eq:postcov} specifically).
 
-We consider generalization of the information-theoretic design
-criterion presented in the introduction to infinite dimensions
-(Section \ref{subsec:D optimal design} below). We choose
-$\x_j,j=1,\dots,m$ to minimize (an expression analogous to) the
-determinant of the posterior covariance operator. We will see later
-how this corresponds to maximizing expected information gain.
+We consider the generalization of the D-optimality criterion to
+infinite dimensions \cite{AlexanderianGloorGhattas14} (also, Section
+\ref{subsec:D optimal design} below). We choose $\x_j,j=1,\dots,m$ to
+minimize the determinant\footnote{Not exactly, see Theorem \ref{thm:}
+for a precise statement.} of the posterior covariance operator.
 
-The clusterization effect is illustrated in Figure
-\ref{fig:clusterization illustration}. Posterior pointwise standard
-deviations are plotted over the domain $[0, \pi]$. Since the posterior
-covariance does not depend on data, the plot has no reference to
-actual data observed. The posterior covariance does, however, depend
-on location of the observation taken. In Figure
-\ref{fig:clusterization illustration}, observation locations are
-marked by circles. These were chosen to minimize (an expression
-analogous to) the determinant of the posterior covariance. The
-clusterization effect can be clearly seen for six sensors. It looks
-like only four observations were taken. The reason is that two pairs
-of sensors are so close they are indistinguishable.
+Sensor clusterization is illustrated in Figure \ref{fig:clusterization
+  illustration}. Posterior pointwise standard deviations are plotted
+over the domain $[0, \pi]$. Since the posterior covariance does not
+depend on data, the plot has no reference to actual data observed. The
+posterior covariance does, however, depend on location of the
+observation taken. Observation locations were chosen to optimize the
+D-optimality criterion, and are marked by circles. Sensor
+clusterization can be clearly seen for six sensors; it looks like only
+four observations were taken. The reason is that two pairs of sensors
+are clustered so close together that they are indistinguishable from
+one another.
 
 
