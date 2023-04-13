@@ -271,11 +271,12 @@ we only show that it does not pose any obstruction to D-optimality.
   \label{fig:clusterization illustration}
 \end{figure}
 
-For the purpose of illustration, we present clusterization via a toy
-inverse problem --- inferring the initial condition of the 1D heat
-equation in $[0,\pi]$ with a homogeneous Dirichlet boundary condition.
+For the purpose of illustration, consider a toy inverse problem ---
+inferring the initial condition of the 1D heat equation in $[0,\pi]$
+with a homogeneous Dirichlet boundary condition. Sensor clusterization
+is clearly evident, see Figure \ref{fig:clusterization}.
 
-The 1D heat equation is:
+The 1D heat equation with homogeneous Dirichlet boundary condition is:
 \begin{subequations}\label{eq:heat equation}
   \begin{alignat}{2}
     u_t &= \Delta u &&\qquad \text{in } [0,\pi] \times [0,\infty),\\
@@ -284,39 +285,32 @@ The 1D heat equation is:
   \end{alignat}
 \end{subequations}
 
-Our goal here is to infer the initial condition $u_0$. We measure
-$u(\x_j, T)$ at some set of locations $\x_j \in [0,\pi], j=1, \dots,m$
-and a final time $T > 0$. We assume iid centered Gaussian observation
-error, so we observe $v(\x_j,T) = u(\x_j,T) + \eps(\x_j)$ with
-$\eps(\x_j) \sim \normal(0, \sigma^2)$ iid, $\sigma^2 > 0$. We model
-the initial condition as $u_0 \sim \normal(0,\prcov)$, for $\prcov =
-(-\Delta)^{-1}$ with a homogeneous Dirichlet boundary condition. It is
-known \cite{Tarantola05} that for linear problems, with Gaussian prior
-and error, the posterior is also Gaussian with a covariance that does
-not depend on the observed data. The posterior covariance $\postcov$
-has a closed form formula, even in infinite dimensions
-\cite{Stuart10}. We denote by $\fwd$ the forward operator, so that $u(
-\cdot,T) = \fwd u_0$, and the observation operator $\obs$ so that
-$u(\x_j,T) = (\obs u)_j, j=1,\dots,m$. The posterior covariance is
-known and depends only on $\prcov, \fwd, \obs$ and $\sigma^2$ (see
-Section \ref{section:prelim} and \eqref{eq:postcov} specifically).
 
-We consider the generalization of the D-optimality criterion to
-infinite dimensions \cite{AlexanderianGloorGhattas14} (also, Section
-\ref{subsec:D optimal design} below). We choose $\x_j,j=1,\dots,m$ to
-minimize the determinant\footnote{Not exactly, see Theorem \ref{thm:}
-for a precise statement.} of the posterior covariance operator.
+The goal is to infer the initial condition $u_0$. Model the initial
+condition as $u_0 \sim \normal(0,\prcov)$, for $\prcov =
+(-\Delta)^{-1}$ with a homogeneous Dirichlet boundary condition. Fix
+some final time $T$ and denote by $\fwd$ the forward operator, so that
+$u(\cdot, T) = \fwd u_0$. Let $\obs$ the observation operator, so that
+$u(\x_j,T) = (\obs u)_j, j=1,\dots,m$. Assume iid centered Gaussian
+observation error, so observations are given by $u(\x_j,T) +
+\eps(\x_j)$ with $\eps(\x_j) \sim \normal(0, \sigma^2)$ iid, $\sigma^2
+> 0$. The posterior covariance is known and depends only on $\prcov,
+\fwd, \obs$ and $\sigma^2$ \cite{Stuart10} (see Section
+\ref{section:prelim} and \eqref{eq:postcov} below). Finally, choose
+$\x_j,j=1,\dots,m$ to optimize the D-optimality criterion
+\cite{AlexanderianGloorGhattas14}.
 
 Sensor clusterization is illustrated in Figure \ref{fig:clusterization
-  illustration}. Posterior pointwise standard deviations are plotted
-over the domain $[0, \pi]$. Since the posterior covariance does not
-depend on data, the plot has no reference to actual data observed. The
-posterior covariance does, however, depend on location of the
-observation taken. Observation locations were chosen to optimize the
-D-optimality criterion, and are marked by circles. Sensor
-clusterization can be clearly seen for six sensors; it looks like only
-four observations were taken. The reason is that two pairs of sensors
-are clustered so close together that they are indistinguishable from
-one another.
+  illustration}. The posterior covariance does not depend on data, so
+the plot has no reference to actual data observed. The posterior
+covariance does depend on location of the observation taken, which
+were chosen to optimize the D-optimality criterion. Sensor
+clusterization is clearly seen for six sensors; it looks like only
+four observations were taken. Two pairs of sensors are clustered so
+close together that they are indistinguishable from one another.
 
 
+%% A D-optimal design
+%% is found via a generalization of the D-optimality criterion to
+%% infinite dimension(also, Section
+%% \ref{subsec:D optimal design} below).

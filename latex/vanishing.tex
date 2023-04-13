@@ -1,18 +1,14 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% SECTION Analysis of Optimal Designs --- Vanishing Model Error
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{D-Optimal Designs with Vanishing Model Error}\label{section:vanishing}
-We now turn to analyze D-optimal designs when $\modcov = 0$. Our goal
-is to prove Theorem \ref{thm:char} --- a characterization of D-optimal
-designs.
+\section{D-Optimal Designs when $\modcov = 0$}\label{section:vanishing}
+We now turn to characterize D-optimal designs when $\modcov = 0$. Our
+goal is to prove Theorem \ref{thm:char}.
 
-The necessary first-order condition for D-optimality summarized in
-Theorem \ref{thm:constrained}, when $\Sigma= \sigma^2I$ (i.e. when
-$\modcov = 0$) becomes
+The necessary first-order condition for D-optimality of Theorem
+\ref{thm:constrained} for $\modcov = 0$ become:
+
 \begin{equation}\label{eq:eigenproblem}
   \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi,
 \end{equation}
-with $\Xi$ diagonal. We think of \eqref{eq:eigenproblem} as an
+with $\Xi$ diagonal. Equation \eqref{eq:eigenproblem} looks like an
 eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
 are eigenvectors. However, $\postcov$ depends on $\obs$ and thus, we
@@ -45,8 +41,8 @@ appendix:
 
 \begin{proposition}[Eigenvectors of a D-optimal design]\label{prop:same ev}
   Let $\obs$ satisfy the nonlinear eigenvalue problem
-  \eqref{eq:eigenproblem}. Then $\obs^*\obs$ has the same eigenvectors
-  as $\fwd \prcov \fwd^*$.
+  \eqref{eq:eigenproblem}. Then $\obs^*\obs$ and $\fwd \prcov \fwd^*$
+  are simultaneously diagonalizable.
 \end{proposition}
 \begin{proof}
   \begin{align}\label{eq:mod conditions}
@@ -217,9 +213,8 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{align}
 \end{proof}
 
-We are almost ready to prove Theorem \ref{thm:char} that characterizes
-D-optimal designs. We just need one final lemma, whose proof is
-delegated to the appendix:
+Before we prove Theorem \ref{thm:char} we record Lemma
+\ref{lemma:free}, whose proof is delegated to the appendix:
 \begin{restatable*}[Unit norm decomposition]{lemma}{free}\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
   = m$, $m \geq k$. We can find $\func_j \in \R^k,j=1,\dots,m$
@@ -311,31 +306,27 @@ delegated to the appendix:
   \caption{A comparison of the eigenvalues of the pushforward
     posterior precision $(\fwd\prcov\fwd^*)^{-1} +
     \sigma^{-2}\obs^*\obs$ for a D-optimal design (left) and a
-    sub-optimal design (right). Both designs are allowed three
+    sub-optimal design (right). Both designs are allowed $m=3$
     observations. We assume $\sigma^2=1$ and thus, the blue area has
-    accumulated height of $3$ in both plots. The D-optimal design
-    (left) increases precision (equivalently, reduces uncertainty)
-    where it is lowest. The sub-optimal design (right) does not.
-    %% In this example, an observation is taken partly in the
-    %% direction of the third eigenvector. The precision for this
-    %% eigenvector is bigger even than the posterior precision of the
-    %% D-optimal design on the left.
-  }
+    accumulated height of $\sigma^{-2}m = 3$ in both plots. The
+    D-optimal design (left) increases precision (equivalently, reduces
+    uncertainty) where it is lowest. The sub-optimal design (right)
+    does not.}
   \label{fig:optimal vs not}
 \end{figure}
 
 
-Here is a way to understand D-optimal designs with vanishing model
-error: Imagine each eigenvector of $\fwd \prcov \fwd^*$ corresponds to
-a graduated lab cylinder (Figure \ref{fig:cylinder}). Each cylinder
-$i$ is filled, a-priori, with green liquid of $\lambda_i^{-1}$ volume
-units. This liquid represnets the prior precision, and the volume of
-the green liquid is increasing in $i$. A D-optimal design with $m$
-observations ignores cylinders indexed $m+1$ and above. It has blue
-liquid of volume $\sigma^{-2}m$ units at its disposal. It distributes
-said liquid by repeatedly adding a drop to whatever cylinder currently
-has the lowest level of liquid in it (lowest precision). The result of
-such a procedure is illustrated in Figure \ref{fig:optimal vs not}.
+Theorem \ref{thm:char} gives us a way to understand D-optimal designs
+when $\modcov = 0$: Imagine each eigenvector of $\fwd \prcov \fwd^*$
+corresponds to a graduated lab cylinder (Figure
+\ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
+liquid of $\lambda_i^{-1}$ volume units. We are allowed $m$
+observations, so we have blue liquid of volume $\sigma^{-2}m$ units at
+our disposal. When we seek a D-optimal design, we distribute the blue
+liquid by repeatedly adding a drop to whatever cylinder currently has
+the lowest level of liquid in it, as long as its index $i \leq m$. The
+result of such a procedure is illustrated in Figure \ref{fig:optimal
+  vs not}.
 
 \begin{figure}%{r}{0.25\textwidth} 
     %\centering
@@ -347,21 +338,22 @@ such a procedure is illustrated in Figure \ref{fig:optimal vs not}.
 
 
 
-\subsection{Clusterization poses no obstruction to D-optimality}\label{subsec:clusterization}
-We saw that the necessary conditions for a design $\obs$ with $m$
-observations to be D-optimal are (1), (2) and (4) of Theorem
-\ref{thm:char}. As long as these requirements are satisfied, $\obs$ is
-D-optimal. These requirements, however, still leave some freedom in
-choosing $\obs$. This freedom may give rise to clusterization, as
-illustrated in Figure \ref{fig:clusterization} and explained below.
+\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
+The necessary conditions for D-optimality are (1), (2) and (4) of
+Theorem \ref{thm:char}. As long as these conditions are satisfied,
+$\obs$ is an optimizer of $\tar$. These conditions, however, still
+leave some freedom in choosing $\obs$. This freedom may give rise to
+clusterization, as illustrated in Figure \ref{fig:clusterization} and
+demonstrated below.
 
-Consider an inverse problem with $\lambda_1^{-1} = 0.1, \lambda_2^{-1}
-= 0.2$ and $\sigma^2=1$. In \eqref{eq:two designs}, we suggest two
-D-optimal designs $\obs_1, \obs_2$ such that $\obs_1^*\obs_1 =
-\obs_2^*\obs_2$. The former exhibits clusterization ($\meas_3 =
-\meas_5 = \ev_1$), while the latter does not. Both of these designs
-are D-optimal, hence clusterization poses no obstruction to
-D-optimality.
+Consider an inverse problem for which $\lambda_1^{-1} = 0.1,
+\lambda_2^{-1} = 0.2,\sigma^2=1$ and $\{\ev_i\}_{i=1}^\infty$ are
+eigenvectors of $\fwd\prcov\fwd^*$. Two D-optimal designs $\obs_1,
+\obs_2$ presented in \eqref{eq:two designs}. It is easy to verify that
+$\obs_1^*\obs_1 = \obs_2^*\obs_2$. The former exhibits clusterization
+($\meas_3 = \meas_5 = \ev_1$), while the latter does not. Since both
+of these designs are D-optimal, we conclude that clusterization poses
+no obstruction to D-optimality.
 
 \begin{equation}\label{eq:two designs}
   \obs_1 =
@@ -382,17 +374,17 @@ D-optimality.
   \end{pmatrix}
 \end{equation}
 
-A computer implementation of Lemma \ref{lemma:free} (see code in
+A computer implementation of Lemma \ref{lemma:free} (code in
 Supplementary material) generates $\obs_1$ as a solution to the
 D-optimal design problem mentioned in the previous
 paragraph. Modifying the numerical values of the prior does not break
-the clusterization. Thus, the preference to clusterization of Lemma
-\ref{lemma:free} is robust. The vast majority of randomized numerical
-simulations (see code in Supplementary material) also give rise to
-D-optimal designs that exhibit clustrization. We conclude that
-clusterization poses no obstruction to D-optimality in the relaxed
-model presented in this study. Moreover, sensor clusterization is
-generic, as far as one accepts the model presented in this study.
+the clusterization. Thus, the preference to clusterization, at least
+in Lemma \ref{lemma:free} is robust. The vast majority of randomized
+numerical simulations (see code in Supplementary material) also give
+rise to D-optimal designs that exhibit clustrization. We conclude that
+clusterization poses no obstruction to D-optimality in the model
+presented in this study. Moreover, sensor clusterization is generic,
+as far as the model presented in this study is concerned.
 
 %% Of course, a real-life problem is more restricted than the model we
 %% consider here. Such restriction is the likely cause of clusterization

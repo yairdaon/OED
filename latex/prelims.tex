@@ -1,35 +1,37 @@
 \section{Preliminaries and Notation}\label{section:prelim}
 
 \subsection{Overview}
-In this section we will define notations that will be used throughout
-the paper. Notations presented in the section are summarized in
-Section \ref{subsec:notation}. The theoretical foundations for inverse
+In this section I will present notations that will be used throughout
+this article. These notations are summarized in Section
+\ref{subsec:notation}. The theoretical foundations for inverse
 problems over function spaces can be found in \cite{Stuart10}.
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
 Let $\hilp$ and $\hilo$ be separable Hilbert spaces (the subscripts p
 and o are for ``parameter'' and ``observation'', respectfully). Denote
 $\hilo^* \simeq \hilo$ the Hilbert space of all linear functionals on
-$\hilo$. Consider $\fwd: \hilp \to \hilo$, a linear operator (the
-``forward operator''). We are interested in forward operators that are
-strongly smoothing (have fast decaying modes --- the heat operator
-from section \ref{subsec:example} is a prime example). Our goal is to
-infer $\param \in \hilp$ --- some parameter of the dynamics --- given
-noisy observations of $\fwd \param$. We take a Gaussian prior $\pr$
-for $\param$. Hence, $\param \sim \pr = \normal(\prmean ,\prcov)$ with
-some appropriate covariance operator $\prcov$ \cite{Stuart10}. It is
-important to note that $\fwd \prcov \fwd^*$ is the prior covariance in
-$\hilo$ \cite{Stuart10}. As such, it is assumed invertible --- an
-assumption we rely on below. Throughout this paper, we denote $m$ the
-number of observations we are allowed to take. Observations are taken
-via the operator $\obs \in ( \hilo^* )^m$. In an analogy with linear
-algebra, where row vectors are thought of as linear functionals, we
-think of $\obs$ as having ``rows'' $\meas_j, j=1,\dots,m$:
+$\hilo$. Let $\fwd: \hilp \to \hilo$ the \emph{forward operator}. The
+forward operator $\fwd$ is assumed linear and strongly smoothing (has
+fast decaying modes --- the heat operator from section
+\ref{subsec:example} is a prime example). Take a Gaussian prior
+$\param \sim \pr = \normal(\prmean ,\prcov)$ with some appropriate
+covariance operator $\prcov$ \cite{Stuart10} on $\hilp$. Note that
+$\fwd \prcov \fwd^*$ is the prior covariance in $\hilo$
+\cite{Stuart10}. As such, it is assumed invertible --- an assumption
+which will be used heavily below. Let $m$ the number of observations
+taken. Observations are taken via the \emph{observation
+operator}\footnote{It is common for the observation and forward
+operators to be merged $\tmp := \obs \fwd$
+\cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
+following sections requires $\fwd$ and $\obs$ are explicitly
+separated.} $\obs \in ( \hilo^* )^m$. In an analogy with linear
+algebra, where row vectors are thought of as linear functionals,
+$\obs$ is best thought of as having ``rows'' $\meas_j, j=1,\dots,m$:
 \begin{equation}\label{eq:O}
   \obs = (\meas_1,\dots, \meas_m)^t, \meas_j \in \hilo^*, j = 1,\dots,m.
 \end{equation}
-This way, for $u \in \hilo$ we have $\obs u = (\meas_1(u), \dots,
-\meas_m(u) )^t \in \R^m$.
+This way, $\obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m$ and
+$u \in \hilo$.
 %% but we may drop the parentheses and write $\meas_j u = \meas_j(u)$.
 %% A few observations regarding $\obs$ are in order.
 %% First, it is good to keep in mind that $( \hilo^* )^m$ is a Hilbert
@@ -49,48 +51,21 @@ and thus:
 %%   $\obs$ as a matrix with rows $\meas_j$. 
 %% \end{observation}
 
-Each observation is a linear functional, chosen from some subset of
-$\hilo^{*}$. Data is acquired via noisy observations
+Each observation vector is a linear functional, chosen from (some
+subset of) $\hilo^{*}$. Data is acquired via noisy observations, with
+two types of error terms considered. Spatially correlated model error
+is denoted $\eps' \sim \normal(0,\modcov)$, and modeled as a centered
+Gaussian measure on $\hilo$ with covariance operator
+$\modcov$. Observation error is denoted $\eps \sim \normal(0, \sigma^2
+I_m)$, with $I_m \in \mathbb{R}^{m \times m}$ the identity. Both error
+terms and the prior are assumed independent of each other. Thus, data
+is acquired via
 \begin{align}\label{eq:inverse problem}
-  \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps,
+  \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
-with $\data \in \R^m$ and $\eps, \eps'$ defined next. We consider two
-types of error terms. First, there is spatially correlated model error
-$\eps' \sim \normal(0,\modcov)$, modeled as a centered Gaussian
-measure on $\hilo$ with covariance operator $\modcov$. Then there is
-observation error $\eps \sim \normal(0, \sigma^2 I_m)$, with $I_m$ the
-$m \times m$ identity. Both error terms and the prior are assumed
-independent of each other. In the literature, it is common for the
-observation and forward operators to be merged $\tmp := \obs \fwd$
-\cite{AlexanderianGloorGhattas14}. Since we need to separate the
-observation operator $\obs$ from the forward operator $\fwd$ in order
-to carry out the analysis in the following sections, we explicitly
-separate $\fwd$ and $\obs$ in \eqref{eq:inverse problem}. We now turn
-to understand the terms present in \eqref{eq:inverse problem}.
-
-
-\subsubsection{Dynamics and Observation Operators}\label{subsec:dynamics}
-Rows of $\obs$ are linear functionals and we refer to these as {\it
-  observation vector}s. Note that we cannot choose every observation
-vector we want. For example, we may be restricted only to pointwise
-evaluations of $\fwd \param$ by the sensors at our disposal, in which
-case measuring, e.g., the mean $\ell(u) = \int_{\Omega}u$ of a
-function is not possible. Thus, it is best to think of $(\obs \fwd
-\param)_j$ as approximations to pointwise evaluations. For example, if
-$\hilo = L^2([-\pi, \pi])$, consider $\ell_1(x) := (2\pi
-\eps)^{-\frac{1}{2}}\exp(-\frac{x^2}{2\eps^2})$ and $\ell_2(x)
-:=\eps^{-1}\mathbf{1}_{[-\frac{\eps}{2}, \frac{\eps}{2}]}$. Both
-$\ell_1$ and $\ell_2$ approximate a point measurement at $0$ for small
-$\eps$ and, crucially, $\ell_1, \ell_2 \in \hilo^*$.
-%% It is important to note that although $\|\ell\|_1 =
-%% \|\ell_2\|_1=1$, unfortunately $\|\ell_1\|_2^2 = (4\pi
-%% \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 = \eps^{-1}$.
-
-
-\subsubsection{Error Terms}
-It is easy to verify that $\bar{\eps} := \obs \eps' + \eps \in \R^m$
-is a centered Gaussian random vector with covariance
-matrix
+%% \subsubsection{Error Terms}
+It is easy to verify that $\obs \eps' + \eps \in \R^m$ is a centered
+Gaussian random vector with covariance matrix
 
 \begin{align}\label{eq:Sigma}
   \begin{split}
@@ -102,39 +77,65 @@ matrix
   \end{split}
 \end{align}
 where
-\begin{equation}\label{eq:modcov explained}
-  [\obs \modcov \obs^*]_{ij} = e_i^t \obs \modcov \obs^* e_j = \meas_i (\modcov \meas_j),
-\end{equation}
-and $e_j \in \R^m$ is the $j$th standard basis vector. The first
-equality in \eqref{eq:modcov explained} holds by definition and the
-second by \eqref{eq:obs*}. The explicit dependence on $\obs$ will be
-mostly dropped for notational convenience, so $\Sigma(\obs) =
-\Sigma$. Thus, for a fixed $\obs$ (i.e.\ a fixed set of observations)
-we can equivalently write $\data = \obs \fwd \param + \bar{\eps}$ with
-$\bar{\eps} \sim \normal(0,\Sigma)$. Taking $\modcov = 0$ is common
-practice \cite{Tarantola05,Kaipio2006,Vogel02}. This reduces to the
-case where we take iid observations. Then $\Sigma = \sigma^2I$ is
-simply a scalar matrix that does not depend on $\obs$. Note that
-taking an error model with a non-scalar covariance as we do here
-allows us to consider model error (modeled by $\modcov$) as well as
-observation error (modeled by $\sigma^2$). For example, say we believe
-our forward model does not capture some small scale phenomenon.  Then
-we may express this belief by saying $\tru = \fwd + \err$, with $\fwd$
-depending on $\param$ and $\err$ depending on $\sspar$, with $\param
-\perp \sspar$. We do not know much about this effect but it is
-reasonable to assume it changes continuously in our domain. We (may
-choose to) model it as $\normal (0, \modcov)$ and take $\modcov$ to
-reflect the spatial (or other) variability we imagine $\err \sspar$
-has. Such small scale phenomenon can arise as a modeling issue, where
-we might not model the system in its entirety. It can also arise from
-a numerical source, where our discretization of the system is not fine
-enough to capture all small scale phenomena.
+\begin{align}\label{eq:modcov explained}
+  \begin{split}
+    [\obs \modcov \obs^*]_{ij} & = e_i^t \obs \modcov \obs^* e_j \\
+    %
+    %
+    %
+    &= \meas_i (\modcov \meas_j) \text{ (by \eqref{eq:obs*})}.
+  \end{split}
+\end{align}
+%% and $e_j \in \R^m$ is the $j$th standard basis vector.
+%% The explicit dependence on $\obs$ will be mostly dropped for
+%% convenience, so $\Sigma(\obs) = \Sigma$.  Thus, for a fixed $\obs$
+%% (i.e.\ a fixed set of observations), $\data = \obs \fwd \param +
+%% \bar{\eps}$ with $\bar{\eps} \sim \normal(0,\Sigma)$.
+Taking $\modcov = 0$ is a common practice
+\cite{Tarantola05,Kaipio2006,Vogel02} and then $\Sigma = \sigma^2I$ is
+simply a scalar matrix that does not depend on $\obs$.
+
+%% Taking an error model with a non-scalar covariance allows us to
+%% consider model error (modeled by $\modcov$) as well as observation
+%% error (modeled by $\sigma^2$). For example, say we believe our forward
+%% model does not capture some small scale phenomenon.  Then we may
+%% express this belief by saying $\tru = \fwd + \err$, with $\fwd$
+%% depending on $\param$ and $\err$ depending on $\sspar$, with $\param
+%% \perp \sspar$. We do not know much about this effect but it is
+%% reasonable to assume it changes continuously in our domain. We (may
+%% choose to) model it as $\normal (0, \modcov)$ and take $\modcov$ to
+%% reflect the spatial (or other) variability we imagine $\err \sspar$
+%% has. Such small scale phenomenon can arise as a modeling issue, where
+%% we might not model the system in its entirety. It can also arise from
+%% a numerical source, where our discretization of the system is not fine
+%% enough to capture all small scale phenomena.
 %%  In section \ref{section:non vanishing}, we will see that assuming
 %% some correlation in the error mitigates the clusterization
 %% phenomenon, as reported in the literature \cite{Ucinski05}.
 
+
+
+
+%% \subsubsection{Dynamics and Observation Operators}\label{subsec:dynamics}
+%% Rows of $\obs$ are linear functionals and we refer to these as {\it
+%%   observation vector}s. Note that we cannot choose every observation
+%% vector we want. For example, we may be restricted only to pointwise
+%% evaluations of $\fwd \param$ by the sensors at our disposal, in which
+%% case measuring, e.g., the mean $\ell(u) = \int_{\Omega}u$ of a
+%% function is not possible. Thus, it is best to think of $(\obs \fwd
+%% \param)_j$ as approximations to pointwise evaluations. For example, if
+%% $\hilo = L^2([-\pi, \pi])$, consider $\ell_1(x) := (2\pi
+%% \eps)^{-\frac{1}{2}}\exp(-\frac{x^2}{2\eps^2})$ and $\ell_2(x)
+%% :=\eps^{-1}\mathbf{1}_{[-\frac{\eps}{2}, \frac{\eps}{2}]}$. Both
+%% $\ell_1$ and $\ell_2$ approximate a point measurement at $0$ for small
+%% $\eps$ and, crucially, $\ell_1, \ell_2 \in \hilo^*$.
+%% %% It is important to note that although $\|\ell\|_1 =
+%% %% \|\ell_2\|_1=1$, unfortunately $\|\ell_1\|_2^2 = (4\pi
+%% %% \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 = \eps^{-1}$.
+
+
 Finally, it is useful to record a known result regarding the posterior
-covariance operator of our inverse problem:
+covariance operator:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
@@ -150,17 +151,15 @@ $$
 KL(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 $$
 
-The meaning of D-optimal design in infinite-dimensional Hilbert spaces
-was investigated in \cite{AlexanderianGloorGhattas14}. There, the
-authors make assumptions that amount to $\Sigma=I$ (implied by
-$\modcov = 0,\sigma^2=1$), but we choose not to take these
-simplification here. This is because $\Sigma$ can determine ``how
-much'' clusterization we see. As stated
-\cite[pp. 681]{AlexanderianGloorGhattas14}, the results hold for more
-general covariance matrices. The conclusion is that in
+D-optimal designs in infinite-dimensional Hilbert spaces were
+investigated in \cite{AlexanderianGloorGhattas14}. In
 infinite-dimensions, a D-optimal design is well-defined as maximizing
 the expected KL divergence between posterior and prior. The main
-result is summarized, using our notation, in the following theorem:
+result is summarized, in the notation presented above, in the
+following theorem\footnote{In \cite{AlexanderianGloorGhattas14},
+results are stated for $\Sigma=I$ (implied by $\modcov =
+0,\sigma^2=1$), but the authors also mention these results hold for
+more general covariance matrices (p. 681).}:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
@@ -178,14 +177,18 @@ result is summarized, using our notation, in the following theorem:
   \end{align}
 \end{theorem}
 \begin{definition}\label{def:d optimality}
-  A design $\obs^{\star}$ is said to be D-optimal if $\obs^{\star} = \argmax_{\obs} \tar(\obs)$.
+  $\obs^{\star}$ is said to be \emph{D-optimal} if $\obs^{\star} =
+  \argmax_{\obs} \tar(\obs)$, where rows of $\obs$ are in some allowed
+  set of measurement.
 \end{definition}
 
-\noindent The intuition behind Definition \ref{def:d optimality} is
-straightforward. From \eqref{eq:postcov} and \eqref{eq:objective}:
+\noindent In order to undestand the intuition behind Definition
+\ref{def:d optimality}, note that from \eqref{eq:postcov} and
+\eqref{eq:objective}:
 \begin{align*}
   \begin{split}
-    \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) &= \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
+    \tar(\obs) &= \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \\
+    &= \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
     &= \det \prcov \det \postcov^{-1}.
   \end{split}
 \end{align*}

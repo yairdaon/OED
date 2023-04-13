@@ -1,12 +1,11 @@
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
-
 We seek a formulation of the D-optimal design problem
 \cite{AlexanderianGloorGhattas14} via Lagrange multipliers. In Section
 \ref{section:objective} we find the gradient of $\tar$. In Section
 \ref{subsec:unit norm} we suggest unit-norm constraints on rows of
-$\obs$ and find gradients for the these constraints. Finally, in Section
-\ref{subsec:necessary} we formulate the D-optimal design problem as a
-Lagrange multipliers problem.
+$\obs$ and find their. Finally, in Section \ref{subsec:necessary} we
+formulate the D-optimal design problem as a Lagrange multipliers
+problem.
 
 
 \subsection{The Objective and its Gradient}\label{section:objective}
@@ -53,7 +52,7 @@ The first variation of $\tar (\obs)$ in the direction $V$ is:
 \begin{align}\label{eq:tar var}
   \begin{split}
     \delta \tar(\obs) V 
-    :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (by Definition \ref{def:var})}\\
+    :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (Definition \ref{def:var})}\\
     % 
     % 
     % 
@@ -65,14 +64,14 @@ The first variation of $\tar (\obs)$ in the direction $V$ is:
     &= \frac12 \tr{( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
     \obs\fwd \prcov^{1/2} )^{-1}
     \frac{\der}{\der \tau} \Big |_{\tau=0}
-    \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (by \ref{lemma:lax})}\\
+    \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (Lemma \ref{lemma:lax})}\\
     % 
     % 
     % 
     &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
     - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
     &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
-    + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \ref{lemma:aux calc})}\\
+    + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (Lemma \ref{lemma:aux calc})}\\
     %
     %
     %
@@ -97,8 +96,8 @@ Denote
   \nabla \tar(\obs) &:= (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
   \postcov \fwd^* \obs^*\Sigma^{-1}.
 \end{align}
-We refer to $\nabla \tar(\obs)$ as the gradient of $\tar (\obs
-)$. Next we justify this name. Since the trace of $A := V \nabla
+We refer to $\nabla \tar(\obs)$ as the gradient of $\tar (\obs )$, and
+we will now justify this name. Since the trace of $A := V \nabla
 \tar(\obs) \in \R^{m \times m}$ is just $\ttr A = \sum_{j=1}^m e_j^t A
 e_j$ (with $e_j$ the $j$th standard basis vector), we see that
 \begin{align*}
@@ -114,9 +113,10 @@ will prove important in section \ref{subsec:necessary}.
 
 \subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
 In a real-life optimal design problem we cannot choose any measurement
-operator $\obs$. We now seek generic constraints on $\obs$ for which
-finding a D-optimal design is analytically tractable. We start with a
-proposition (proof in the appendix).
+operator $\obs$. In order to facilitate analysis, we seek reasonable
+constraints on $\obs$ for which finding a D-optimal design is
+analytically tractable. We start with a proposition, whose proof is
+delegated to the appendix.
 
 \begin{restatable*}{proposition}{biggerbetter}\label{prop:bigger better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
@@ -133,9 +133,13 @@ proposition (proof in the appendix).
 %% \eps$, where $\eps'$ can be taken as model error and $\eps$ is iid
 %% observation error.
 
-The idea of Proposition \ref{prop:bigger better} is that $\tar$ is
-increasing in the norm of observation vectors. Further, note that the
-norm of point evaluations, for example, is always one:
+From Proposition \ref{prop:bigger better} we understand that the norm
+of obsevation vectors must be bounded. Otherwise, vectors whose norms
+approach infinity are optimal. This absurd situation is equivalent to
+ignoring the iid observation noise term $\eps$. The norm of point
+evaluations, for example, is always one\footnote{Of course, point
+evaluations are not in any Hilbert space of functions we wish to
+consider.}:
 \begin{align*}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
     |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
@@ -145,14 +149,14 @@ norm of point evaluations, for example, is always one:
   \forall \x \in \Omega.
 \end{align*}
 
-Thus, it is reasonable to consider observation vectors restricted to
-the unit ball in $\hilo^*$. The unit norm constraints can be written
-using \eqref{eq:obs*} as a series of $m$ equality constraints (one for
-each observation) on $\obs$ as
+Thus, it is reasonable to consider observation vectors with unit
+$\hilo^*$ norm. The unit norm constraints can be written using
+\eqref{eq:obs*} as a series of $m$ equality constraints (one for each
+observation) on $\obs$ as
 \begin{align}\label{eq:constraints}
   \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,j=1,\dots,m.
 \end{align}
-The first variations are:
+The first variations of the unit norm constraints are:
 \begin{align*}
   \delta \phi_j(\obs)V  
   &= \frac12\lim_{\tau \to 0}\tau^{-1}
