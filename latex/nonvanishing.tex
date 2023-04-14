@@ -9,7 +9,180 @@ rigorously. Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
 (\meas_1,\dots,\meas_{m-1})^t$. Denote $\Sigmam := \Sigma (\obsm)$ and
 $\postcovm$ the posterior covariance that arises when $\obsm$ is
 utilized as an observation operator.
-\begin{restatable*}{corollary}{samemeas}\label{cor:same meas}
+
+\begin{lemma}[Increase due to an observation]\label{lemma:design increase}
+  Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
+  (\meas_1,\dots,\meas_{m-1})^t$. Then
+  \begin{align*}
+    \tar( \obs ) - \tar (\obsm ) &=
+    \frac12 \log \left ( 1 + \frac{
+      \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m,
+      (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m \rangle
+    }{
+      \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
+    }       
+    \right ).
+  \end{align*}
+\end{lemma}
+
+\begin{proof}
+  We use the Schur complement:
+  %% to write one inverse in terms of the other: and introduce
+  %%  notations to make the derivation cleaner. Note that we think of
+  %%  $\obsm$ and $\obsm^*$ as column and row vectors (respectively).
+  \begin{align*}
+    \Sigma( \obs ) &= \Sigma = 
+    \begin{bmatrix}
+      \Sigma (\obsm )           & \obsm \modcov \meas_m \\
+      \meas_m \modcov \obsm^*   & \sigma^2 + \meas_m \modcov \meas_m
+    \end{bmatrix}
+    : =
+    \begin{bmatrix}
+      \Sigmam   & w \\
+      w^t       & c
+    \end{bmatrix}\\
+    %
+    %
+    %
+    \Sigma^{-1} &=
+    \begin{bmatrix}
+      \Sigmam^{-1} + \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1} & - \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} \\
+      -( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1}                            &  ( c - w^t \Sigmam^{-1} w)^{-1}
+    \end{bmatrix} \\
+    &=
+    \begin{bmatrix}
+      \Sigmam^{-1} & 0 \\
+      0           & 0 
+    \end{bmatrix}
+    + (c -w^t \Sigmam^{-1} w )^{-1}
+    \begin{bmatrix}
+      \Sigmam^{-1} w \\
+      -1
+    \end{bmatrix}
+    \begin{bmatrix}
+      w^t \Sigmam^{-1} & -1 
+    \end{bmatrix}
+  \end{align*}
+  %
+  Further, define
+  %
+  \begin{align*}
+    \M (\obs ):&= \prcov^{\frac12}\fwd^* \obs^* \Sigma^{-1} \obs \fwd
+    \prcov^{\frac12}    
+  \end{align*}
+  %
+  and note that:%% , using our understanding of what is a column vector and
+  %% what is a row vector:
+  %
+  \begin{align*}
+    \M(\obs) &= \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2} \\
+    %
+    %
+    %
+    &= \prcov^{1/2} \fwd^* \obs^* \left \{
+    \begin{bmatrix}
+      \Sigmam^{-1} & 0 \\
+      0           & 0 
+    \end{bmatrix}
+    + (c -w^t \Sigmam^{-1} w )^{-1}
+    \begin{bmatrix}
+      \Sigmam^{-1} w \\
+      -1
+    \end{bmatrix}
+    \begin{bmatrix}
+      w^t \Sigmam^{-1} & -1 
+    \end{bmatrix} 
+    \right \} \obs \fwd \prcov^{1/2} \\
+    %
+    %
+    %
+    &= \M (\obsm) + (c -w^t \Sigmam^{-1} w )^{-1}
+    \prcov^{1/2} \fwd^* \obs^*
+    \begin{bmatrix}
+      \Sigmam^{-1} w \\
+      -1
+    \end{bmatrix}
+    \begin{bmatrix}
+      w^t \Sigmam^{-1} & -1 
+    \end{bmatrix} 
+    \obs \fwd \prcov^{1/2}
+  \end{align*}
+  %
+  Now, denote:
+  %
+  \begin{align}\label{eq:u}
+    \begin{split}
+      u :&= (c -w^t \Sigmam^{-1} w )^{-1/2}
+      \prcov^{1/2} \fwd^* \obs^* 
+      \begin{bmatrix}
+        \Sigmam^{-1} w \\
+        -1 
+      \end{bmatrix} \\
+      %
+      %
+      %
+      & = (c -w^t \Sigmam^{-1} w )^{-1/2} ( \prcov^{1/2}\fwd^* \obsm^* \Sigmam^{-1} \obsm  \modcov \meas_m - \prcov^{1/2} \fwd^* \meas_m )\\
+      %
+      %
+      %
+      u^* :&=  (c -w^t \Sigmam^{-1} w )^{-1/2} (\meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \fwd \prcov^{1/2} - \meas_m \fwd \prcov^{1/2} ),
+    \end{split}
+  \end{align}
+  %
+  so that
+  %
+  \begin{equation}\label{eq:M plus I}
+    I + \M( \obs ) = I + \M (\obsm ) + uu^*.
+  \end{equation}
+  %
+  Note that
+  \begin{equation}\label{eq:M postcov}
+    \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
+  \end{equation}
+  Next, we use an analogue of the matrix determinant lemma, whose
+  statement and proof are recorded in the appendix:
+  %
+  \begin{align*}
+    \tar( \obs ) - \tar( \obsm )
+    %
+    %
+    %
+    &= \frac12 \log \det \Big ( I + \M ( \obs ) \Big ) / \det \Big ( I + \M (\obsm) \Big ) \\
+    %
+    %
+    %
+    &= \frac12  \log \det \left ( I + \M(\obsm) + uu^* \right ) / \det \Big ( I + \M (\obsm) \Big ) \\
+    %
+    %
+    %
+    &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ) \text{ (Lemma \ref{lemma:MDL})}.
+  \end{align*}
+  Using \eqref{eq:u} and \eqref{eq:M postcov}:
+  \begin{align*}
+    &\left \langle \left (I+\M (\obsm)\right )^{-1}u, u \right \rangle\\
+    &= \frac{
+      \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m,
+      (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m \rangle
+    }{
+      c- w^t \Sigmam^{-1} w
+    }\\
+    %
+    %
+    %
+    &= 
+    \frac{
+      \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m,
+      (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m \rangle
+    }{
+      \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
+    }
+  \end{align*}
+  and the conclusion follows.
+\end{proof}
+
+
+
+\begin{corollary}\label{cor:same meas}
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
     \tar(\obs) - \tar(\obsm) =
@@ -23,9 +196,93 @@ utilized as an observation operator.
   \end{equation*}
   where $e_j\in \mathbb{R}^{m-1}$ is the $j^{\text{th}}$ standard unit
   vector.
-\end{restatable*}
-The proof of Corollary \ref{cor:same meas} is delegated to the
-appendix. Recall from \eqref{eq:Sigma} that $\Sigma(\obs) = \obs
+\end{corollary}
+
+\begin{proof} \label{cor:same meas proof}
+  Denote $A:= \obs \modcov \obs^*$ and $v_j$ the $j$th column of $A$.
+  Note that $v_j = \obsm \modcov \meas_m$, since $(\obsm \modcov
+  \obsm^*)_{ij} = \meas_i(\modcov \meas_j)$, as explained in
+  \eqref{eq:modcov explained}. One can now verify that
+  \begin{equation}\label{eq:observation}
+    \Sigmam^{-1} \obsm \modcov \meas_m = \Sigmam^{-1}v_j = (A +\sigma^2I_{m-1})^{-1} v_j =
+    e_j -\sigma^2 \Sigmam^{-1}e_j.
+  \end{equation}
+  %
+  Using \eqref{eq:observation}:
+  \begin{align}\label{eq:denominator}
+    \begin{split}
+      \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m
+      &= \meas_m \modcov \obsm^* ( e^j - \sigma^2 \Sigmam^{-1} e_j )\\
+      %
+      %
+      %
+      &= \meas_m \modcov \meas_j - \sigma^2 \meas_m \modcov \obsm^* \Sigmam^{-1}e_j \\
+      %
+      %
+      %
+      &= \meas_m \modcov \meas_j -\sigma^2 (e_j - \sigma^2 \Sigmam^{-1}e_j)^t e_j \\
+      %
+      %
+      %
+      &= \meas_m \modcov \meas_m -\sigma^2 + \sigma^4 e_j^t\Sigmam^{-1}e_j.
+    \end{split}
+  \end{align}
+  We use \eqref{eq:observation} to simplify the terms in the enumerator of
+  the conclusion of Lemma \ref{lemma:design increase}:
+  \begin{align}\label{eq:enumerator}
+    \begin{split}
+      (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m
+      &= \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m - \meas_m \\
+      %
+      %
+      %
+      &= \obsm^* (e_j - \sigma^2 \Sigmam^{-1} e_j) -\meas_j \\ 
+      %
+      %
+      %
+      &= -\sigma^2 \obsm^* \Sigma^{-1}e_j. 
+    \end{split}
+  \end{align}
+  %
+  Substitute \eqref{eq:enumerator} and \eqref{eq:denominator} to
+  the enumerator and denominator (respectively) of the conclusion of
+  Lemma \ref{lemma:design increase}:
+  %
+  \begin{align*}
+    \tar( \obs ) - \tar (\obsm ) &=
+    \log \left ( 1 + \frac{
+      \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m,
+      (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m \rangle
+    }{
+      \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
+    }       
+    \right ) \\
+    %
+    %
+    %
+    &= \log \left ( 1 + \frac{\sigma^4
+      \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1} e_j,
+      \obsm^* \Sigmam^{-1}e_j \rangle
+    }{
+      2\sigma^2 - \sigma^4 e_j^t\Sigmam^{-1}e_j 
+    }       
+    \right ) \\
+    %
+    %
+    %
+    &= \log \left ( 1 + \frac{\sigma^2
+      \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1} e_j,
+      \obsm^* \Sigmam^{-1}e_j \rangle
+    }{
+      2 - \sigma^2 e_j^t\Sigmam^{-1}e_j 
+    }       
+    \right ).
+  \end{align*}
+\end{proof}
+
+
+
+Recall from \eqref{eq:Sigma} that $\Sigma(\obs) = \obs
 \modcov \obs^* + \sigma^2I$ and let $u := \obsm^*
 \Sigmam^{-1}e_j$. Then
 

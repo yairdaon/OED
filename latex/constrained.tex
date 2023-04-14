@@ -7,10 +7,7 @@ $\obs$ and find their. Finally, in Section \ref{subsec:necessary} we
 formulate the D-optimal design problem as a Lagrange multipliers
 problem.
 
-
-\subsection{The Objective and its Gradient}\label{section:objective}
 Recall that:
-
 
 \begin{definition}\label{def:var}
   Let $F$ a real valued function of $\obs$. The first variation of $F$
@@ -18,111 +15,225 @@ Recall that:
   \begin{equation*}
     \delta F(\obs) V := \frac{\der}{\der \tau}\Big |_{\tau=0}  F( \obs + \tau V).
   \end{equation*}
+
+  If
+  \begin{equation*}
+    \delta F(\obs) V = \tr{\nabla F(\obs) V},
+  \end{equation*}
+  then we call $\nabla F(\obs)$ the gradient of $F$ at $\obs$. 
 \end{definition}
 
-We now record two Lemmas whose proofs are delgated to the appendix.
-
-\begin{restatable*}[Generalized from \cite{Lax07}]{lemma}{lax}\label{lemma:lax}
-  Let $Y(t)$ be a differentiable operator-valued function. Assume 
-  $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
+\begin{proposition}\label{prop:tar var}
   \begin{equation*}
-    \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
+    %% \delta \tar(\obs) V = \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
+    %%   \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
+    \nabla \tar(\obs) = ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd
+    \postcov \fwd^* \obs^* \Sigma^{-1}
   \end{equation*}
-\end{restatable*}
+\end{proposition}
 
-\begin{restatable*}[Auxilliary Calculations]{lemma}{aux}\label{lemma:aux calc}
-  Let
-  \begin{align*}
+\begin{proof}  
+  From \eqref{eq:Sigma}, the definition of $\Sigma(\obs)$:
+
+  \begin{align}\label{eq:der sig}
     \begin{split}
-      \Sigma(\obs) &= \obs\modcov\obs^* + \sigma^2, \\
-      T(\obs) &= \obs^* \Sigma^{-1}(\obs)\obs.
+      \frac{\der}{\der \tau} \Big |_{\tau=0} \Sigma( \obs + \tau V )
+      &= \frac{\der}{\der \tau} \Big |_{\tau=0} 
+      (\obs + \tau V ) \modcov (\obs + \tau V )^*  + \sigma^2I\\
+      % 
+      % 
+      % 
+      &= V \modcov \obs^* + \obs \modcov V^*.
     \end{split}
+  \end{align}
+
+  Then, using \eqref{eq:der sig}: 
+  \begin{align*}
+    0 &= \frac{\der}{\der \tau} \Big |_{\tau=0} I \\
+    % 
+    % 
+    % 
+    &= \frac{\der}{\der \tau} \Big |_{\tau=0}
+    \left (\Sigma(\obs+\tau V)^{-1} \Sigma(\obs+\tau V) \right ) \\
+    % 
+    % 
+    % 
+    &= \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0} \Sigma+
+    \Sigma^{-1} \frac{\der \Sigma(\obs+\tau V)}{\der \tau} \Big |_{\tau=0}\\  
+    %
+    %
+    %
+    &= \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0} \Sigma+
+    \Sigma^{-1} (V\modcov \obs^* + \obs \modcov V^*). 
+    %\text{, by \eqref{eq:der sig}. }
   \end{align*}
 
-  Then
-  \begin{align*}
-    \delta T(\obs)V &= V^* \Sigma^{-1} \obs 
+  Thus
+  \begin{align}\label{eq:der sig inv}
+    \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0}  
+      &= -\Sigma^{-1} (V \modcov \obs^* + \obs \modcov V^*) \Sigma^{-1}.
+    \end{align}
+  % 
+
+  Let
+  \begin{equation*}
+    T(\obs) = \obs^* \Sigma^{-1}(\obs)\obs.
+  \end{equation*}
+  
+  By Leibnitz (product) rule and \eqref{eq:der sig inv}:
+  % 
+  \begin{align}\label{eq:T}
+    \begin{split}
+    \delta T(\obs) V 
+    &= \frac{\der T(\obs + \tau V)}{\der \tau} \Big |_{\tau=0} \\
+    %
+    %
+    %
+    &= V^* \Sigma^{-1} \obs 
     - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
     &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs
     + \obs^* \Sigma^{-1} V.
-  \end{align*}
-\end{restatable*}
+    \end{split}
+  \end{align}
 
-The first variation of $\tar (\obs)$ in the direction $V$ is:
-\begin{align}\label{eq:tar var}
-  \begin{split}
-    \delta \tar(\obs) V 
-    :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V)\  \text{ (Definition \ref{def:var})}\\
-    % 
-    % 
-    % 
-    &= \frac12 \frac{\der}{\der \tau} \Big |_{\tau=0} \log \det 
-    (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (by \eqref{eq:objective})}\\
-    % 
-    % 
-    % 
-    &= \frac12 \tr{( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
-    \obs\fwd \prcov^{1/2} )^{-1}
-    \frac{\der}{\der \tau} \Big |_{\tau=0}
-    \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (Lemma \ref{lemma:lax})}\\
-    % 
-    % 
-    % 
-    &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
-    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
-    &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
-    + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (Lemma \ref{lemma:aux calc})}\\
-    %
-    %
-    %
-    &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V -
-    \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \text{
-        (cyclic property of trace)} \\
-    %
-    %
-    % 
-    &= \tr{\postcov \fwd^* \obs^* \Sigma^{-1} V 
-    ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
-    % 
-    %
-    %
-    &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
-    \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
-  \end{split}
-\end{align} 
 
-Denote
-\begin{align}\label{eq:tar grad}
-  \nabla \tar(\obs) &:= (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
-  \postcov \fwd^* \obs^*\Sigma^{-1}.
-\end{align}
-We refer to $\nabla \tar(\obs)$ as the gradient of $\tar (\obs )$, and
-we will now justify this name. Since the trace of $A := V \nabla
-\tar(\obs) \in \R^{m \times m}$ is just $\ttr A = \sum_{j=1}^m e_j^t A
-e_j$ (with $e_j$ the $j$th standard basis vector), we see that
-\begin{align*}
-  \delta \tar(\obs)V = \tr{V \nabla \tar(\obs)} = \sum_{j=1}^m
-  V_j(\nabla \tar(\obs)_j),
-\end{align*}
-with $V_j \in \hilo^*$ and $\nabla \tar(\obs)_j \in \hilo^{**} =
-\hilo, j=1,\dots,m$. Thus, $\nabla \tar( \obs ) \in \hilo^m$ is indeed
-the correct gradient and the notation \eqref{eq:tar grad} is
-justified. The gradient $\nabla \tar(\obs)$ should be viewed as a row
-vector, as the product $V \nabla \tar$ is in $\R^{m \times m}$. This
-will prove important in section \ref{subsec:necessary}.
+  We now record \ref{lemma:lax} which is a generalization of a
+  lemma from \cite{Lax07}. Its proof is delegated to the appendix.
+  \begin{restatable*}{lemma}{lax}\label{lemma:lax}
+    Let $Y(t)$ be a differentiable operator-valued function. Assume 
+    $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
+    \begin{equation*}
+      \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
+    \end{equation*}
+  \end{restatable*}
+
+  \begin{align*}
+    \begin{split}
+      \delta \tar(\obs) V 
+      :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V) \text{ (Definition \ref{def:var})}\\
+      % 
+      % 
+      % 
+      &= \frac12 \frac{\der}{\der \tau} \Big |_{\tau=0} \log \det 
+      (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (Theorem \ref{thm:d optimality})} \\
+      % 
+      % 
+      % 
+      &= \frac12 \tr{( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
+        \obs\fwd \prcov^{1/2} )^{-1}
+        \frac{\der}{\der \tau} \Big |_{\tau=0}
+        \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (Lemma \ref{lemma:lax})} \\
+      % 
+      % 
+      % 
+      &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
+      - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
+      &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
+      + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \eqref{eq:T})} \\
+      %
+      %
+      %
+      &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V -
+      \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
+      %
+      %
+      % 
+      &= \tr{\postcov \fwd^* \obs^* \Sigma^{-1} V 
+      ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
+      % 
+      %
+      %
+      &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
+      \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
+    \end{split}
+  \end{align*} 
+\end{proof}
+
+
+%% \begin{corollary}\label{cor:tar grad}
+%%   \begin{equation}
+%%     \nabla \tar(\obs) = (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
+%%     \postcov \fwd^* \obs^*\Sigma^{-1}.
+%%   \end{equation}
+%% \end{corollary}
+
+%% \begin{proof}
+%%   %% We refer to $\nabla \tar(\obs)$ as the gradient of $\tar (\obs )$,
+%%   %% and we will now justify this name.
+%%   Let $A := V \nabla \tar(\obs) \in \R^{m \times m}$. Then $\ttr A =
+%%   \sum_{j=1}^m e_j^t A e_j$ (with $e_j$ the $j$th standard basis
+%%   vector):
+%%   \begin{align*}
+%%     \delta \tar(\obs)V = \tr{V \nabla \tar(\obs)} = \sum_{j=1}^m
+%%     V_j(\nabla \tar(\obs)_j),
+%%   \end{align*}
+%%   with $V_j \in \hilo^*$ and $\nabla \tar(\obs)_j \in \hilo^{**} =
+%%   \hilo, j=1,\dots,m$. %% Thus, $\nabla \tar( \obs ) \in \hilo^m$ is
+%%   %% indeed the correct gradient and the notation \eqref{eq:tar grad} is
+%%   %% justified.
+%% \end{proof}
+
+The gradient $\nabla \tar(\obs)$ should be viewed as a row vector,
+as the product $V \nabla \tar$ is in $\R^{m \times m}$. This will
+prove important in section \ref{subsec:necessary}.
 
 \subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
 In a real-life optimal design problem we cannot choose any measurement
 operator $\obs$. In order to facilitate analysis, we seek reasonable
 constraints on $\obs$ for which finding a D-optimal design is
-analytically tractable. We start with a proposition, whose proof is
-delegated to the appendix.
+analytically tractable. %% We start with a proposition, whose proof is
+%% delegated to the appendix.
 
-\begin{restatable*}{proposition}{biggerbetter}\label{prop:bigger better}
+\begin{proposition}\label{prop:bigger better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
   $\sigma^2 > 0$ and $|\zeta| > 1$. Then $\tar(\obs)$ increases if we
   use $\zeta \meas_j$ in $\obs$ instead of $\meas_j$.
-\end{restatable*}
+\end{proposition}
+
+\begin{proof} 
+  Fix an arbitrary $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. We see
+  that for $u \in \hilo$
+  \begin{equation*}
+    Vu = e_je_j^t (\meas_1(u),\dots,\meas_m(u) )^t = e_j \meas_j(u)
+    = (0,\dots,0,\meas_j(u),0,\dots,0)^t.
+  \end{equation*}
+  This way, $V$ has the same $j$th entry as $\obs$ while the rest are
+  set to zero. We calculate the variation in this direction and show
+  it is positive --- $\delta \tar(\obs)V > 0$. This means that
+  increasing the magnitude of the $j$th observation functional
+  increases $\tar(\obs)$. We start with the last line of \eqref{eq:tar var}, and denote $\tmp : = \fwd \postcov \fwd^*$.
+  \begin{align*}
+     \delta \tar(\obs) V 
+    &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
+    % 
+    %
+    %
+    &= \tr{e_je_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
+    %
+    % 
+    %
+    &= e_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}e_j \\
+    %
+    % 
+    %
+    &= e_j^t ( I - \obs \modcov \obs^*\Sigma^{-1})\obs \tmp \obs^* \Sigma^{-1}e_j \\  
+    % 
+    %
+    %
+    &=  e_j^t(\Sigma-\obs \modcov \obs^*) \Sigma^{-1}\obs \tmp \obs^* \Sigma^{-1}e_j \\
+    %
+    %
+    %
+    &=\sigma^2 e_j^t \Sigma^{-1}\obs \tmp \obs^* \Sigma^{-1}e_j
+    \text{ by \eqref{eq:Sigma} }\\
+    %
+    % 
+    %
+    &=\sigma^2 e_j^t \Sigma^{-1}\obs \fwd \postcov \fwd^* \obs^* \Sigma^{-1}e_j.
+  \end{align*} 
+  Since $\postcov$ is positive definite, $\delta \tar(\obs) V > 0$.
+\end{proof}
+
 
 %% the kind of sensors we have at our disposal and the properties of
 %% $\hilo$, as discussed in section \ref{subsec:dynamics}.
@@ -152,52 +263,73 @@ consider.}:
 Thus, it is reasonable to consider observation vectors with unit
 $\hilo^*$ norm. The unit norm constraints can be written using
 \eqref{eq:obs*} as a series of $m$ equality constraints (one for each
-observation) on $\obs$ as
-\begin{align}\label{eq:constraints}
-  \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,j=1,\dots,m.
-\end{align}
-The first variations of the unit norm constraints are:
-\begin{align*}
-  \delta \phi_j(\obs)V  
-  &= \frac12\lim_{\tau \to 0}\tau^{-1}
-  ( \|(\obs + \tau V)^*e_j \|_{\hilp}^2 - \|\obs ^*e_j \|_{\hilp}^2  ) \\
-  %
-  %
-  %
-  &= \frac12\lim_{\tau \to 0}\tau^{-1}
-  ( \langle (\obs + \tau V)^*e_j, (\obs + \tau V)^*e_j \rangle_{\hilp} - 
-  \langle \obs^*e_j, \obs^*e_j \rangle_{\hilp} ) \\
-  % 
-  % 
-  %
-  &= \frac12\lim_{\tau \to 0}\tau^{-1}
-  (2\tau \langle \obs^*e_j,V^*e_j \rangle_{\hilp} 
-  +\tau^2 \langle V^*e_j, V^*e_j \rangle_{\hilp} ) \\
-  %
-  %
-  % 
-  &= \langle \obs^*e_j,V^*e_j \rangle_{\hilp} \\
-  %
-  %
-  % 
-  &= \langle V \obs^*e_j,e_j \rangle_{\R^m} \\
-  %
-  %
-  %
-  &= e_j^t V \obs^* e_j \\
-  % 
-  %
-  %
-  &= \tr{V \obs^* e_je_j^t}.
-\end{align*}
-The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
+observation) on $\obs$. We find their first variations in Proposition
+\ref{prop:constraints var}.
 
-\begin{align}\label{eq:grad constraints}
-\nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
-\end{align}
-where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
-Section \ref{section:objective}, the gradient $\nabla \phi_j(\obs)$ is
-best thought of as a row vector.
+%%  as \begin{equation*} \phi_j(\obs) :=\frac12 \| \obs^*
+%% e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.  \end{equation*}
+
+
+\begin{proposition}\label{prop:constraints var}
+  Let
+  \begin{align*}
+    \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,j=1,\dots,m.
+  \end{align*}
+  Then
+  \begin{equation*}
+    %% \delta \phi_j(\obs)V = \tr{V \obs^* e_je_j^t}.
+    \nabla \phi_j(\obs) = \obs^* e_je_j^t.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  \begin{align*}
+    \delta \phi_j(\obs)V  
+    &= \frac12\lim_{\tau \to 0}\tau^{-1}
+    ( \|(\obs + \tau V)^*e_j \|_{\hilp}^2 - \|\obs ^*e_j \|_{\hilp}^2  ) \\
+    %
+    %
+    %
+    &= \frac12\lim_{\tau \to 0}\tau^{-1}
+    ( \langle (\obs + \tau V)^*e_j, (\obs + \tau V)^*e_j \rangle_{\hilp} - 
+    \langle \obs^*e_j, \obs^*e_j \rangle_{\hilp} ) \\
+    % 
+    % 
+    %
+    &= \frac12\lim_{\tau \to 0}\tau^{-1}
+    (2\tau \langle \obs^*e_j,V^*e_j \rangle_{\hilp} 
+    +\tau^2 \langle V^*e_j, V^*e_j \rangle_{\hilp} ) \\
+    %
+    %
+    % 
+    &= \langle \obs^*e_j,V^*e_j \rangle_{\hilp} \\
+    %
+    %
+    % 
+    &= \langle V \obs^*e_j,e_j \rangle_{\R^m} \\
+    %
+    %
+    %
+    &= e_j^t V \obs^* e_j \\
+    % 
+    %
+    %
+    &= \tr{V \obs^* e_je_j^t}.
+  \end{align*}
+\end{proof}
+
+
+%% The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
+
+%% \begin{align}\label{eq:grad constraints}
+%% \nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
+%% \end{align}
+%% where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
+%% Section \ref{section:objective},
+
+The gradients $\nabla \tar(\obs)$ and $\nabla \phi_j(\obs)$ are best
+thought of as row vectors.
+
 
 \subsection{Necessary Conditions for D-Optimality}\label{subsec:necessary}
 We find necessary conditions for D-optimality via Lagrange
