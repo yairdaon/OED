@@ -1,14 +1,10 @@
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
-We seek a formulation of the D-optimal design problem
-\cite{AlexanderianGloorGhattas14} via Lagrange multipliers. In Section
-\ref{section:objective} we find the gradient of $\tar$. In Section
-\ref{subsec:unit norm} we suggest unit-norm constraints on rows of
-$\obs$ and find their. Finally, in Section \ref{subsec:necessary} we
-formulate the D-optimal design problem as a Lagrange multipliers
-problem.
-
-Recall that:
-
+In this section we propose a formulation of the D-optimal design
+problem via Lagrange multipliers. We first find the gradient of
+$\tar$. Then we suggest unit-norm constraints on $\obs$ and we find
+the gradients of these unit-norm constraints. Results of this section
+are summarized in Theorem \ref{thm:constrained}.
+First, recall that:
 \begin{definition}\label{def:var}
   Let $F$ a real valued function of $\obs$. The first variation of $F$
   at $\obs$ in the direction $V$ is:
@@ -23,7 +19,14 @@ Recall that:
   then we call $\nabla F(\obs)$ the gradient of $F$ at $\obs$. 
 \end{definition}
 
-\begin{proposition}\label{prop:tar var}
+%% Gradients are best thought of as row vectors. This will prove
+%% important in section \ref{subsec:necessary}.
+
+
+%% \subsection{The gradient of $\tar$}\label{section:objective}
+
+\begin{proposition}\label{prop:tar grad}
+  The gradient of the D-optimality objective $\tar$ is
   \begin{equation*}
     %% \delta \tar(\obs) V = \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
     %%   \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
@@ -33,7 +36,7 @@ Recall that:
 \end{proposition}
 
 \begin{proof}  
-  From \eqref{eq:Sigma}, the definition of $\Sigma(\obs)$:
+  From the definition of $\Sigma(\obs)$ \eqref{eq:Sigma}: 
 
   \begin{align}\label{eq:der sig}
     \begin{split}
@@ -68,7 +71,7 @@ Recall that:
     %\text{, by \eqref{eq:der sig}. }
   \end{align*}
 
-  Thus
+  Thus:
   \begin{align}\label{eq:der sig inv}
     \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0}  
       &= -\Sigma^{-1} (V \modcov \obs^* + \obs \modcov V^*) \Sigma^{-1}.
@@ -80,7 +83,7 @@ Recall that:
     T(\obs) = \obs^* \Sigma^{-1}(\obs)\obs.
   \end{equation*}
   
-  By Leibnitz (product) rule and \eqref{eq:der sig inv}:
+  By Leibniz (product) rule and \eqref{eq:der sig inv}:
   % 
   \begin{align}\label{eq:T}
     \begin{split}
@@ -97,7 +100,7 @@ Recall that:
   \end{align}
 
 
-  We now record \ref{lemma:lax} which is a generalization of a
+  We now record Lemma \ref{lemma:lax} which is a generalization of a
   lemma from \cite{Lax07}. Its proof is delegated to the appendix.
   \begin{restatable*}{lemma}{lax}\label{lemma:lax}
     Let $Y(t)$ be a differentiable operator-valued function. Assume 
@@ -173,16 +176,12 @@ Recall that:
 %%   %% justified.
 %% \end{proof}
 
-The gradient $\nabla \tar(\obs)$ should be viewed as a row vector,
-as the product $V \nabla \tar$ is in $\R^{m \times m}$. This will
-prove important in section \ref{subsec:necessary}.
-
-\subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
+%% \subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
 In a real-life optimal design problem we cannot choose any measurement
 operator $\obs$. In order to facilitate analysis, we seek reasonable
 constraints on $\obs$ for which finding a D-optimal design is
-analytically tractable. %% We start with a proposition, whose proof is
-%% delegated to the appendix.
+analytically tractable. The following proposition will guide us in
+finding such constraints.
 
 \begin{proposition}\label{prop:bigger better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
@@ -191,17 +190,17 @@ analytically tractable. %% We start with a proposition, whose proof is
 \end{proposition}
 
 \begin{proof} 
-  Fix an arbitrary $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. We see
-  that for $u \in \hilo$
+  Fix an arbitrary $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. For $u
+  \in \hilo$:
   \begin{equation*}
     Vu = e_je_j^t (\meas_1(u),\dots,\meas_m(u) )^t = e_j \meas_j(u)
     = (0,\dots,0,\meas_j(u),0,\dots,0)^t.
   \end{equation*}
-  This way, $V$ has the same $j$th entry as $\obs$ while the rest are
-  set to zero. We calculate the variation in this direction and show
-  it is positive --- $\delta \tar(\obs)V > 0$. This means that
-  increasing the magnitude of the $j$th observation functional
-  increases $\tar(\obs)$. We start with the last line of \eqref{eq:tar var}, and denote $\tmp : = \fwd \postcov \fwd^*$.
+  %% This way, $V$ has the same $j$th entry as $\obs$ while the rest
+  %% are set to zero.
+  We now calculate the variation of $\tar$ at $\obs$ in the direction
+  of $V$. Denote $\tmp: = \fwd \postcov \fwd^*$. From Proposition
+  \ref{prop:tar grad}:
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
@@ -231,26 +230,18 @@ analytically tractable. %% We start with a proposition, whose proof is
     %
     &=\sigma^2 e_j^t \Sigma^{-1}\obs \fwd \postcov \fwd^* \obs^* \Sigma^{-1}e_j.
   \end{align*} 
-  Since $\postcov$ is positive definite, $\delta \tar(\obs) V > 0$.
+  Since $\postcov$ is positive definite, we conclude that $\delta
+  \tar(\obs) V > 0$. This means that increasing the magnitude of the
+  $j$th observation functional increases $\tar(\obs)$.
 \end{proof}
 
-
-%% the kind of sensors we have at our disposal and the properties of
-%% $\hilo$, as discussed in section \ref{subsec:dynamics}.
- %% Viewed another way, it increases the Signal to Noise Ratio
-%% (SNR) --- which is always desirable when taking any observation
-%% prone to error.  This can be understood easily from the formulation
-%% of the inverse problem $\data = \obs \fwd \param + \obs \eps' +
-%% \eps$, where $\eps'$ can be taken as model error and $\eps$ is iid
-%% observation error.
-
-From Proposition \ref{prop:bigger better} we understand that the norm
-of obsevation vectors must be bounded. Otherwise, vectors whose norms
-approach infinity are optimal. This absurd situation is equivalent to
-ignoring the iid observation noise term $\eps$. The norm of point
-evaluations, for example, is always one\footnote{Of course, point
-evaluations are not in any Hilbert space of functions we wish to
-consider.}:
+Proposition \ref{prop:bigger better} implies that the norm of
+obsevation vectors should be bounded. Otherwise, vectors whose norms
+approach infinity are optimal. Such absurd situation is equivalent to
+ignoring the iid observation noise term $\eps$. For example, in any
+real-life problem where sensors are concerned, the norm of point
+evaluations is always one\footnote{Of course, point evaluations are
+not in any Hilbert space of functions we wish to consider.}:
 \begin{align*}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
     |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
@@ -263,17 +254,12 @@ consider.}:
 Thus, it is reasonable to consider observation vectors with unit
 $\hilo^*$ norm. The unit norm constraints can be written using
 \eqref{eq:obs*} as a series of $m$ equality constraints (one for each
-observation) on $\obs$. We find their first variations in Proposition
-\ref{prop:constraints var}.
+observation) on $\obs$. We find their gradients in Proposition \ref{prop:constraints grad} below:
 
-%%  as \begin{equation*} \phi_j(\obs) :=\frac12 \| \obs^*
-%% e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.  \end{equation*}
-
-
-\begin{proposition}\label{prop:constraints var}
+\begin{proposition}\label{prop:constraints grad}
   Let
   \begin{align*}
-    \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,j=1,\dots,m.
+    \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.
   \end{align*}
   Then
   \begin{equation*}
@@ -327,32 +313,26 @@ observation) on $\obs$. We find their first variations in Proposition
 %% where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
 %% Section \ref{section:objective},
 
-The gradients $\nabla \tar(\obs)$ and $\nabla \phi_j(\obs)$ are best
-thought of as row vectors.
+%% The gradients $\nabla \tar(\obs)$ and $\nabla \phi_j(\obs)$ are best
+%% thought of as row vectors.
 
 
-\subsection{Necessary Conditions for D-Optimality}\label{subsec:necessary}
-We find necessary conditions for D-optimality via Lagrange
-multipliers:
+Necessary first-order conditions for D-optimality are found via
+Lagrange multipliers:
 \begin{align}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
   \label{eq:Lagrange mult1} \\
     &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
 \end{align}
 
-%% Recall where the objects involved are defined: the observation
-%% operator, $\obs \in (\hilo^*)^m$. The objective $\tar: (\hilo^*)^m \to
-%% \R$ and its gradient is $\nabla \tar(\obs) \in \hilo^m$. Similarly,
-%% $\phi_j: (\hilo^*)^m \to \R$ and $\nabla \phi_j(\obs) \in \hilo^m$.
-
-Substituting \eqref{eq:tar grad} and \eqref{eq:grad constraints} in
-\eqref{eq:Lagrange mult1}:
+We substitute into \eqref{eq:Lagrange mult1} the gradients calculated
+in Propositions \ref{prop:tar grad} and \ref{prop:constraints grad}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
 \end{equation}
-Let $\Xi := \diag(\xi_j)$. We can write \eqref{eq:constrained} more
-compactly as:
+Let $\Xi := \diag(\xi_j)$. We can write \eqref{eq:constrained} and
+\eqref{eq:Lagrange mult2} more compactly as:
 
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:

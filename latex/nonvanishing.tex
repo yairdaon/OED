@@ -26,12 +26,9 @@ utilized as an observation operator.
 \end{lemma}
 
 \begin{proof}
-  We use the Schur complement:
-  %% to write one inverse in terms of the other: and introduce
-  %%  notations to make the derivation cleaner. Note that we think of
-  %%  $\obsm$ and $\obsm^*$ as column and row vectors (respectively).
+  Let
   \begin{align*}
-    \Sigma( \obs ) &= \Sigma = 
+    \Sigma( \obs ) &= 
     \begin{bmatrix}
       \Sigma (\obsm )           & \obsm \modcov \meas_m \\
       \meas_m \modcov \obsm^*   & \sigma^2 + \meas_m \modcov \meas_m
@@ -43,7 +40,10 @@ utilized as an observation operator.
     \end{bmatrix}\\
     %
     %
-    %
+  \end{align*}
+
+  The Schur complement implies:
+  \begin{align*}
     \Sigma^{-1} &=
     \begin{bmatrix}
       \Sigmam^{-1} + \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1} & - \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} \\
@@ -64,16 +64,14 @@ utilized as an observation operator.
     \end{bmatrix}
   \end{align*}
   %
-  Further, define
+  Denote:
   %
   \begin{align*}
     \M (\obs ):&= \prcov^{\frac12}\fwd^* \obs^* \Sigma^{-1} \obs \fwd
-    \prcov^{\frac12}    
+    \prcov^{\frac12}.
   \end{align*}
-  %
-  and note that:%% , using our understanding of what is a column vector and
-  %% what is a row vector:
-  %
+  
+  Note that:
   \begin{align*}
     \M(\obs) &= \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2} \\
     %
@@ -139,45 +137,51 @@ utilized as an observation operator.
   \begin{equation}\label{eq:M postcov}
     \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
   \end{equation}
-  Next, we use an analogue of the matrix determinant lemma, whose
-  statement and proof are recorded in the appendix:
+  Next, use an analogue of the matrix determinant lemma (Lemma
+  \ref{lemma:MDL}), whose statement and proof are recorded in the
+  appendix:
   %
-  \begin{align*}
-    \tar( \obs ) - \tar( \obsm )
-    %
-    %
-    %
-    &= \frac12 \log \det \Big ( I + \M ( \obs ) \Big ) / \det \Big ( I + \M (\obsm) \Big ) \\
-    %
-    %
-    %
-    &= \frac12  \log \det \left ( I + \M(\obsm) + uu^* \right ) / \det \Big ( I + \M (\obsm) \Big ) \\
-    %
-    %
-    %
-    &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ) \text{ (Lemma \ref{lemma:MDL})}.
-  \end{align*}
-  Using \eqref{eq:u} and \eqref{eq:M postcov}:
-  \begin{align*}
-    &\left \langle \left (I+\M (\obsm)\right )^{-1}u, u \right \rangle\\
-    &= \frac{
+  \begin{align}\label{eq:diffs}
+    \begin{split}
+      \tar( \obs ) - \tar( \obsm )
+      %
+      %
+      %
+      &= \frac12 \log \det \Big ( I + \M ( \obs ) \Big ) / \det \Big ( I + \M (\obsm) \Big ) \\
+      %
+      %
+      %
+      &= \frac12  \log \det \left ( I + \M(\obsm) + uu^* \right ) / \det \Big ( I + \M (\obsm) \Big ) \\
+      %
+      %
+      %
+      &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ) \text{ (Lemma \ref{lemma:MDL})}.
+    \end{split}
+  \end{align}
+  From \eqref{eq:u} and \eqref{eq:M postcov}:
+  \begin{align}\label{eq:final}
+    \begin{split}
+      &\left \langle \left (I+\M (\obsm)\right )^{-1}u, u \right \rangle\\
+      &= \frac{
+        \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m,
+        (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m \rangle
+      }{
+        c- w^t \Sigmam^{-1} w
+      }\\
+      %
+      %
+      %
+      &= 
+      \frac{
       \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m,
       (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m \rangle
-    }{
-      c- w^t \Sigmam^{-1} w
-    }\\
-    %
-    %
-    %
-    &= 
-    \frac{
-      \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m,
-      (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m \rangle
-    }{
-      \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
-    }
-  \end{align*}
-  and the conclusion follows.
+      }{
+        \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
+      }
+    \end{split}
+  \end{align}
+  and the conclusion follows by substituting \eqref{eq:final} into
+  \eqref{eq:diffs}.
 \end{proof}
 
 
@@ -281,7 +285,6 @@ utilized as an observation operator.
 \end{proof}
 
 
-
 Recall from \eqref{eq:Sigma} that $\Sigma(\obs) = \obs
 \modcov \obs^* + \sigma^2I$ and let $u := \obsm^*
 \Sigmam^{-1}e_j$. Then
@@ -311,8 +314,8 @@ is bounded, and
 We have shown that in the limit $\sigma^2 \to 0$, no increase in
 $\tar$ is achieved by repeating an observation, so designs that
 exhibit sensor clusterization are not D-optimal. In conclusion, for
-small observation error levels, the sensor clusterization is mitigated
-by the presence of a non-zero model error\footnote{Since the design
+small observation error levels, sensor clusterization is mitigated by
+the presence of a non-zero model error\footnote{Since the design
 criterion is not defined for $\sigma^2 = 0$ and identical
 observations, we cannot make a statement regarding $\sigma^2 = 0$,
 except in the limiting sense described above.}.

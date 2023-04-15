@@ -1,9 +1,8 @@
 \section{D-Optimal Designs when $\modcov = 0$}\label{section:vanishing}
-We now turn to characterize D-optimal designs when $\modcov = 0$. Our
-goal is to prove Theorem \ref{thm:char}.
-
-The necessary first-order condition for D-optimality of Theorem
-\ref{thm:constrained} for $\modcov = 0$ become:
+We will now prove Theorem \ref{thm:char} which caracterizes D-optimal
+designs when $\modcov = 0$. The necessary first-order condition for
+D-optimality of Theorem \ref{thm:constrained} for $\modcov = 0$
+become:
 
 \begin{equation}\label{eq:eigenproblem}
   \sigma^{-2}\fwd \postcov \fwd^* \obs^* = \obs^* \Xi,
@@ -13,7 +12,8 @@ eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
 are eigenvectors. However, $\postcov$ depends on $\obs$ and thus, we
 refer to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue
-problem. 
+problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
+%% \ref{lemma:sim diag} required 
 
 \begin{proposition}\label{prop:twice woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
@@ -32,15 +32,16 @@ problem.
   regularization trick. The standard proof for Woodbury's matrix
   identity works in infinite dimensions, as long as all terms are well
   defined. Unfortunately, $\obs^*\obs$ is not invertible, so we force
-  it to be. Recall Woodbury's matrix identity:
-  $$
-  (A + UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}.
-  $$
+  it to be. Recall Woodbury's matrix identity and denote:
+  \begin{align*}
+    (A + UCV)^{-1} &= A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1} \\
+    A :&= \prcov^{-1} \\
+    U :&= \fwd^* \\
+    V :&= \fwd \\
+    C :&= \sigma^{-2} (\obs^*\obs+\eps I),\ \eps > 0
+  \end{align*}
 
-  Denote $A := \prcov^{-1}$, $U := \fwd^*$, $V := \fwd$, $C :=
-  \sigma^{-2} (\obs^*\obs+\eps I)$ for some $\eps > 0$. Then:
-  %% \begin{align*}
-  %%   \begin{split}
+  Then, by Woodbury's matrix identity:
   \begin{equation}\label{eq:first}
   \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^* \\
       %
@@ -49,17 +50,26 @@ problem.
   %%   \end{split}
   %% \end{align*}
   \end{equation}
-   Now denote $X := \fwd\prcov \fwd^*$ and $Y_{\eps} := \obs^*\obs +
-   \eps I$, and $Y_{\eps}$ is invertible. Then \eqref{eq:first}
-   becomes:
+  Now, denote:
+  \begin{align*}
+    X :&= \fwd\prcov \fwd^* \\
+    Y_{\eps} :&= \obs^*\obs + \eps I,
+  \end{align*}
+  and observe that $Y_{\eps}$ is invertible. Subsitute $X, Y_{\eps}$
+  into the RHS of \eqref{eq:first}:
    \begin{equation}\label{eq:second}
      \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
    \end{equation}
 
    Note that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of
-   two positive definite operators. Now, taking $A := X^{-1}, C :=
-   \sigma^2Y_{\eps}^{-1}, U := I$ and $V := I$ and using Wodbury's
-   matrix identity in reverse order:
+   two positive definite operators. Now, let
+   \begin{align*}
+     A :&= X^{-1}, \\
+     C :&= \sigma^2Y_{\eps}^{-1}, \\
+     U :&= I, \\
+     V :&= I.
+   \end{align*}
+   Apply Woodbury's matrix identity to the RHS of \eqref{eq:second}:
   \begin{align*}
     \begin{split}
       \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X \\
@@ -99,8 +109,8 @@ problem.
 
 \begin{proof}
   First, enumerate the eigenvalues of $C + \sum_{j=1}^m
-  \func_j\func_j^*$ as $\xi_1,\dots,\xi_\ell$. Denote the
-  indices of the eigenvectors corresponding to $\xi_i$
+  \func_j\func_j^*$ as $\xi_1,\dots,\xi_\ell$. Denote the indices of
+  the eigenvectors corresponding to $\xi_i$
   \begin{equation*}
     S_i := \{ 1 \leq k \leq m | (C + \sum_{j=1}^m \func_j\func_j^* )\func_k = \xi_i \func_k \}.
   \end{equation*}
@@ -117,10 +127,11 @@ problem.
   \end{equation}
   Let $V_i := span \{\func_k \}_{k\in S_i}$. Observe that $V_i$ is
   invariant under $A_i$, by definition, and under $C$, by \eqref{eq:on
-    vi}. Using \eqref{eq:on vi} again, we conclude that on $V_i$, $A_i
-  = \xi_iI - C$. This immediately implies $A_i$ and $C$ have the
-  same eigenvectors on $V_i$. This holds for every $1 \leq i \leq
-  \ell$ and we conclude that $C$ and $A$ have the same eigenvectors.
+    vi}. A second application of \eqref{eq:on vi} shows that $A_i =
+  \xi_iI - C$ on $V_i$. This immediately implies $A_i$ and $C$ are
+  simultaneously diagonalizable on $V_i$. This holds for every $1 \leq
+  i \leq \ell$ and we conclude that $C$ and $A$ are simultaneously
+  diagonalizable.
 \end{proof}
 
 
@@ -202,7 +213,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
 
 \begin{proposition}\label{prop:kkt}
-  Let $\tar: \mathbb{R}^m \to \mathbb{R}$, $\psi(\eta) =
+  Let $\tar: \mathbb{R}^m \to \mathbb{R}$, $\tar(\eta) =
   \frac{1}{2}\sum_{i=1}^m \log (1+\sigma^{-2}\lambda_i \eta_i)$, with
   $\lambda_i > 0$ and $\sigma^{2} > 0$. Then the maximum of $\tar$
   subject to $\eta_i \geq 0$ and $\sum\eta_i = m$ is obtained at
@@ -298,8 +309,8 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{align}
 \end{proof}
 
-For the proof of Theorem \ref{thm:char} we require Lemma
-\ref{lemma:free}:
+We require Lemma \ref{lemma:free} for the proof of Theorem
+\ref{thm:char}:
 
 \begin{lemma}[Unit norm decomposition]\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
@@ -380,9 +391,9 @@ For the proof of Theorem \ref{thm:char} we require Lemma
   
   Recall from \eqref{eq:postcov}, that the posterior precision is
   $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\obs^*\obs\fwd$. The
-  first statement in part (5) now follows from Lemma \ref{prop:twice
-    woodbury}, while the second statement follows from parts (1) and
-  (4).
+  first statement in part (5) now follows from Proposition
+  \ref{prop:twice woodbury}, while the second statement follows from
+  parts (1) and (4).
 \end{proof}
 
 
@@ -449,9 +460,8 @@ For the proof of Theorem \ref{thm:char} we require Lemma
     sub-optimal design (right). Both designs are allowed $m=3$
     observations. We assume $\sigma^2=1$ and thus, the blue area has
     accumulated height of $\sigma^{-2}m = 3$ in both plots. The
-    D-optimal design (left) increases precision (equivalently, reduces
-    uncertainty) where it is lowest. The sub-optimal design (right)
-    does not.}
+    D-optimal design (left) increases precision where it is
+    lowest. The sub-optimal design (right) does not.}
   \label{fig:optimal vs not}
 \end{figure}
 
