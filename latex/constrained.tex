@@ -1,10 +1,9 @@
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
-In this section we propose a formulation of the D-optimal design
-problem via Lagrange multipliers. We first find the gradient of
-$\tar$. Then we suggest unit-norm constraints on $\obs$ and we find
-the gradients of these unit-norm constraints. Results of this section
-are summarized in Theorem \ref{thm:constrained}.
-First, recall that:
+We seek a formulation of the D-optimal design problem via Lagrange
+multipliers. We first find the gradient of $\tar$. Then we suggest
+unit-norm constraints on $\obs$ and find the gradients of these
+unit-norm constraints. Results of this section are summarized in
+Theorem \ref{thm:constrained}. First, recall that:
 \begin{definition}\label{def:var}
   Let $F$ a real valued function of $\obs$. The first variation of $F$
   at $\obs$ in the direction $V$ is:
@@ -101,7 +100,8 @@ First, recall that:
 
 
   We now record Lemma \ref{lemma:lax} which is a generalization of a
-  lemma from \cite{Lax07}. Its proof is delegated to the appendix.
+  Theorem 4 in Chapter 9 of \cite{Lax07}. Its proof is delegated to
+  the appendix.
   \begin{restatable*}{lemma}{lax}\label{lemma:lax}
     Let $Y(t)$ be a differentiable operator-valued function. Assume 
     $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
@@ -109,6 +109,9 @@ First, recall that:
       \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
     \end{equation*}
   \end{restatable*}
+
+  We now employ \ref{lemma:lax} and calculate the first variation of
+  $\tar$:
 
   \begin{align*}
     \begin{split}
@@ -152,36 +155,11 @@ First, recall that:
   \end{align*} 
 \end{proof}
 
-
-%% \begin{corollary}\label{cor:tar grad}
-%%   \begin{equation}
-%%     \nabla \tar(\obs) = (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd
-%%     \postcov \fwd^* \obs^*\Sigma^{-1}.
-%%   \end{equation}
-%% \end{corollary}
-
-%% \begin{proof}
-%%   %% We refer to $\nabla \tar(\obs)$ as the gradient of $\tar (\obs )$,
-%%   %% and we will now justify this name.
-%%   Let $A := V \nabla \tar(\obs) \in \R^{m \times m}$. Then $\ttr A =
-%%   \sum_{j=1}^m e_j^t A e_j$ (with $e_j$ the $j$th standard basis
-%%   vector):
-%%   \begin{align*}
-%%     \delta \tar(\obs)V = \tr{V \nabla \tar(\obs)} = \sum_{j=1}^m
-%%     V_j(\nabla \tar(\obs)_j),
-%%   \end{align*}
-%%   with $V_j \in \hilo^*$ and $\nabla \tar(\obs)_j \in \hilo^{**} =
-%%   \hilo, j=1,\dots,m$. %% Thus, $\nabla \tar( \obs ) \in \hilo^m$ is
-%%   %% indeed the correct gradient and the notation \eqref{eq:tar grad} is
-%%   %% justified.
-%% \end{proof}
-
-%% \subsection{Unit Norm Constraints and their Gradients}\label{subsec:unit norm}
 In a real-life optimal design problem we cannot choose any measurement
-operator $\obs$. In order to facilitate analysis, we seek reasonable
-constraints on $\obs$ for which finding a D-optimal design is
-analytically tractable. The following proposition will guide us in
-finding such constraints.
+operator $\obs \in (\hilo^*)^m$. In order to facilitate analysis, we
+seek reasonable constraints on $\obs$ for which finding a D-optimal
+design is analytically tractable. The following proposition will guide
+us in finding such constraints.
 
 \begin{proposition}\label{prop:bigger better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
@@ -235,13 +213,15 @@ finding such constraints.
   $j$th observation functional increases $\tar(\obs)$.
 \end{proof}
 
-Proposition \ref{prop:bigger better} implies that the norm of
-obsevation vectors should be bounded. Otherwise, vectors whose norms
-approach infinity are optimal. Such absurd situation is equivalent to
-ignoring the iid observation noise term $\eps$. For example, in any
-real-life problem where sensors are concerned, the norm of point
-evaluations is always one\footnote{Of course, point evaluations are
-not in any Hilbert space of functions we wish to consider.}:
+Proposition \ref{prop:bigger better} implies that it is a good idea to
+bound the norm of obsevation vectors. If, for example, we can take
+measurements in $span\{\meas\}$ for some $\meas \neq 0$, then a
+D-optimal design does not exist because we can always take an
+observation vector in $span\{\meas\}$ with larger norm. In contrast,
+in any real-life problem where sensors are concerned, the norm of
+measurements recorded by sensors is always one\footnote{Of course,
+point evaluations are not in any Hilbert space of functions we wish to
+consider.}:
 \begin{align*}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
     |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
@@ -254,7 +234,8 @@ not in any Hilbert space of functions we wish to consider.}:
 Thus, it is reasonable to consider observation vectors with unit
 $\hilo^*$ norm. The unit norm constraints can be written using
 \eqref{eq:obs*} as a series of $m$ equality constraints (one for each
-observation) on $\obs$. We find their gradients in Proposition \ref{prop:constraints grad} below:
+observation) on $\obs$. We define these and find their gradients in
+Proposition \ref{prop:constraints grad} below:
 
 \begin{proposition}\label{prop:constraints grad}
   Let
@@ -325,14 +306,15 @@ Lagrange multipliers:
     &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
 \end{align}
 
-We substitute into \eqref{eq:Lagrange mult1} the gradients calculated
-in Propositions \ref{prop:tar grad} and \ref{prop:constraints grad}:
+Substitute the gradients calculated in Propositions \ref{prop:tar
+  grad} and \ref{prop:constraints grad} into \eqref{eq:Lagrange
+  mult1}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
-\end{equation}
-Let $\Xi := \diag(\xi_j)$. We can write \eqref{eq:constrained} and
-\eqref{eq:Lagrange mult2} more compactly as:
+\end{equation} 
+Letting $\Xi := \diag(\xi_j)$, \eqref{eq:constrained} and
+\eqref{eq:Lagrange mult2} are written more compactly as:
 
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:
@@ -343,8 +325,9 @@ Let $\Xi := \diag(\xi_j)$. We can write \eqref{eq:constrained} and
   Then:
   \begin{equation*}
     ( I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*  \Sigma^{-1}
-    = \obs^* \Xi.
+    = \obs^* \Xi, 
   \end{equation*}
+  where $\Xi \in \mathbb{R}^{m \times m}$ is diagonal.
 \end{theorem}
 
 

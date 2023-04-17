@@ -4,7 +4,9 @@
 In this section I will present notations that will be used throughout
 this article. These notations are summarized in Section
 \ref{subsec:notation}. The theoretical foundations for inverse
-problems over function spaces can be found in \cite{Stuart10}.
+problems over function spaces can be found in
+\cite{Stuart10}.
+
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
 Let $\hilp$ and $\hilo$ be separable Hilbert spaces (the subscripts p
@@ -17,26 +19,24 @@ fast decaying modes --- the heat operator from section
 $\param \sim \pr = \normal(\prmean ,\prcov)$ with some appropriate
 covariance operator $\prcov$ \cite{Stuart10} on $\hilp$. Note that
 $\fwd \prcov \fwd^*$ is the prior covariance in $\hilo$
-\cite{Stuart10}. As such, it is assumed invertible --- an assumption
-which will be used heavily below. Let $m$ the number of observations
-taken. Observations are taken via the \emph{observation
+\cite{Stuart10}. As such, $\fwd \prcov \fwd^*$ is assumed invertible
+--- an assumption which will be used below. Let $m$ the number of
+observations taken. Observations are taken via the \emph{observation
 operator}\footnote{It is common for the observation and forward
 operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
 following sections requires $\fwd$ and $\obs$ are explicitly
-separated.} $\obs \in ( \hilo^* )^m$. In an analogy with linear
-algebra, where row vectors are thought of as linear functionals,
-$\obs$ is best thought of as having ``rows'' $\meas_j, j=1,\dots,m$:
-\begin{equation}\label{eq:O}
-  \obs = (\meas_1,\dots, \meas_m)^t, \meas_j \in \hilo^*, j = 1,\dots,m.
-\end{equation}
-This way, $\obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m$ and
-$u \in \hilo$.
-%% but we may drop the parentheses and write $\meas_j u = \meas_j(u)$.
-%% A few observations regarding $\obs$ are in order.
-%% First, it is good to keep in mind that $( \hilo^* )^m$ is a Hilbert
-%% space with norm $\| \obs \| = \sum_{j=1}^m \|\meas_j\|$.
-For $u \in \hilo$ and $v\in \R^m$:
+separated.} $\obs \in ( \hilo^* )^m$, so that:
+
+\begin{equation*}%\label{eq:O}
+  \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo,
+\end{equation*}
+%
+%
+and we refer to $\meas_j, j=1,\dots,m$ as \emph{observation
+vector}s. For $u \in \hilo$ and $v\in \R^m$:
+%
+%
 \begin{align*}
   \big (\obs^*v \big ) (u) &= \langle v, \obs u \rangle_{\R^m} = \sum_{j=1}^m  v_j \meas_j(u)
   = v^t \left ( \obs u \right ) = (v^t \obs) (u),
@@ -46,20 +46,13 @@ and thus:
   \obs^*v &= \sum_{j=1}^m v_j \meas_j = v^t \obs.
 \end{align}
 
-%% \begin{observation}
-%%   It is best to think of $\meas_j,j=1,\dots,m$ as row vectors and of
-%%   $\obs$ as a matrix with rows $\meas_j$. 
-%% \end{observation}
-
-Each observation vector is a linear functional, chosen from (some
-subset of) $\hilo^{*}$. Data is acquired via noisy observations, with
-two types of error terms considered. Spatially correlated model error
-is denoted $\eps' \sim \normal(0,\modcov)$, and modeled as a centered
-Gaussian measure on $\hilo$ with covariance operator
-$\modcov$. Observation error is denoted $\eps \sim \normal(0, \sigma^2
-I_m)$, with $I_m \in \mathbb{R}^{m \times m}$ the identity. Both error
-terms and the prior are assumed independent of each other. Thus, data
-is acquired via
+Data is acquired via noisy observations, and we consider two types of
+error terms: Spatially correlated model error is denoted $\eps' \sim
+\normal(0,\modcov)$, and modeled as a centered Gaussian measure on
+$\hilo$ with covariance operator $\modcov$. Observation error is
+denoted $\eps \sim \normal(0, \sigma^2 I_m)$, with $I_m \in
+\mathbb{R}^{m \times m}$ the identity. Both error terms and the prior
+are assumed independent of each other. Thus, data is acquired via
 \begin{align}\label{eq:inverse problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
@@ -73,7 +66,7 @@ Gaussian random vector with covariance matrix
       \eps)^t ]
     % 
     % 
-    = \obs \modcov \obs^* + \sigma^2I , 
+    = \obs \modcov \obs^* + \sigma^2I_m , 
   \end{split}
 \end{align}
 where
@@ -92,8 +85,8 @@ where
 %% (i.e.\ a fixed set of observations), $\data = \obs \fwd \param +
 %% \bar{\eps}$ with $\bar{\eps} \sim \normal(0,\Sigma)$.
 Taking $\modcov = 0$ is a common practice
-\cite{Tarantola05,Kaipio2006,Vogel02} and then $\Sigma = \sigma^2I$ is
-simply a scalar matrix that does not depend on $\obs$.
+\cite{Tarantola05,Kaipio2006,Vogel02} and then $\Sigma = \sigma^2I_m$
+is a scalar matrix and does not depend on $\obs$.
 
 %% Taking an error model with a non-scalar covariance allows us to
 %% consider model error (modeled by $\modcov$) as well as observation
@@ -134,8 +127,8 @@ simply a scalar matrix that does not depend on $\obs$.
 %% %% \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 = \eps^{-1}$.
 
 
-Finally, it is useful to record a known result regarding the posterior
-covariance operator:
+The posterior measure $\post$ is Gaussian in this setting and its
+covariance operator is:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
@@ -144,22 +137,19 @@ covariance operator:
 
 \subsection{D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
 A D-optimal design maximizes expected KL divergence between posterior
-and prior measures, denoted $\post$ and $\pr$, respecively. It is
-useful to recall the definition of KL divergence for an arbitrary
-prior measure:
+and prior measures, $\post$ and $\pr$. It is useful to first recall
+the definition of KL divergence:% for an arbitrary prior measure:
 $$
-KL(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
+D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 $$
 
 D-optimal designs in infinite-dimensional Hilbert spaces were
-investigated in \cite{AlexanderianGloorGhattas14}. In
-infinite-dimensions, a D-optimal design is well-defined as maximizing
-the expected KL divergence between posterior and prior. The main
-result is summarized, in the notation presented above, in the
-following theorem\footnote{In \cite{AlexanderianGloorGhattas14},
-results are stated for $\Sigma=I$ (implied by $\modcov =
-0,\sigma^2=1$), but the authors also mention these results hold for
-more general covariance matrices (p. 681).}:
+investigated in \cite{AlexanderianGloorGhattas14}. Their main result
+is summarized, in the notation presented above, in the following
+theorem\footnote{In \cite{AlexanderianGloorGhattas14}, results are
+stated for $\Sigma=I$ (implied by $\modcov = 0,\sigma^2=1$), but the
+authors also mention these results hold for more general covariance
+matrices (p. 681).}:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
@@ -178,12 +168,12 @@ more general covariance matrices (p. 681).}:
 \end{theorem}
 \begin{definition}\label{def:d optimality}
   $\obs^{\star}$ is said to be \emph{D-optimal} if $\obs^{\star} =
-  \argmax_{\obs} \tar(\obs)$, where rows of $\obs$ are in some allowed
-  set of measurement.
+  \argmax_{\obs} \tar(\obs)$, where entries of $\obs \in (\hilo^*)^m$ are constrained to
+  some allowed set of measurement vectors in $\hilo^*$.
 \end{definition}
 
-\noindent In order to undestand the intuition behind Definition
-\ref{def:d optimality}, note that from \eqref{eq:postcov} and
+\noindent For an intuitive understanding of Definition \ref{def:d
+  optimality}, note that from \eqref{eq:postcov} and
 \eqref{eq:objective}:
 \begin{align*}
   \begin{split}

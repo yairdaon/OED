@@ -13,8 +13,8 @@ utilized as an observation operator.
 \begin{lemma}[Increase due to an observation]\label{lemma:design increase}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
   (\meas_1,\dots,\meas_{m-1})^t$. Then
-  \begin{align*}
-    \tar( \obs ) - \tar (\obsm ) &=
+  \begin{equation}\label{eq:conclusion}
+    \tar( \obs ) - \tar (\obsm ) =
     \frac12 \log \left ( 1 + \frac{
       \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m,
       (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m \rangle
@@ -22,7 +22,7 @@ utilized as an observation operator.
       \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
     }       
     \right ).
-  \end{align*}
+  \end{equation}
 \end{lemma}
 
 \begin{proof}
@@ -137,9 +137,10 @@ utilized as an observation operator.
   \begin{equation}\label{eq:M postcov}
     \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
   \end{equation}
-  Next, use an analogue of the matrix determinant lemma (Lemma
-  \ref{lemma:MDL}), whose statement and proof are recorded in the
-  appendix:
+  Next, use a generalization of the matrix determinant
+  lemma\footnote{$\det(A + uv^*) = (1 + \langle A^{-1} u,u \rangle)
+  \det A$.} to Hilbert spaces (Lemma \ref{lemma:MDL}). Precise
+  statement and proof are given in the appendix:
   %
   \begin{align}\label{eq:diffs}
     \begin{split}
@@ -147,11 +148,11 @@ utilized as an observation operator.
       %
       %
       %
-      &= \frac12 \log \det \Big ( I + \M ( \obs ) \Big ) / \det \Big ( I + \M (\obsm) \Big ) \\
+      &= \frac12 \log \left (\det \big ( I + \M ( \obs ) \big ) / \det \big ( I + \M (\obsm) \big ) \right )\\
       %
       %
       %
-      &= \frac12  \log \det \left ( I + \M(\obsm) + uu^* \right ) / \det \Big ( I + \M (\obsm) \Big ) \\
+      &= \frac12  \log \left (\det \left ( I + \M(\obsm) + uu^* \right ) / \det \big ( I + \M (\obsm) \big )\right ) \\
       %
       %
       %
@@ -216,7 +217,7 @@ utilized as an observation operator.
   \begin{align}\label{eq:denominator}
     \begin{split}
       \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m
-      &= \meas_m \modcov \obsm^* ( e^j - \sigma^2 \Sigmam^{-1} e_j )\\
+      &= \meas_m \modcov \obsm^* ( e_j - \sigma^2 \Sigmam^{-1} e_j )\\
       %
       %
       %
@@ -231,8 +232,8 @@ utilized as an observation operator.
       &= \meas_m \modcov \meas_m -\sigma^2 + \sigma^4 e_j^t\Sigmam^{-1}e_j.
     \end{split}
   \end{align}
-  We use \eqref{eq:observation} to simplify the terms in the enumerator of
-  the conclusion of Lemma \ref{lemma:design increase}:
+  We use \eqref{eq:observation} to simplify the enumerator in
+  \eqref{eq:conclusion}:
   \begin{align}\label{eq:enumerator}
     \begin{split}
       (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m
@@ -248,9 +249,8 @@ utilized as an observation operator.
     \end{split}
   \end{align}
   %
-  Substitute \eqref{eq:enumerator} and \eqref{eq:denominator} to
-  the enumerator and denominator (respectively) of the conclusion of
-  Lemma \ref{lemma:design increase}:
+  Substitute \eqref{eq:enumerator} and \eqref{eq:denominator} to the
+  enumerator and denominator (respectively) of \eqref{eq:conclusion}:
   %
   \begin{align*}
     \tar( \obs ) - \tar (\obsm ) &=
@@ -316,6 +316,6 @@ $\tar$ is achieved by repeating an observation, so designs that
 exhibit sensor clusterization are not D-optimal. In conclusion, for
 small observation error levels, sensor clusterization is mitigated by
 the presence of a non-zero model error\footnote{Since the design
-criterion is not defined for $\sigma^2 = 0$ and identical
-observations, we cannot make a statement regarding $\sigma^2 = 0$,
-except in the limiting sense described above.}.
+criterion is not defined for $\sigma^2 = 0$ and identical observation
+vectors, we cannot make a statement regarding $\sigma^2 = 0$, except
+in the limiting sense described above.}.

@@ -30,18 +30,24 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
 \begin{proof}
   The proof amounts to using Woodbury's matrix identity twice and a
   regularization trick. The standard proof for Woodbury's matrix
-  identity works in infinite dimensions, as long as all terms are well
-  defined. Unfortunately, $\obs^*\obs$ is not invertible, so we force
-  it to be. Recall Woodbury's matrix identity and denote:
-  \begin{align*}
-    (A + UCV)^{-1} &= A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1} \\
-    A :&= \prcov^{-1} \\
-    U :&= \fwd^* \\
-    V :&= \fwd \\
-    C :&= \sigma^{-2} (\obs^*\obs+\eps I),\ \eps > 0
-  \end{align*}
+  identity works for separable Hilbert spaces, as long as all terms
+  are well defined. Unfortunately, $\obs^*\obs$ is not invertible, so
+  we force it to be. Recall Woodbury's matrix identity:
+  \begin{equation}\label{eq:WMI}
+    (A + UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1}. 
+  \end{equation}
 
-  Then, by Woodbury's matrix identity:
+  Denote:
+  \begin{align}\label{eq:notation}
+    \begin{split}
+      A :&= \prcov^{-1} \\
+      U :&= \fwd^* \\
+      V :&= \fwd \\
+      C :&= \sigma^{-2} (\obs^*\obs+\eps I),\ \eps > 0
+    \end{split}
+  \end{align}
+
+  Then, by \eqref{eq:WMI}, with the notation \eqref{eq:notation}:
   \begin{equation}\label{eq:first}
   \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^* \\
       %
@@ -63,13 +69,16 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
 
    Note that $X + \sigma^2 Y_{\eps}^{-1}$ is invertible, as the sum of
    two positive definite operators. Now, let
-   \begin{align*}
-     A :&= X^{-1}, \\
-     C :&= \sigma^2Y_{\eps}^{-1}, \\
-     U :&= I, \\
-     V :&= I.
-   \end{align*}
-   Apply Woodbury's matrix identity to the RHS of \eqref{eq:second}:
+   \begin{align}\label{eq:notation2}
+     \begin{split}
+       A :&= X^{-1}, \\
+       C :&= \sigma^2Y_{\eps}^{-1}, \\
+       U :&= I, \\
+       V :&= I.
+     \end{split}
+   \end{align}
+   Apply \eqref{eq:WMI} with the notation \eqref{eq:notation2} to the
+   RHS of \eqref{eq:second}:
   \begin{align*}
     \begin{split}
       \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X \\
@@ -95,7 +104,6 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
 \end{proof}
 
 
-
 \begin{lemma}[Simultaneous diagonizability]\label{lemma:sim diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
@@ -106,7 +114,6 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
   then $C$ and $\sum_{j=1}^m \func_j \func_j^*$ are simultaneously
   diagonalizable.
 \end{lemma}
-
 \begin{proof}
   First, enumerate the eigenvalues of $C + \sum_{j=1}^m
   \func_j\func_j^*$ as $\xi_1,\dots,\xi_\ell$. Denote the indices of
@@ -135,7 +142,7 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
 \end{proof}
 
 
-\begin{proposition}[Eigenvectors of a D-optimal design]\label{prop:same ev}
+\begin{proposition}\label{prop:same ev}
   Let $\obs$ satisfy the nonlinear eigenvalue problem
   \eqref{eq:eigenproblem}. Then $\obs^*\obs$ and $\fwd \prcov \fwd^*$
   are simultaneously diagonalizable.
@@ -177,7 +184,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       \begin{equation*}
         \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i) = \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
       \end{equation*}
-    \item Let $\obs$ a D-optimal design. Then $\eta_i > 0$ for
+    \item Furthermore, if $\obs$ isD-optimal, $\eta_i > 0$ for
       eigenvectors corresponding to the $k$ largest $\lambda_i$.
   \end{enumerate}
 \end{proposition}
@@ -224,7 +231,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{cases}
   \end{equation}
   where $A:= \{1\leq i \leq m: \eta_i > 0\}$ and $A^c = \{1,\dots, m\}
-    \backslash A$, and $|A|$ is the cardinality of $A$.
+  \backslash A$, and $k = |A|$, the cardinality of $A$.
 \end{proposition}
 
 
@@ -309,8 +316,9 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{align}
 \end{proof}
 
-We require Lemma \ref{lemma:free} for the proof of Theorem
-\ref{thm:char}:
+The final ingredient we require for the proof of Theorem
+\ref{thm:char} the following lemma:
+
 
 \begin{lemma}[Unit norm decomposition]\label{lemma:free}
   Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr M
@@ -466,7 +474,7 @@ We require Lemma \ref{lemma:free} for the proof of Theorem
 \end{figure}
 
 
-Theorem \ref{thm:char} gives us a way to understand D-optimal designs
+Theorem \ref{thm:char} facilitates understanding of D-optimal designs
 when $\modcov = 0$: Imagine each eigenvector of $\fwd \prcov \fwd^*$
 corresponds to a graduated lab cylinder (Figure
 \ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
@@ -490,20 +498,19 @@ result of such a procedure is illustrated in Figure \ref{fig:optimal
 
 \section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
 The necessary conditions for D-optimality are (1), (2) and (4) of
-Theorem \ref{thm:char}. As long as these conditions are satisfied,
-$\obs$ is an optimizer of $\tar$. These conditions, however, still
-leave some freedom in choosing $\obs$. This freedom may give rise to
+Theorem \ref{thm:char}. These conditions, however, still leave some
+freedom in choosing $\obs$. This freedom may give rise to
 clusterization, as illustrated in Figure \ref{fig:clusterization} and
 demonstrated below.
 
 Consider an inverse problem for which $\lambda_1^{-1} = 0.1,
 \lambda_2^{-1} = 0.2,\sigma^2=1$ and $\{\ev_i\}_{i=1}^\infty$ are
 eigenvectors of $\fwd\prcov\fwd^*$. Two D-optimal designs $\obs_1,
-\obs_2$ presented in \eqref{eq:two designs}. It is easy to verify that
-$\obs_1^*\obs_1 = \obs_2^*\obs_2$. The former exhibits clusterization
-($\meas_3 = \meas_5 = \ev_1$), while the latter does not. Since both
-of these designs are D-optimal, we conclude that clusterization poses
-no obstruction to D-optimality.
+\obs_2$ are presented in \eqref{eq:two designs}, and it is easy to
+verify that $\obs_1^*\obs_1 = \obs_2^*\obs_2$. However, $\obs_1$
+exhibits clusterization ($\meas_3 = \meas_5 = \ev_1$), while $\obs_2$
+does not. Both of $\obs_1$ and $\obs_2$ are D-optimal, and we conclude
+that clusterization poses no obstruction to D-optimality.
 
 \begin{equation}\label{eq:two designs}
   \obs_1 =
@@ -524,24 +531,15 @@ no obstruction to D-optimality.
   \end{pmatrix}
 \end{equation}
 
-A computer implementation of Lemma \ref{lemma:free} (code in
+A computer implementation of Lemma \ref{thm:char} (code in
 Supplementary material) generates $\obs_1$ as a solution to the
 D-optimal design problem mentioned in the previous
-paragraph. Modifying the numerical values of the prior does not break
-the clusterization. Thus, the preference to clusterization, at least
-in Lemma \ref{lemma:free} is robust. The vast majority of randomized
-numerical simulations (see code in Supplementary material) also give
-rise to D-optimal designs that exhibit clustrization. We conclude that
-clusterization poses no obstruction to D-optimality in the model
-presented in this study. Moreover, sensor clusterization is generic,
-as far as the model presented in this study is concerned.
+paragraph. Randomized numerical simulations (see code in Supplementary
+material) give rise to D-optimal designs that exhibit clustrization
+more than 95\% of the time. We conclude that clusterization poses no
+obstruction to D-optimality for the model presented in this study and
+that sensor clusterization is generic.
 
-%% Of course, a real-life problem is more restricted than the model we
-%% consider here. Such restriction is the likely cause of clusterization
-%% obseved in, e.g., the toy model of section
-%% \ref{subsec:example}. Exactly how this happens is not clear. At this
-%% point it is the subject of speculation and should be further studied
-%% in the future.
 
 \pgfplotstableread{
   Label    prior  $o_1o_2$  $o_3$   $o_4$   $o_5$    topper
