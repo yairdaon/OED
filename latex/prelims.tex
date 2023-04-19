@@ -26,7 +26,7 @@ operator}\footnote{It is common for the observation and forward
 operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
 following sections requires $\fwd$ and $\obs$ are explicitly
-separated.} $\obs \in ( \hilo^* )^m$, so that:
+separated \cite{cvetkovic2023choosing}.} $\obs \in ( \hilo^* )^m$, so that:
 
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo,
@@ -146,10 +146,11 @@ $$
 D-optimal designs in infinite-dimensional Hilbert spaces were
 investigated in \cite{AlexanderianGloorGhattas14}. Their main result
 is summarized, in the notation presented above, in the following
-theorem\footnote{In \cite{AlexanderianGloorGhattas14}, results are
-stated for $\Sigma=I$ (implied by $\modcov = 0,\sigma^2=1$), but the
-authors also mention these results hold for more general covariance
-matrices (p. 681).}:
+theorem\footnote{In \cite{AlexanderianGloorGhattas14}\footnote{A
+similar theorem appears in \cite[Theorem
+  1]{alexanderian2018efficient}.}, results are stated for $\Sigma=I$
+(implied by $\modcov = 0,\sigma^2=1$), but the authors also mention
+these results hold for more general covariance matrices (p. 681).}:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
@@ -179,7 +180,7 @@ matrices (p. 681).}:
   \begin{split}
     \tar(\obs) &= \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \\
     &= \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
-    &= \det \prcov \det \postcov^{-1}.
+    &= \det \prcov \postcov^{-1}.
   \end{split}
 \end{align*}
 Since $\prcov$ is constant, a D-optimal design minimizes the posterior

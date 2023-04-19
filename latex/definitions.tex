@@ -1,14 +1,11 @@
-\usepackage{amsmath,amssymb,amsthm}
+% \usepackage{amsmath,amssymb,amsthm}
 \usepackage{thmtools}
 \usepackage{thm-restate}
 
-%%
-%% Place here your \usepackage's. Some recommended packages are already included.
-%%
 \usepackage{tikz,pgfplots,pgfplotstable}
 \pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
 
-% Graphics:
+%% %% % Graphics:
 %% \usepackage[final]{graphicx}
 \usepackage{graphicx} % use this line instead of the above to suppress graphics in draft copies
 \usepackage{wrapfig}
@@ -19,7 +16,7 @@
 
 \usepackage{cite}
 % makes color citations
-\usepackage[colorlinks=true,urlcolor=blue,citecolor=red,linkcolor=red,bookmarks=true]{hyperref}
+%% \usepackage[colorlinks=true,urlcolor=blue,citecolor=red,linkcolor=red,bookmarks=true]{hyperref}
 \usepackage{color}
 \usepackage{paralist}
 %% \usepackage{graphics} %% add this and next lines if pictures should be in esp format
@@ -34,30 +31,23 @@
 %\usepackage[noend]{algpseudocode}
 \usepackage{proof-at-the-end}
 
-%% % Indent first line of each section:
-%% \usepackage{indentfirst}
+% Indent first line of each section:
+\usepackage{indentfirst}
 
-%% % Good AMS stuff:
-%% \usepackage{amsthm}
-%% \usepackage[tbtags]{amsmath} % a lot of good stuff!
-\usepackage{amsaddr}
-
-
-%% % Fonts and symbols:
+%% %% % Fonts and symbols:
 \usepackage{amsfonts}
 
 
-% Formatting tools:
-%\usepackage{relsize} % relative font size selection, provides commands \textsmalle, \textlarger
-%\usepackage{xspace} % gentle spacing in macros, such as \newcommand{\acims}{\textsc{acim}s\xspace}
+%% % Formatting tools:
+%% %\usepackage{relsize} % relative font size selection, provides commands \textsmalle, \textlarger
+%% %\usepackage{xspace} % gentle spacing in macros, such as \newcommand{\acims}{\textsc{acim}s\xspace}
 
-% Page formatting utility:
-\usepackage{geometry}
-%\usepackage[margin=0.1in]{geometry}
+%% % Page formatting utility:
+%% \usepackage{geometry}
+%% %\usepackage[margin=0.1in]{geometry}
 
-%%
+
 %% Place here your \newcommand's and \renewcommand's. Some examples already included.
-%%
 \renewcommand{\le}{\leqslant}
 \renewcommand{\ge}{\geqslant}
 \renewcommand{\emptyset}{\ensuremath{\varnothing}}
@@ -71,18 +61,6 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\closure}[1]{\ensuremath{\overline{#1}}}
 \newcommand{\M}{\mathcal{M}}
-
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem*{main}{Main Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{conjecture}{Conjecture}
-\newtheorem*{problem}{Problem}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}{Remark}
-\newtheorem{notation}[theorem]{Notation}
 
 \newcommand{\ep}{\varepsilon}
 %\newcommand{\eps}[1]{{#1}_{\varepsilon}}
@@ -165,34 +143,35 @@
 %\newcommand{\acims}{\textsc{acim}s\xspace}
 
 
-\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-%%
-%% Place here your \newtheorem's:
-%%
+%% %% \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+%% %% %%
+%% %% %% Place here your \newtheorem's:
+%% %% %%
 
-%% Some examples commented out below. Create your own or use these...
-%%%%%%%%%\swapnumbers % this makes the numbers appear before the statement name.
-%\theoremstyle{plain}
-%\newtheorem{thm}{Theorem}[chapter]
-%\newtheorem{prop}[thm]{Proposition}
-%\newtheorem{lemma}[thm]{Lemma}
-%\newtheorem{cor}[thm]{Corollary}
-\newtheorem{observation}[theorem]{Observation}
+%% %% %% Some examples commented out below. Create your own or use these...
+%% %% %%%%%%%%%\swapnumbers % this makes the numbers appear before the statement name.
+%% %% %\theoremstyle{plain}
+%% %% %\newtheorem{thm}{Theorem}[chapter]
+%% %% %\newtheorem{prop}[thm]{Proposition}
+%% %% %\newtheorem{lemma}[thm]{Lemma}
+%% %% %\newtheorem{cor}[thm]{Corollary}
+%% %% % \newtheorem{observation}[theorem]{Observation}
 
-%\theoremstyle{definition}
-%\newtheorem{define}{Definition}[chapter]
+%% %% %\theoremstyle{definition}
+%% %% %\newtheorem{define}{Definition}[chapter]
 
-%\theoremstyle{remark}
-%\newtheorem*{rmk*}{Remark}
-%\newtheorem*{rmks*}{Remarks}
+%% %% %\theoremstyle{remark}
+%% %% %\newtheorem*{rmk*}{Remark}
+%% %% %\newtheorem*{rmks*}{Remarks}
 
-%% This defines the "proo" environment, which is the same as proof, but
-%% with "Proof:" instead of "Proof.". I prefer the former.
-%\newenvironment{proo}{\begin{proof}[Proof:]}{\end{proof}}
+%% %% %% This defines the "proo" environment, which is the same as proof, but
+%% %% %% with "Proof:" instead of "Proof.". I prefer the former.
+%% %% %\newenvironment{proo}{\begin{proof}[Proof:]}{\end{proof}}
 
-%% Hack
-\newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
-\usepackage{cancel}
+%% %% %% Hack
+%% %% \newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}
+%% %% \usepackage{cancel}
 
-\usepackage{comment}% http://ctan.org/pkg/comment
-%\excludecomment{proof}
+%% %% \usepackage{comment}% http://ctan.org/pkg/comment
+%% %% %\excludecomment{proof}
+

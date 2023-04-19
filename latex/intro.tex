@@ -1,27 +1,51 @@
 \section{Introduction}\label{section:OED intro}
 Experimental design is an important part of many scientific
 investigations. When considering an inverse problem, one can often
-specify sensor locations (e.g.\ in geophysics and oceanography
-applications), certain wavelengths (e.g.\ in MRI) or wave reflections
-from the ground (e.g.\ searching for oil or using a radar). Whatever
-the allowed set of observations is, one should select the optimal
-observations to take, in order to increase accuracy, reduce costs, or
-both.
+specify sensor locations (e.g.\ in electricat impedance tomography
+\cite{horesh2010impedance}), certain wavelengths (e.g.\ in MRI
+\cite{horesh2008mri}), or location of sensors for waves reflecting
+from the ground (e.g.\ searching for oil \cite{horesh2008borehole} or
+using a radar). Whatever the allowed set of measurements is, one
+should select the optimal observations to take, in order to increase
+accuracy, reduce costs, or both.
 
-The problem of choosing the best set of measurements is known as the
-problem of \emph{optimal experimental design}. Optimal designs are
-found by optimizing some \emph{design criterion}. Many design criteria
-exist, and in this study we focus on the Bayesian \emph{D-optimality
-criterion}. The D-optimality criterion has a simple and appealing
-motivation \cite{Chaloner1995}: a D-optimal design maximizes the
-expected information gain (KL divergence \cite{CoverThomas91}) between
-posterior and prior. For a linear model in finite dimensions, with
-Gaussian prior and iid Gaussian noise, a D-optimal design minimizes
-the determinant of the posterior covariance matrix\footnote{In a
-frequentist setting, a D-optimal design minimizes the determinant of
-the Fisher information matrix \cite[page 16]{Ucinski05}, so the
-Bayesian criterion is just a regularized version of the frequentist
-criterion \cite{Chaloner1995}.}.
+A set of measurements is called a \emph{design}, and an \emph{optimal
+design} is found by optimizing some \emph{design
+criterion}. Surprisingly, optimal designs sometimes result in
+measuremets that are very similar. For example consider measurements
+taken by sensors that evaluate some function at $\x \in \Omega
+\subseteq \R^d, d=1,2,3$. An optimal design may place sensors in very
+close proximity to each other (Figure \ref{fig:clusterization
+  illustration}). Following \cite{Ucinski05}, we refer to this
+phenomenon as \emph{sensor clusterization}.
+
+There is a consensus among researchers that sensor clusterization is
+undesirable. Some authors acknowledge the problem of sensor
+clusterization and suggest remedies \cite{fedorov1996, hooker2009,
+  fedorov2012, Ucinski05, neitzel2019sparse}. Others bypass the
+problem by allowing sensor locations to be chosen from a coarse finite
+grid \cite{alexanderian2014sparsification,
+  AlexanderianPetraStadlerEtAl16, alexanderian2018efficient,
+  koval2020, attia2020}, thus eliminating the possibility of sensor
+clusterization. Sadly, there is no free lunch, and choosing sensor
+locations from a coarse finite grid requires solving a hard
+combinatorial optimization problem. The current study is the first, to
+my knowledge, that aims to gain a deep understanding of sensor
+clusterization.
+
+
+\subsection{D-Optimal Designs}
+In this study we focus on the Bayesian \emph{D-optimality} criterion
+\cite{Chaloner1995}: a D-optimal design maximizes the expected
+Kullback-Leibler divergence \cite{CoverThomas91} between posterior and
+prior. For a linear model in finite dimensions, with Gaussian prior
+and Gaussian noise, a D-optimal design minimizes the determinant of
+the posterior covariance matrix\footnote{The frequentist version of
+the D-optimality criterion aims to minimize the determinant of the
+Fisher information matrix \cite[page 16]{Ucinski05}. For a linear
+model with Gaussian noise, the Bayesian criterion is just
+a regularized version of the frequentist criterion
+\cite{Chaloner1995}.}.
 
 Bayesian D-optimal designs for inverse problems on function spaces
 were first studied by \cite{AlexanderianGloorGhattas14,
@@ -29,69 +53,68 @@ were first studied by \cite{AlexanderianGloorGhattas14,
   AlexanderianPetraStadlerEtAl14}. Similarly to the finite dimensional
 case, a D-optimal design maximizes the KL divergence between posterior
 and prior measures. For a linear inverse problem with Gaussian prior
-and iid Gaussian noise, a D-optimal design minimizes an expression
-analogous to the determinant of the posterior covariance operator,
-understood as a product of its eigenvalues.
-%% Some difficulties arise in the process, but remedies can be found
-%% as shown in \cite{AlexanderianGloorGhattas14}.
+and Gaussian noise, a D-optimal design minimizes an expression
+analogous to the determinant of the posterior covariance operator
+\cite{AlexanderianGloorGhattas14} (also \cref{thm:d optimality}
+below).
 
-When one computes an optimal design using the D-optimality criterion,
-the optimization process sometimes results in observations that are
-very similar. For example, if an observation is thought of as
-measuring some function value at $\x \in \Omega \subseteq \R^d,
-d=1,2,3$ (with added error) then the optimization procedure sometimes
-places sensors in very close proximity to each other (as can be seen
-in Figure \ref{fig:clusterization illustration}). Following
-\cite{Ucinski05}, we refer to this phenomenon as \emph{sensor
-clusterization}.
+Considerable effort focused on computational aspects of finding
+optimal designs in infinite-dimensional Bayesian inverse problems.
+Attia \cite{attia2020} focused on QoI, Koval considered model
+uncertainty and focused on reducing forward and adjoint solves, using
+randomized linear algebra.\cite{koval2020}.
 
-Sensor clusterization is intuitively undesirable. Selecting a small
-set of sensors may lead to incomplete or biased data, as certain parts
-of the system or environment may be overlooked or
-underrepresented. This can result in inaccurate or unreliable
-estimates of the unknown parameters of interest, potentially leading
-to incorrect conclusions or decisions.
 
-%% \subsection{Related Work}
-Several remedies are suggested in the literature to phenomenon of
-sensor clusterization. In a frequentist and finite-dimensional
-context, \cite{fedorov1996} and \cite[chapter 2.4.3]{Ucinski05}
-discuss the clusterization phenomenon and suggest an approach called
-clusterization-free design. In such designs, the user enforces
-observation locations to be far from each other. One way to do this is
-by introducing correlated errors which account for both observation
-error and model error. Another method considered is imposing distance
-constraints between observations. A somewhat different approach is
-suggested in \cite[page 49]{fedorov2012}, where close observations are
-merged --- a procedure which obviously does not avoid
-clusterization. The same problem arises in time-series analysis for
-pharmacokinetic experiments. The authors of \cite{hooker2009} suggest
-modeling auto-correlation time in the noise model, which is equivalent
-to the correlated errors mentioned above. Any of the above mentioned
-approaches might serve as a remedy and push sensors away from each
-other. Yet, none offers any insight as to why clusterization
-occurs. Also, as better models are employed, model error is decreased
-and the clusterization phenomenon will eventually reappear. While
-these approaches are practical and help us avoid sensor
-clusterization, they do not provide insight as to why sensors are
-clustering.
+\subsection{Remedies to Sensor Clusterization}
+Several remedies to sensor clusterization were suggeted through the
+years, and we will now overview some. In \emph{clusterization-free
+design} locations are forced to be far from each other
+\cite{Ucinski05}. This is achieved in a frequentist and
+finite-dimensional setting, by either imposing distance constraints
+between observations, or by introducing correlated errors which
+account for both observation error and model error
+\cite{Ucinski05}. Merging close measurements is also possible
+\cite{fedorov2012}. Sensor clusterization is mitigated in time-series
+analysis for pharmacokinetic experiments by modeling auto-correlation
+time in the noise \cite{hooker2009}, and this approach is similar in
+spirit to imposing error correlations as in \cite{Ucinski05}.
 
-Model errors were also considered for inverse problems in
-\cite{attia2020, koval2020}. The former study is focused on inferring
-a Quantity of Interest (QoI). The focus of the latter is reducing
-forward solves, using randomized linear algebra. Both studies present
-numerical techniques for finding optimal designs when model error is
-present. Both are restricted to linear inverse problems (although in
-the latter the authors use their method on a nonlinear problem by
-taking a Laplace approximation for the posterior). Both find an
-optimal design by first solving a continuous problem for sensor
-weights. Said solution is then sparsified to give a binary
-design. Both studies are successful in the task of Bayesian
-inversion. Neither \cite{attia2020}, nor \cite{koval2020} mention any
-effect model errors can have on sensor clusterization.
+
+Many authors bypass the sensor clusterization problem by restricting
+measurements to a coarse finite grid \cite{koval2020,
+  AlexanderianPetraStadlerEtAl16, alexanderian2021, attia2020}, but
+this practice has two flaws: First, using a coarse grid requires
+solving a hard combinatorial optimization problem. Second, restricting
+sensors to a such a small subset of the computatoinal domain will
+necessarily give rise to sub-optimal designs. Several remedies were
+offered for the first problem: Stadler suggested ell0
+sparsification. Others suggested other stuff. None were offered for
+the second.
+
+
+%% Today, including model errors are a bona-fide????  standard in the
+%% inverse problems community: \cite{attia2020}, \cite{koval2020},
+%% \cite{Alexanderian2021} all empower their models.  Both studies
+%% present numerical techniques for finding optimal designs when model
+%% error is present. Both are restricted to linear inverse problems
+%% (although in the latter the authors use their method on a nonlinear
+%% problem by taking a Laplace approximation for the posterior). Both
+%% find an optimal design by first solving a continuous problem for
+%% sensor weights. Said solution is then sparsified to give a binary
+%% design. Both studies are successful in the task of Bayesian
+%% inversion. Neither \cite{attia2020}, nor \cite{koval2020} mention any
+%% effect model errors can have on sensor clusterization.
 
 
 \subsection{Contribution}
+Any of the above mentioned approaches might serve as a remedy and push
+sensors away from each other. Yet, none offers any insight as to why
+clusterization occurs. Also, as better models are employed, model
+error is decreased and the clusterization phenomenon will eventually
+reappear. While these approaches are practical and help practitioners
+avoid sensor clusterization, they do not provide insight as to why
+sensors are clustering.
+
 The current study aims to fill the gap of understanding sensor
 clusterization in infinte dimensional Bayesian linear inverse
 problems. We propose and study a relaxed and analytically tractable
@@ -106,8 +129,7 @@ As a byproduct, the Lagrange multipliers problem for no model error
 results in a characterization of D-optimal designs. The key idea is
 that a D-optimal design reduces uncertainties where they are highest
 first. This is the conclusion of part (5) of Theorem \ref{thm:char},
-which we state below and prove in Section \ref{section:vanishing}:
-
+which we state below and prove in Section \ref{section:vanishing}.
 
 \begin{restatable}[D-optimal designs with vanishing model error]{theorem}{char}\label{thm:char}
   %% \begin{theorem}[D-optimal designs with vanishing model error]\label{thm:char}
