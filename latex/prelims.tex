@@ -25,8 +25,9 @@ observations taken. Observations are taken via the \emph{observation
 operator}\footnote{It is common for the observation and forward
 operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
-following sections requires $\fwd$ and $\obs$ are explicitly
-separated \cite{cvetkovic2023choosing}.} $\obs \in ( \hilo^* )^m$, so that:
+following sections requires $\fwd$ and $\obs$ are explicitly separated
+similarly to \cite{attia2022stochastic, cvetkovic2023choosing}.} $\obs
+\in ( \hilo^* )^m$, so that:
 
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo,
@@ -143,14 +144,31 @@ $$
 D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 $$
 
-D-optimal designs in infinite-dimensional Hilbert spaces were
-investigated in \cite{AlexanderianGloorGhattas14}. Their main result
-is summarized, in the notation presented above, in the following
-theorem\footnote{In \cite{AlexanderianGloorGhattas14}\footnote{A
-similar theorem appears in \cite[Theorem
-  1]{alexanderian2018efficient}.}, results are stated for $\Sigma=I$
-(implied by $\modcov = 0,\sigma^2=1$), but the authors also mention
-these results hold for more general covariance matrices (p. 681).}:
+For a Bayesian linear model in finite dimensions, with Gaussian prior
+and Gaussian noise, a D-optimal design minimizes the determinant of
+the posterior covariance matrix\footnote{The frequentist version of
+the D-optimality criterion aims to minimize the determinant of the
+Fisher information matrix \cite[page 16]{Ucinski05}. Thus, the
+Bayesian criterion is just a regularized version of the frequentist
+criterion \cite{Chaloner1995}.}. Bayesian D-optimal designs for
+inverse problems on function spaces were first studied by
+\cite{AlexanderianGloorGhattas14, AlexanderianPetraStadlerEtAl16,
+  AlexanderianPetraStadlerEtAl14}, and just like in finite dimensions,
+a D-optimal design maximizes the Kullback-Leibler divergence between
+posterior and prior measures.
+%% For a linear inverse problem with Gaussian prior and Gaussian
+%% noise, a D-optimal design minimizes an expression analogous to the
+%% determinant of the posterior covariance operator
+%% \cite{AlexanderianGloorGhattas14} (also \cref{thm:d optimality}
+%% below).
+D-optimal designs in infinite-dimensional
+Hilbert spaces were investigated in
+\cite{AlexanderianGloorGhattas14}. Their main result is summarized, in
+the notation presented above, in the following theorem\footnote{In
+\cite{AlexanderianGloorGhattas14, alexanderian2018efficient}, results
+are stated for $\Sigma=I$ (implied by $\modcov = 0,\sigma^2=1$), but
+the authors also mention these results hold for more general
+covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
 \begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
@@ -202,7 +220,7 @@ covariance determinant, analogously to the finite-dimensional case.
     %% \mathbb{R}^m$ isiid $\mathcal{N}(0, \sigma^2)$ noise.
   \item $\Sigma(\obs) = \obs \modcov \obs^* + \sigma^2I$. 
   \item $\post$ the posterior measure, with covariance $\postcov$.
-  \item A D-optimality utility function
+  \item A D-optimality design criterion
     \cite{AlexanderianGloorGhattas14}:
     \begin{align*}
       \begin{split}

@@ -4,93 +4,154 @@ investigations. When considering an inverse problem, one can often
 specify sensor locations (e.g.\ in electricat impedance tomography
 \cite{horesh2010impedance}), certain wavelengths (e.g.\ in MRI
 \cite{horesh2008mri}), or location of sensors for waves reflecting
-from the ground (e.g.\ searching for oil \cite{horesh2008borehole} or
-using a radar). Whatever the allowed set of measurements is, one
-should select the optimal observations to take, in order to increase
-accuracy, reduce costs, or both.
+from the ground (e.g.\ searching for oil
+\cite{horesh2008borehole}). Whatever the allowed set of measurements
+is, one should select the optimal measurements to take, in order to
+increase accuracy, reduce costs, or both. A set of measurements is
+called a \emph{design}, and an \emph{optimal design} is found by
+optimizing some \emph{design criterion}. The most popular desgin
+criteria are A- and D-optimality
 
-A set of measurements is called a \emph{design}, and an \emph{optimal
-design} is found by optimizing some \emph{design
-criterion}. Surprisingly, optimal designs sometimes result in
-measuremets that are very similar. For example consider measurements
-taken by sensors that evaluate some function at $\x \in \Omega
-\subseteq \R^d, d=1,2,3$. An optimal design may place sensors in very
-close proximity to each other (Figure \ref{fig:clusterization
-  illustration}). Following \cite{Ucinski05}, we refer to this
-phenomenon as \emph{sensor clusterization}.
+Surprisingly, optimal designs sometimes result in measuremets that are
+very similar \cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
+  neitzel2019sparse}. As an example, consider the inverse problem of
+inferring the initial condition of the 1D heat equation (details in
+Section \ref{subsec:example}). In Figure \ref{fig:clusterization
+  illustration} we see that an optimal design results in two sets of
+sensors that are almost indistinguishable from each other. Following
+\cite{Ucinski05}, we refer to this phenomenon as \emph{sensor
+clusterization}.
+
+\begin{figure}
+  \begin{tikzpicture}[thick, scale=1.3, every node/.style={scale=0.99}]
+    \begin{axis}
+      [
+      title={Posterior Pointwise Standard Deviations and D-Optimal Sensor Locations},  
+      xmin = 0,
+      xmax = 3.14,
+      xlabel = {$x \in \Omega$},
+      ylabel = posterior std,
+      ymin   = 0,
+      %compat = 1.3,
+      % ymax   = 130,
+      % ytick = \empty,
+      legend cell align=left,
+      % legend style={at={(0.45,0.2)}}
+      legend pos= outer north east 
+      ]
+      % \draw[black!30!white, thin] (50,0) -- (50,130);
+      % 
+      %% \addplot [thin, black, mark=none] table{stdv-heat-sens1-var1.txt};
+      %% \addlegendentry{1 sensors};
+      
+      %% \addplot [thin, blue, mark=none] table{stdv-heat-sens2-var1.txt};
+      %% \addlegendentry{2 sensors};
+      
+      %% \addplot [thin, red, mark=none] table{stdv-heat-sens3-var1.txt};
+      %% \addlegendentry{3 sensors};
+      
+      \addplot [thin, green, mark=none] table{stdv-heat-sens4-var1.txt};
+      \addlegendentry{4 sensors};
+      
+      \addplot [thin, purple, mark=none] table{stdv-heat-sens5-var1.txt};
+      \addlegendentry{5 sensors};
+      
+      \addplot [thin, cyan, mark=none] table{stdv-heat-sens6-var1.txt};
+      \addlegendentry{6 sensors};
+
+  
+      %% \addplot [black,  only marks, mark=x, mark size=1.5] 
+      %% table{locs-heat-sens1-var1.txt}; 
+      %% \addplot [blue,   only marks, mark=x, mark size=1.5]
+      %% table{locs-heat-sens2-var1.txt}; 
+      %% \addplot [red,    only marks, mark=x, mark size=1.5]
+      %% table{locs-heat-sens3-var1.txt};
+      \addplot [green,  only marks, mark=*, mark size=1.5] 
+      table{locs-heat-sens4-var1.txt}; 
+      \addplot [purple, only marks, mark=*, mark size=1.5] 
+      table{locs-heat-sens5-var1.txt}; 
+      \addplot [cyan,   only marks, mark=*, mark size=1.5] 
+      table{locs-heat-sens6-var1.txt}; 
+  
+      
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Sensor clusterization for inferring the initial condition
+    of the 1D heat equation. Posterior pointwise standard deviations
+    (lines) are plotted over the computatoinal domain $\Omega = [0,
+      \pi]$, for varying numbers of sensors. Sensor locations
+    (circles) were chosen to optimize the D-optimality
+    criterion. Sensor clusterization occurs for six sensors: Only four
+    observation locations are visible, since two pairs of sensors are
+    so close together they are indistinguishable.}
+  \label{fig:clusterization illustration}
+\end{figure}
 
 There is a consensus among researchers that sensor clusterization is
-undesirable. Some authors acknowledge the problem of sensor
-clusterization and suggest remedies \cite{fedorov1996, hooker2009,
-  fedorov2012, Ucinski05, neitzel2019sparse}. Others bypass the
-problem by allowing sensor locations to be chosen from a coarse finite
-grid \cite{alexanderian2014sparsification,
-  AlexanderianPetraStadlerEtAl16, alexanderian2018efficient,
-  koval2020, attia2020}, thus eliminating the possibility of sensor
-clusterization. Sadly, there is no free lunch, and choosing sensor
-locations from a coarse finite grid requires solving a hard
-combinatorial optimization problem. The current study is the first, to
-my knowledge, that aims to gain a deep understanding of sensor
-clusterization.
-
-
-\subsection{D-Optimal Designs}
-In this study we focus on the Bayesian \emph{D-optimality} criterion
-\cite{Chaloner1995}: a D-optimal design maximizes the expected
-Kullback-Leibler divergence \cite{CoverThomas91} between posterior and
-prior. For a linear model in finite dimensions, with Gaussian prior
-and Gaussian noise, a D-optimal design minimizes the determinant of
-the posterior covariance matrix\footnote{The frequentist version of
-the D-optimality criterion aims to minimize the determinant of the
-Fisher information matrix \cite[page 16]{Ucinski05}. For a linear
-model with Gaussian noise, the Bayesian criterion is just
-a regularized version of the frequentist criterion
-\cite{Chaloner1995}.}.
-
-Bayesian D-optimal designs for inverse problems on function spaces
-were first studied by \cite{AlexanderianGloorGhattas14,
-  AlexanderianPetraStadlerEtAl16,
-  AlexanderianPetraStadlerEtAl14}. Similarly to the finite dimensional
-case, a D-optimal design maximizes the KL divergence between posterior
-and prior measures. For a linear inverse problem with Gaussian prior
-and Gaussian noise, a D-optimal design minimizes an expression
-analogous to the determinant of the posterior covariance operator
-\cite{AlexanderianGloorGhattas14} (also \cref{thm:d optimality}
-below).
-
-Considerable effort focused on computational aspects of finding
-optimal designs in infinite-dimensional Bayesian inverse problems.
-Attia \cite{attia2020} focused on QoI, Koval considered model
-uncertainty and focused on reducing forward and adjoint solves, using
-randomized linear algebra.\cite{koval2020}.
-
-
-\subsection{Remedies to Sensor Clusterization}
-Several remedies to sensor clusterization were suggeted through the
-years, and we will now overview some. In \emph{clusterization-free
-design} locations are forced to be far from each other
-\cite{Ucinski05}. This is achieved in a frequentist and
-finite-dimensional setting, by either imposing distance constraints
-between observations, or by introducing correlated errors which
-account for both observation error and model error
+undesirable \cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
+  neitzel2019sparse} and several remedies to sensor clusterization
+were suggeted through the years. In a \emph{clusterization-free
+design}, sensor locations are forced to be far from each other
+\cite{Ucinski05}. In a frequentist and finite-dimensional setting,
+senesor clusterization is avoided by either imposing distance
+constraints between measurements, or by introducing correlated errors
+which account for both observation error and model error
 \cite{Ucinski05}. Merging close measurements is also possible
-\cite{fedorov2012}. Sensor clusterization is mitigated in time-series
-analysis for pharmacokinetic experiments by modeling auto-correlation
-time in the noise \cite{hooker2009}, and this approach is similar in
-spirit to imposing error correlations as in \cite{Ucinski05}.
+\cite{fedorov2012}, but this practice ignores sensor clusterization
+altogether. In time-series analysis for pharmacokinetic experiments,
+sensor clusterization is mitigated by modeling auto-correlation time
+in the noise \cite{hooker2009}, and this approach is similar in spirit
+to assuming errors are correlatied as in \cite{Ucinski05}.
+
+%% Sometimes, imposing a correlation structure on observation noise is
+%% reasonable indeed \cite{koval2020, Alexanderian2021}. For example,
+%% Koval \cite{koval2020} imposes a Gaussian prior on ocean bathytermy
+%% when inferring BLA. However, in the (un)fortunate event that ocean
+%% bathytermy is known, there is no use to modeling it as an unknown
+%% and sensor clusterization will rear its ugly head.
+
+Many scientists bypass the sensor clusterization problem by
+restricting measurements to a coarse grid of the computational domain
+$\Omega \subseteq \mathbb{R}^d, d=1,2,3$ \cite{koval2020,
+  alexanderian2021, attia2020, alexanderian2014sparsification,
+  AlexanderianPetraStadlerEtAl16, alexanderian2018efficient}, but this
+practice requires solvilg a hard combinatorial optimization problem
+for choosing optimal sensor locations from a finite set. A solution
+typically involves relaxing the problem to that of choosing optimal
+measurement ``weight'' in $[0,1]$ for each potential sensor
+location. Some authors then add a sparsifying $\ell_1$ penalty term to
+the design criterion, which is subsequently thresholded
+\cite{horesh2008borehole}, thus resulting in a sparse binary
+solution. Others successively relax the $\ell_1$ penalty to a $\ell_0$
+penalty via a continuation method
+\cite{AlexanderianPetraStadlerEtAl16,
+  alexanderian2014sparsification}. A clever alternative is to cast the
+problem of finding optimal sensor weights as a stochastic optimization
+problem, which in turn is solved by stochastic gradient descent
+\cite{attia2022stochastic}. While all of the above mentioned methods
+are valid solutions to the prohibitive computational cost of finding
+an binary optimal design restricted to a coarse grid, none treats the
+elephant in the room: restricting sensors to a coarse grid in $\Omega
+\subseteq \mathbb{R}^d, d=1,2,3$ necessarily gives rise to a
+sub-optimal design.
+
+Avoiding sensor clusterization is pragmatical: we feel sensor
+clusterization is bad (but do not know why), and try to avoid
+it. However, all of the abovementioned techniques that avoid sensor
+clusterization do so by somehow restricting sensor locations, thus
+fundamentaly altering the optimal design problem. To the best of my
+knowledge, no study tried to answer the following seemingly trivial
+and basic questions: why do sensor clusterization occurs? Is sensor
+clusterization really bad? Can we find optimal designs BLABLA?
+
+%% However, as far as I am aware, no study concerned the fact that
+%% restricting sensors to a coarse grid is, by definition,
+%% sub-optimal.
 
 
-Many authors bypass the sensor clusterization problem by restricting
-measurements to a coarse finite grid \cite{koval2020,
-  AlexanderianPetraStadlerEtAl16, alexanderian2021, attia2020}, but
-this practice has two flaws: First, using a coarse grid requires
-solving a hard combinatorial optimization problem. Second, restricting
-sensors to a such a small subset of the computatoinal domain will
-necessarily give rise to sub-optimal designs. Several remedies were
-offered for the first problem: Stadler suggested ell0
-sparsification. Others suggested other stuff. None were offered for
-the second.
-
+%% Attia \cite{attia2020} focused on QoI, Koval considered model
+%% uncertainty and focused on reducing forward and adjoint solves, using
+%%  randomized linear algebra \cite{koval2020}.
 
 %% Today, including model errors are a bona-fide????  standard in the
 %% inverse problems community: \cite{attia2020}, \cite{koval2020},
@@ -105,25 +166,34 @@ the second.
 %% inversion. Neither \cite{attia2020}, nor \cite{koval2020} mention any
 %% effect model errors can have on sensor clusterization.
 
+%% Considerable efforts focused on various computational aspects of
+%% finding optimal designs in infinite-dimensional Bayesian inverse
+%% problems \cite{attia2020, koval2020,
+%% AlexanderianPetraStadlerEtAl16, attia2023pyoed, koval2021optimal,
+%% attia2020stochastic}, the subject of sensor clusterization was less
+%% investigated, and
+
+
+%% Second, restricting sensors to a such a small subset of the computatoinal
+%% domain $\Omega \subseteq \mathbb{R}^d, d=1,2,3$ necessarily gives rise
+%% to sub-optimal designs.
+
 
 \subsection{Contribution}
-Any of the above mentioned approaches might serve as a remedy and push
-sensors away from each other. Yet, none offers any insight as to why
-clusterization occurs. Also, as better models are employed, model
-error is decreased and the clusterization phenomenon will eventually
-reappear. While these approaches are practical and help practitioners
-avoid sensor clusterization, they do not provide insight as to why
-sensors are clustering.
-
-The current study aims to fill the gap of understanding sensor
-clusterization in infinte dimensional Bayesian linear inverse
-problems. We propose and study a relaxed and analytically tractable
-model for D-optimal designs. Under this model, D-optimal designs are
-solutions of a constrained optimization problem, formulated using
-Lagrange multipliers. The Lagrange multipliers formulation allows us
-to rigorously show how model error mitigates clusterization (Section
-\ref{section:non vanishing}), and why designs that exhibit
-clusterization are indeed optimal when no model error is considered.
+In this study, we seeks to understand sensor clusterization. We focus
+our attention on the Bayesian \emph{D-optimality} criterion: a
+D-optimal design maximizes the expected Kullback-Leibler divergence
+\cite{CoverThomas91} between posterior and prior
+\cite{Chaloner1995}. We study Bayesian D-optimal designs in linear
+inverse problems that are (potentially) of infinte dimensions. We
+propose and study a relaxed and analytically tractable model for such
+D-optimal designs. Under this model, D-optimal designs are solutions
+of a constrained optimization problem, formulated using Lagrange
+multipliers. The Lagrange multipliers formulation allows us to
+rigorously show why model error mitigates clusterization (Section
+\ref{section:non vanishing}), like many authors note, and why designs
+that exhibit clusterization are indeed optimal when no model error is
+considered (Section \ref{section:vanishing}).
 
 As a byproduct, the Lagrange multipliers problem for no model error
 results in a characterization of D-optimal designs. The key idea is
@@ -147,7 +217,7 @@ which we state below and prove in Section \ref{section:vanishing}.
     $\data = \obs \fwd \param + \eps$, where $\eps \in \mathbb{R}^m$
     is iid $\mathcal{N}(0, \sigma^2)$ noise.
   \item $\post$ the posterior measure, with covariance $\postcov$.
-  \item A D-optimality utility function
+  \item A D-optimality design criterion
     \cite{AlexanderianGloorGhattas14}:
     \begin{align*}
       \begin{split}
@@ -204,8 +274,8 @@ which we state below and prove in Section \ref{section:vanishing}.
 %\end{theorem}
 \end{restatable}
 
-One byproduct of the proof of Theorem \ref{thm:char} is a novel lemma
-in linear algebra: We show how to decompose a symmetric positive
+Another byproduct of the proof of Theorem \ref{thm:char} is a novel
+linear algebra lemma: We show how to decompose a symmetric positive
 definite matrix $M$ as $M = AA^t$, where $A$ has unit norm columns
 (Lemma \ref{lemma:lax}). We also generalize two lemmas from linear
 algebra to infinite-dimensional settings: In Lemma \ref{lemma:MDL} we
@@ -228,75 +298,11 @@ we only show that it does not pose any obstruction to D-optimality.
 
 
 \subsection{An Example of Clusterization}\label{subsec:example}
-\begin{figure}
-  \begin{tikzpicture}[thick, scale=1.3, every node/.style={scale=0.99}]
-    \begin{axis}
-      [
-      title={Posterior Pointwise Standard Deviations and D-Optimal Sensor Locations},  
-      xmin = 0,
-      xmax = 3.14,
-      xlabel = {$x$},
-      ylabel = posterior std,
-      ymin   = 0,
-      %compat = 1.3,
-      % ymax   = 130,
-      % ytick = \empty,
-      legend cell align=left,
-      % legend style={at={(0.45,0.2)}}
-      legend pos= outer north east 
-      ]
-      % \draw[black!30!white, thin] (50,0) -- (50,130);
-      % 
-      %% \addplot [thin, black, mark=none] table{stdv-heat-sens1-var1.txt};
-      %% \addlegendentry{1 sensors};
-      
-      %% \addplot [thin, blue, mark=none] table{stdv-heat-sens2-var1.txt};
-      %% \addlegendentry{2 sensors};
-      
-      %% \addplot [thin, red, mark=none] table{stdv-heat-sens3-var1.txt};
-      %% \addlegendentry{3 sensors};
-      
-      \addplot [thin, green, mark=none] table{stdv-heat-sens4-var1.txt};
-      \addlegendentry{4 sensors};
-      
-      \addplot [thin, purple, mark=none] table{stdv-heat-sens5-var1.txt};
-      \addlegendentry{5 sensors};
-      
-      \addplot [thin, cyan, mark=none] table{stdv-heat-sens6-var1.txt};
-      \addlegendentry{6 sensors};
-
-  
-      %% \addplot [black,  only marks, mark=x, mark size=1.5] 
-      %% table{locs-heat-sens1-var1.txt}; 
-      %% \addplot [blue,   only marks, mark=x, mark size=1.5]
-      %% table{locs-heat-sens2-var1.txt}; 
-      %% \addplot [red,    only marks, mark=x, mark size=1.5]
-      %% table{locs-heat-sens3-var1.txt};
-      \addplot [green,  only marks, mark=*, mark size=1.5] 
-      table{locs-heat-sens4-var1.txt}; 
-      \addplot [purple, only marks, mark=*, mark size=1.5] 
-      table{locs-heat-sens5-var1.txt}; 
-      \addplot [cyan,   only marks, mark=*, mark size=1.5] 
-      table{locs-heat-sens6-var1.txt}; 
-  
-      
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Sensor clusterization for inferring the initial condition
-    of the 1D heat equation. Posterior pointwise standard deviations
-    (lines) are plotted over the domain $[0, \pi]$, for varying
-    numbers of sensors. Sensor locations (circles) were chosen to
-    optimize the D-optimality criterion. Sensor clusterization occurs
-    for six sensors. Only four observation locations are used --- two
-    pairs of sensors are so close together they are
-    indistinguishable.}
-  \label{fig:clusterization illustration}
-\end{figure}
-
 For the purpose of illustration, consider a toy inverse problem ---
-inferring the initial condition of the 1D heat equation in $[0,\pi]$
-with a homogeneous Dirichlet boundary condition. Sensor clusterization
-is clearly evident, see Figure \ref{fig:clusterization}.
+inferring the initial condition of the 1D heat equation in $\Omega :=
+[0,\pi]$ with a homogeneous Dirichlet boundary condition. Sensor
+clusterization is clearly evident, see Figure \ref{fig:clusterization
+  illustration}.
 
 The 1D heat equation with homogeneous Dirichlet boundary condition is:
 \begin{subequations}\label{eq:heat equation}
@@ -319,8 +325,8 @@ observation error, so observations are given by $u(\x_j,T) +
 > 0$. The posterior covariance is known and depends only on $\prcov,
 \fwd, \obs$ and $\sigma^2$ \cite{Stuart10} (see Section
 \ref{section:prelim} and \eqref{eq:postcov} below). Finally, choose
-$\x_j,j=1,\dots,m$ to optimize the D-optimality criterion
-\cite{AlexanderianGloorGhattas14}.
+$\x_j,j=1,\dots,m$ to optimize the D-optimality criterion, see Theorem
+\ref{thm:d optimality} \cite{AlexanderianGloorGhattas14}.
 
 Sensor clusterization is illustrated in Figure \ref{fig:clusterization
   illustration}. The posterior covariance does not depend on data, so
