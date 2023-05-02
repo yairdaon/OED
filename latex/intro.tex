@@ -1,7 +1,8 @@
 \section{Introduction}\label{section:OED intro}
-Experimental design is an important part of many scientific
-investigations. When considering an inverse problem, one can often
-specify sensor locations (e.g.\ in electricat impedance tomography
+Measurements of physical processes are indespensable when considering
+an inverse problem, choosing an optimal set of measurements is of
+utmost importance. In applications, one may have to specify electrode
+locations on the skin (e.g.\ in electricat impedance tomography
 \cite{horesh2010impedance}), certain wavelengths (e.g.\ in MRI
 \cite{horesh2008mri}), or location of sensors for waves reflecting
 from the ground (e.g.\ searching for oil
@@ -9,8 +10,9 @@ from the ground (e.g.\ searching for oil
 is, one should select the optimal measurements to take, in order to
 increase accuracy, reduce costs, or both. A set of measurements is
 called a \emph{design}, and an \emph{optimal design} is found by
-optimizing some \emph{design criterion}. The most popular desgin
-criteria are A- and D-optimality
+optimizing some \emph{design criterion}. Two of the most popular
+desgin criteria are A- and D-optimality (see \cite{Chaloner1995} for a
+thorough review).
 
 Surprisingly, optimal designs sometimes result in measuremets that are
 very similar \cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
@@ -90,18 +92,19 @@ clusterization}.
 There is a consensus among researchers that sensor clusterization is
 undesirable \cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
   neitzel2019sparse} and several remedies to sensor clusterization
-were suggeted through the years. In a \emph{clusterization-free
-design}, sensor locations are forced to be far from each other
+were suggeted through the years. Merging ``close'' measurements is
+possible, \cite{fedorov2012}, but this practice ignores sensor
+clusterization altogether. In a \emph{clusterization-free design},
+sensor locations are forced to be far from each other
 \cite{Ucinski05}. In a frequentist and finite-dimensional setting,
 senesor clusterization is avoided by either imposing distance
 constraints between measurements, or by introducing correlated errors
 which account for both observation error and model error
-\cite{Ucinski05}. Merging close measurements is also possible
-\cite{fedorov2012}, but this practice ignores sensor clusterization
-altogether. In time-series analysis for pharmacokinetic experiments,
-sensor clusterization is mitigated by modeling auto-correlation time
-in the noise \cite{hooker2009}, and this approach is similar in spirit
-to assuming errors are correlatied as in \cite{Ucinski05}.
+\cite{Ucinski05}. In time-series analysis for pharmacokinetic
+experiments, sensor clusterization is mitigated by modeling
+auto-correlation time in the noise \cite{hooker2009}, and this
+approach is similar in spirit to assuming errors are correlatied
+\cite{Ucinski05}.
 
 %% Sometimes, imposing a correlation structure on observation noise is
 %% reasonable indeed \cite{koval2020, Alexanderian2021}. For example,
@@ -110,30 +113,29 @@ to assuming errors are correlatied as in \cite{Ucinski05}.
 %% bathytermy is known, there is no use to modeling it as an unknown
 %% and sensor clusterization will rear its ugly head.
 
-Many scientists bypass the sensor clusterization problem by
-restricting measurements to a coarse grid of the computational domain
-$\Omega \subseteq \mathbb{R}^d, d=1,2,3$ \cite{koval2020,
-  alexanderian2021, attia2020, alexanderian2014sparsification,
-  AlexanderianPetraStadlerEtAl16, alexanderian2018efficient}, but this
-practice requires solvilg a hard combinatorial optimization problem
-for choosing optimal sensor locations from a finite set. A solution
-typically involves relaxing the problem to that of choosing optimal
-measurement ``weight'' in $[0,1]$ for each potential sensor
-location. Some authors then add a sparsifying $\ell_1$ penalty term to
-the design criterion, which is subsequently thresholded
-\cite{horesh2008borehole}, thus resulting in a sparse binary
-solution. Others successively relax the $\ell_1$ penalty to a $\ell_0$
-penalty via a continuation method
-\cite{AlexanderianPetraStadlerEtAl16,
-  alexanderian2014sparsification}. A clever alternative is to cast the
-problem of finding optimal sensor weights as a stochastic optimization
-problem, which in turn is solved by stochastic gradient descent
-\cite{attia2022stochastic}. While all of the above mentioned methods
-are valid solutions to the prohibitive computational cost of finding
-an binary optimal design restricted to a coarse grid, none treats the
-elephant in the room: restricting sensors to a coarse grid in $\Omega
-\subseteq \mathbb{R}^d, d=1,2,3$ necessarily gives rise to a
-sub-optimal design.
+In spatial problems, where sensors are placed in some domain $\Omega
+\subseteq \mathbb{R}^d, d=1,2,3$, many scientists bypass the sensor
+clusterization problem by restricting measurements to a coarse grid in
+$\Omega$ \cite{koval2020, alexanderian2021, attia2020,
+  alexanderian2014, alexanderian2016,
+  alexanderian2018efficient}. Unfortunately, this practice requires
+solvilg a hard combinatorial optimization problem for choosing optimal
+sensor locations from a finite set. A solution typically involves
+relaxing the problem to choosing optimal measurement ``weight'' in
+$[0,1]$ for each potential sensor location. Some authors then add a
+sparsifying $\ell_1$ penalty term to the design criterion, which is
+subsequently thresholded \cite{horesh2008borehole}, thus resulting in
+the desired binary design. Others successively relax the $\ell_1$
+penalty to a $\ell_0$ penalty via a continuation method
+\cite{alexanderian2016, alexanderian2014}. A clever alternative is to
+cast the problem of finding optimal sensor weights as a stochastic
+optimization problem, which in turn is solved by stochastic gradient
+descent \cite{attia2022stochastic}????. While all of the above
+mentioned methods are valid solutions to the prohibitive computational
+cost of finding a binary optimal design restricted to a coarse grid,
+none treats the elephant in the room: restricting sensor locations to
+a coarse grid in $\Omega \subseteq \mathbb{R}^d, d=1,2,3$ necessarily
+gives rise to a sub-optimal design.
 
 Avoiding sensor clusterization is pragmatical: we feel sensor
 clusterization is bad (but do not know why), and try to avoid
@@ -141,8 +143,10 @@ it. However, all of the abovementioned techniques that avoid sensor
 clusterization do so by somehow restricting sensor locations, thus
 fundamentaly altering the optimal design problem. To the best of my
 knowledge, no study tried to answer the following seemingly trivial
-and basic questions: why do sensor clusterization occurs? Is sensor
-clusterization really bad? Can we find optimal designs BLABLA?
+and basic questions: why do sensor clusterization occurs? Should
+sensor clusterization really be avoided? How imposing a correlation
+structure between obsevations mitigates sensor clusterization? Can we
+find truly optimal designs that do not exhibit sensor clusterization?
 
 %% However, as far as I am aware, no study concerned the fact that
 %% restricting sensors to a coarse grid is, by definition,
@@ -195,11 +199,11 @@ rigorously show why model error mitigates clusterization (Section
 that exhibit clusterization are indeed optimal when no model error is
 considered (Section \ref{section:vanishing}).
 
-As a byproduct, the Lagrange multipliers problem for no model error
-results in a characterization of D-optimal designs. The key idea is
-that a D-optimal design reduces uncertainties where they are highest
+the Lagrange multipliers problem for vanishing model error results in
+a characterization of D-optimal designs. The key idea is that a
+D-optimal design reduces uncertainties where they are highest
 first. This is the conclusion of part (5) of Theorem \ref{thm:char},
-which we state below and prove in Section \ref{section:vanishing}.
+stated below and proved in Section \ref{section:vanishing}.
 
 \begin{restatable}[D-optimal designs with vanishing model error]{theorem}{char}\label{thm:char}
   %% \begin{theorem}[D-optimal designs with vanishing model error]\label{thm:char}
@@ -274,27 +278,32 @@ which we state below and prove in Section \ref{section:vanishing}.
 %\end{theorem}
 \end{restatable}
 
-Another byproduct of the proof of Theorem \ref{thm:char} is a novel
-linear algebra lemma: We show how to decompose a symmetric positive
-definite matrix $M$ as $M = AA^t$, where $A$ has unit norm columns
-(Lemma \ref{lemma:lax}). We also generalize two lemmas from linear
-algebra to infinite-dimensional settings: In Lemma \ref{lemma:MDL} we
-prove a matrix determinant lemma in Hilbert spaces, and in Lemma
-\ref{lemma:lax} we generalize a lemma \cite{Lax07} for calculating
-$\frac{\der}{\der t} \log \det (I + X(t))$, where $X(t)$ is an
-operator valued function.
+An interesting byproduct of the proof of Theorem \ref{thm:char} is a
+novel lemma in linear algebra: For a symmetric positive definite
+matrix $M \in \mathbb{R}^{k \times k}$ with $\ttr M = m \in
+\mathbb{N}$, we decompose $M = AA^t$, where $A$ has unit norm columns
+(Lemma \ref{lemma:free}). We also generalize two lemmas from linear
+algebra to infinite-dimensional settings, see Lemmas \ref{lemma:MDL}
+and \ref{lemma:lax}.
+
+%%  we prove a matrix determinant lemma in Hilbert spaces, and in
+%%  Lemma \ref{lemma:lax} we generalize a lemma for calculating
+%%  $\frac{\der}{\der t} \log \det (I + X(t))$, where $X(t)$ is an
+%%  operator valued function \cite{Lax07}.
 
 \subsection{Limitations}\label{subsec:limitations}
-The study presented here is not free from drawbacks. First, our
-relaxed model does not correspond to any real-life problem. It is
-generic enough to be analytically tractable, but one may argue it is
-to far removed from any real application. To these claims I would
-argue that Mathematicians have a long history of studying models that
-are bare-bones simplifications of real systems, e.g. the Ising model
-\cite{cipra1987} the Lorenz system \cite{brin}, and the SIR model
-\cite{keeling2008}, to name a few. The second drawback of our model is
-that we do not show rigorously that clusterization necessarily occurs,
-we only show that it does not pose any obstruction to D-optimality.
+The main limitation of this study is that our generic model does not
+correspond to any specific real-life problem. It is generic enough to
+be analytically tractable, but one may argue it is too far removed
+from any real application. To these claims I would argue that
+Mathematicians have a long history of studying models that are
+bare-bones simplifications of real systems. E.g. the Ising model
+\cite{cipra1987}, the Lorenz system \cite{brin}, and the SIR model
+\cite{keeling2008}, to name a few.
+
+%% The second drawback of our model is that we do not show rigorously
+%% that clusterization necessarily occurs, we only show that it does
+%% not pose any obstruction to D-optimality.
 
 
 \subsection{An Example of Clusterization}\label{subsec:example}
