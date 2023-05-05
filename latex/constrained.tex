@@ -99,7 +99,7 @@ Theorem \ref{thm:constrained}. First, recall that:
   \end{align}
 
 
-  We now record Lemma \ref{lemma:lax} which is a generalization of a
+  We now record Lemma \ref{lemma:lax} which is a generalization of
   Theorem 4 in Chapter 9 of \cite{Lax07}. Its proof is delegated to
   the appendix.
   \begin{restatable*}{lemma}{lax}\label{lemma:lax}
@@ -114,7 +114,7 @@ Theorem \ref{thm:constrained}. First, recall that:
   $\tar$:
 
   \begin{align*}
-    \begin{split}
+    %\begin{split}
       \delta \tar(\obs) V 
       :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V) \text{ (Definition \ref{def:var})}\\
       % 
@@ -151,8 +151,9 @@ Theorem \ref{thm:constrained}. First, recall that:
       %
       &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
       \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
-    \end{split}
+    %\end{split}
   \end{align*} 
+  %This concludes the proof.
 \end{proof}
 
 In a real-life optimal design problem we cannot choose any measurement
@@ -168,7 +169,7 @@ us in finding such constraints.
 \end{proposition}
 
 \begin{proof} 
-  Fix an arbitrary $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. For $u
+  Fix $j=1,\dots,m$ and take $V:= e_j e_j^t \obs$. For $u
   \in \hilo$:
   \begin{equation*}
     Vu = e_je_j^t (\meas_1(u),\dots,\meas_m(u) )^t = e_j \meas_j(u)
@@ -210,18 +211,17 @@ us in finding such constraints.
   \end{align*} 
   Since $\postcov$ is positive definite, we conclude that $\delta
   \tar(\obs) V > 0$. This means that increasing the magnitude of the
-  $j$th observation functional increases $\tar(\obs)$.
+  $j$th measurement functional increases $\tar(\obs)$.
 \end{proof}
 
 Proposition \ref{prop:bigger better} implies that it is a good idea to
-bound the norm of obsevation vectors. If, for example, we can take
-measurements in $span\{\meas\}$ for some $\meas \neq 0$, then a
-D-optimal design does not exist because we can always take an
-observation vector in $span\{\meas\}$ with larger norm. In contrast,
-in any real-life problem where sensors are concerned, the norm of
-measurements recorded by sensors is always one\footnote{Of course,
-point evaluations are not in any Hilbert space of functions we wish to
-consider.}:
+bound the norm of measurement vectors. If, for example, we can take
+measurements in $span\{\meas\}$ for some $\meas \neq 0$, then no
+design achieves a maximum of the q D-optimality criterion, since this
+criterion is not bounded. In contrast, in any real-life problem where
+sensors are concerned, the norm of measurements recorded by sensors is
+always one\footnote{Of course, point evaluations are not in any
+Hilbert space of functions we wish to consider.}:
 \begin{align*}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
     |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
@@ -231,11 +231,11 @@ consider.}:
   \forall \x \in \Omega.
 \end{align*}
 
-Thus, it is reasonable to consider observation vectors with unit
-$\hilo^*$ norm. The unit norm constraints can be written using
-\eqref{eq:obs*} as a series of $m$ equality constraints (one for each
-observation) on $\obs$. We define these and find their gradients in
-Proposition \ref{prop:constraints grad} below:
+Thus, it is reasonable to consider measurement vectors with unit
+$\hilo^*$ norm. The unit norm constraints can be written as a series
+of $m$ equality constraints (one for each measurement) on $\obs$. We
+define these and find their gradients in Proposition
+\ref{prop:constraints grad} below:
 
 \begin{proposition}\label{prop:constraints grad}
   Let

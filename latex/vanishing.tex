@@ -1,4 +1,4 @@
-\section{D-Optimal Designs when $\modcov = 0$}\label{section:vanishing}
+\section{Characterizing D-Optimal Designs when $\modcov = 0$}\label{section:vanishing}
 We will now prove Theorem \ref{thm:char} which caracterizes D-optimal
 designs when $\modcov = 0$. The necessary first-order condition for
 D-optimality of Theorem \ref{thm:constrained} for $\modcov = 0$
@@ -171,7 +171,7 @@ we can denote the corresponding non-zero eigenvalues of $\obs^*\obs$
 by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
 \begin{proposition}\label{prop:true target}
-  Let $\obs$ with $m$ observations satisfy the nonlinear eigenvalue
+  Let $\obs$ with $m$ measurements satisfy the nonlinear eigenvalue
   problem \eqref{eq:eigenproblem}. Let $\{\eta_i\}_{i=1}^{\infty}$
   eigenvalues of $\obs^*\obs$ and $\{\lambda_i\}_{i=1}^{\infty}$ the
   corresponding eigenvalues of $\fwd \prcov \fwd^*$. Let $k:=\rank
@@ -384,8 +384,8 @@ The final ingredient we require for the proof of Theorem
 \char*
 
 \begin{proof}
-  Part (1) is immediate for any observation operator $\obs$ that
-  satisfies the unit norm constraint on observation vectors. Part (2)
+  Part (1) is immediate for any measurement operator $\obs$ that
+  satisfies the unit norm constraint on measurement vectors. Part (2)
   was proved in Proposition \ref{prop:same ev}. Part (3) was proved in
   Proposition \ref{prop:true target}.
   
@@ -466,7 +466,7 @@ The final ingredient we require for the proof of Theorem
     posterior precision $(\fwd\prcov\fwd^*)^{-1} +
     \sigma^{-2}\obs^*\obs$ for a D-optimal design (left) and a
     sub-optimal design (right). Both designs are allowed $m=3$
-    observations. We assume $\sigma^2=1$ and thus, the blue area has
+    measurements. We assume $\sigma^2=1$ and thus, the blue area has
     accumulated height of $\sigma^{-2}m = 3$ in both plots. The
     D-optimal design (left) increases precision where it is
     lowest. The sub-optimal design (right) does not.}
@@ -479,7 +479,7 @@ when $\modcov = 0$: Imagine each eigenvector of $\fwd \prcov \fwd^*$
 corresponds to a graduated lab cylinder (Figure
 \ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
 liquid of $\lambda_i^{-1}$ volume units. We are allowed $m$
-observations, so we have blue liquid of volume $\sigma^{-2}m$ units at
+measurement, so we have blue liquid of volume $\sigma^{-2}m$ units at
 our disposal. When we seek a D-optimal design, we distribute the blue
 liquid by repeatedly adding a drop to whatever cylinder currently has
 the lowest level of liquid in it, as long as its index $i \leq m$. The
@@ -487,7 +487,7 @@ result of such a procedure is illustrated in Figure \ref{fig:optimal
   vs not}.
 
 \begin{figure}%{r}{0.25\textwidth} 
-    %\centering
+    \centering
     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
     \caption{Three graduated lab cylinders, corresponding to three
       eigenvectors. Prior eigenvalues not shown.}
@@ -495,23 +495,14 @@ result of such a procedure is illustrated in Figure \ref{fig:optimal
 \end{figure}
 
 
-
-\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
-The necessary conditions for D-optimality are (1), (2) and (4) of
-Theorem \ref{thm:char}. These conditions, however, still leave some
-freedom in choosing $\obs$. This freedom may give rise to
-clusterization, as illustrated in Figure \ref{fig:clusterization} and
-demonstrated below.
-
-Consider an inverse problem for which $\lambda_1^{-1} = 0.1,
-\lambda_2^{-1} = 0.2,\sigma^2=1$ and $\{\ev_i\}_{i=1}^\infty$ are
-eigenvectors of $\fwd\prcov\fwd^*$. Two D-optimal designs $\obs_1,
-\obs_2$ are presented in \eqref{eq:two designs}, and it is easy to
-verify that $\obs_1^*\obs_1 = \obs_2^*\obs_2$. However, $\obs_1$
-exhibits clusterization ($\meas_3 = \meas_5 = \ev_1$), while $\obs_2$
-does not. Both of $\obs_1$ and $\obs_2$ are D-optimal, and we conclude
-that clusterization poses no obstruction to D-optimality.
-
+\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}T
+The necessary conditions for D-optimality of Theorem \ref{thm:char}
+leave some freedom in choosing $\obs$, which may or may not give rise
+clustered designs. Consider an inverse problem for which the first two
+eigenvalues of $\fwd \prcov\fwd^*$ are $\lambda_1^{-1} = 0.1,
+\lambda_2^{-1} = 0.2$, its eigenvectors are $\{\ev_i\}_{i=1}^\infty$
+and $\sigma^2=1$. Consider the following $\obs_1, \obs_2$ (see also
+Figure \ref{fig:clusterization}):
 \begin{equation}\label{eq:two designs}
   \obs_1 =
   \begin{pmatrix}
@@ -530,15 +521,31 @@ that clusterization poses no obstruction to D-optimality.
     \ev_1 \\    
   \end{pmatrix}
 \end{equation}
+\noindent It is easy to verify that $\obs_1^*\obs_1 = \obs_2^*\obs_2$
+and that both $\obs_1$ and $\obs_2$ are D-optimal. However, $\obs_1$
+is a clustered design ($\meas_3 = \meas_5 = \ev_1$), while $\obs_2$ is
+not.
 
-A computer implementation of Lemma \ref{thm:char} (code in
-Supplementary material) generates $\obs_1$ as a solution to the
-D-optimal design problem mentioned in the previous
-paragraph. Randomized numerical simulations (see code in Supplementary
-material) give rise to D-optimal designs that exhibit clustrization
-more than 95\% of the time. We conclude that clusterization poses no
-obstruction to D-optimality for the model presented in this study and
-that sensor clusterization is generic.
+
+We are now ready to answer some of the questions posed in the
+introduction:
+
+\textbf{Question \ref{q:why}}: Since $\obs_1$ is clustered and
+D-optimal, measurement clusterization poses no obstruction to
+D-optimality. Furthermore, a computer implementation of Lemma
+\ref{thm:char} also generates $\obs_1$ as a solution to the D-optimal
+design problem. Randomized numerical simulations give rise to
+D-optimal designs that exhibit clustrization more than 95\% of the
+time (see code in supplementary). Since our model is as generic as
+possible, we conclude that it is possible that measurement
+clusterization is a generic phenomenon that.
+
+
+\textbf{Question \ref{q:replace}}: Since $\obs_2$ is D-optimal but not
+clustered, we conclude that it is possible to substitute a clustered
+design for an equally optimal non-clustered design. Achieveing this in
+the setup of our model not hard, but in real life problems this may
+prove more difficult.
 
 
 \pgfplotstableread{

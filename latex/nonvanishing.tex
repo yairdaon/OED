@@ -1,16 +1,13 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% SECTION Analysis of Optimal Designs --- Non-Vanishing Model Error
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Sensor Clusterization --- Non-Vanishing Model Error}\label{section:non vanishing}
+\section{Model Error Mitigates Measurement Clusterization}\label{section:non vanishing}
 We now show that if $\modcov \neq 0$ clusterization will not occur. It
 is known that including a model error term mitigates the
 clusterization phenomenon \cite{Ucinski05}, and here we prove this
 rigorously. Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
 (\meas_1,\dots,\meas_{m-1})^t$. Denote $\Sigmam := \Sigma (\obsm)$ and
 $\postcovm$ the posterior covariance that arises when $\obsm$ is
-utilized as an observation operator.
+utilized as a measurement operator.
 
-\begin{lemma}[Increase due to an observation]\label{lemma:design increase}
+\begin{proposition}[Increase due to a measurement]\label{prop:design increase}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
   (\meas_1,\dots,\meas_{m-1})^t$. Then
   \begin{equation}\label{eq:conclusion}
@@ -23,7 +20,7 @@ utilized as an observation operator.
     }       
     \right ).
   \end{equation}
-\end{lemma}
+\end{proposition}
 
 \begin{proof}
   Let
@@ -43,35 +40,37 @@ utilized as an observation operator.
   \end{align*}
 
   The Schur complement implies:
-  \begin{align*}
-    \Sigma^{-1} &=
-    \begin{bmatrix}
-      \Sigmam^{-1} + \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1} & - \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} \\
-      -( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1}                            &  ( c - w^t \Sigmam^{-1} w)^{-1}
-    \end{bmatrix} \\
-    &=
-    \begin{bmatrix}
-      \Sigmam^{-1} & 0 \\
-      0           & 0 
-    \end{bmatrix}
-    + (c -w^t \Sigmam^{-1} w )^{-1}
-    \begin{bmatrix}
-      \Sigmam^{-1} w \\
-      -1
-    \end{bmatrix}
-    \begin{bmatrix}
-      w^t \Sigmam^{-1} & -1 
-    \end{bmatrix}
-  \end{align*}
+  \begin{align}\label{eq:schur}
+    \begin{split}
+          \Sigma^{-1} &=
+          \begin{bmatrix}
+            \Sigmam^{-1} + \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1} & - \Sigmam^{-1} w ( c - w^t \Sigmam^{-1} w)^{-1} \\
+            -( c - w^t \Sigmam^{-1} w)^{-1} w^t \Sigmam^{-1}                            &  ( c - w^t \Sigmam^{-1} w)^{-1}
+          \end{bmatrix} \\
+          &=
+          \begin{bmatrix}
+            \Sigmam^{-1} & 0 \\
+            0           & 0 
+          \end{bmatrix}
+          + (c -w^t \Sigmam^{-1} w )^{-1}
+          \begin{bmatrix}
+            \Sigmam^{-1} w \\
+            -1
+          \end{bmatrix}
+          \begin{bmatrix}
+            w^t \Sigmam^{-1} & -1 
+          \end{bmatrix},
+    \end{split}
+  \end{align}
   %
-  Denote:
+  and denote:
   %
-  \begin{align*}
+  \begin{align}\label{eq:M def}
     \M (\obs ):&= \prcov^{\frac12}\fwd^* \obs^* \Sigma^{-1} \obs \fwd
     \prcov^{\frac12}.
-  \end{align*}
+  \end{align}
   
-  Note that:
+  From \eqref{eq:schur} and \eqref{eq:M def}:
   \begin{align*}
     \M(\obs) &= \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2} \\
     %
@@ -137,10 +136,9 @@ utilized as an observation operator.
   \begin{equation}\label{eq:M postcov}
     \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
   \end{equation}
-  Next, use a generalization of the matrix determinant
-  lemma\footnote{$\det(A + uv^*) = (1 + \langle A^{-1} u,u \rangle)
-  \det A$.} to Hilbert spaces (Lemma \ref{lemma:MDL}). Precise
-  statement and proof are given in the appendix:
+  From a generalization of the matrix determinant lemma to Hilbert
+  spaces\footnote{$\det(A + uv^*) = (1 + \langle A^{-1} u,u \rangle)
+  \det A$. Statement and proof in Lemma \ref{lemma:MDL}.}:
   %
   \begin{align}\label{eq:diffs}
     \begin{split}
@@ -156,7 +154,7 @@ utilized as an observation operator.
       %
       %
       %
-      &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ) \text{ (Lemma \ref{lemma:MDL})}.
+      &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ).
     \end{split}
   \end{align}
   From \eqref{eq:u} and \eqref{eq:M postcov}:
@@ -250,7 +248,7 @@ utilized as an observation operator.
   \end{align}
   %
   Substitute \eqref{eq:enumerator} and \eqref{eq:denominator} to the
-  enumerator and denominator (respectively) of \eqref{eq:conclusion}:
+  enumerator and denominator of \eqref{eq:conclusion}:
   %
   \begin{align*}
     \tar( \obs ) - \tar (\obsm ) &=
@@ -312,10 +310,11 @@ is bounded, and
 \end{equation*}
 
 We have shown that in the limit $\sigma^2 \to 0$, no increase in
-$\tar$ is achieved by repeating an observation, so designs that
-exhibit sensor clusterization are not D-optimal. In conclusion, for
-small observation error levels, sensor clusterization is mitigated by
-the presence of a non-zero model error\footnote{Since the design
-criterion is not defined for $\sigma^2 = 0$ and identical observation
-vectors, we cannot make a statement regarding $\sigma^2 = 0$, except
-in the limiting sense described above.}.
+$\tar$ is achieved by repeating a measurement, so designs that exhibit
+measurement clusterization are not D-optimal. Since $\tar$
+\eqref{eq:objective} is not defined for $\sigma^2 = 0$ and identical
+measurement vectors, we cannot make a statement regarding $\sigma^2 =
+0$, except in the limiting sense described above. In conclusion, for
+small observation error $\sigma^2$ levels, measurement clusterization
+is mitigated by the presence of a non-zero model error $\modcov$ ---
+answering Question \ref{q:mitigate} posed in the Introduction.
