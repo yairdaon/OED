@@ -3,11 +3,11 @@ Measurements play a fundamental role in generating observations and
 are indispensable to any inference process. In the realm of data
 science, selecting the optimal set of measurements holds particular
 significance when inferring parameters of a physical process. Unlike
-many other fields, where measurements are fixed or limited, in this
-context, we have the freedom to choose which measurements to take. We
-would like to take advantage of this freedom to choose measurements
-that enhance accuracy, reduce costs, or achieve both objectives
-simultaneously. Whether measurements involves specifying electrode
+many other fields, where measurements are fixed, in this context, we
+have the freedom to choose which measurements to take. This freedom
+should be taken advantage of to choose measurements that enhance
+accuracy, reduce costs, or achieve both objectives
+simultaneously. Whether measurements involve specifying electrode
 locations on the skin in electric impedance tomography
 \cite{horesh2010impedance}, determining certain wavelengths in MRI
 \cite{horesh2008mri}, or positioning sensors for detecting
@@ -20,19 +20,19 @@ recognized and extensively studied design criteria
 \cite{Chaloner1995}.
 
 
-Interestingly, A- and D-optimal designs have been observed to yield
+Surprisingly, A- and D-optimal designs have been observed to yield
 remarkably similar measurements in certain cases \cite{fedorov1996,
   hooker2009, fedorov2012, Ucinski05, neitzel2019sparse}. To
 illustrate this point, we consider a toy inverse problem: inferring
 the initial condition of the 1D heat equation (details in Section
 \ref{section:example}). In Figure \ref{fig:clusterization
   illustration} D-optimal measurement locations are shown for
-different numbers of allowed measurements. Notably, for six
-measurement locations, the D-optimal design yields two sets of
-measurements that are almost indistinguishable from one another. This
-intriguing phenomenon is known as \emph{measurement clusterization}
-\cite{Ucinski05}, and we refer to a design that exhibits measurement
-clusterization as a \emph{clustered design}.
+different numbers of measurements. Notably, for six measurements, a
+D-optimal design yields two sets of measurements that are almost
+indistinguishable from one another. This intriguing phenomenon is
+known as \emph{measurement clusterization} \cite{Ucinski05}, and we
+refer to a design that exhibits measurement clusterization as a
+\emph{clustered design}.
 
 
 \begin{figure}
@@ -86,11 +86,11 @@ clusterization as a \emph{clustered design}.
       
     \end{axis}
   \end{tikzpicture}
-  \caption{Measurement clusterization when inferring the initial
-    condition of the 1D heat equation. Posterior pointwise standard
-    deviations (lines) are plotted over the computational domain
-    $\Omega = [0, \pi]$, for varying numbers of
-    measurements. Measurement locations (circles) were chosen to
+  \caption{Measurement clusterization for the inverse problem of
+    inferring the initial condition of the 1D heat equation. Posterior
+    pointwise standard deviations (lines) are plotted over the
+    computational domain $\Omega = [0, \pi]$, for varying numbers of
+    measurements. Measurement locations (circles) were chosen
     according to the D-optimality criterion. Measurement
     clusterization occurs for six measurements: Only four measurement
     locations are visible, since two pairs of measurements are so
@@ -99,8 +99,8 @@ clusterization as a \emph{clustered design}.
 \end{figure}
 
 
-Researchers widely agree that measurement clusterization is undesirable
-\cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
+Researchers widely agree that measurement clusterization is
+undesirable \cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
   neitzel2019sparse}, prompting the exploration of various remedies to
 address this issue. One approach involves merging ``close''
 measurements \cite{fedorov2012}; however, this strategy merely
@@ -111,36 +111,34 @@ can be achieved by imposing distance constraints between measurements
 or by introducing correlated errors that account for both observation
 error and model misspecification \cite{Ucinski05}. For instance, in
 the context of time-series analysis for pharmacokinetic experiments,
-measurement clusterization can be mitigated by incorporating the modeling
-of auto-correlation time within the noise terms
-\cite{hooker2009}. %% This methodology shares a similar rationale with
-%% the earlier approach, which assumed correlation between errors
-%% \cite{Ucinski05}.
+measurement clusterization can be mitigated by incorporating the
+modeling of auto-correlation time within the noise terms
+\cite{hooker2009}.
 
 
 In spatial problems involving choice of measuremnts within a domain
 $\Omega \subseteq \mathbb{R}^d, d=1,2,3$, many researchers circumvent
-the problem of measurement clusterization by choosing measurements from a
-coarse grid in $\Omega$ \cite{koval2020, alexanderian2021, attia2020,
-  alexanderian2014, alexanderian2016,
+the problem of measurement clusterization by choosing measurements
+from a coarse grid in $\Omega$ \cite{koval2020, alexanderian2021,
+  attia2020, alexanderian2014, alexanderian2016,
   alexanderian2018efficient}. However, this approach incurs a
 significant computational cost as it requires solving a difficult
-combinatorial optimization problem to select optimal measurement
-locations from a finite set. Typically, the optimization problem is
-relaxed by first assigning optimal measurement "weights" in
-$\mathbb{R}_+$ to potential measurement locations. Some authors
-incorporate a sparsifying $\ell_1$ penalty term into the design
-criterion, which is subsequently thresholded to achieve the desired
-binary design \cite{horesh2008borehole}. Others progressively relax
-the $\ell_1$ penalty to an $\ell_0$ penalty via a continuation method
+combinatorial optimization problem for choosing measurementst from a
+finite set. The combinatorial optimization problem is usually relaxed
+by first assigning optimal measurement "weights" in $\mathbb{R}_+$ to
+the potential measurement locations. Some researchers incorporate a
+sparsifying $\ell_1$ penalty term into the design criterion, which is
+subsequently thresholded to achieve the desired binary design over the
+coarse grid \cite{horesh2008borehole}. Others progressively relax the
+$\ell_1$ penalty to an $\ell_0$ penalty via a continuation method
 \cite{alexanderian2016, alexanderian2014}. A clever alternative is to
-cast the problem of finding optimal measurement weights as a stochastic
-optimization problem \cite{attia2022stochastic}. All of the
+cast the problem of finding optimal measurement weights as a
+stochastic optimization problem \cite{attia2022stochastic}. All of the
 aforementioned methods may indeed find a binary optimal design
 restricted to a given coarse grid. However, none addresses one
-fundamental issue: the restriction of measurement locations to a coarse
-grid in $\Omega \subseteq \mathbb{R}^d, d=1,2,3$ inherently results in
-a sub-optimal design.
+fundamental issue: the restriction of measurement locations to a
+coarse grid in $\Omega \subseteq \mathbb{R}^d, d=1,2,3$ inherently
+results in a sub-optimal design.
 
 Avoiding measurement clusterization is a pragmatic approach:
 intuitively, we recognize that measurement clusterization is
@@ -149,9 +147,9 @@ clear. Consequently, we strive to prevent it and devise various
 methodologies to avoid measurement clusterization. Yet each and every
 one of these methodologies achieves this objective by imposing
 restrictions on measurement locations, thereby fundamentally altering
-the optimal design problem. Surprisingly, to the best of my knowledge,
-no previous study has tried to address some seemingly simple yet
-fundamental questions:
+the optimal design problem. To the best of my knowledge, no previous
+study has tried to address some seemingly simple yet fundamental
+questions:
 %
 Why does measurement clusterization occur?
 %
@@ -160,8 +158,10 @@ measurement clusterization?
 %
 Should we aim to avoid measurement clusterization?
 %
-Can an optimal clustered design be relpaced with an equally optimal
-non-clustered design?design?
+Is it possible to substitute an optimal clustered design with an
+equally optimal non-clustered design?
+%Can an optimal clustered design be relpaced with an equally optimal
+%non-clustered design?
 
 
 \subsection{Contribution}
@@ -170,14 +170,13 @@ understanding of measurement clusterization by addressing the
 aforementioned questions. Our focus centers around investigating the
 Bayesian D-optimality criterion, which involves maximizing the
 expected Kullback-Leibler divergence between the posterior and prior
-measures \cite{CoverThomas91, Chaloner1995}. To delve deeper into this
-subject, we conduct an analysis of Bayesian D-optimal designs within
-the context of linear inverse problems in Hilbert spaces. We propose a
-novel relaxed model for D-optimality that maintains analytical
-tractability and enables the identification of D-optimal designs using
-Lagrange multipliers. This analytical framework facilitates the
-exploration of the following questions posed at the end of the
-previous paragraph:
+measures \cite{CoverThomas91, Chaloner1995}. We conduct an analysis of
+Bayesian D-optimal designs within the context of linear inverse
+problems in Hilbert spaces. We propose a novel relaxed model for
+D-optimality that maintains analytical tractability and enables the
+identification of D-optimal designs using Lagrange multipliers. This
+analytical framework facilitates the exploration of the questions
+posed at the end of the previous paragraph:
 
 
 \begin{enumerate}
@@ -202,19 +201,23 @@ previous paragraph:
   did not find any compelling reason to explicitly avoid optimal
   clustered designs.
 
-\item \label{q:replace} \textbf{Can an optimal clustered design be
-  relpaced with an equally optimal non-clustered design?} In Section
-  \ref{section:vanishing}, we answer this question in the affirmative,
-  although we show that numerical experiments conducted using our
-  model indicate a strong preference for clustered designs.
+\item \label{q:replace} \textbf{Is it possible to substitute an
+  optimal clustered design with an equally optimal non-clustered
+  design?} In Section \ref{section:vanishing}, we answer this question
+  in the affirmative, although we show that numerical experiments
+  conducted using our model indicate a strong preference for clustered
+  designs.
 \end{enumerate}
 
-The cornerstone of our investigation into measurement clusterization is
-Theorem \ref{thm:char}, presented below and proven in Section
+The cornerstone of our investigation into measurement clusterization
+is Theorem \ref{thm:char} proven in Section
 \ref{section:vanishing}. The key insight of Theorem \ref{thm:char}
 lies in its fifth component, which highlights that a D-optimal design
 aims to uniformly reduce posterior uncertainties across all posterior
-covariance eigenvectors.
+covariance eigenvectors. A similar conclusion was reached by Koval et
+al.~\cite{koval2020}, who showed that A-optimal designs should be
+constructed in the space of \emph{observations}.
+
 
 \begin{restatable}[D-optimal designs with vanishing model error]{theorem}{char}\label{thm:char}
   Let:

@@ -24,10 +24,10 @@ taken. Measurements are taken via the \emph{measurement
 operator}\footnote{It is common for the measurement and forward
 operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
-following sections requires $\fwd$ and $\obs$ are explicitly separated
-as in \cite{attia2022stochastic, cvetkovic2023choosing}.} $\obs \in (
-\hilo^* )^m$, whose entries $\meas_j, j=1,\dots,m$ are called
-\emph{measurement vector}s:
+following sections requires that $\fwd$ and $\obs$ are explicitly
+separated as in \cite{attia2022stochastic, cvetkovic2023choosing}.}
+$\obs \in ( \hilo^* )^m$, whose entries $\meas_j, j=1,\dots,m$ are
+called \emph{measurement vector}s:
 
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
@@ -129,8 +129,8 @@ is a scalar matrix and does not depend on $\obs$.
 %% \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 = \eps^{-1}$.
 
 
-The posterior measure $\post$ is Gaussian in this setting and its
-covariance operator is:
+It is useful to record that the posterior measure $\post$ is Gaussian
+in this setting and its covariance operator is \cite{Stuart10}:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
