@@ -5,18 +5,17 @@ science, selecting the optimal set of measurements holds particular
 significance when inferring parameters of a physical process. Unlike
 many other fields, where measurements are fixed, in this context, we
 have the freedom to choose which measurements to take. This freedom
-should be taken advantage of to choose measurements that enhance
-accuracy, reduce costs, or achieve both objectives
-simultaneously. Whether measurements involve specifying electrode
-locations on the skin in electric impedance tomography
-\cite{horesh2010impedance}, determining certain wavelengths in MRI
-\cite{horesh2008mri}, or positioning sensors for detecting
+should be taken advantage of: measurements should be chosen to enhance
+accuracy, reduce costs, or both. Whether measurements involve
+specifying electrode locations on the skin in electric impedance
+tomography \cite{horesh2010impedance}, determining certain wavelengths
+in MRI \cite{horesh2008mri}, or positioning sensors for detecting
 ground-reflected waves in the search for oil
 \cite{horesh2008borehole}, the selection of optimal measurements,
 referred to as the problem of \emph{optimal design}, becomes
-crucial. To achieve this, researchers optimize specific \emph{design
-criteria}, with A- and D-optimality being two of the most widely
-recognized and extensively studied design criteria
+crucial. Optimal measurements are chosen according to specific
+\emph{design criteria}, with A- and D-optimality being two of the most
+widely recognized and extensively studied design criteria
 \cite{Chaloner1995}.
 
 
@@ -29,9 +28,9 @@ the initial condition of the 1D heat equation (details in Section
   illustration} D-optimal measurement locations are shown for
 different numbers of measurements. Notably, for six measurements, a
 D-optimal design yields two sets of measurements that are almost
-indistinguishable from one another. This intriguing phenomenon is
-known as \emph{measurement clusterization} \cite{Ucinski05}, and we
-refer to a design that exhibits measurement clusterization as a
+indistinguishable from one another. We refer to this intriguing
+phenomenon as \emph{measurement clusterization} \cite{Ucinski05}, and
+we refer to a design that exhibits measurement clusterization as a
 \emph{clustered design}.
 
 
@@ -121,12 +120,12 @@ $\Omega \subseteq \mathbb{R}^d, d=1,2,3$, many researchers circumvent
 the problem of measurement clusterization by choosing measurements
 from a coarse grid in $\Omega$ \cite{koval2020, alexanderian2021,
   attia2020, alexanderian2014, alexanderian2016,
-  alexanderian2018efficient}. However, this approach incurs a
-significant computational cost as it requires solving a difficult
-combinatorial optimization problem for choosing measurementst from a
-finite set. The combinatorial optimization problem is usually relaxed
-by first assigning optimal measurement "weights" in $\mathbb{R}_+$ to
-the potential measurement locations. Some researchers incorporate a
+  alexanderian2018efficient}. This approach incurs a significant
+computational cost as it requires solving a difficult combinatorial
+optimization problem for measurements locations over a finite set. The
+combinatorial optimization problem is usually relaxed by first
+assigning optimal measurement ``weights'' in $\mathbb{R}_+$ to the
+potential measurement locations. Some researchers incorporate a
 sparsifying $\ell_1$ penalty term into the design criterion, which is
 subsequently thresholded to achieve the desired binary design over the
 coarse grid \cite{horesh2008borehole}. Others progressively relax the
@@ -137,15 +136,14 @@ stochastic optimization problem \cite{attia2022stochastic}. All of the
 aforementioned methods may indeed find a binary optimal design
 restricted to a given coarse grid. However, none addresses one
 fundamental issue: the restriction of measurement locations to a
-coarse grid in $\Omega \subseteq \mathbb{R}^d, d=1,2,3$ inherently
-results in a sub-optimal design.
+coarse grid in $\Omega$ inherently results in a sub-optimal design.
 
 Avoiding measurement clusterization is a pragmatic approach:
 intuitively, we recognize that measurement clusterization is
 undesirable, even though the underlying reasons may not be fully
 clear. Consequently, we strive to prevent it and devise various
 methodologies to avoid measurement clusterization. Yet each and every
-one of these methodologies achieves this objective by imposing
+one of these methodologies achieves its objective by imposing
 restrictions on measurement locations, thereby fundamentally altering
 the optimal design problem. To the best of my knowledge, no previous
 study has tried to address some seemingly simple yet fundamental
@@ -172,7 +170,7 @@ Bayesian D-optimality criterion, which involves maximizing the
 expected Kullback-Leibler divergence between the posterior and prior
 measures \cite{CoverThomas91, Chaloner1995}. We conduct an analysis of
 Bayesian D-optimal designs within the context of linear inverse
-problems in Hilbert spaces. We propose a novel relaxed model for
+problems over Hilbert spaces. We propose a novel relaxed model for
 D-optimality that maintains analytical tractability and enables the
 identification of D-optimal designs using Lagrange multipliers. This
 analytical framework facilitates the exploration of the questions
@@ -184,7 +182,7 @@ posed at the end of the previous paragraph:
   occur?} In Section \ref{section:vanishing}, we provide an insightful
   explanation for the optimality of clustered designs when no model
   error is present. We demonstrate that measurement clusterization
-  poses no obstruction to D-optimality and that clustered design are
+  poses no obstruction to D-optimality and that clustered designs are
   preferred by numerical algorithms.
 
   %% We conjecture that the prevalence of measurement clusterization
@@ -215,8 +213,8 @@ is Theorem \ref{thm:char} proven in Section
 lies in its fifth component, which highlights that a D-optimal design
 aims to uniformly reduce posterior uncertainties across all posterior
 covariance eigenvectors. A similar conclusion was reached by Koval et
-al.~\cite{koval2020}, who showed that A-optimal designs should be
-constructed in the space of \emph{observations}.
+al.~\cite{koval2020}, who showed that A-optimal designs are best
+constructed in the space of observations.
 
 
 \begin{restatable}[D-optimal designs with vanishing model error]{theorem}{char}\label{thm:char}
@@ -293,7 +291,7 @@ Other contributions include three useful lemmas: In Lemma
 \ref{lemma:free} we decompose a symmetric positive definite matrix $M
 \in \mathbb{R}^{k \times k}$ with $\ttr M = m \in \mathbb{N}$ as $M =
 AA^t$, where $A$ has unit norm columns. In Lemma \ref{lemma:MDL} we
-prove a matrix determinant lemma in Hilbert spaces. Finally in Lemma
+prove a matrix determinant lemma in Hilbert spaces. Finally, in Lemma
 \ref{lemma:lax} we generalize a lemma for calculating
 $\frac{\der}{\der t} \log \det (I + X(t))$, where $X(t)$ is an
 operator valued function \cite{Lax07}.
