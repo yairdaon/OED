@@ -34,66 +34,20 @@ we refer to a design that exhibits measurement clusterization as a
 \emph{clustered design}.
 
 
-\begin{figure}
-  \begin{tikzpicture}[thick, scale=1.3, every node/.style={scale=0.99}]
-    \begin{axis}
-      %% title={Posterior Pointwise Standard Deviations and D-Optimal
-      %% Measurement Locations}
-      [xmin = 0, xmax = 3.14, xlabel = {$x \in \Omega$}, ylabel =
-        posterior pointwise std, ymin = 0,
-      %compat = 1.3,
-      % ymax   = 130,
-      % ytick = \empty,
-      legend cell align=left,
-      % legend style={at={(0.45,0.2)}}
-      legend pos= outer north east 
-      ]
-      % \draw[black!30!white, thin] (50,0) -- (50,130);
-      % 
-      %% \addplot [thin, black, mark=none] table{stdv-heat-sens1-var1.txt};
-      %% \addlegendentry{1 measurements};
-      
-      %% \addplot [thin, blue, mark=none] table{stdv-heat-sens2-var1.txt};
-      %% \addlegendentry{2 measurements};
-      
-      %% \addplot [thin, red, mark=none] table{stdv-heat-sens3-var1.txt};
-      %% \addlegendentry{3 measurements};
-      
-      \addplot [thin, green, mark=none] table{stdv-heat-sens4-var1.txt};
-      \addlegendentry{4 measurements};
-      
-      \addplot [thin, purple, mark=none] table{stdv-heat-sens5-var1.txt};
-      \addlegendentry{5 measurements};
-      
-      \addplot [thin, cyan, mark=none] table{stdv-heat-sens6-var1.txt};
-      \addlegendentry{6 measurements};
-
-  
-      %% \addplot [black,  only marks, mark=x, mark size=1.5] 
-      %% table{locs-heat-sens1-var1.txt}; 
-      %% \addplot [blue,   only marks, mark=x, mark size=1.5]
-      %% table{locs-heat-sens2-var1.txt}; 
-      %% \addplot [red,    only marks, mark=x, mark size=1.5]
-      %% table{locs-heat-sens3-var1.txt};
-      \addplot [green,  only marks, mark=*, mark size=1.5] 
-      table{locs-heat-sens4-var1.txt}; 
-      \addplot [purple, only marks, mark=*, mark size=1.5] 
-      table{locs-heat-sens5-var1.txt}; 
-      \addplot [cyan,   only marks, mark=*, mark size=1.5] 
-      table{locs-heat-sens6-var1.txt}; 
-  
-      
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Measurement clusterization for the inverse problem of
-    inferring the initial condition of the 1D heat equation. Posterior
-    pointwise standard deviations (lines) are plotted over the
-    computational domain $\Omega = [0, \pi]$, for varying numbers of
-    measurements. Measurement locations (circles) were chosen
-    according to the D-optimality criterion. Measurement
-    clusterization occurs for six measurements: Only four measurement
-    locations are visible, since two pairs of measurements are so
-    close together they are indistinguishable.}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.5\textwidth]{example.eps}
+    \caption{Measurement clusterization for the inversion of the
+      initial condition of the 1D heat equation. For each measurement,
+      its index is plotted where the measurement is taken. Fmong fou
+      locations are plotted over the computational domain $\Omega =
+      [0, 1]$ (x-axis), for varying numbers of measurements
+      (y-axis). Measurement locations (numbers) were chosen according
+      to the D-optimality criterion. Measurement clusterization
+      already occurs for four measurements: the third measurement is
+      overlaid with the fourth. For five measurements, first and
+      second measurements are clustered, as well as the fourth and the
+      fifth.}
   \label{fig:clusterization illustration}
 \end{figure}
 
@@ -307,6 +261,3 @@ simplifications of real systems, e.g. the Ising model
 \cite{cipra1987}, the Lorenz system \cite{brin}, the Lotka-Volterra
 equations \cite{logan2006}, the Carnot engine \cite{kardar2007}, and
 many others.
-
-
-%% \subsection{An Example of Measurement Clusterization}\label{subsec:example}
