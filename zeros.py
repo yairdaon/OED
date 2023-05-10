@@ -11,11 +11,13 @@
 # AA^t = M.
 
 import numpy as np
+import pandas as pd
 import pytest
 from joblib import delayed, Parallel
 from pandas import isnull
 from numpy import sin, cos
 from scipy.stats import ortho_group
+from scipy.spatial.distance import cdist
 
 EPS = 1e-9
 ortho = ortho_group.rvs
@@ -234,8 +236,75 @@ def test_givens(k=8, lower=4, upper=6):
 def test_all(params):
     Parallel(n_jobs=7)(delayed(caller)(**param) for param in params)
 
+
+def generic():
+    """ We run randomized simulations of D-optimal design with our relaxed model.
+    """
     
+    N = 1000
+    res = []
+    for m in range(6, 9):
+        for k in range(3, m-1):
+
+            ## Counts how many simulated designs are clustered
+            counter = 0 
+
+            # N == number of simulations
+            for i in range(N):
+
+                ## Random matrices such that:
+                ## M is symmetric positive definite
+                ## M = UDU^*
+                ## S = sqrd(D)
+                ## m = number of measurements
+                ## Number of nonzero entries in D
+                M, D, U, S = MDUS(m, k)
+
+                ## AA^t = M, and A has unit norm columns
+                A = get_A(D, m)
+
+                ## distances between columns of A
+                distances = cdist(A.T, A.T)
+
+                ## Diagonal has 0 entries. We do not want to count
+                ## them, so we fill diagonal with 1's
+                np.fill_diagonal(distances, 1)
+
+                ## Which distances are > 0 <==> which pairs of
+                ## measurements are ***not*** clustered
+                dis = distances > 1e-9
+
+                ## If all measurements are not clustered --- the
+                ## design does not exhibit sensor clusterization.
+                if dis.all():
+
+                    ## Increment counter of non clustered designs
+                    counter += 1
+
+                dic = dict(m=m, ## Number of measurements
+                           k=k, ## Rank of O
+                           cluster=1-counter/N ## Fraction of designs that ***are** clustered
+                           )
+                
+            res.append(dic)
+    res = pd.DataFrame(res)
+    res = res.assign(mk=res.m-res.k) 
+    # res.to_pickle("simulation.pickle") ## Save this if u take a long run
+    print("Parameters such that the probability of clusterization is < 1:\n", res.query("cluster < 1"))
+
+
 if __name__ == '__main__':
-    test_givens()
-    test_theta()
+    try:
+        df = pd.read_pickle("simulation.pickle")
+        print(df)
+        generic()
+        test_givens()
+        test_theta()
+    except:
+        import pdb, traceback, sys
+        traceback.print_exc()
+        _, _ , tb = sys.exc_info()        
+        pdb.post_mortem(tb)
+
+
 
