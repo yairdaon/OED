@@ -180,6 +180,9 @@ covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
     \end{split}
   \end{align}
 \end{theorem}
+It is important to note that since $\obs$ is finite-rank,
+$\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}$ is
+trace-class.
 \begin{definition}\label{def:d optimality}
   $\obs^{\star}$ is said to be \emph{D-optimal} if $\obs^{\star} =
   \argmax_{\obs} \tar(\obs)$, where entries of $\obs \in (\hilo^*)^m$ are constrained to

@@ -495,16 +495,16 @@ result of such a procedure is illustrated in Figure \ref{fig:optimal
 \end{figure}
 
 
-\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}T
+\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
 The necessary conditions for D-optimality of Theorem \ref{thm:char}
 leave some freedom in choosing $\obs$, which may or may not give rise
 clustered designs. Consider an inverse problem for which the first two
-eigenvalues of $\fwd \prcov\fwd^*$ are $\lambda_1^{-1} = 0.1,
-\lambda_2^{-1} = 0.2$, its eigenvectors are $\{\ev_i\}_{i=1}^\infty$
-and $\sigma^2=1$. Consider the following $\obs_1, \obs_2$ (see also
-Figure \ref{fig:clusterization}):
+eigenvalues of the pushforward prior $\fwd \prcov\fwd^*$ are
+$\lambda_1 = 10, \lambda_2 = 5$, its eigenvectors are
+$\{\ev_i\}_{i=1}^\infty$ and $\sigma^2=1$. Consider the following
+$\obs, \pobs$ (see also Figure \ref{fig:clusterization}):
 \begin{equation}\label{eq:two designs}
-  \obs_1 =
+  \obs =
   \begin{pmatrix}
     \sqrt{\frac{11}{40}}\ev_1 - \sqrt{\frac{29}{40}}\ev_2 \\
     \sqrt{\frac{11}{40}}\ev_1 + \sqrt{\frac{29}{40}}\ev_2 \\
@@ -512,7 +512,7 @@ Figure \ref{fig:clusterization}):
     \ev_2 \\
     \ev_1 \\    
   \end{pmatrix},
-  \obs_2 =
+  \pobs =
   \begin{pmatrix}
     \sqrt{\frac{3}{8}}\ev_1 - \sqrt{\frac{5}{8}}\ev_2 \\
     \sqrt{\frac{3}{8}}\ev_1 + \sqrt{\frac{5}{8}}\ev_2 \\
@@ -521,19 +521,19 @@ Figure \ref{fig:clusterization}):
     \ev_1 \\    
   \end{pmatrix}
 \end{equation}
-\noindent It is easy to verify that $\obs_1^*\obs_1 = \obs_2^*\obs_2$
-and that both $\obs_1$ and $\obs_2$ are D-optimal. However, $\obs_1$
-is a clustered design ($\meas_3 = \meas_5 = \ev_1$), while $\obs_2$ is
+\noindent It is easy to verify that $\obs^*\obs = \pobs^*\pobs$
+and that both $\obs$ and $\pobs$ are D-optimal. However, $\obs$
+is a clustered design ($\meas_3 = \meas_5 = \ev_1$), while $\pobs$ is
 not.
 
 
 We are now ready to answer two of the questions posed in the
 introduction:
 
-\textbf{Question \ref{q:why}}: Since $\obs_1$ is clustered and
+\textbf{Question \ref{q:why}}: Since $\obs$ is clustered and
 D-optimal, measurement clusterization poses no obstruction to
 D-optimality. Furthermore, a computer implementation of Lemma
-\ref{thm:char} also generates $\obs_1$ as a solution to the D-optimal
+\ref{thm:char} also generates $\obs$ as a solution to the D-optimal
 design problem. Randomized numerical simulations give rise to
 D-optimal designs that exhibit clustrization more than 95\% of the
 time (see code in supplementary). Since our model is as generic as
@@ -541,11 +541,31 @@ possible, we conclude that it is possible that measurement
 clusterization is a generic phenomenon that.
 
 
-\textbf{Question \ref{q:replace}}: Since $\obs_2$ is D-optimal but not
+\textbf{Question \ref{q:replace}}: Since $\pobs$ is D-optimal but not
 clustered, we conclude that it is possible to substitute a clustered
-design for an equally optimal non-clustered design. Achieveing this in
-the setup of our model not hard, but in real life problems this may
-prove more difficult.
+design for an equally optimal non-clustered design. It is easy to give
+some simple intuition on how the clustered design $\obs$ was modified
+to the non-clustered design $\pobs$. First let us introduce some
+notation: let $\obs_{12}$ be the design composed of the first and
+second rows of $\obs$ and use a similar definition for
+$\pobs_{12}$. Note that $\obs_{12}$ uniquely determines $\obs$ as a
+clustered design (up to permutations and signs). Thus, we wanted to
+slightly modify $\obs_{12}$. We replaced $\sqrt{11/40}$, the
+coefficent of $\ev_1$ in the first measurement of $\obs$, with
+$\sqrt{3/8}$ in the first measurement of $\pobs$. After that, we chose
+$\pobs_{12}$ such that its measuremtns have unit norm and
+$\pobs_{12}^* \pobs_{12}$ has the same eigenvectors as
+$\obs^*\obs$. We then considered a ``new'' inverse problem, for which
+the pushforward prior covariance is $(\fwd \prcov\fwd^*)^{-1} +
+\sigma^{-2} \pobs_{12}^*\pobs_{12}$. We then completed $\pobs$ to a
+D-optimal design via the construction detailed in Lemma
+\ref{lemma:free}. This is how $\pobs$ was constructed, but
+(infinitely) many other non-clustered D-optimal designs could be
+constructed this way and it is not clear why the numerical
+implementation of Lemma \ref{lemma:free} resulted in a clustered
+design. Giving a full algorithm for the procedure detailed above is
+out of scope for the current study, and I intend to pursue it in the
+future.
 
 
 \pgfplotstableread{
@@ -633,10 +653,10 @@ prove more difficult.
       %% \addlegendentry{$o_6$}   
     \end{axis}
   \end{tikzpicture}
-  \caption{Clusterization (left, $\obs_1$ in \eqref{eq:two designs})
-    and non-clusterization (right, $\obs_2$ in \eqref{eq:two designs})
+  \caption{Clusterization (left, $\obs$ in \eqref{eq:two designs})
+    and non-clusterization (right, $\pobs$ in \eqref{eq:two designs})
     in D-optimal designs. Posterior precision per eigenvector is
-    plotted for $\obs_1$ and $\obs_2$ from \eqref{eq:two
+    plotted for $\obs$ and $\pobs$ from \eqref{eq:two
       designs}. Both designs are identical for all practical matters
     --- their posteriors are equal. In the left panel, a D-optimal
     design with clusterization is illustrated: $\meas_3 = \meas_5$. In

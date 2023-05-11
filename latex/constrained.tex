@@ -1,9 +1,9 @@
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
 We seek a formulation of the D-optimal design problem via Lagrange
 multipliers. We first find the gradient of $\tar$. Then we suggest
-unit-norm constraints on $\obs$ and find the gradients of these
-unit-norm constraints. Results of this section are summarized in
-Theorem \ref{thm:constrained}. First, recall that:
+unit-norm constraints on $\obs$ and find their gradients. Results of
+this section are summarized in Theorem \ref{thm:constrained}. First,
+recall that:
 \begin{definition}\label{def:var}
   Let $F$ a real valued function of $\obs$. The first variation of $F$
   at $\obs$ in the direction $V$ is:
@@ -102,16 +102,16 @@ Theorem \ref{thm:constrained}. First, recall that:
   We now record Lemma \ref{lemma:lax} which is a generalization of
   Theorem 4 in Chapter 9 of \cite{Lax07}. Its proof is delegated to
   the appendix.
-  \begin{restatable*}{lemma}{lax}\label{lemma:lax}
+  \begin{restatable}{lemma}{lax}\label{lemma:lax}
     Let $Y(t)$ be a differentiable operator-valued function. Assume 
     $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
     \begin{equation*}
       \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
     \end{equation*}
-  \end{restatable*}
+  \end{restatable}
 
-  We now employ \ref{lemma:lax} and calculate the first variation of
-  $\tar$:
+  We now employ Lemma \ref{lemma:lax} and calculate the first
+  variation of $\tar$:
 
   \begin{align*}
     %\begin{split}
