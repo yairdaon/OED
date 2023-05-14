@@ -1,33 +1,34 @@
 \section{Preliminaries and Notation}\label{section:prelim}
 
 %% \subsection{Overview}
-In this section I will present notations that will be used throughout
-this article. These notations are summarized in Section
-\ref{subsec:notation}. The theoretical foundations for inverse
+In this section we present notations that will be used throughout this
+article. These notations are summarized in the definition of Theorem \ref{thm:char}. The theoretical foundations for inverse
 problems over function spaces can be found in \cite{Stuart10}.
 
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
-Let $\hilp$ and $\hilo$ be separable Hilbert spaces (the subscripts p
-and o are for ``parameter'' and ``observation'', respectively). Denote
-$\hilo^* \simeq \hilo$ the Hilbert space of all linear functionals on
-$\hilo$. Let $\fwd: \hilp \to \hilo$ the \emph{forward operator}. The
-forward operator $\fwd$ is assumed linear and strongly smoothing (has
-fast decaying modes --- the heat operator of the example in Section
-\ref{section:intro} is a prime example). Take a Gaussian prior $\param
-\sim \pr = \normal(\prmean ,\prcov)$ with some appropriate covariance
-operator $\prcov$ on $\hilp$ \cite{Stuart10}. Note that $\fwd \prcov
-\fwd^*$ is the prior covariance in $\hilo$ \cite{Stuart10}. As such,
-$\fwd \prcov \fwd^*$ is assumed invertible --- an assumption which
-will be used below. Let $m$ the number of measurements
-taken. Measurements are taken via the \emph{measurement
+Let $\hilp$ and $\hilo$ be separable Hilbert spaces,\footnote{The
+subscripts p and o are for ``parameter'' and ``observation'',
+respectively.} and denote $\hilo^* \simeq \hilo$ the Hilbert space of
+all linear functionals on $\hilo$. Let $\fwd: \hilp \to \hilo$ the
+\emph{forward operator}. The forward operator $\fwd$ is assumed linear
+and strongly smoothing (has fast decaying modes --- the heat operator
+of the 1D heat equation described in Section \ref{section:intro} is a
+prime example). Take a Gaussian prior $\param \sim \pr =
+\normal(\prmean ,\prcov)$ with some appropriate covariance operator
+$\prcov$ on $\hilp$ \cite{Stuart10}. Note that $\fwd \prcov \fwd^*$ is
+the prior covariance in $\hilo$ \cite{Stuart10}, and as such, $\fwd
+\prcov \fwd^*$ is assumed invertible --- an assumption which will be
+used below\footnote{If $\fwd$ has a nontrivial kernel we utilize
+Occam's Razor and ignore said kernel.}. Let $m$ the number of
+measurements taken. Measurements are taken via the \emph{measurement
 operator}\footnote{It is common for the measurement and forward
 operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
 following sections requires that $\fwd$ and $\obs$ are explicitly
 separated as in \cite{attia2022stochastic, cvetkovic2023choosing}.}
 $\obs \in ( \hilo^* )^m$, whose entries $\meas_j, j=1,\dots,m$ are
-called \emph{measurement vector}s:
+called \emph{measurements}:
 
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
@@ -49,11 +50,10 @@ called \emph{measurement vector}s:
 
 Data is acquired via noisy observations, and we consider two types of
 error terms: Spatially correlated model error $\eps' \sim
-\normal(0,\modcov)$ with $\modcov: \hilo \to \hilo$ a covariance
-operator. Observation error is denoted $\eps \sim \normal(0, \sigma^2
-I_m)$, with $I_m \in \mathbb{R}^{m \times m}$ the identity. Both error
-terms and the prior are assumed independent of each other. Thus, data
-is acquired via
+\normal(0,\modcov)$ with $\modcov$ a covariance operator. Observation
+error is denoted $\eps \sim \normal(0, \sigma^2 I_m)$, with $I_m \in
+\mathbb{R}^{m \times m}$ the identity. Both error terms and the prior
+are assumed independent of each other. Thus, data is acquired via
 \begin{align}\label{eq:inverse problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
@@ -87,7 +87,7 @@ where
 %% \bar{\eps}$ with $\bar{\eps} \sim \normal(0,\Sigma)$.
 Taking $\modcov = 0$ is a common practice
 \cite{Tarantola05,Kaipio2006,Vogel02} and then $\Sigma = \sigma^2I_m$
-is a scalar matrix and does not depend on $\obs$.
+is a scalar matrix which does not depend on $\obs$.
 
 %% Taking an error model with a non-scalar covariance allows us to
 %% consider model error (modeled by $\modcov$) as well as observation
@@ -138,10 +138,9 @@ in this setting and its covariance operator is \cite{Stuart10}:
 
 
 \subsection{Bayesian D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
-A Bayesian D-optimal design maximizes expected KL divergence between
-posterior and prior measures, $\post$ and $\pr$. It is useful to first
-recall the definition of KL divergence:% for an arbitrary prior
-measure:
+A Bayesian D-optimal design maximizes expected Kullback-Leibler (KL)
+divergence between posterior $\post$ and prior measures $\pr$. It is
+useful to first recall the definition of KL divergence \cite{CoverThomas91}:
 $$
 D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 $$
@@ -164,7 +163,7 @@ covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
 %% \cite{AlexanderianGloorGhattas14} (also \cref{thm:d optimality}
 %% below).  D-optimal designs in infinite-dimensional Hilbert spaces
 %% were investigated in \cite{AlexanderianGloorGhattas14}.
-\begin{theorem}[Slightly modified Theorem 1 from \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
+\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
   on $\hilp$ for the Bayesian linear inverse problem $\data = \obs
@@ -180,13 +179,13 @@ covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
     \end{split}
   \end{align}
 \end{theorem}
-It is important to note that since $\obs$ is finite-rank,
-$\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}$ is
-trace-class.
+%% It is important to note that since $\obs$ is finite-rank,
+%% $\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}$ is
+%% trace-class.
 \begin{definition}\label{def:d optimality}
   $\obs^{\star}$ is said to be \emph{D-optimal} if $\obs^{\star} =
-  \argmax_{\obs} \tar(\obs)$, where entries of $\obs \in (\hilo^*)^m$ are constrained to
-  some allowed set of measurement vectors in $\hilo^*$.
+  \argmax_{\obs} \tar(\obs)$, where entries of $\obs \in (\hilo^*)^m$
+  are constrained to some allowed set of measurements in $\hilo^*$.
 \end{definition}
 
 For a Bayesian linear model in finite dimensions, with Gaussian prior
@@ -196,51 +195,52 @@ the D-optimality criterion aims to minimize the determinant of the
 Fisher information matrix \cite[page 16]{Ucinski05}. Thus, the
 Bayesian criterion is just a regularized version of the frequentist
 criterion \cite{Chaloner1995}.}. Theorem \ref{thm:d optimality} and
-Definition \ref{def:d optimality} have a similar intuition:
+Definition \ref{def:d optimality} carry a similar intuition:
 \begin{align*}
   \begin{split}
     \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \text{ by \eqref{eq:objective}}\\
     &= \frac12 \log \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
-    &= \frac12 \log \det \prcov \postcov^{-1} \text{ by \eqref{eq:postcov}} \\
-    &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
+    &= \frac12 \log \det \prcov \postcov^{-1} \text{ by \eqref{eq:postcov}}.
+    %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
   \end{split}
 \end{align*}
-Since $\prcov$ is constant, a D-optimal design minimizes the posterior
-covariance determinant, analogously to the finite-dimensional case.
+We think of $\prcov$ as constant, so a D-optimal design minimizes the
+posterior covariance determinant, analogously to the
+finite-dimensional case.
 
 
-\subsection{Notation Summary}\label{subsec:notation}
-  Our notation is summarized below. We let:
-  \begin{itemize}
-  \item $\hilp, \hilo$ Hilbert spaces.
-  \item $\fwd:\hilp \to \hilo$ a linear compact operator.
-  \item $\pr \sim \mathcal{N}(0, \prcov)$ prior Gaussian measure on
-    $\hilp$, with prior covariance operator $\prcov:\hilp \to \hilp$.
-  \item $\obs: \hilo \to \mathbb{R}^m$ measurement operator, where $m
-    \in \mathbb{N}$ is the number of measurements taken.
-  \item $\sigma^2 \in \mathbb{R}_{+}$ observation noise variance.
-  \item $\modcov$ model error covariance operator.
-    %% $\data = \obs \fwd \param + \eps$, where $\eps \in
-    %% \mathbb{R}^m$ isiid $\mathcal{N}(0, \sigma^2)$ noise.
-  \item $\Sigma(\obs) = \obs \modcov \obs^* + \sigma^2I$. 
-  \item $\post$ the posterior measure, with covariance $\postcov$.
-  \item A D-optimality design criterion
-    \cite{AlexanderianGloorGhattas14}:
-    \begin{align*}
-      \begin{split}
-        \tar(\obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
-        % 
-        % 
-        % 
-        &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \Sigma(\obs)^{-1} \obs
-        \fwd \prcov^{1/2}).
-      \end{split}
-    \end{align*}
-  %% \item $\{\lambda_i\}_{i=1}^\infty$ eigenvalues of $\fwd\prcov\fwd^*$
-  %%   in decreasing order of magnitude.
-  %% %% \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
-  %% \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$.
-  \end{itemize}
+%% \subsection{Notation Summary}\label{subsec:notation}
+%%   Our notation is summarized below. We let:
+%%   \begin{itemize}
+%%   \item $\hilp, \hilo$ Hilbert spaces.
+%%   \item $\fwd:\hilp \to \hilo$ a linear compact operator.
+%%   \item $\pr \sim \mathcal{N}(0, \prcov)$ prior Gaussian measure on
+%%     $\hilp$, with prior covariance operator $\prcov:\hilp \to \hilp$.
+%%   \item $\obs: \hilo \to \mathbb{R}^m$ measurement operator, where $m
+%%     \in \mathbb{N}$ is the number of measurements taken.
+%%   \item $\sigma^2 \in \mathbb{R}_{+}$ observation noise variance.
+%%   \item $\modcov$ model error covariance operator.
+%%     %% $\data = \obs \fwd \param + \eps$, where $\eps \in
+%%     %% \mathbb{R}^m$ isiid $\mathcal{N}(0, \sigma^2)$ noise.
+%%   \item $\Sigma(\obs) = \obs \modcov \obs^* + \sigma^2I$. 
+%%   \item $\post$ the posterior measure, with covariance $\postcov$.
+%%   \item A D-optimality design criterion
+%%     \cite{AlexanderianGloorGhattas14}:
+%%     \begin{align*}
+%%       \begin{split}
+%%         \tar(\obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
+%%         % 
+%%         % 
+%%         % 
+%%         &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \Sigma(\obs)^{-1} \obs
+%%         \fwd \prcov^{1/2}).
+%%       \end{split}
+%%     \end{align*}
+%%   %% \item $\{\lambda_i\}_{i=1}^\infty$ eigenvalues of $\fwd\prcov\fwd^*$
+%%   %%   in decreasing order of magnitude.
+%%   %% %% \item $\{\ev_i\}_{i=1}^\infty$ their corresponding eigenvectors.
+%%   %% \item $\{\eta_i\}_{i=1}^\infty$ eigenvalues of $\obs^*\obs$.
+%%   \end{itemize}
 
 
 %% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq vs sim}
