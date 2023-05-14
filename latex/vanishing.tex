@@ -1,5 +1,5 @@
 \section{Characterizing D-Optimal Designs when $\modcov = 0$}\label{section:vanishing}
-We will now prove Theorem \ref{thm:char} which caracterizes D-optimal
+We will now prove Theorem \ref{thm:char} which characterizes D-optimal
 designs when $\modcov = 0$. The necessary first-order condition for
 D-optimality of Theorem \ref{thm:constrained} for $\modcov = 0$
 become:
@@ -61,7 +61,7 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
     X :&= \fwd\prcov \fwd^* \\
     Y_{\eps} :&= \obs^*\obs + \eps I,
   \end{align*}
-  and observe that $Y_{\eps}$ is invertible. Subsitute $X, Y_{\eps}$
+  and observe that $Y_{\eps}$ is invertible. Substitute $X, Y_{\eps}$
   into the RHS of \eqref{eq:first}:
    \begin{equation}\label{eq:second}
      \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
@@ -184,7 +184,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       \begin{equation*}
         \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i) = \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
       \end{equation*}
-    \item Furthermore, if $\obs$ isD-optimal, $\eta_i > 0$ for
+    \item Furthermore, if $\obs$ is D-optimal, $\eta_i > 0$ for
       eigenvectors corresponding to the $k$ largest $\lambda_i$.
   \end{enumerate}
 \end{proposition}
@@ -292,7 +292,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \end{align*}
   
   Summing over $i \in A$, substituting $\sum_{i\in A} \eta_i =
-  \sum_{i=1}^m \eta_i = m$, and dividng by $k:= |A|$:
+  \sum_{i=1}^m \eta_i = m$, and dividing by $k:= |A|$:
   $$
   \frac{1}{2\alpha} = \frac{m}{k} + \frac{\sigma^2}{k} \sum_{j\in A} \lambda_j^{-1}.
   %\Rightarrow \alpha = \left ( \frac{2m}{k} + \frac{2\sigma^2}{k}
@@ -385,7 +385,7 @@ The final ingredient we require for the proof of Theorem
 
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
-  satisfies the unit norm constraint on measurement vectors. Part (2)
+  satisfies the unit norm constraint on measurements. Part (2)
   was proved in Proposition \ref{prop:same ev}. Part (3) was proved in
   Proposition \ref{prop:true target}.
   
@@ -467,7 +467,7 @@ The final ingredient we require for the proof of Theorem
     \sigma^{-2}\obs^*\obs$ for a D-optimal design (left) and a
     sub-optimal design (right). Both designs are allowed $m=3$
     measurements. We assume $\sigma^2=1$ and thus, the blue area has
-    accumulated height of $\sigma^{-2}m = 3$ in both plots. The
+    accumulated height of $\sigma^{-2}m = 3$ in both panels. The
     D-optimal design (left) increases precision where it is
     lowest. The sub-optimal design (right) does not.}
   \label{fig:optimal vs not}
@@ -476,31 +476,28 @@ The final ingredient we require for the proof of Theorem
 
 Theorem \ref{thm:char} facilitates understanding of D-optimal designs
 when $\modcov = 0$: Imagine each eigenvector of $\fwd \prcov \fwd^*$
-corresponds to a graduated lab cylinder (Figure
-\ref{fig:cylinder}). Each cylinder $i$ is filled, a-priori, with green
-liquid of $\lambda_i^{-1}$ volume units. We are allowed $m$
-measurement, so we have blue liquid of volume $\sigma^{-2}m$ units at
-our disposal. When we seek a D-optimal design, we distribute the blue
-liquid by repeatedly adding a drop to whatever cylinder currently has
-the lowest level of liquid in it, as long as its index $i \leq m$. The
-result of such a procedure is illustrated in Figure \ref{fig:optimal
-  vs not}.
-
-\begin{figure}%{r}{0.25\textwidth} 
-    \centering
-    \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
-    \caption{Three graduated lab cylinders, corresponding to three
-      eigenvectors. Prior eigenvalues not shown.}
-    \label{fig:cylinder}
-\end{figure}
-
-
+corresponds to a graduated lab cylinder.
+%% (Figure \ref{fig:cylinder})
+Each cylinder $i$ is filled, a-priori, with green liquid of
+$\lambda_i^{-1}$ volume units. We are allowed $m$ measurement, so we
+have blue liquid of volume $\sigma^{-2}m$ units at our disposal. When
+we seek a D-optimal design, we distribute the blue liquid by
+repeatedly adding a drop to whatever cylinder currently has the lowest
+level of liquid in it, as long as its index $i \leq m$. The result of
+such a procedure is illustrated in Figure \ref{fig:optimal vs not}.
+%% \begin{figure}%{r}{0.25\textwidth} 
+%%     \centering
+%%     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
+%%     \caption{Three graduated lab cylinders, corresponding to three
+%%       eigenvectors. Prior eigenvalues not shown.}
+%%     \label{fig:cylinder}
+%% \end{figure}
 \section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
 The necessary conditions for D-optimality of Theorem \ref{thm:char}
-leave some freedom in choosing $\obs$, which may or may not give rise
-clustered designs. Consider an inverse problem for which the first two
-eigenvalues of the pushforward prior $\fwd \prcov\fwd^*$ are
-$\lambda_1 = 10, \lambda_2 = 5$, its eigenvectors are
+leave some freedom in choosing $\obs$, which might allow us to avoid a
+clustered design. As an example, consider an inverse problem for which
+the first two eigenvalues of the pushforward prior $\fwd \prcov\fwd^*$
+are $\lambda_1 = 10, \lambda_2 = 5$, with eigenvectors
 $\{\ev_i\}_{i=1}^\infty$ and $\sigma^2=1$. Consider the following
 $\obs, \pobs$ (see also Figure \ref{fig:clusterization}):
 \begin{equation}\label{eq:two designs}
@@ -534,38 +531,44 @@ introduction:
 D-optimal, measurement clusterization poses no obstruction to
 D-optimality. Furthermore, a computer implementation of Lemma
 \ref{thm:char} also generates $\obs$ as a solution to the D-optimal
-design problem. Randomized numerical simulations give rise to
-D-optimal designs that exhibit clustrization more than 95\% of the
-time (see code in supplementary). Since our model is as generic as
-possible, we conclude that it is possible that measurement
-clusterization is a generic phenomenon that.
+design problem. Furthermore, randomized numerical simulations give
+rise to D-optimal designs that exhibit clusterization more than 95\% of
+the time (see code in supplementary). Given our model's genericity, we
+conclude that measurement clusterization may be a generic phenomenon.
 
 
-\textbf{Question \ref{q:replace}}: Since $\pobs$ is D-optimal but not
-clustered, we conclude that it is possible to substitute a clustered
-design for an equally optimal non-clustered design. It is easy to give
-some simple intuition on how the clustered design $\obs$ was modified
-to the non-clustered design $\pobs$. First let us introduce some
-notation: let $\obs_{12}$ be the design composed of the first and
-second rows of $\obs$ and use a similar definition for
-$\pobs_{12}$. Note that $\obs_{12}$ uniquely determines $\obs$ as a
-clustered design (up to permutations and signs). Thus, we wanted to
-slightly modify $\obs_{12}$. We replaced $\sqrt{11/40}$, the
-coefficent of $\ev_1$ in the first measurement of $\obs$, with
-$\sqrt{3/8}$ in the first measurement of $\pobs$. After that, we chose
-$\pobs_{12}$ such that its measuremtns have unit norm and
-$\pobs_{12}^* \pobs_{12}$ has the same eigenvectors as
-$\obs^*\obs$. We then considered a ``new'' inverse problem, for which
-the pushforward prior covariance is $(\fwd \prcov\fwd^*)^{-1} +
-\sigma^{-2} \pobs_{12}^*\pobs_{12}$. We then completed $\pobs$ to a
-D-optimal design via the construction detailed in Lemma
-\ref{lemma:free}. This is how $\pobs$ was constructed, but
-(infinitely) many other non-clustered D-optimal designs could be
-constructed this way and it is not clear why the numerical
-implementation of Lemma \ref{lemma:free} resulted in a clustered
-design. Giving a full algorithm for the procedure detailed above is
-out of scope for the current study, and I intend to pursue it in the
-future.
+\textbf{Question \ref{q:replace}}: We showed that it is possible to
+substitute a D-optimal clustered design (e.g. $\obs$) for a D-optimal
+non-clustered design (e.g. $\pobs$). Presenting a general algorithm
+for replacing a clustered D-optimal design with a non-clustered
+D-optimal design is out of the scope of the current study. We can,
+however, provide some intuition, utilizing $\obs, \pobs$ as a test
+case. Let $\obs_{12}$ the design composed of the first and second rows
+of $\obs$ (with a similar definition for $\pobs_{12}$), and note that,
+up to permutations and sign changes, $\obs_{12}$ uniquely determines
+$\obs$ as a clustered design. We find $\pobs_{12}$ by requiring that
+(a) measurements in $\pobs_{12}$ have unit norm, (b) $\pobs_{12}^*
+\pobs_{12}$ has the same eigenvectors as $\obs^*\obs$, (c)
+$\pobs^*\pobs \approx \obs^*\obs$, and (d) $\pobs^*\pobs \neq
+\obs^*\obs$. We then consider a ``new'' inverse problem, for which the
+pushforward prior covariance is the covariance of the posterior
+$\mu_{\textup{post}}^{\data, \pobs_{12}}$, namely
+
+$$
+\left(\left(\fwd \prcov\fwd^*\right)^{-1} + \sigma^{-2}
+\pobs_{12}^*\pobs_{12}\right)^{-1}.
+$$
+%
+Finally, we complete $\pobs$ to a D-optimal design with $m=5$
+measurements via the construction outlined in Lemma
+\ref{lemma:free}.
+
+Interestingly, part (c) in the process detailed above implies that
+there are actually infinitely many non-clustered D-optimal designs. It
+is not at all clear why the numerical implementation of Lemma
+\ref{lemma:free} results in a clustered design. An answer to this
+question may further help shed light on the measurement clusterization
+phenomenon.
 
 
 \pgfplotstableread{
