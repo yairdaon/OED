@@ -1,52 +1,37 @@
 \section{Preliminaries and Notation}\label{section:prelim}
 
-%% \subsection{Overview}
-In this section we present notations that will be used throughout this
-article. These notations are summarized in the definition of Theorem \ref{thm:char}. The theoretical foundations for inverse
-problems over function spaces can be found in \cite{Stuart10}.
+In this section we present the setup that will be used throughout this
+article. The theoretical foundations for inverse problems over
+function spaces can be found in \cite{Stuart10} and will not be
+reviewed here.
 
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
 Let $\hilp$ and $\hilo$ be separable Hilbert spaces,\footnote{The
 subscripts p and o are for ``parameter'' and ``observation'',
-respectively.} and denote $\hilo^* \simeq \hilo$ the Hilbert space of
-all linear functionals on $\hilo$. Let $\fwd: \hilp \to \hilo$ the
-\emph{forward operator}. The forward operator $\fwd$ is assumed linear
-and strongly smoothing (has fast decaying modes --- the heat operator
-of the 1D heat equation described in Section \ref{section:intro} is a
-prime example). Take a Gaussian prior $\param \sim \pr =
-\normal(\prmean ,\prcov)$ with some appropriate covariance operator
-$\prcov$ on $\hilp$ \cite{Stuart10}. Note that $\fwd \prcov \fwd^*$ is
-the prior covariance in $\hilo$ \cite{Stuart10}, and as such, $\fwd
-\prcov \fwd^*$ is assumed invertible --- an assumption which will be
-used below\footnote{If $\fwd$ has a nontrivial kernel we utilize
-Occam's Razor and ignore said kernel.}. Let $m$ the number of
-measurements taken. Measurements are taken via the \emph{measurement
+respectively.} and let $\fwd: \hilp \to \hilo$ the \emph{forward
+operator}. The forward operator $\fwd$ is assumed linear and strongly
+smoothing (the heat operator of the 1D heat equation introduced in
+Section \ref{section:intro} is a prime example). Take a Gaussian prior
+$\param \sim \pr = \normal(\prmean ,\prcov)$ with some appropriate
+covariance operator $\prcov$ on $\hilp$ \cite{Stuart10}. Note that
+$\fwd \prcov \fwd^*$ is the prior covariance in $\hilo$
+\cite{Stuart10}, and as such, $\fwd \prcov \fwd^*$ is assumed
+invertible --- an assumption which will be used below\footnote{If
+$\fwd$ has a nontrivial kernel we utilize Occam's Razor and ignore
+said kernel.}. Measurements are taken via the \emph{measurement
 operator}\footnote{It is common for the measurement and forward
 operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
 following sections requires that $\fwd$ and $\obs$ are explicitly
 separated as in \cite{attia2022stochastic, cvetkovic2023choosing}.}
-$\obs \in ( \hilo^* )^m$, whose entries $\meas_j, j=1,\dots,m$ are
-called \emph{measurements}:
+$\obs \in ( \hilo^* )^m$, where $m$ is the number of measurements
+taken. Entries $\meas_j, j=1,\dots,m$ of the observation operator
+$\obs$ are called \emph{measurements}:
 
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
 \end{equation*}
-%
-%
-
-%% For $u \in \hilo$ and $v\in \R^m$:
-%% %
-%% %
-%% \begin{align*}
-%%   \big (\obs^*v \big ) (u) &= \langle v, \obs u \rangle_{\R^m} = \sum_{j=1}^m  v_j \meas_j(u)
-%%   = v^t \left ( \obs u \right ) = (v^t \obs) (u),
-%% \end{align*}
-%% and thus:
-%% \begin{align}\label{eq:obs*}
-%%   \obs^*v &= \sum_{j=1}^m v_j \meas_j = v^t \obs.
-%% \end{align}
 
 Data is acquired via noisy observations, and we consider two types of
 error terms: Spatially correlated model error $\eps' \sim
@@ -57,7 +42,7 @@ are assumed independent of each other. Thus, data is acquired via
 \begin{align}\label{eq:inverse problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
-%% \subsubsection{Error Terms}
+
 It is easy to verify that $\obs \eps' + \eps \in \R^m$ is a centered
 Gaussian random vector with covariance matrix
 
@@ -80,54 +65,9 @@ where
     = \meas_i (\modcov \meas_j).% \text{ (by \eqref{eq:obs*})}.
   \end{split}
 \end{align}
-%% and $e_j \in \R^m$ is the $j$th standard basis vector.
-%% The explicit dependence on $\obs$ will be mostly dropped for
-%% convenience, so $\Sigma(\obs) = \Sigma$.  Thus, for a fixed $\obs$
-%% (i.e.\ a fixed set of observations), $\data = \obs \fwd \param +
-%% \bar{\eps}$ with $\bar{\eps} \sim \normal(0,\Sigma)$.
 Taking $\modcov = 0$ is a common practice
-\cite{Tarantola05,Kaipio2006,Vogel02} and then $\Sigma = \sigma^2I_m$
-is a scalar matrix which does not depend on $\obs$.
-
-%% Taking an error model with a non-scalar covariance allows us to
-%% consider model error (modeled by $\modcov$) as well as observation
-%% error (modeled by $\sigma^2$). For example, say we believe our
-%% forward model does not capture some small scale phenomenon.  Then
-%% we may express this belief by saying $\tru = \fwd + \err$, with
-%% $\fwd$ depending on $\param$ and $\err$ depending on $\sspar$, with
-%% $\param \perp \sspar$. We do not know much about this effect but it
-%% is reasonable to assume it changes continuously in our domain. We
-%% (may choose to) model it as $\normal (0, \modcov)$ and take
-%% $\modcov$ to reflect the spatial (or other) variability we imagine
-%% $\err \sspar$ has. Such small scale phenomenon can arise as a
-%% modeling issue, where we might not model the system in its
-%% entirety. It can also arise from a numerical source, where our
-%% discretization of the system is not fine enough to capture all
-%% small scale phenomena.  In section \ref{section:non vanishing}, we
-%% will see that assuming some correlation in the error mitigates the
-%% clusterization phenomenon, as reported in the literature
-%% \cite{Ucinski05}.
-
-
-
-%% \subsubsection{Dynamics and Observation
-%% Operators}\label{subsec:dynamics} Rows of $\obs$ are linear
-%% functionals and we refer to these as {\it observation
-%% vector}s. Note that we cannot choose every observation vector we
-%% want. For example, we may be restricted only to pointwise
-%% evaluations of $\fwd \param$ by the sensors at our disposal, in
-%% which case measuring, e.g., the mean $\ell(u) = \int_{\Omega}u$ of
-%% a function is not possible. Thus, it is best to think of $(\obs
-%% \fwd \param)_j$ as approximations to pointwise evaluations. For
-%% example, if $\hilo = L^2([-\pi, \pi])$, consider $\ell_1(x) :=
-%% (2\pi \eps)^{-\frac{1}{2}}\exp(-\frac{x^2}{2\eps^2})$ and
-%% $\ell_2(x) :=\eps^{-1}\mathbf{1}_{[-\frac{\eps}{2},
-%% \frac{\eps}{2}]}$. Both $\ell_1$ and $\ell_2$ approximate a point
-%% measurement at $0$ for small $\eps$ and, crucially, $\ell_1, \ell_2
-%% \in \hilo^*$.  %% It is important to note that although $\|\ell\|_1
-%% = %% \|\ell_2\|_1=1$, unfortunately $\|\ell_1\|_2^2 = (4\pi %%
-%% \eps)^{-\frac{1}{2}}$ and $\|\ell_2\|_2^2 = \eps^{-1}$.
-
+\cite{tarantola2005,Kaipio2005,Vogel02} and then $\Sigma =
+\sigma^2I_m$ is a scalar matrix which does not depend on $\obs$.
 
 It is useful to record that the posterior measure $\post$ is Gaussian
 in this setting and its covariance operator is \cite{Stuart10}:
@@ -135,7 +75,8 @@ in this setting and its covariance operator is \cite{Stuart10}:
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
 \end{align}
-
+Note that the poserior covariance $\postcov$ does not depend on data
+$\data$.
 
 \subsection{Bayesian D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
 A Bayesian D-optimal design maximizes expected Kullback-Leibler (KL)
@@ -154,15 +95,6 @@ are stated for $\Sigma=I$ (implied by $\modcov = 0,\sigma^2=1$), but
 the authors also mention these results hold for more general
 covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
 
-
-%% , and just like in finite dimensions, a D-optimal design maximizes
-%% the Kullback-Leibler divergence between posterior and prior
-%% measures For a linear inverse problem with Gaussian prior and
-%% Gaussian noise, a D-optimal design minimizes an expression
-%% analogous to the determinant of the posterior covariance operator
-%% \cite{AlexanderianGloorGhattas14} (also \cref{thm:d optimality}
-%% below).  D-optimal designs in infinite-dimensional Hilbert spaces
-%% were investigated in \cite{AlexanderianGloorGhattas14}.
 \begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
   and let $\post = \normal(\postmean,\postcov)$ the posterior measure
@@ -179,6 +111,7 @@ covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
     \end{split}
   \end{align}
 \end{theorem}
+
 %% It is important to note that since $\obs$ is finite-rank,
 %% $\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}$ is
 %% trace-class.

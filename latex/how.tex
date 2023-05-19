@@ -1,0 +1,167 @@
+%\section{Clusterization poses no obstruction to D-optimality}\label{section:clusterization}
+\section{Substituting an optimal clustered design with an equally optimal non-clustered design}\label{section:how}
+%
+The necessary conditions for D-optimality of Theorem \ref{thm:char}
+leave some freedom in choosing $\obs$, which might allow us to avoid a
+clustered design. As an example, consider an inverse problem for which
+the first two eigenvalues of the pushforward prior $\fwd \prcov\fwd^*$
+are $\lambda_1 = 10, \lambda_2 = 5$, with eigenvectors
+$\{\ev_i\}_{i=1}^\infty$ and $\sigma^2=1$. Consider the following
+$\obs, \pobs$ (see also Figure \ref{fig:clusterization}):
+\begin{equation}\label{eq:two designs}
+  \obs =
+  \begin{pmatrix}
+    \sqrt{\frac{11}{40}}\ev_1 - \sqrt{\frac{29}{40}}\ev_2 \\
+    \sqrt{\frac{11}{40}}\ev_1 + \sqrt{\frac{29}{40}}\ev_2 \\
+    \ev_1 \\
+    \ev_2 \\
+    \ev_1 \\    
+  \end{pmatrix},
+  \pobs =
+  \begin{pmatrix}
+    \sqrt{\frac{3}{8}}\ev_1 - \sqrt{\frac{5}{8}}\ev_2 \\
+    \sqrt{\frac{3}{8}}\ev_1 + \sqrt{\frac{5}{8}}\ev_2 \\
+    \sqrt{\frac{2}{5}}\ev_1 - \sqrt{\frac{3}{5}}\ev_2 \\
+    \sqrt{\frac{2}{5}}\ev_1 + \sqrt{\frac{3}{5}}\ev_2 \\
+    \ev_1 \\    
+  \end{pmatrix}
+\end{equation}
+\noindent It is easy to verify that $\obs^*\obs = \pobs^*\pobs$
+and that both $\obs$ and $\pobs$ are D-optimal. However, $\obs$
+is a clustered design ($\meas_3 = \meas_5 = \ev_1$), while $\pobs$ is
+not.
+
+We may now answer \textbf{Question \ref{q:replace}}: We showed that it
+is possible to substitute a D-optimal clustered design (e.g. $\obs$)
+for a D-optimal non-clustered design (e.g. $\pobs$). Presenting a
+general algorithm for replacing a clustered D-optimal design with a
+non-clustered D-optimal design is out of the scope of the current
+study. We can, however, provide some intuition, utilizing $\obs,
+\pobs$ as a test case. Let $\obs_{12}$ the design composed of the
+first and second rows of $\obs$ (with a similar definition for
+$\pobs_{12}$), and note that, up to permutations and sign changes,
+$\obs_{12}$ uniquely determines $\obs$ as a clustered design. We find
+$\pobs_{12}$ by requiring that (a) measurements in $\pobs_{12}$ have
+unit norm, (b) $\pobs_{12}^* \pobs_{12}$ has the same eigenvectors as
+$\obs^*\obs$, (c) $\pobs^*\pobs \approx \obs^*\obs$, and (d)
+$\pobs^*\pobs \neq \obs^*\obs$. We then consider a ``new'' inverse
+problem, for which the pushforward prior covariance is the covariance
+of the posterior $\mu_{\textup{post}}^{\data, \pobs_{12}}$, namely
+
+$$
+\left(\left(\fwd \prcov\fwd^*\right)^{-1} + \sigma^{-2}
+\pobs_{12}^*\pobs_{12}\right)^{-1}.
+$$
+%
+Finally, we complete $\pobs$ to a D-optimal design with $m=5$
+measurements via the construction outlined in Lemma
+\ref{lemma:free}.
+
+Interestingly, part (c) in the process detailed above implies that
+there are actually infinitely many non-clustered D-optimal designs. It
+is not at all clear why the numerical implementation of Lemma
+\ref{lemma:free} results in a clustered design. An answer to this
+question may further help shed light on the measurement clusterization
+phenomenon.
+
+
+\pgfplotstableread{
+  Label    prior  $o_1o_2$  $o_3$   $o_4$   $o_5$    topper
+  1         0.1      0.55       1       0       1      0.001
+  2         0.2      1.45       0       1       0      0.001
+  3         3.5      0          0       0       0      0.001
+}\clusterization
+
+
+\pgfplotstableread{
+  Label    prior  $o_1o_2$  $o_3o_4$   $o_5$     topper
+  1         0.1    0.75     0.8        1         0.001
+  2         0.2    1.25     1.2        0         0.001
+  3         3.5    0        0          0         0.001
+}\noclusterization
+
+\begin{figure}
+  \begin{tikzpicture}[scale=0.85]
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\clusterization}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=precision --- prior and posterior,
+        xlabel=eigenvector $i$,
+      ]
+    
+      
+      \addplot [fill=green!80]  table [y=prior, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=blue!60]   table [y=$o_1o_2$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=red!60]    table [y=$o_3$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=black!60]  table [y=$o_4$, meta=Label, x expr=\coordindex] {\clusterization};
+      \addplot [fill=orange!60] table [y=$o_5$, meta=Label, x expr=\coordindex] {\clusterization};
+      %% \addplot [fill=cyan!60]   table [y=$o_6$, meta=Label, x expr=\coordindex] {\clusterization};
+      %% \addplot [fill=purple!60] table [y=$o_7$, meta=Label, x expr=\coordindex] {\clusterization};
+
+      
+      \addlegendentry{prior}
+      \addlegendentry{$o_1o_2$}
+      \addlegendentry{$o_3$}
+      \addlegendentry{$o_4$}
+      \addlegendentry{$o_5$}
+      %% \addlegendentry{$o_6$}
+      %% \addlegendentry{$o_7$}   
+    \end{axis}
+  \end{tikzpicture}
+  \qquad
+  \begin{tikzpicture}[scale=0.85]
+    \begin{axis}[
+        ybar stacked,
+        ymin=0,
+        ymax=4,
+        xtick=data,
+        legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+        reverse legend=false, % set to false to get correct display, but I'd like to have this true
+        xticklabels from table={\noclusterization}{Label},
+        xticklabel style={text width=2cm,align=center},
+        legend plot pos=right,
+        ylabel=precision --- prior and posterior,
+        xlabel=eigenvector $i$,
+      ]
+    
+      
+      \addplot [fill=green!80]  table [y=prior, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=blue!60]   table [y=$o_1o_2$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=red!60]    table [y=$o_3o_4$, meta=Label, x expr=\coordindex] {\noclusterization};
+      \addplot [fill=black!60]  table [y=$o_5$, meta=Label, x expr=\coordindex] {\noclusterization};
+      %% \addplot [fill=orange!60] table [y=$o_4$, meta=Label, x expr=\coordindex] {\noclusterization};
+      %% \addplot [fill=cyan!60]   table [y=$o_5$, meta=Label, x expr=\coordindex] {\noclusterization};
+      %% \addplot [fill=purple!60] table [y=$o_6$, meta=Label, x expr=\coordindex] {\noclusterization};
+
+      
+      \addlegendentry{prior}
+      \addlegendentry{$o_1o_2$}
+      \addlegendentry{$o_3o_4$}
+      \addlegendentry{$o_5$}
+      %% \addlegendentry{$o_4$}
+      %% \addlegendentry{$o_5$}
+      %% \addlegendentry{$o_6$}   
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Clusterization (left, $\obs$ in \eqref{eq:two designs})
+    and non-clusterization (right, $\pobs$ in \eqref{eq:two designs})
+    in D-optimal designs. Posterior precision per eigenvector is
+    plotted for $\obs$ and $\pobs$ from \eqref{eq:two
+      designs}. Both designs are identical for all practical matters
+    --- their posteriors are equal. In the left panel, a D-optimal
+    design with clusterization is illustrated: $\meas_3 = \meas_5$. In
+    the right panel, a D-optimal design without clusterization is
+    illustrated. The contribution to the posterior precision due to
+    $\meas_1$ and $\meas_2$ is denoted $\meas_1\meas_2$. These
+    contributions are plotted together because neither $\meas_1$ nor
+    $\meas_2$ are not in the direction of any eigenvector. Similarly
+    for $\meas_3\meas_4$.}
+  \label{fig:clusterization}
+\end{figure}

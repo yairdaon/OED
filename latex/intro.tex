@@ -21,7 +21,7 @@ widely recognized and extensively studied design criteria
 
 Surprisingly, A- and D-optimal designs have been observed to yield
 remarkably similar measurements in certain cases \cite{fedorov1996,
-  hooker2009, fedorov2012, Ucinski05, neitzel2019sparse}. To
+  hooker2009, fedorov1997, Ucinski05, neitzel2019sparse}. To
 illustrate this point, we consider a toy inverse problem: inferring
 the initial condition of the 1D heat equation (details in the
 supplementary material). In Figure \ref{fig:clusterization
@@ -57,10 +57,10 @@ we refer to a design that exhibits measurement clusterization as a
 
 
 Researchers widely agree that measurement clusterization is
-undesirable \cite{fedorov1996, hooker2009, fedorov2012, Ucinski05,
+undesirable \cite{fedorov1996, hooker2009, fedorov1997, Ucinski05,
   neitzel2019sparse}, prompting the exploration of various remedies to
 address this issue. One approach involves merging close measurements
-\cite{fedorov2012}; however, this strategy merely overlooks the
+\cite{fedorov1997}; however, this strategy merely overlooks the
 phenomenon of measurement clusterization. An alternative solution lies
 in \emph{clusterization-free design}s, where measurement locations are
 deliberately chosen to be distant from one another. This can be
@@ -77,7 +77,7 @@ In spatial problems involving choice of measurements within a domain
 $\Omega \subseteq \mathbb{R}^d, d=1,2,3$, many researchers circumvent
 the problem of measurement clusterization by choosing measurements
 from a coarse grid in $\Omega$ \cite{koval2020, alexanderian2021,
-  attia2020, alexanderian2014, alexanderian2016,
+  attia2022, alexanderian2014, alexanderian2016,
   alexanderian2018efficient}. This approach incurs a significant
 computational cost as it requires solving a difficult combinatorial
 optimization problem for measurement locations over a finite set. The
@@ -108,15 +108,17 @@ the optimal design problem. To the best of my knowledge, no previous
 study has tried to address some seemingly simple yet fundamental
 questions:
 %
-Why does measurement clusterization occur?
-%
 Why does imposing correlations between observations alleviate
 measurement clusterization?
 %
-Should we aim to avoid measurement clusterization?
+Is measure clusterization a generic phenomenon?
 %
-Is it possible to substitute an optimal clustered design with an
-equally optimal non-clustered design?
+And, most importantly: Why does measurement clusterization occur?
+%
+%Should we aim to avoid measurement clusterization?
+%
+%Is it possible to substitute an optimal clustered design with an
+%equally optimal non-clustered design?
 %Can an optimal clustered design be relpaced with an equally optimal
 %non-clustered design?
 
@@ -137,15 +139,17 @@ posed at the end of the previous paragraph:
 
 
 \begin{enumerate}
-\item \label{q:why} \textbf{Why does measurement clusterization
-  occur?} In Section \ref{section:vanishing}, we provide an insightful
-  explanation for the optimality of clustered designs when no model
-  error is present. We demonstrate that measurement clusterization
-  poses no obstruction to D-optimality and that clustered designs are
-  preferred by numerical algorithms.
 
-  %% We conjecture that the prevalence of measurement clusterization
-  %% arises due to the ease of discovering clustered designs.
+\item \label{q:generic} \textbf{Is measurement clusterization a
+  generic phenomenon?}
+  %\subsection{An answer for Question \ref{q:generic}: Genericity of measurement clusterization}
+  %% Computer implementation of Lemma \ref{thm:char} for the inverse
+  %% problem outlined in Section \ref{section:how} also generates $\obs$
+  %% as a solution to the D-optimal design problem.  Furthermore,
+  Randomized numerical simulations of our model give rise to D-optimal
+  designs that exhibit clusterization more than 95\% of the time (see
+  code in supplementary material). Given our model's genericity, we
+  expect that measurement clusterization to be a generic phenomenon.
 
 \item \label{q:mitigate} \textbf{Why does imposing correlations
   between observations alleviate measurement clusterization?} In
@@ -153,29 +157,60 @@ posed at the end of the previous paragraph:
   role of model error in mitigating clusterization, thereby
   corroborating earlier observations made by various researchers.
 
-\item \label{q:avoid} \textbf{Should we aim to avoid measurement
-  clusterization?} Based on the analysis conducted in this study, we
-  did not find any compelling reason to explicitly avoid optimal
-  clustered designs.
+\item \label{q:why} \textbf{Why does measurement clusterization
+  occur?} In Section \ref{section:why}, we present a compelling
+  explanation for the optimality of clustered designs in the absence
+  of model error. Our analysis reveals that, in our model, a D-optimal
+  design focuses on a select set of prior eigenvectors, specifically
+  those with the highest power spectrum. In practical scenarios, the
+  number of locations where the relevant prior eigenvectors are
+  significantly large, while other eigenvectors have a power spectrum
+  of zero, is limited. Consequently, the clustering of measurements
+  arises as a natural consequence of the pigeonhole principle, as
+  there are more measurements available than there are locations
+  satisfying conditions (a) and (b).
 
-\item \label{q:replace} \textbf{Is it possible to substitute an
-  optimal clustered design with an equally optimal non-clustered
-  design?} In Section \ref{section:vanishing}, we answer this question
-  in the affirmative, although we show that numerical experiments
-  conducted using our model indicate a strong preference for clustered
-  designs.
+
+  %% In Section \ref{section:vanishing}, we provide an insightful
+  %% explanation for the optimality of clustered designs when no model
+  %% error is present. We demonstrate that for our model, a D-optimal
+  %% design measures only a small subset of prior eigenvectors, which are
+  %% the prior eigenvectors with largest power spectrum. In real-life
+  %% problems there are limited number of locations where: (a) the
+  %% relevant prior eigenvectors are large, and other prior eigenvectors
+  %% with large power in the prior spectrum are zero. Then measurement
+  %% clusterization is a result of the pigeonhole principle, where there
+  %% are more measurements than measurement locations satisfying (a) and
+  %% (b).
+
+  %% We conjecture that the prevalence of measurement clusterization
+  %% arises due to the ease of discovering clustered designs.
+
+
+%% \item \label{q:avoid} \textbf{Should we aim to avoid measurement
+%%   clusterization?} Based on the analysis conducted in this study, we
+%%   did not find any compelling reason to explicitly avoid optimal
+%%   clustered designs.
+
+%% \item \label{q:replace} \textbf{Is it possible to substitute an
+%%   optimal clustered design with an equally optimal non-clustered
+%%   design?} In Section \ref{section:vanishing}, we answer this question
+%%   in the affirmative, although we show that numerical experiments
+%%   conducted using our model indicate a strong preference for clustered
+%%   designs.
+
 \end{enumerate}
 
 The cornerstone of our investigation into measurement clusterization
 is Theorem \ref{thm:char} proven in Section
 \ref{section:vanishing}. The key insight of Theorem \ref{thm:char}
 lies in its fifth component, which highlights that a D-optimal design
-aims to uniformly reduce posterior uncertainties across all posterior
-covariance eigenvectors. A similar conclusion was reached by Koval et
-al.~\cite{koval2020}, who showed that A-optimal designs are best
-constructed in the space of observations.
+aims to uniformly reduce posterior uncertainties for posterior
+covariance eigenvectors in observation space. A similar conclusion was
+reached by Koval et al.~\cite{koval2020}, who showed that A-optimal
+designs are best constructed in the space of observations.
 
-We first give some general definitions, and then state Theorem
+We first give some general definitions before we state Theorem
 \ref{thm:char}: Let $\hilp, \hilo$ Hilbert spaces, $\fwd:\hilp \to
 \hilo$ a linear compact operator. Let $\obs: \hilo \to \mathbb{R}^m$ a
 linear measurement operator, where $m \in \mathbb{N}$ is the number of
@@ -259,8 +294,8 @@ definite matrix $M \in \mathbb{R}^{k \times k}$ with $\ttr M = m \in
 \subsection{Limitations}\label{subsec:limitations}
 The main limitation of this study is that our generic model does not
 correspond to any specific real-life problem. It is generic enough to
-be analytically tractable, but one may argue it is too far removed
-from any real application. To these claims I would argue that
+be analytically tractable, but one may argue our model is too far
+removed from any real application. To these claims I would answer that
 scientists have a long history of studying models that are bare-bones
 simplifications of real systems, e.g. the Ising model
 \cite{cipra1987}, the Lorenz system \cite{brin}, the Lotka-Volterra

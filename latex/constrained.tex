@@ -1,6 +1,6 @@
 \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
 We seek a formulation of the D-optimal design problem via Lagrange
-multipliers. We first find the gradient of $\tar$. Then we suggest
+multipliers. We first find the gradient of $\tar$, then we suggest
 unit-norm constraints on $\obs$ and find their gradients. Results of
 this section are summarized in Theorem \ref{thm:constrained}. First,
 recall that:
@@ -152,7 +152,7 @@ recall that:
       \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
     %\end{split}
   \end{align*} 
-  %This concludes the proof.
+  Recalling Definition \ref{def:var} concludes the proof.
 \end{proof}
 
 In a real-life optimal design problem we cannot choose any measurement
@@ -230,11 +230,11 @@ Hilbert space of functions we wish to consider.}:
   \forall \x \in \Omega.
 \end{align*}
 
-Thus, it is reasonable to consider measurements with unit
-$\hilo^*$ norm. The unit norm constraints can be written as a series
-of $m$ equality constraints (one for each measurement) on $\obs$. We
-define these and find their gradients in Proposition
-\ref{prop:constraints grad} below:
+Thus, it is reasonable to consider measurements with unit $\hilo^*$
+norm. The unit norm constraints can be written as a series of $m$
+equality constraints (one for each measurement) on $\obs$. We define
+them and find their gradients in Proposition \ref{prop:constraints
+  grad} below:
 
 \begin{proposition}\label{prop:constraints grad}
   Let
