@@ -4,38 +4,39 @@
     \includegraphics[height=0.5\textwidth]{eigenvectors.eps}
     \caption{D-optimal measurement locations ($m=5$ measurements) and
       weighted eigenvectors for inversion of the initial condition of
-      the 1D heat equation (see supplementary material for
-      details). Measurement locations and weighted eigenvectors are
-      plotted over the computational domain $\Omega = [0, 1]$
-      (x-axis).  Measurement clusterization occurs approxmately at
-      $0.31$ and $0.69$. These two locations are a compromise between
-      zerosz of the irrelevant eigenvectors (third and up) and staying
-      far from a zero of the first and second eigenvectors.}
+      the 1D heat equation. Measurement locations and weighted
+      eigenvectors are plotted over the computational domain $\Omega =
+      [0, 1]$ (x-axis). Measurement clusterization occurs
+      approximately at $0.31$ and $0.69$. These two locations are a
+      compromise between zeros of eigenvectors a D-optimal design aims
+      to ignore (third and up) and staying far from a zero of the
+      first and second eigenvectors. Allocating $m=5$ measurements
+      into two locations results in clusterization, according to the
+      pigeonhole principle.}
   \label{fig:why}
 \end{figure}
 
 
-According to Theorem \ref{thm:char}, D-optimal designs aim to measure
-a small subset of eigenvectors; namely, eigenvectors $1$ through
-$k$. In our model, not measuring eigenvectors $k+1$ and above is
-readily achieved, as the proof of Theorem \ref{thm:char} demonstrates.
-Taking this understanding to spatial problems, we expect a D-optimal
-design to prefer measurement locations where eigenvectors $k+1$ and
-above are (close to) zero: either because their eigenvalue in the
-spectrum of the prior is small, or because the value of the
-eigenvector itself is (close to) zero. Figure \ref{fig:why}
-demonstrates this preference for the 1D heat equation with homogeneous
-Dirichlet boundary conditions (details in the supplementary
-material). We plot four eigenvectors, scaled according to their prior
-standard deviations. We ignore eigenvectors above the fourth, due to
-their small prior eigenvalues. We can observe that measurements are
-clustered close to zeros of the third and fourth eigenvectors. The
-reason for this measurement clusterization is that there are only two
-locations where the third and fourth eigenvectors are close to zero,
-and the first and second eigenvectors are considerably larger than
-zero. When we fit four measurements into these measurement locations,
-we find that measurements cluster, in accordance with the pigeonhole
-principle.
-
-
-%% \textbf{Question \ref{q:why}}:
+According to Theorem \ref{thm:char}, D-optimal designs aim to capture
+a small subset of eigenvectors of the prior covariance, specifically
+the $k$ eigenvectors with the highest prior variance. Our model
+naturally achieves this objective by not measuring eigenvectors $k+1$
+and above, as proven in Theorem \ref{thm:char}. Translating this
+understanding to spatial problems, we anticipate that a D-optimal
+design would favor measurement locations where eigenvectors $k+1$ and
+above are either close to zero in value or possess small eigenvalues
+in the prior spectrum, for some $k > 0$. To illustrate this
+preference, Figure \ref{fig:why} depicts the scenario using the 1D
+heat equation with homogeneous Dirichlet boundary
+conditions\footnote{Additional details provided in the supplementary
+material.}. The plot showcases four eigenvectors, scaled according to
+their prior standard deviations. Since eigenvectors beyond the fourth
+have insignificant prior eigenvalues, we exclude them from
+consideration. Notably, we observe that measurements are clustered
+near the zeros of the third and fourth eigenvectors, so we conclude
+that $k=2$. Clusterization arises because there are only two locations
+where the third and fourth eigenvectors approach zero, while the first
+and second eigenvectors exhibit significantly non-zero
+values. Consequently, when we allocate four measurements to these two
+locations, they naturally cluster together, aligning with the
+pigeonhole principle.

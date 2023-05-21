@@ -149,7 +149,7 @@ posed at the end of the previous paragraph:
   Randomized numerical simulations of our model give rise to D-optimal
   designs that exhibit clusterization more than 95\% of the time (see
   code in supplementary material). Given our model's genericity, we
-  expect that measurement clusterization to be a generic phenomenon.
+  expect measurement clusterization to be a generic phenomenon.
 
 \item \label{q:mitigate} \textbf{Why does imposing correlations
   between observations alleviate measurement clusterization?} In
@@ -162,13 +162,14 @@ posed at the end of the previous paragraph:
   explanation for the optimality of clustered designs in the absence
   of model error. Our analysis reveals that, in our model, a D-optimal
   design focuses on a select set of prior eigenvectors, specifically
-  those with the highest power spectrum. In practical scenarios, the
-  number of locations where the relevant prior eigenvectors are
-  significantly large, while other eigenvectors have a power spectrum
-  of zero, is limited. Consequently, the clustering of measurements
-  arises as a natural consequence of the pigeonhole principle, as
-  there are more measurements available than there are locations
-  satisfying conditions (a) and (b).
+  those with the largest eigenvalues in the prior covariance
+  spectrum. In practical scenarios, the number of locations where the
+  relevant prior eigenvectors are significantly large, while other
+  eigenvectors have a power spectrum close to zero, is
+  limited. Consequently, the clustering of measurements arises as a
+  natural consequence of the pigeonhole principle, as there are more
+  measurements available than there are locations satisfying
+  conditions (a) and (b).
 
 
   %% In Section \ref{section:vanishing}, we provide an insightful
@@ -282,9 +283,12 @@ posterior (Gaussian) measure.
 %\end{theorem}
 \end{restatable}
 
-Lastly, in Lemma \ref{lemma:free} we decompose a symmetric positive
-definite matrix $M \in \mathbb{R}^{k \times k}$ with $\ttr M = m \in
-\mathbb{N}$ as $M = AA^t$, where $A$ has unit norm columns.
+In the proving Theorem \ref{thm:char} we prove and generalize several
+lemmas. Among those, is a Lemma \ref{lemma:free}, which is (to the the
+best of my knowledge) a novel lemma in linear algebra: We decompose a
+symmetric positive definite matrix $M \in \mathbb{R}^{k \times k}$
+with $\ttr M = m \in \mathbb{N}$ as $M = AA^t$, where $A$ has unit
+norm columns.
 
 %% Finally, in Lemma \ref{lemma:lax} we generalize a lemma for
 %% calculating $\frac{\der}{\der t} \log \det (I + X(t))$, where
