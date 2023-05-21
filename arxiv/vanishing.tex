@@ -426,13 +426,13 @@ The final ingredient we require for the proof of Theorem
         xticklabels from table={\optimalvsnot}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
-        ylabel={\Large precision --- prior and posterior},
-        xlabel={\Large eigenvector $i$},
+        ylabel={\LARGE precision --- prior and posterior},
+        xlabel={\LARGE eigenvector},
       ]
       \addplot [fill=green!80]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
       \addplot [fill=blue!60]   table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};     
-      \addlegendentry{\Large $\sigma^2\lambda_i^{-1}$}
-      \addlegendentry{\Large optimal $\eta_i$s}
+      \addlegendentry[scale=1.4]{$\sigma^2\lambda_i^{-1}$}
+      \addlegendentry[scale=1.4]{optimal $\eta_i$s}
     \end{axis}
   \end{tikzpicture}
   \begin{tikzpicture}[scale=0.735]
@@ -446,13 +446,13 @@ The final ingredient we require for the proof of Theorem
         xticklabels from table={\optimalvsnot}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
-        ylabel={\Large precision --- prior and posterior},
-        xlabel={\Large eigenvector $i$},
+        ylabel={\LARGE precision --- prior and posterior},
+        xlabel={\LARGE eigenvector} ,
       ]   
       \addplot [fill=green!80]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
       \addplot [fill=blue!60]   table [y=sub-optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
-      \addlegendentry{\Large $\sigma^2\lambda_i^{-1}$}
-      \addlegendentry{\Large sub-optimal $\eta_i$s}
+      \addlegendentry[scale=1.4]{$\sigma^2\lambda_i^{-1}$}
+      \addlegendentry[scale=1.4]{sub-optimal $\eta_i$s}
     \end{axis}
   \end{tikzpicture}
   \caption{A comparison of the eigenvalues of the pushforward
