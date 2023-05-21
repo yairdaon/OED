@@ -7,24 +7,23 @@ reviewed here.
 
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
-Let $\hilp$ and $\hilo$ be separable Hilbert spaces,\footnote{The
-subscripts p and o are for ``parameter'' and ``observation'',
-respectively.} and let $\fwd: \hilp \to \hilo$ the \emph{forward
-operator}. The forward operator $\fwd$ is assumed linear and strongly
-smoothing (the heat operator of the 1D heat equation introduced in
-Section \ref{section:intro} is a prime example). Take a Gaussian prior
-$\param \sim \pr = \normal(\prmean ,\prcov)$ with some appropriate
-covariance operator $\prcov$ on $\hilp$ \cite{Stuart10}. Note that
-$\fwd \prcov \fwd^*$ is the prior covariance in $\hilo$
-\cite{Stuart10}, and as such, $\fwd \prcov \fwd^*$ is assumed
-invertible --- an assumption which will be used below\footnote{If
-$\fwd$ has a nontrivial kernel we utilize Occam's Razor and ignore
-said kernel.}. Measurements are taken via the \emph{measurement
-operator}\footnote{It is common for the measurement and forward
-operators to be merged $\tmp := \obs \fwd$
+Let $\hilp$ and $\hilo$ be separable Hilbert spaces (the subscripts p
+and o are for ``parameter'' and ``observation'', respectively), and
+let $\fwd: \hilp \to \hilo$ the \emph{forward operator}. The forward
+operator $\fwd$ is assumed linear and strongly smoothing (the heat
+operator of the 1D heat equation introduced in Section
+\ref{section:intro} is a prime example). Take a Gaussian prior $\param
+\sim \pr = \normal(\prmean ,\prcov)$ with some appropriate covariance
+operator $\prcov$ on $\hilp$ \cite{Stuart10}. Note that $\fwd \prcov
+\fwd^*$ is the prior covariance in $\hilo$ \cite{Stuart10}, and as
+such, $\fwd \prcov \fwd^*$ is assumed invertible --- an assumption
+which will be used below (and if $\fwd$ has a nontrivial kernel we
+utilize Occam's Razor and ignore said kernel). Measurements are taken
+via the \emph{measurement operator}. It is common for the measurement
+and forward operators to be merged $\tmp := \obs \fwd$
 \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
 following sections requires that $\fwd$ and $\obs$ are explicitly
-separated as in \cite{attia2022stochastic, cvetkovic2023choosing}.}
+separated as in \cite{attia2022stochastic, cvetkovic2023choosing}.
 $\obs \in ( \hilo^* )^m$, where $m$ is the number of measurements
 taken. Entries $\meas_j, j=1,\dots,m$ of the observation operator
 $\obs$ are called \emph{measurements}:
@@ -89,11 +88,7 @@ $$
 The study of D-optimal designs for Bayesian linear inverse problems in
 infinite dimensions was pioneered by \cite{AlexanderianGloorGhattas14,
   alexanderian2018efficient}. The main result we will make use of is
-summarized (in our notation) in Theorem \ref{thm:d optimality}\footnote{In
-\cite{AlexanderianGloorGhattas14, alexanderian2018efficient}, results
-are stated for $\Sigma=I$ (implied by $\modcov = 0,\sigma^2=1$), but
-the authors also mention these results hold for more general
-covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
+summarized (in our notation) in Theorem \ref{thm:d optimality}:
 
 \begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
@@ -112,6 +107,12 @@ covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
   \end{align}
 \end{theorem}
 
+Note that in \cite{AlexanderianGloorGhattas14,
+  alexanderian2018efficient}, results are stated for $\Sigma=I$
+(implied by $\modcov = 0,\sigma^2=1$), but the authors also mention
+these results hold for more general covariance matrices
+\cite[p. 681]{AlexanderianGloorGhattas14}.
+
 %% It is important to note that since $\obs$ is finite-rank,
 %% $\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}$ is
 %% trace-class.
@@ -123,12 +124,10 @@ covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.}:
 
 For a Bayesian linear model in finite dimensions, with Gaussian prior
 and Gaussian noise, a D-optimal design minimizes the determinant of
-the posterior covariance matrix\footnote{The frequentist version of
-the D-optimality criterion aims to minimize the determinant of the
-Fisher information matrix \cite[page 16]{Ucinski05}. Thus, the
-Bayesian criterion is just a regularized version of the frequentist
-criterion \cite{Chaloner1995}.}. Theorem \ref{thm:d optimality} and
-Definition \ref{def:d optimality} carry a similar intuition:
+the posterior covariance matrix, and this turns out to be a
+regularized version of the frequentist criterion
+\cite{Chaloner1995}. Theorem \ref{thm:d optimality} and Definition
+\ref{def:d optimality} carry a similar intuition:
 \begin{align*}
   \begin{split}
     \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \text{ by \eqref{eq:objective}}\\

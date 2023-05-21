@@ -1,4 +1,4 @@
-% \usepackage{amsmath,amssymb,amsthm}
+\usepackage{amssymb,amsmath,amsthm}
 \usepackage{thmtools}
 \usepackage{thm-restate}
 
@@ -16,7 +16,8 @@
 
 \usepackage{cite}
 % makes color citations
-%% \usepackage[colorlinks=true,urlcolor=blue,citecolor=red,linkcolor=red,bookmarks=true]{hyperref}
+%\usepackage[colorlinks=true,urlcolor=blue,citecolor=red,linkcolor=red,bookmarks=true]{hyperref}
+\usepackage{url}
 \usepackage{color}
 \usepackage{paralist}
 %% \usepackage{graphics} %% add this and next lines if pictures should be in esp format
@@ -48,18 +49,18 @@
 
 
 %% Place here your \newcommand's and \renewcommand's. Some examples already included.
-\renewcommand{\le}{\leqslant}
-\renewcommand{\ge}{\geqslant}
-\renewcommand{\emptyset}{\ensuremath{\varnothing}}
-\newcommand{\ds}{\displaystyle}
+%\renewcommand{\le}{\leqslant}
+%\renewcommand{\ge}{\geqslant}
+%\renewcommand{\emptyset}{\ensuremath{\varnothing}}
+%\newcommand{\ds}{\displaystyle}
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
-\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
-\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
-\newcommand{\N}{\ensuremath{\mathbb{N}}}
-\newcommand{\T}{\ensuremath{\mathbb{T}}}
-\newcommand{\B}{\mathcal{B}}
+%\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+%\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+%\newcommand{\N}{\ensuremath{\mathbb{N}}}
+%\newcommand{\T}{\ensuremath{\mathbb{T}}}
+%\newcommand{\B}{\mathcal{B}}
 \newcommand{\eps}{\varepsilon}
-\newcommand{\closure}[1]{\ensuremath{\overline{#1}}}
+%\newcommand{\closure}[1]{\ensuremath{\overline{#1}}}
 \newcommand{\M}{\mathcal{M}}
 
 \newcommand{\ep}{\varepsilon}
@@ -72,44 +73,44 @@
 \newcommand{\corr}{\textup{Corr}}
 \newcommand{\cov}{\textup{Cov}}
 \newcommand{\diag}{\textup{diag}}
-\newcommand{\dom}{\mathcal{D}om}
-\newcommand{\note}[1]{{\textcolor{blue}{#1}}}
-\newcommand{\A}[1]{{\textcolor{cyan}{\noindent Answer: #1}}}
+%% \newcommand{\dom}{\mathcal{D}om}
+%% \newcommand{\note}[1]{{\textcolor{blue}{#1}}}
+%% \newcommand{\A}[1]{{\textcolor{cyan}{\noindent Answer: #1}}}
 %\newcommand{\reftwo}[1]{{\textcolor{green}{#1}}}
 %\newcommand{\refthree}[1]{{\textcolor{red}{#1}}}
-\newcommand{\refthree}[1]{{\color{red} #1}}
-\newcommand{\reftwo}[1]{{\color{green} #1}}
+%% \newcommand{\refthree}[1]{{\color{red} #1}}
+%% \newcommand{\reftwo}[1]{{\color{green} #1}}
 
 
 
-\newcommand{\precop}{\mathcal{L}}
-\newcommand{\precmat}{\mathbf{L}}
-\newcommand{\Op}{\mathcal{A}}
-\newcommand{\OpDir}{\mathcal{A}_{\textup{Dirichlet}}}
-\newcommand{\OpNeu}{\mathcal{A}_{\textup{Neumann}}}
-\newcommand{\covop}{\mathcal{C}}
-\newcommand{\lag}{\mathcal{L}}
-\newcommand{\n}{\boldsymbol{n} }
-\newcommand{\dn}{\partial \n }
-\newcommand{\x}{{\boldsymbol{x}}}
-\newcommand{\y}{{\boldsymbol{y}}}
-\newcommand{\z}{{\boldsymbol{z}}}
-\newcommand{\kxmy}{ \kappa \| \x - \y \| }
-\newcommand{\xmy}{ \| \x - \y \| }
-\newcommand{\proj}{\mathcal{P}}
-\newcommand{\kr}{\kappa r}
-\newcommand{\ivar}{\text{IntVar}}
+%% \newcommand{\precop}{\mathcal{L}}
+%% \newcommand{\precmat}{\mathbf{L}}
+%% \newcommand{\Op}{\mathcal{A}}
+%% \newcommand{\OpDir}{\mathcal{A}_{\textup{Dirichlet}}}
+%% \newcommand{\OpNeu}{\mathcal{A}_{\textup{Neumann}}}
+%% \newcommand{\covop}{\mathcal{C}}
+%% \newcommand{\lag}{\mathcal{L}}
+%% \newcommand{\n}{\boldsymbol{n} }
+%% \newcommand{\dn}{\partial \n }
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+%% \newcommand{\z}{{\boldsymbol{z}}}
+%% \newcommand{\kxmy}{ \kappa \| \x - \y \| }
+%% \newcommand{\xmy}{ \| \x - \y \| }
+%% \newcommand{\proj}{\mathcal{P}}
+%% \newcommand{\kr}{\kappa r}
+%% \newcommand{\ivar}{\text{IntVar}}
 
-\newcommand{\K}{\mathbb{K}}
+%% \newcommand{\K}{\mathbb{K}}
 \newcommand{\hil}{\mathcal{H}}
-\newcommand{\ban}{\mathcal{B}}
+%% \newcommand{\ban}{\mathcal{B}}
 \newcommand{\hilp}{\mathcal{H}_p}
 \newcommand{\hilo}{\mathcal{H}_o}
 \newcommand{\obs}{\mathcal{O}}
 \newcommand{\pobs}{\mathcal{P}}
 \newcommand{\fwd}{\mathcal{F}}
-\newcommand{\tru}{\fwd_{\textup{True}}}
-\newcommand{\err}{\fwd_{\textup{Error}}}
+%% \newcommand{\tru}{\fwd_{\textup{True}}}
+%% \newcommand{\err}{\fwd_{\textup{Error}}}
 
 \newcommand{\obsm}{\widehat{\obs}}
 \newcommand{\Sigmam}{\widehat{\Sigma}}
@@ -148,14 +149,16 @@
 %% %% %%
 %% %% %% Place here your \newtheorem's:
 %% %% %%
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
 
 %% %% %% Some examples commented out below. Create your own or use these...
 %% %% %%%%%%%%%\swapnumbers % this makes the numbers appear before the statement name.
 %% %% %\theoremstyle{plain}
 %% %% %\newtheorem{thm}{Theorem}[chapter]
-%% %% %\newtheorem{prop}[thm]{Proposition}
-%% %% %\newtheorem{lemma}[thm]{Lemma}
-%% %% %\newtheorem{cor}[thm]{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
 %% %% % \newtheorem{observation}[theorem]{Observation}
 
 %% %% %\theoremstyle{definition}
@@ -164,10 +167,6 @@
 %% %% %\theoremstyle{remark}
 %% %% %\newtheorem*{rmk*}{Remark}
 %% %% %\newtheorem*{rmks*}{Remarks}
-
-%% %% %% This defines the "proo" environment, which is the same as proof, but
-%% %% %% with "Proof:" instead of "Proof.". I prefer the former.
-%% %% %\newenvironment{proo}{\begin{proof}[Proof:]}{\end{proof}}
 
 %% %% %% Hack
 %% %% \newcommand{\stkout}[1]{\ifmmode\text{\sout{\ensuremath{#1}}}\else\sout{#1}\fi}

@@ -1,7 +1,7 @@
-\section{An answer for Question \ref{q:why}: The cause of measurement clusterization}\label{section:why}
-\begin{figure}[H]
+\section{Answer to Question \ref{q:why}: The cause of measurement clusterization}\label{section:why}
+\begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{eigenvectors.eps}
+    \includegraphics[height=0.5\textwidth]{eigenvectors.pdf}
     \caption{D-optimal measurement locations ($m=5$ measurements) and
       weighted eigenvectors for inversion of the initial condition of
       the 1D heat equation. Measurement locations and weighted
@@ -27,16 +27,15 @@ design would favor measurement locations where eigenvectors $k+1$ and
 above are either close to zero in value or possess small eigenvalues
 in the prior spectrum, for some $k > 0$. To illustrate this
 preference, Figure \ref{fig:why} depicts the scenario using the 1D
-heat equation with homogeneous Dirichlet boundary
-conditions\footnote{Additional details provided in the supplementary
-material.}. The plot showcases four eigenvectors, scaled according to
-their prior standard deviations. Since eigenvectors beyond the fourth
-have insignificant prior eigenvalues, we exclude them from
-consideration. Notably, we observe that measurements are clustered
-near the zeros of the third and fourth eigenvectors, so we conclude
-that $k=2$. Clusterization arises because there are only two locations
-where the third and fourth eigenvectors approach zero, while the first
-and second eigenvectors exhibit significantly non-zero
-values. Consequently, when we allocate four measurements to these two
-locations, they naturally cluster together, aligning with the
-pigeonhole principle.
+heat equation with homogeneous Dirichlet boundary conditions (details
+in the supplementary material). The plot showcases four eigenvectors,
+scaled according to their prior standard deviations. Since
+eigenvectors beyond the fourth have insignificant prior eigenvalues,
+we exclude them from consideration. Notably, we observe that
+measurements are clustered near the zeros of the third and fourth
+eigenvectors, so we conclude that $k=2$. Clusterization arises because
+there are only two locations where the third and fourth eigenvectors
+approach zero, while the first and second eigenvectors exhibit
+significantly non-zero values. Consequently, when we allocate four
+measurements to these two locations, they naturally cluster together,
+aligning with the pigeonhole principle.

@@ -219,16 +219,18 @@ measurements in $span\{\meas\}$ for some $\meas \neq 0$, then no
 design achieves a maximum of the q D-optimality criterion, since this
 criterion is not bounded. In contrast, in any real-life problem where
 sensors are concerned, the norm of measurements recorded by sensors is
-always one\footnote{Of course, point evaluations are not in any
-Hilbert space of functions we wish to consider.}:
-\begin{align*}
-  \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)} \frac{
-    |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y| 
+always one (of course, point evaluations are not in any Hilbert space
+of functions we wish to consider):
+
+\begin{equation}
+  \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}
+  \frac{
+    |\int_{\Omega}u(\y) \delta_{\x}(\y) \der \y|
   }{
-    \sup|u|}
-  = \sup_{0 \neq u \in C(\Omega)} \frac{|u(\x)|}{ \sup|u|} = 1,
+    \sup|u|
+  } = \sup_{0 \neq u \in C(\Omega)} \frac{|u(\x)|}{\sup|u|} = 1,
   \forall \x \in \Omega.
-\end{align*}
+\end{equation}
 
 Thus, it is reasonable to consider measurements with unit $\hilo^*$
 norm. The unit norm constraints can be written as a series of $m$

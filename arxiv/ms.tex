@@ -1,0 +1,101 @@
+%\documentclass{siamonline220329}
+\documentclass{amsart}
+\input{definitions}
+
+%\numberwithin{equation}{section}
+
+
+
+\title{Measurement Clusterization in D-optimal Designs for Bayesian Linear
+  Inverse Problems over Hilbert Spaces}
+
+\author{Yair Daon}
+
+%% \thanks{Porter School of the Environment and Earth
+%%     Sciences, Tel Aviv University, Tel Aviv, Israel
+%%     (\email{yair.daon@gmail.com}).}
+%% \author{Yair Daon\thanks{Azrieli Faculty of Medicine, Bar Ilan
+%%     University, Safed, Israel.  (\email{yair.daon@gmail.com}).}}
+
+%% \address{Porter School of the Environment and Earth
+%%   Sciences, Tel Aviv University\\ Tel Aviv, Israel}
+%% %% \curraddr{Porter School of Environment Studies, Tel Aviv University\\ Tel Aviv, Israel}
+%% %% \curraddr{}
+%% \email{yair.daon@gmail.com}
+% The 2010 edition of the Mathematics Subject Classification is the
+% current definitive version.
+%% \subjclass{Primary: 
+%%   62F15, % Statistics - bayesian inference
+%%   35R30, % PDE - Inverse problems
+%%   Secondary:
+%%   28C20,
+%%   % Measure and integration - set functions and measures and integrals
+%%          % in infinite-dimensional spaces (Wiener measure, Gaussian
+%%   % measure, etc.
+%% }
+
+\date{\today}
+\begin{document}
+
+\begin{abstract}
+  Inversion for parameters of physical processes typically requires
+  taking expensive measurements; finding an optimal set of
+  measurements is known as the optimal design problem. Surprisingly,
+  measurement locations in optimal designs are sometimes extremely
+  clustered. Since measurement clusterization is nonintuitive,
+  researchers often avoid it by modifying the optimal design
+  problem. We consider a certain flavor of the optimal design problem,
+  based on the Bayesian D-optimality criterion, and suggest an
+  analytically tractable model for Bayesian D-optimal designs in
+  linear inverse problems over Hilbert spaces. We demonstrate that
+  measurement clusterization is a generic property of D-optimal
+  designs, and prove that correlated noise between measurements
+  mitigates clusterization. We also give a full characterization of
+  D-optimal designs, which shows that D-optimal designs uniformly
+  reduce uncertainty in a select subset of the prior covariance
+  eigenvectors. Finally, we show how measurement clusterization is a
+  simple consequence of the characterization mentioned above and the
+  pigeonhole principle.
+\end{abstract}
+\maketitle
+
+
+\input{intro}
+\input{prelims}
+\input{constrained}
+\input{nonvanishing}
+\input{vanishing}
+\input{why}
+%% \input{how}
+%% \section{Open Problems}
+
+
+\section{Acknowledgements}
+This study is a result of research I started during my PhD studies
+under the instruction of Prof. Georg Stadler at the Courant Institute
+of Mathematical Sciences. I would like to thank him for his great
+mentorship, attention to details and kindness. I would also like to
+thank Christian Remling, who helped me find a proof for Lemma
+\ref{lemma:free} in
+\href{https://mathoverflow.net/questions/280168/redistribute-diagonal-entries-of-a-matrix/280203#280203c}{Mathoverflow}.
+
+This research was supported in part by an appointment with the
+National Science Foundation (NSF) Mathematical Sciences Graduate
+Internship (MSGI) Program sponsored by the NSF Division of
+Mathematical Sciences. This program is administered by the Oak Ridge
+Institute for Science and Education (ORISE) through an interagency
+agreement between the U.S. Department of Energy (DOE) and NSF. ORISE
+is managed for DOE by ORAU. All opinions expressed in this paper are
+the author's and do not necessarily reflect the policies and views of
+NSF, ORAU/ORISE, or DOE. This work was also supported by The Raymond
+and Beverly Sackler Post-Doctoral Scholarship.
+
+
+%% \input{appendix}
+
+%\bibliographystyle{siamplain}
+\bibliographystyle{amsplain}
+\bibliography{/home/yair/projects/bibtex.bib}
+
+\end{document}
+
