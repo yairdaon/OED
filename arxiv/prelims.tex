@@ -68,14 +68,13 @@ Taking $\modcov = 0$ is a common practice
 \cite{tarantola2005,Kaipio2005,Vogel02} and then $\Sigma =
 \sigma^2I_m$ is a scalar matrix which does not depend on $\obs$.
 
-It is useful to record that the posterior measure $\post$ is Gaussian
-in this setting and its covariance operator is \cite{Stuart10}:
+Finally, it is useful to record that the posterior measure $\post$ is
+Gaussian in this setting and its covariance operator is does not
+depend on data $\data$ \cite{Stuart10}:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
 \end{align}
-Note that the poserior covariance $\postcov$ does not depend on data
-$\data$.
 
 \subsection{Bayesian D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
 A Bayesian D-optimal design maximizes expected Kullback-Leibler (KL)
@@ -88,7 +87,7 @@ $$
 The study of D-optimal designs for Bayesian linear inverse problems in
 infinite dimensions was pioneered by \cite{AlexanderianGloorGhattas14,
   alexanderian2018efficient}. The main result we will make use of is
-summarized (in our notation) in Theorem \ref{thm:d optimality}:
+summarized in our notation below:
 
 \begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
   Let $\pr = \normal(\prmean,\prcov)$ be a Gaussian prior on $\hilp$
@@ -109,15 +108,15 @@ summarized (in our notation) in Theorem \ref{thm:d optimality}:
 
 Note that in \cite{AlexanderianGloorGhattas14,
   alexanderian2018efficient}, results are stated for $\Sigma=I$
-(implied by $\modcov = 0,\sigma^2=1$), but the authors also mention
-these results hold for more general covariance matrices
+(implied by $\modcov = 0,\sigma^2=1$), but the these results also hold
+for more general covariance matrices
 \cite[p. 681]{AlexanderianGloorGhattas14}.
 
 %% It is important to note that since $\obs$ is finite-rank,
 %% $\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}$ is
 %% trace-class.
 \begin{definition}\label{def:d optimality}
-  $\obs^{\star}$ is said to be \emph{D-optimal} if $\obs^{\star} =
+  We say $\obs^{\star}$ is \emph{D-optimal} if $\obs^{\star} =
   \argmax_{\obs} \tar(\obs)$, where entries of $\obs \in (\hilo^*)^m$
   are constrained to some allowed set of measurements in $\hilo^*$.
 \end{definition}
@@ -136,9 +135,9 @@ regularized version of the frequentist criterion
     %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
   \end{split}
 \end{align*}
-We think of $\prcov$ as constant, so a D-optimal design minimizes the
-posterior covariance determinant, analogously to the
-finite-dimensional case.
+We think of $\prcov$ as constant, so a D-optimal design minimizes a
+quantity analogous to the posterior covariance determinant, similarly
+to the finite-dimensional case.
 
 
 %% \subsection{Notation Summary}\label{subsec:notation}

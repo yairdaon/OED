@@ -1,4 +1,4 @@
-\section{Characterization of D-Optimal Designs when $\modcov = 0$}\label{section:vanishing}
+\section{D-Optimal Designs Without Model Error}\label{section:vanishing}
 Our goal in this section is to prove Theorem \ref{thm:char} which
 characterizes D-optimal designs when $\modcov = 0$. The necessary
 first-order condition for D-optimality of Theorem
@@ -317,7 +317,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 \end{proof}
 
 The final ingredient we require for the proof of Theorem
-\ref{thm:char} the following lemma:
+\ref{thm:char} is:
 
 
 \begin{lemma}[Unit norm decomposition]\label{lemma:free}
@@ -414,7 +414,8 @@ The final ingredient we require for the proof of Theorem
 }\optimalvsnot
 
 \begin{figure}
-  \begin{tikzpicture}[scale=0.85]
+  \centering
+  \begin{tikzpicture}[scale=0.735]
     \begin{axis}[
         ybar stacked,
         ymin=0,
@@ -425,21 +426,16 @@ The final ingredient we require for the proof of Theorem
         xticklabels from table={\optimalvsnot}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
-        ylabel=precision --- prior and posterior,
-        xlabel=eigenvector $i$,
+        ylabel={\Large precision --- prior and posterior},
+        xlabel={\Large eigenvector $i$},
       ]
-    
-      
       \addplot [fill=green!80]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
-      \addplot [fill=blue!60]   table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
-            
-      \addlegendentry{$\sigma^2\lambda_i^{-1}$}
-      \addlegendentry{optimal $\eta_i$s}
-      
+      \addplot [fill=blue!60]   table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};     
+      \addlegendentry{\Large $\sigma^2\lambda_i^{-1}$}
+      \addlegendentry{\Large optimal $\eta_i$s}
     \end{axis}
   \end{tikzpicture}
-  \qquad
-  \begin{tikzpicture}[scale=0.85]
+  \begin{tikzpicture}[scale=0.735]
     \begin{axis}[
         ybar stacked,
         ymin=0,
@@ -450,16 +446,13 @@ The final ingredient we require for the proof of Theorem
         xticklabels from table={\optimalvsnot}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
-        ylabel=precision --- prior and posterior,
-        xlabel=eigenvector $i$,
+        ylabel={\Large precision --- prior and posterior},
+        xlabel={\Large eigenvector $i$},
       ]   
-      
       \addplot [fill=green!80]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
       \addplot [fill=blue!60]   table [y=sub-optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
-
-      \addlegendentry{$\sigma^2\lambda_i^{-1}$}
-      \addlegendentry{sub-optimal $\eta_i$s}
-      
+      \addlegendentry{\Large $\sigma^2\lambda_i^{-1}$}
+      \addlegendentry{\Large sub-optimal $\eta_i$s}
     \end{axis}
   \end{tikzpicture}
   \caption{A comparison of the eigenvalues of the pushforward
