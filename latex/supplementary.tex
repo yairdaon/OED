@@ -1,20 +1,13 @@
 \documentclass{siamonline220329}
-%\documentclass{amsart}
-%%\documentclass{article}
 \input{definitions}
 
 \title{Supplementary Material for: Measurement Clusterization in
   D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
   Spaces}
 
-\author{Yair Daon\thanks{Porter School of the Environment and Earth
-    Sciences, Tel Aviv University, Tel Aviv, Israel
-    (\email{yair.daon@gmail.com}).}}
-%% \author{Yair Daon}
+\author{Yair Daon \thanks{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
+      Israel (\email{yair.daon@gmail.com}).}}
 
-%% \thanks{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
-%%   Israel.  (\email{yair.daon@gmail.com}).}
-\date{\today}
 \begin{document}
 \maketitle
 
@@ -44,16 +37,15 @@ iid, $\sigma = 0.05$. Measurement locations $\x_j,j=1,\dots,m$ are
 chosen according to the D-optimality criterion of
 \cite{AlexanderianGloorGhattas14}.
 
-Implementation of this inverse problem can be found in the
-repository \url{https://github.com/yairdaon/OED}, with an optimization
+Implementation of this inverse problem can be found in this 
+\href{https://github.com/yairdaon/OED}{repository}, including an optimization
 routine for finding D-optimal designs. Unfortunately, I was not able
 to install PyOED \cite{attia2023pyoed}, nor was I able to utilize
 hIPPYlib \cite{VillaPetraGhattas16, VillaPetraGhattas18,
-VillaPetraGhattas21}, hence the inverse problem is implemented from
+  VillaPetraGhattas21}, hence the inverse problem is implemented from
 scratch.
 
 \section{Generalizations of known lemmas}
-
 The following lemma is generalized from \cite[Chapter 9, Theorem 4,
 p. 127]{Lax07}
 \begin{lemma}\label{lemma:lax}
@@ -193,8 +185,8 @@ Hilbert spaces.
 \end{proof}
 
 
-\bibliographystyle{siamplain}
-%% %%\bibliographystyle{amsplain}
-\bibliography{/home/yair/projects/library.bib}
+%\bibliographystyle{siamplain}
+\bibliographystyle{amsplain}
+\bibliography{/home/yair/projects/bibtex.bib}
 
 \end{document}

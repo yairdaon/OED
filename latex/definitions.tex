@@ -1,0 +1,66 @@
+\usepackage{thm-restate}
+\usepackage{tikz,pgfplotstable}
+\pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage[mathlines]{lineno}  %% For SIMODS
+\linenumbers %% For SIMODS
+
+
+
+%% Place here your \newcommand's and \renewcommand's. Some examples already included.
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\M}{\mathcal{M}}
+
+\newcommand{\der}{\text{\textup{d}}}
+\newcommand{\diag}{\textup{diag}}
+
+
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+
+\newcommand{\hil}{\mathcal{H}}
+\newcommand{\hilp}{\mathcal{H}_p}
+\newcommand{\hilo}{\mathcal{H}_o}
+\newcommand{\obs}{\mathcal{O}}
+\newcommand{\pobs}{\mathcal{P}}
+\newcommand{\fwd}{\mathcal{F}}
+
+\newcommand{\obsm}{\widehat{\obs}}
+\newcommand{\Sigmam}{\widehat{\Sigma}}
+\newcommand{\postcovm}{\widehat{\Gamma_{\textup{post}}}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\tar}{\Psi}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% Definitions for second chapter
+\newcommand{\data}{\mathbf{d}}
+\newcommand{\param}{\mathbf{m}}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\pr}{\mu_{\textup{pr}}} %Prior measure
+\newcommand{\post}{\mu_{\textup{post}}^{\data, \obs}} % Posterior measure
+\newcommand{\prmean}{\param_{\textup{pr}}} % Prior mean
+\newcommand{\postmean}{\param_{\textup{post}}} % Posterior mean
+\newcommand{\postcov}{\Gamma_{\textup{post}}} % Posterior covariance
+\newcommand{\prcov}{\Gamma_{\textup{pr}}} % Prior covariance
+\newcommand{\modcov}{\Gamma_{\textup{model}}} % Model covariance
+\newcommand{\tmp}{\mathcal{G}}
+\newcommand{\meas}{\mathbf{o}}
+\newcommand{\ev}{\mathbf{e}} % eigenvector 
+\newcommand{\func}{\mathbf{a}}
+\newcommand{\tr}[1]{\textup{tr}\left \{#1 \right \} }
+\newcommand{\ttr}[1]{\textup{tr}\ #1}
+\newcommand{\rank}{\textup{rank}\ }
+\newcommand{\des}{\eta} % vector of design parameters
+\newcommand{\sigsqr}{\sigma^2}
+
+
+\usepackage{comment}% http://ctan.org/pkg/comment
+%% %% %\excludecomment{proof}
+%% \excludecomment{figure}
+%% \let\endfigure\relax
+
+
+\overfullrule=0pt
