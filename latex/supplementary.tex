@@ -1,12 +1,22 @@
-\documentclass{siamonline220329}
+\documentclass[review,supplement,hidelinks,onefignum,onetabnum]{siamart220329}
 \input{definitions}
+\externaldocument[][nocite]{ms}
 
-\title{Supplementary Material for: Measurement Clusterization in
-  D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
-  Spaces}
+%% \ifpdf
+%% \hypersetup{
+%%   pdftitle={Supplementary Material for: Measurement Clusterization in
+%%   D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
+%%   Spaces},
+%%   pdfauthor={Yair Daon}
+%% }
+%% \fi
 
-\author{Yair Daon \thanks{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
-      Israel (\email{yair.daon@gmail.com}).}}
+%% \title{Supplementary Material for: Measurement Clusterization in
+%%   D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
+%%   Spaces}
+
+%% \author{Yair Daon \thanks{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
+%%       Israel (\email{yair.daon@gmail.com}).}}
 
 \begin{document}
 \maketitle
@@ -45,10 +55,9 @@ hIPPYlib \cite{VillaPetraGhattas16, VillaPetraGhattas18,
   VillaPetraGhattas21}, hence the inverse problem is implemented from
 scratch.
 
-\section{Generalizations of known lemmas}
-The following lemma is generalized from \cite[Chapter 9, Theorem 4,
-p. 127]{Lax07}
-\begin{lemma}\label{lemma:lax}
+\section{Generalizations of a known lemma}
+
+\begin{lemma}[Lax, Chapter 9, Theorem 4\cite{Lax07}].\label{lemma:lax}
   Let $Y(t)$ be a differentiable operator-valued function. Assume 
   $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
   \begin{equation*}

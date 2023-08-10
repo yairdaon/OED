@@ -99,8 +99,9 @@ recall that:
   \end{align}
 
 
-  We now record a lemma which is a generalization of Theorem 4 in
-  Chapter 9 of \cite{Lax07}. Its proof is delegated to the supplementary material.
+  We now record a lemma which generalizes a known result in linear
+  algebra \cite[Chapter 9, Theorem 4]{Lax07}. Its proof is delegated
+  to the supplementary material.
   \begin{lemma}\label{lemma:lax}
     Let $Y(t)$ be a differentiable operator-valued function. Assume 
     $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
@@ -215,12 +216,12 @@ us in finding such constraints.
 
 Proposition \ref{prop:bigger better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
-measurements in $span\{\meas\}$ for some $\meas \neq 0$, then no
-design achieves a maximum of the q D-optimality criterion, since this
-criterion is not bounded. In contrast, in any real-life problem where
-sensors are concerned, the norm of measurements recorded by sensors is
-always one (of course, point evaluations are not in any Hilbert space
-of functions we wish to consider):
+measurements in $span\{\meas\}$ for some $\meas \neq 0$, then a
+maximum for the D-optimality criterion does not exist, as it is not
+bounded. In contrast, in any real-life problem where sensors are
+concerned, the norm of measurements recorded by sensors is always one
+(of course, point evaluations are not in any Hilbert space of
+functions we wish to consider):
 
 \begin{equation}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}
@@ -233,7 +234,7 @@ of functions we wish to consider):
 \end{equation}
 
 Thus, it is reasonable to consider measurements with unit $\hilo^*$
-norm. The unit norm constraints can be written as a series of $m$
+norm. We can write the unit norm constraints as a series of $m$
 equality constraints (one for each measurement) on $\obs$. We define
 them and find their gradients in Proposition \ref{prop:constraints
   grad} below:
@@ -299,23 +300,24 @@ them and find their gradients in Proposition \ref{prop:constraints
 %% thought of as row vectors.
 
 
-Necessary first-order conditions for D-optimality are found via
-Lagrange multipliers:
+We find necessary first-order conditions for D-optimality via Lagrange
+multipliers:
+
 \begin{align}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
   \label{eq:Lagrange mult1} \\
     &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
 \end{align}
 
-Substitute the gradients calculated in Propositions \ref{prop:tar
-  grad} and \ref{prop:constraints grad} into \eqref{eq:Lagrange
-  mult1}:
+We now substitute the gradients calculated in Propositions
+\ref{prop:tar grad} and \ref{prop:constraints grad} into
+\eqref{eq:Lagrange mult1}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
 \end{equation} 
-Letting $\Xi := \diag(\xi_j)$, \eqref{eq:constrained} and
-\eqref{eq:Lagrange mult2} are written more compactly as:
+Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
+\eqref{eq:Lagrange mult2} more compactly as:
 
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:

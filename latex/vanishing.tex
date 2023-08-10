@@ -10,10 +10,10 @@ first-order condition for D-optimality of Theorem
 with $\Xi$ diagonal. Equation \eqref{eq:eigenproblem} looks like an
 eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
-are eigenvectors. However, $\postcov$ depends on $\obs$ and thus, we
-refer to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue
-problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
-%% \ref{lemma:sim diag} required 
+are eigenvectors. However, $\postcov$ depends on $\obs$, so we refer
+to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
+%% Proposition \ref{prop:twice woodbury} and Lemma \ref{lemma:sim
+%% diag} required
 
 \begin{proposition}\label{prop:twice woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
@@ -28,7 +28,7 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
 \end{proposition}
 
 \begin{proof}
-  The proof amounts to using Woodbury's matrix identity twice and a
+  The proof amounts to using Woodbury's matrix identity twice with a
   regularization trick. The standard proof for Woodbury's matrix
   identity works for separable Hilbert spaces, as long as all terms
   are well defined. Unfortunately, $\obs^*\obs$ is not invertible, so
@@ -47,18 +47,21 @@ problem.%%  Proposition \ref{prop:twice woodbury} and Lemma
     \end{split}
   \end{align}
 
-  Then, by \eqref{eq:WMI}, with the notation \eqref{eq:notation}:
-  \begin{equation}\label{eq:first}
-  \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* = \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^* \\
+  Then, \eqref{eq:WMI} with the notation \eqref{eq:notation} implies:
+  \begin{align}\label{eq:first}
+    \begin{split}
+    &\fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* (\obs^* \obs +\eps I) \fwd )^{-1}\fwd^* \\
+    &\ \ \ \ \ = \fwd ( \prcov - \prcov \fwd^* ( \sigma^2(\obs^*\obs + \eps I)^{-1} + \fwd \prcov \fwd^* )^{-1} \fwd \prcov ) \fwd^*. \\
       %
       %
       %% &= X - X(\sigma^2Y_{\eps}^{-1} + X)^{-1}X
   %%   \end{split}
-  %% \end{align*}
-  \end{equation}
+    %% \end{align*}
+    \end{split}
+  \end{align}
   Now, denote:
   \begin{align*}
-    X :&= \fwd\prcov \fwd^* \\
+    X :&= \fwd\prcov \fwd^*, \\
     Y_{\eps} :&= \obs^*\obs + \eps I,
   \end{align*}
   and observe that $Y_{\eps}$ is invertible. Substitute $X, Y_{\eps}$
@@ -415,7 +418,7 @@ The final ingredient we require for the proof of Theorem
 
 \begin{figure}
   \centering
-  \begin{tikzpicture}[scale=0.85]
+  \begin{tikzpicture}[scale=0.75]
     \begin{axis}[
         ybar stacked,
         ymin=0,
@@ -429,13 +432,13 @@ The final ingredient we require for the proof of Theorem
         ylabel={\LARGE precision --- prior and posterior},
         xlabel={\LARGE eigenvector},
       ]
-      \addplot [fill=green!80]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
-      \addplot [fill=blue!60]   table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};     
+      \addplot [fill=blue!60]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
+      \addplot [pattern=north east lines, pattern color=green!80]  table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};     
       \addlegendentry[scale=1.4]{$\sigma^2\lambda_i^{-1}$}
       \addlegendentry[scale=1.4]{optimal $\eta_i$s}
     \end{axis}
   \end{tikzpicture}
-  \begin{tikzpicture}[scale=0.85]
+  \begin{tikzpicture}[scale=0.75]
     \begin{axis}[
         ybar stacked,
         ymin=0,
@@ -449,8 +452,8 @@ The final ingredient we require for the proof of Theorem
         ylabel={\LARGE precision --- prior and posterior},
         xlabel={\LARGE eigenvector} ,
       ]   
-      \addplot [fill=green!80]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
-      \addplot [fill=blue!60]   table [y=sub-optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
+      \addplot [fill=blue!60]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
+      \addplot [pattern=north east lines, pattern color=green!80]  table [y=sub-optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
       \addlegendentry[scale=1.4]{$\sigma^2\lambda_i^{-1}$}
       \addlegendentry[scale=1.4]{sub-optimal $\eta_i$s}
     \end{axis}
@@ -477,7 +480,7 @@ have blue liquid of volume $\sigma^{-2}m$ units at our disposal. When
 we seek a D-optimal design, we distribute the blue liquid by
 repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
-such a procedure is illustrated in Figure \ref{fig:optimal vs not}.
+such a procedure is illustrated in Fig.~\ref{fig:optimal vs not}.
 %% \begin{figure}%{r}{0.25\textwidth} 
 %%     \centering
 %%     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}

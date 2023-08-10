@@ -1,7 +1,7 @@
 \section{Introduction}\label{section:intro}
 Measurements play a fundamental role in generating observations and
-are indispensable to any inference process. In the realm of data
-science, selecting the optimal set of measurements holds particular
+are indispensable to any inference process. In the practice of inverse
+problems, selecting the optimal set of measurements holds particular
 significance when inferring parameters of a physical process. Unlike
 many other fields, where measurements are fixed, in this context, we
 have the freedom to choose which measurements to take. This freedom
@@ -9,14 +9,15 @@ should be taken advantage of: measurements should be chosen to enhance
 accuracy, reduce costs, or both. Whether measurements involve
 specifying electrode locations on the skin in electric impedance
 tomography \cite{horesh2010impedance}, determining certain wavelengths
-in MRI \cite{horesh2008mri}, or positioning sensors for detecting
+in MRI \cite{horesh2008mri}, positioning sensors for detecting
 ground-reflected waves in the search for oil
-\cite{horesh2008borehole}, the selection of optimal measurements,
-referred to as the problem of \emph{optimal design}, becomes
-crucial. Optimal measurements are chosen according to specific
-\emph{design criteria}, with A- and D-optimality being two of the most
-widely recognized and extensively studied design criteria
-\cite{Chaloner1995}.
+\cite{horesh2008borehole}, or optimizing sensor locations in a
+seismographic network \cite{rabinowitz1990, steinberg1995} --- the
+selection of optimal measurements, referred to as the problem of
+\emph{optimal design}, becomes crucial. Optimal measurements are
+chosen according to specific \emph{design criteria}, with A- and
+D-optimality being two of the most widely recognized and extensively
+studied design criteria \cite{Chaloner1995}.
 
 
 Surprisingly, A- and D-optimal designs have been observed to yield
@@ -24,7 +25,7 @@ remarkably similar measurements in certain cases \cite{fedorov1996,
   nyberg2012, fedorov1997, Ucinski05, neitzel2019sparse}. To
 illustrate this point, we consider a toy inverse problem: inferring
 the initial condition of the 1D heat equation (details in the
-supplementary material). In Figure \ref{fig:clusterization
+supplementary material). In Fig.~\ref{fig:clusterization
   illustration} D-optimal measurement locations are shown for
 different numbers of measurements. Notably, for six measurements, a
 D-optimal design yields two sets of measurements that are almost
@@ -74,23 +75,23 @@ modeling of auto-correlation time within the noise terms
 
 
 In spatial problems involving choice of measurements within a domain
-\(\Omega \subseteq \mathbb{R}^d, d=1,2,3\), many researchers circumvent
-the problem of measurement clusterization by choosing measurements
-from a coarse grid in \(\Omega\) \cite{koval2020, alexanderian2021,
-  attia2022, alexanderian2014, alexanderian2016,
+\(\Omega \subseteq \mathbb{R}^d, d=1,2,3\), many researchers
+circumvent the problem of measurement clusterization by choosing
+measurements from a coarse grid in \(\Omega\) \cite{koval2020,
+  alexanderian2021, attia2022, alexanderian2014, alexanderian2016,
   alexanderian2018efficient, brunton2016}. This approach incurs a
 significant computational cost as it requires solving a difficult
 combinatorial optimization problem for measurement locations over a
 finite set. The combinatorial optimization problem is usually relaxed
 by first assigning optimal measurement weights in \(\mathbb{R}_+\) to
 the potential measurement locations. Some researchers incorporate a
-sparsifying \(\ell_1\) penalty term into the design criterion, which is
-subsequently thresholded to achieve the desired binary design over the
-coarse grid \cite{horesh2008borehole}. Others progressively relax the
-\(\ell_1\) penalty to an \(\ell_0\) penalty via a continuation method
-\cite{alexanderian2016, alexanderian2014}. A clever alternative is to
-cast the problem of finding optimal measurement weights as a
-stochastic optimization problem \cite{attia2022stochastic}. All of the
+sparsifying \(\ell_1\) penalty term into the design criterion, which
+is subsequently thresholded to achieve the desired binary design over
+the coarse grid \cite{horesh2008borehole}. Others progressively relax
+the \(\ell_1\) penalty to an \(\ell_0\) penalty via a continuation
+method \cite{alexanderian2016, alexanderian2014}. Others cast the
+problem of finding optimal measurement weights as a stochastic
+optimization problem \cite{attia2022stochastic}. All of the
 aforementioned methods may indeed find a binary optimal design
 restricted to a given coarse grid. However, none addresses one
 fundamental issue: the restriction of measurement locations to a
@@ -165,11 +166,10 @@ posed at the end of the previous paragraph:
   those with the largest eigenvalues in the prior covariance
   spectrum. In practical scenarios, the number of locations where (a)
   the relevant prior eigenvectors are significantly large, and (b)
-  other eigenvectors have a power spectrum close to zero, is
-  limited. Consequently, the clusterization of measurements arises as
-  a natural consequence of the pigeonhole principle, as there are more
-  measurements available than there are locations satisfying
-  conditions (a) and (b).
+  other eigenvectors are close to zero, is limited. Consequently, the
+  clusterization of measurements arises as a natural consequence of
+  the pigeonhole principle, as there are more measurements available
+  than there are locations satisfying conditions (a) and (b).
 
 
   %% In Section \ref{section:vanishing}, we provide an insightful
@@ -211,16 +211,16 @@ covariance eigenvectors in observation space. A similar conclusion was
 reached by Koval et al.~\cite{koval2020}, who showed that A-optimal
 designs are best constructed in the space of observations.
 
-We first give some general definitions before we state Theorem
-\ref{thm:char}: Let \(\hilp, \hilo\) Hilbert spaces, \(\fwd:\hilp \to
-\hilo\) a linear compact operator. Let \(\obs: \hilo \to \mathbb{R}^m\) a
-linear measurement operator, where \(m \in \mathbb{N}\) is the number of
+Before we state Theorem \ref{thm:char} we give some definitions: Let
+\(\hilp, \hilo\) Hilbert spaces, \(\fwd:\hilp \to \hilo\) a linear
+compact operator. Let \(\obs: \hilo \to \mathbb{R}^m\) a linear
+measurement operator, where \(m \in \mathbb{N}\) is the number of
 measurements taken. Let \(\sigma^2 \in \mathbb{R}_{+}\) observation
 noise variance, \(\data = \obs \fwd \param + \eps\), where \(\eps \in
-\mathbb{R}^m\) is iid \(\mathcal{N}(0, \sigma^2)\) noise. Let \(\pr \sim
-\mathcal{N}(\prmean, \prcov)\) prior Gaussian measure on \(\hilp\), where
-\(\prcov\) is the prior covariance operator and let \(\post\) the
-posterior (Gaussian) measure.
+\mathbb{R}^m\) is iid \(\mathcal{N}(0, \sigma^2)\) noise. Let \(\pr
+\sim \mathcal{N}(\prmean, \prcov)\) prior Gaussian measure on
+\(\hilp\), where \(\prcov\) is the prior covariance operator and let
+\(\post\) the posterior (Gaussian) measure.
   
 \begin{restatable}{theorem}{char}\label{thm:char}
   Let:
@@ -269,9 +269,9 @@ posterior (Gaussian) measure.
           0 & i > k 
         \end{cases}.
     \end{equation*}
-  \item The covariance of the pushforwad \(\fwd_{*} \post\) is \(\left (
-    (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right )^{-1}\)
-    and has eigenvalues
+  \item The covariance of the pushforwad \(\fwd_{*} \post\) is \(\left
+    ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right
+    )^{-1}\) and its eigenvalues are
     \begin{equation*}
       \theta_i =
       \begin{cases}
@@ -283,12 +283,12 @@ posterior (Gaussian) measure.
 %\end{theorem}
 \end{restatable}
 
-In the proving Theorem \ref{thm:char} we prove and generalize several
-lemmas. Among those, is a Lemma \ref{lemma:free}, which is (to the the
-best of my knowledge) a novel lemma in linear algebra: We decompose a
-symmetric positive definite matrix \(M \in \mathbb{R}^{k \times k}\)
-with \(\ttr M = m \in \mathbb{N}\) as \(M = AA^t\), where \(A\) has unit
-norm columns.
+In the process of proving Theorem \ref{thm:char} we prove and
+generalize several lemmas. Among those, is Lemma \ref{lemma:free},
+which is (to the the best of my knowledge) a novel lemma in linear
+algebra: We decompose a symmetric positive definite matrix \(M \in
+\mathbb{R}^{k \times k}\) with \(\ttr M = m \in \mathbb{N}\) as \(M =
+AA^t\), where \(A\) has unit norm columns.
 
 %% Finally, in Lemma \ref{lemma:lax} we generalize a lemma for
 %% calculating \(\frac{\der}{\der t} \log \det (I + X(t))\), where
