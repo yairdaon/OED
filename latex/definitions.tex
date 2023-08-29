@@ -2,10 +2,10 @@
 \usepackage{tikz,pgfplotstable}
 \usetikzlibrary{patterns}
 \pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
-\usepackage{amsfonts}
+\usepackage{amsfonts, amsmath}
 \usepackage{hyperref}
-\usepackage[mathlines]{lineno}  %% For SIMODS
-\linenumbers %% For SIMODS
+%% \usepackage[mathlines]{lineno}  %% For SIMODS
+%% \linenumbers %% For SIMODS
 
 
 
@@ -17,8 +17,8 @@
 \newcommand{\der}{\text{\textup{d}}}
 \newcommand{\diag}{\textup{diag}}
 
-
-\newcommand{\x}{\mathbf{x}}
+\providecommand{\x}{}
+\renewcommand{\x}{\mathbf{x}}
 \newcommand{\y}{\mathbf{y}}
 
 \newcommand{\hil}{\mathcal{H}}
@@ -66,25 +66,3 @@
 
 \overfullrule=0pt
 
-
-% Sets running headers as well as PDF title and authors
-\headers{Measurement Clusterization in D-optimal Designs}{Yair Daon}
-
-% Title. If the supplement option is on, then "Supplementary Material"
-% is automatically inserted before the title.
-
-\title{Measurement Clusterization in D-optimal Designs for Bayesian
-  Linear Inverse Problems over Hilbert Spaces\thanks{Submitted to the
-editors Aug. 10\textsuperscript{th} 2023 \funding{This research was
-supported in part by an appointment with the National Science
-Foundation (NSF) Mathematical Sciences Graduate Internship (MSGI)
-Program sponsored by the NSF Division of Mathematical Sciences. This
-program is administered by the Oak Ridge Institute for Science and
-Education (ORISE) through an interagency agreement between the
-U.S. Department of Energy (DOE) and NSF. ORISE is managed for DOE by
-ORAU. All opinions expressed in this paper are the author's and do not
-necessarily reflect the policies and views of NSF, ORAU/ORISE, or
-DOE.}}}
-
-\author{Yair Daon \thanks{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
-      Israel (\email{yair.daon@gmail.com}).}}

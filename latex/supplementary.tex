@@ -1,30 +1,25 @@
-\documentclass[review,supplement,hidelinks,onefignum,onetabnum]{siamart220329}
+\documentclass{article}
 \input{definitions}
-\externaldocument[][nocite]{ms}
+\usepackage{amsthm}
+\usepackage{authblk}
+\newtheorem{lemma}{Lemma}
+%% \externaldocument[][nocite]{ms}
 
-%% \ifpdf
-%% \hypersetup{
-%%   pdftitle={Supplementary Material for: Measurement Clusterization in
-%%   D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
-%%   Spaces},
-%%   pdfauthor={Yair Daon}
-%% }
-%% \fi
+\title{Supplementary Material: Measurement Clusterization in D-optimal
+  Designs for Bayesian Linear Inverse Problems over Hilbert Spaces}
 
-%% \title{Supplementary Material for: Measurement Clusterization in
-%%   D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
-%%   Spaces}
-
-%% \author{Yair Daon \thanks{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
-%%       Israel (\email{yair.daon@gmail.com}).}}
+\author{Yair Daon\thanks{yair.daon@gmail.com}}
+\affil{Azrieli Faculty of Medicine, Bar Ilan University, Safed,
+  Israel.}
 
 \begin{document}
 \maketitle
 
 
 \section{The inverse problem of the 1D heat equation}\label{section:example}
-The mathematical foundations of inversion in function spaces can be
-found in \cite{Stuart10}. Our goal is to infer the initial condition of
+%% The mathematical foundations of inversion in function spaces can be
+%% found in \cite{Stuart10}.
+Our goal is to infer the initial condition of
 the one-dimensional heat equation with a homogeneous Dirichlet
 boundary condition:
 \begin{subequations}\label{eq:heat equation}
@@ -44,7 +39,7 @@ j=1,\dots,m$, where $m$ is the number of allowed measurements. Assume
 iid centered Gaussian observation error, so observations are given by
 $u(\x_j,T) + \eps(\x_j)$ with $\eps(\x_j) \sim \normal(0, \sigma^2)$
 iid, $\sigma = 0.05$. Measurement locations $\x_j,j=1,\dots,m$ are
-chosen according to the D-optimality criterion of
+chosen according to the D-optimality criterion
 \cite{AlexanderianGloorGhattas14}.
 
 Implementation of this inverse problem can be found in this 
@@ -57,7 +52,7 @@ scratch.
 
 \section{Generalizations of a known lemma}
 
-\begin{lemma}[Lax, Chapter 9, Theorem 4\cite{Lax07}].\label{lemma:lax}
+\begin{lemma}[Lax, Chapter 9, Theorem 4\cite{Lax07}]\label{lemma:lax}
   Let $Y(t)$ be a differentiable operator-valued function. Assume 
   $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
   \begin{equation*}
@@ -70,10 +65,10 @@ scratch.
   $X(0) = 0$ and $X(t)$ is positive, self-adjoint and trace-class for
   every $t\in \R$. We denote the eigenvalues of this operator by
   $\lambda_k(X(t))$ and sometimes drop the dependence on $X(t)$, so
-  $\lambda_k = \lambda_k(X(t))$.  Then $\det (I+X(t))
-  = \prod_{k=1}^{\infty} (1+\lambda_k) < \infty$ and this is finite by
-  the arguments given in \cite{AlexanderianGloorGhattas14}. The full
-  derivative is \begin{align*} \frac{\der \det (I+X(t))}{\der t}
+  $\lambda_k = \lambda_k(X(t))$.  Then $\det (I+X(t)) =
+  \prod_{k=1}^{\infty} (1+\lambda_k) < \infty$ and this is finite
+  \cite{AlexanderianGloorGhattas14}. The full derivative
+  is \begin{align*} \frac{\der \det (I+X(t))}{\der t}
     % 
     % 
     % 
@@ -162,12 +157,13 @@ Hilbert spaces.
   where $(A + uv^*)w := Aw + \langle v,w \rangle u$.
 \end{lemma}
 \begin{proof}
-  In this proof we rely on definitions and results from
+  In this proof we rely on common definitions and results
   \cite{simon1977}. First, consider $B := I + xy^*$ for some $x,y \in
   \hil$. We construct an eigenbasis for $B$ and use that to show $\det
   B = 1 + \langle x, y \rangle$. First let $x_1 := x$.  Now, if $x
   \parallel y$, take $\{x_n \}_{n=2}^{\infty}$ an orthogonal basis for
-  $span\{x_1\} ^{\perp}$. If, on the other hand, $x \not \parallel y$, let
+  $span\{x_1\} ^{\perp}$. If, on the other hand, $x \not \parallel y$,
+  let
   \begin{equation*}
     x_2 := x - \frac{ \langle x, y\rangle}{\|y\|^2}y
   \end{equation*}

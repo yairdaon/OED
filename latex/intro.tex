@@ -138,6 +138,23 @@ identification of D-optimal designs using Lagrange multipliers. This
 analytical framework facilitates the exploration of the questions
 posed at the end of the previous paragraph:
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{eigenvectors.pdf}
+    \caption{D-optimal measurement locations ($m=4$ measurements) and
+      weighted eigenvectors for the inverse problem of finding the
+      initial condition of the 1D heat equation. Measurement locations
+      and weighted eigenvectors are plotted over the computational
+      domain $\Omega = [0, 1]$ (x-axis). Measurement clusterization
+      occurs approximately at $0.31$ and $0.69$. These two locations
+      are a compromise between zeros of eigenvectors a D-optimal
+      design aims to ignore (third and up) and staying far from zeros
+      of the eigenvectors a D-optimal design aims to measure (first
+      and second). Allocating $m=4$ measurements into two locations
+      results in clusterization, according to the pigeonhole
+      principle.}
+  \label{fig:why}
+\end{figure}
 
 \begin{enumerate}
 
@@ -169,7 +186,8 @@ posed at the end of the previous paragraph:
   other eigenvectors are close to zero, is limited. Consequently, the
   clusterization of measurements arises as a natural consequence of
   the pigeonhole principle, as there are more measurements available
-  than there are locations satisfying conditions (a) and (b).
+  than there are locations satisfying conditions (a) and (b). See
+  Fig~\ref{fig:why}.
 
 
   %% In Section \ref{section:vanishing}, we provide an insightful
