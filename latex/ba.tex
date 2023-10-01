@@ -1,0 +1,76 @@
+% \documentclass[ba,preprint]{imsart}% use this for supplement article
+\documentclass[ba]{imsart}
+\input{definitions}
+%
+\pubyear{2021}
+\volume{TBA}
+\issue{TBA}
+% \doi{0000}
+%\arxiv{}
+\firstpage{1}
+\lastpage{1}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,filecolor=blue,backref=page]{hyperref}
+\usepackage{graphicx}
+
+\startlocaldefs
+% ** Local definitions **
+\endlocaldefs
+
+\begin{document}
+
+%% *** Frontmatter *** 
+
+\begin{frontmatter}
+\title{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
+
+%\title{\support{}}
+\runtitle{Measurement Clusterization in D-optimal Designs}
+%\author{Yair Daon}
+%\numberwithin{equation}{section}
+
+\begin{aug}
+\author{\fnms{Yair} \snm{Daon}\thanksref{addr1}\ead[label=e1]{yair.daon@gmail.com}}
+\runauthor{Yair Daon}
+
+\address[addr1]{Azrieli Faculty of Medicine, Bar-Ilan University, Safed, Israel
+    \printead{e1} % print email address of "e1"
+}
+
+\end{aug}
+
+\begin{abstract}
+  \input{abstract}
+\end{abstract}
+
+%% ** Keywords **
+\begin{keyword}[class=MSC]
+\kwd[Primary ]{62F15}
+\kwd{35R30}
+\kwd[; secondary ]{28C20}
+\end{keyword}
+
+\end{frontmatter}
+
+\input{intro}
+\input{prelims}
+\input{constrained}
+\input{nonvanishing}
+\input{vanishing}
+\input{why}
+
+\bibliographystyle{ba}
+\bibliography{/home/yair/projects/bibtex.bib}
+
+\begin{acks}[Acknowledgments]
+\input{ack}
+
+\input{funding}
+\end{acks}
+
+
+\end{document}
+

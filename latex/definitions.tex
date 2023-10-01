@@ -1,15 +1,28 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+%% \usepackage{amsaddr}
+
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
 \usepackage{thm-restate}
 \usepackage{tikz,pgfplotstable}
 \usetikzlibrary{patterns}
 \pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
-\usepackage{amsfonts, amsmath}
-\usepackage{hyperref}
-%% \usepackage[mathlines]{lineno}  %% For SIMODS
-%% \linenumbers %% For SIMODS
+%\usepackage{hyperref}
 
-
-
-%% Place here your \newcommand's and \renewcommand's. Some examples already included.
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\M}{\mathcal{M}}
@@ -58,11 +71,11 @@
 \newcommand{\sigsqr}{\sigma^2}
 
 
-\usepackage{comment}% http://ctan.org/pkg/comment
-%% %% %\excludecomment{proof}
-%% \excludecomment{figure}
-%% \let\endfigure\relax
+%% %\usepackage{comment}% http://ctan.org/pkg/comment
+%% %% %% %\excludecomment{proof}
+%% %% \excludecomment{figure}
+%% %% \let\endfigure\relax
 
 
-\overfullrule=0pt
+%% %\overfullrule=0pt
 

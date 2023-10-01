@@ -1,29 +1,29 @@
 \section{Introduction}\label{section:intro}
 Measurements play a fundamental role in generating observations and
-are indispensable to any inference process. In the practice of inverse
-problems, selecting the optimal set of measurements holds particular
-significance when inferring parameters of a physical process. Unlike
-many other fields, where measurements are fixed, in this context, we
-have the freedom to choose which measurements to take. This freedom
-should be taken advantage of: measurements should be chosen to enhance
-accuracy, reduce costs, or both. Whether measurements involve
-specifying electrode locations on the skin in electric impedance
-tomography \cite{horesh2010impedance}, determining certain wavelengths
-in MRI \cite{horesh2008mri}, positioning sensors for detecting
-ground-reflected waves in the search for oil
-\cite{horesh2008borehole}, or optimizing sensor locations in a
+are indispensable to any inference process. Selecting the optimal set
+of measurements holds particular significance when inferring
+parameters of a physical process. Unlike many other fields, where
+measurements are fixed, in this context, we have the freedom to choose
+which measurements to take. This freedom should be taken advantage of:
+measurements should be chosen to enhance accuracy, reduce costs, or
+both. Whether measurements involve specifying electrode locations on
+the skin in electric impedance tomography \cite{horesh2010impedance},
+determining certain wavelengths in MRI \cite{horesh2008mri},
+positioning sensors for detecting ground-reflected waves in the search
+for oil \cite{horesh2008borehole}, or optimizing sensor locations in a
 seismographic network \cite{rabinowitz1990, steinberg1995} --- the
 selection of optimal measurements, referred to as the problem of
 \emph{optimal design}, becomes crucial. Optimal measurements are
 chosen according to specific \emph{design criteria}, with A- and
 D-optimality being two of the most widely recognized and extensively
-studied design criteria \cite{Chaloner1995}.
+studied design criteria \cite{Chaloner1995,
+  AlexanderianGloorGhattas14}.
 
 
 Surprisingly, A- and D-optimal designs have been observed to yield
 remarkably similar measurements in certain cases \cite{fedorov1996,
   nyberg2012, fedorov1997, Ucinski05, neitzel2019sparse}. To
-illustrate this point, we consider a toy inverse problem: inferring
+illustrate this point, we consider a toy problem: inferring
 the initial condition of the 1D heat equation (details in the
 supplementary material). In Fig.~\ref{fig:clusterization
   illustration} D-optimal measurement locations are shown for
@@ -142,15 +142,15 @@ posed at the end of the previous paragraph:
     \centering
     \includegraphics[width=\textwidth]{eigenvectors.pdf}
     \caption{D-optimal measurement locations ($m=4$ measurements) and
-      weighted eigenvectors for the inverse problem of finding the
-      initial condition of the 1D heat equation. Measurement locations
-      and weighted eigenvectors are plotted over the computational
-      domain $\Omega = [0, 1]$ (x-axis). Measurement clusterization
-      occurs approximately at $0.31$ and $0.69$. These two locations
-      are a compromise between zeros of eigenvectors a D-optimal
-      design aims to ignore (third and up) and staying far from zeros
-      of the eigenvectors a D-optimal design aims to measure (first
-      and second). Allocating $m=4$ measurements into two locations
+      weighted eigenvectors for finding the initial condition of
+      the 1D heat equation. Measurement locations and weighted
+      eigenvectors are plotted over the computational domain $\Omega =
+      [0, 1]$ (x-axis). Measurement clusterization occurs
+      approximately at $0.31$ and $0.69$. These two locations are a
+      compromise between zeros of eigenvectors a D-optimal design aims
+      to ignore (third and up) and staying far from zeros of the
+      eigenvectors a D-optimal design aims to measure (first and
+      second). Allocating $m=4$ measurements into two locations
       results in clusterization, according to the pigeonhole
       principle.}
   \label{fig:why}
@@ -311,7 +311,6 @@ AA^t\), where \(A\) has unit norm columns.
 %% Finally, in Lemma \ref{lemma:lax} we generalize a lemma for
 %% calculating \(\frac{\der}{\der t} \log \det (I + X(t))\), where
 %% \(X(t)\)is an operator valued function \cite{Lax07}.
-
 
 \subsection{Limitations}\label{subsec:limitations}
 The main limitation of this study is that our generic model does not
