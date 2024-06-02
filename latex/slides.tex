@@ -1,69 +1,118 @@
 \documentclass{beamer}
 \input{definitions}
 
+\usepackage{multimedia}
+
+\setbeamertemplate{footline}[frame number]
+
+\title{Sensor Clusterization in Bayesian D-optimal Designs for Inverse Problems}
+\author{Yair Daon}
+\institute{Azrieli Faculty of Medicine, Bar-Ilan University}
+\date{}
+
 \begin{document}
 
+%% Props: ball for toss, graduated lab cylinders, glass of water, colored water (vitaminchik), pippette for water drops
+%% jug for excess water
 
-% Slide 1: Title
 \begin{frame}
-\frametitle{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
+  \titlepage
 \end{frame}
 
-% Slide 2: Forward problem
 \begin{frame}
 \frametitle{Forward problem}
 % Example 1: Ball toss
 % Example 2: Flow field (placeholder for image)
 % Example 3: Ink in water
+
 \[
-\fwd: \hilp \to \hilo
+\fwd: \hil \to \hil
 \]
+
+\begin{figure}
+  \centering
+  %\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}
+\end{figure}
 \end{frame}
 
-% Slide 3: Inverse problem
-\begin{frame}
-\frametitle{Inverse problem}
-% Explain the inverse problems for the ball toss, flow field examples
-% Argue that there are many valid solutions
-% Explain that such problems are ill-posed
-\end{frame}
 
-% Slide 4: Toy example
-\begin{frame}
-\frametitle{Toy example: 1D heat equation}
-% Present the 1D heat equation with homogeneous Dirichlet boundary condition
 
-\begin{subequations}\label{eq:heat equation}
-  \begin{alignat}{2}
+\begin{frame}
+\frametitle{1D Heat Equation}
+\begin{subequations}
+  \begin{align*}
     u_t &= \Delta u &&\qquad \text{in } [0,1] \times [0,\infty),\\
       u &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty),\\
         u &= u_0 &&\qquad \text{on }[0,1] \times \{0\}.
-  \end{alignat}
+  \end{align*}
 \end{subequations}
 
+
+\begin{figure}
+  \centering
+  \href{run:forward_heat_equation.mp4}{\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}}    
+
+  %% \includemovie[inline=false,text={\includegraphics[scale=0.25]{forward_heat_equation.png}}]{}{}{forward_heat_equation.mp4}
+  %% \flashmovie[width=12cm,height=8cm,engine=flv-player,auto=1]{forward_heat_equation.mp4}
+  %% \movie[width=10cm,height=6cm,poster,autostart,loop]{
+  %%   %\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}
+  %% }{forward_heat_equation.mp4}
+\end{figure}
 \end{frame}
 
-% Slide 5: Solving inverse problems
+
 \begin{frame}
-\frametitle{Measurements}
+\frametitle{Inverse Problems}
+% Explain the inverse problems for the ball toss, flow field examples
+% Argue that there are many valid solutions
+% Explain that such problems are ill-posed
+
+\begin{itemize}
+  \item<1-> \(\fwd: \hil \to \hil\). 
+  \item<2-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
+  \item<3-> \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
+\end{itemize}
+
 % Show "sensor" and discuss measurement placement
-\begin{equation*}%\label{eq:O}
-  \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
-\end{equation*}
 
-% Introduce D-Optimality heuristically
+% Present the entire formalism of inverse problems from the paper, for zero model error
 \end{frame}
 
-% Slide 6: Prior and posterior measures
+
 \begin{frame}
-\frametitle{Prior and posterior}
-% Introduce prior measure $\mu_{\text{pr}}$ and posterior measure $\mu_{\text{post}}$
-% Define KL-divergence and provide an intuitive explanation
+  \frametitle{Ill Posedness}
+  %% \begin{figure}
+    \href{run:reversed_heat_equation.mp4}{\includegraphics[width=10cm,height=6cm]{reversed_heat_equation.png}}    
+  %%   \movie[width=10cm,height=6cm,poster,autostart,loop]{
+  %%     \includegraphics[width=10cm,height=6cm]{reversed_heat_equation.png}
+  %% }{reversed_heat_equation.mp4}
+  %% \end{figure}
 \end{frame}
 
-% Slide 7: Gaussian measures on Hilbert spaces
+
+\begin{frame}
+\frametitle{Bayesian Inverse Problems (Stuart 2010)}
+\begin{itemize}
+\item \(\fwd: \hil \to \hil\). 
+\item \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
+\item \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,I_m)\)
+\item \(\pr \sim \mathcal{N}(\prmean, \prcov)\).
+\item \(\post \sim \mathcal{N}(\postmean, \postcov)\).
+\end{itemize}
+
+% Introduce prior and posterior measurea 
+\end{frame}
+
 \begin{frame}
 \frametitle{Gaussian measures on Hilbert spaces}
+\begin{figure}
+   \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
+\end{figure}
+
+\begin{align*}
+  \postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd
+\end{align*}
+
 % Define Gaussian measure
 % Show a 2D example with iso-density lines and projections
 % Introduce notation for mean $\mathbf{m}$ and covariance $\Gamma$
@@ -72,100 +121,111 @@
 % Slide 8: Recap and notation summary
 \begin{frame}
 \frametitle{Recap and notation summary}
-% Summarize notation:
+
 \begin{itemize}
-\item Forward operator \(\fwd: \hilp \to \hilo\)
-\item Parameter space $\hilp$.
-\item Observation space $\hilo$.
-\item Observation operator $\obs: \hilo \to \mathbb{R}^m$
-\item Prior measure $\pr \sim \mathcal{N}(0, \prcov)$.
-\item Posterior measure $\post \sim \mathcal{N}(0, \postcov)$.
+\item Hilbert space \(\hil\) 
+\item Forward operator \(\fwd: \hil \to \hil\).
+%\item Observation operator \(\obs: \hil \to \mathbb{R}^m\).
+\item Observation operator \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\ u \in \hil\).
+\item Data \(\data := \obs \fwd \param + \eps,\ \eps \sim \mathcal{N}(0,I_m)\).
+\item Prior \(\pr\) with covariance \(\prcov\).
+\item Posterior \(\post\) with covariance \(\postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd\)
 \end{itemize}
 %% 1D heat equation
 \end{frame}
 
-% Slide 9: Formalism of inverse problems
 \begin{frame}
-  \frametitle{Formalism of inverse problems}
-  \begin{align}\label{eq:inverse problem}
-    \data := \obs \fwd \param + \eps
-  \end{align}
-  
-  % Present the entire formalism of inverse problems from the paper, for zero model error
+  Best \(\obs\) maximizes \(D_{\text{KL}} (\post || \pr )\).
 \end{frame}
 
 % Slide 10: D-optimality criterion
 \begin{frame}
   \frametitle{D-optimality criterion}
   \begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
-    Let \(\pr = \normal(\prmean,\prcov)\) be a Gaussian prior on \(\hilp\)
-    and let \(\post = \normal(\postmean,\postcov)\) the posterior measure
-    on \(\hilp\) for the Bayesian linear inverse problem \(\data = \obs
-    \fwd\param +  \eps\). Then
-    \begin{align}\label{eq:objective}
+    Let \(\pr = \normal(\prmean,\prcov)\) a Gaussian prior on \(\hil\)
+    and let \(\post = \normal(\postmean,\postcov)\) the posterior.
+    %% measure on \(\hil\) for the Bayesian linear inverse problem
+    %% \(\data = \obs \fwd\param + \eps\).
+    Then
+    \begin{align*}
       \begin{split}
         \tar( \obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
         % 
         % 
         % 
         &= \frac12 \log \det 
-        ( I + \sigma^{-2} \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2}).
+        ( I +  \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2}).
       \end{split}
-    \end{align}
+    \end{align*}
   \end{theorem}
 
 % Show the D-optimality criterion from Alexanderian et al.
 % Assume linear forward operator and linear observation operator
-% Provide intuition about the log det of quotient of posterior and prior covariance/precision operators
 \end{frame}
 
 \begin{frame}
-  \begin{definition}\label{def:d optimality}
-  We say \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
-  \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
-  are constrained to some allowed set of measurements in \(\hilo^*\).
-\end{definition}
+  \frametitle{Intuition}
+  \begin{align*}
+  \begin{split}
+    \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\\ 
+    &= \frac12 \log \det \Big( \prcov ( \prcov^{-1} +  \fwd ^* \obs^* \obs \fwd) \Big )\\
+    &= \frac12 \log \det \prcov \postcov^{-1}.
+    %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
+  \end{split}
+  \end{align*}
+\end{frame}
 
-  \end{frame}
-% Slide 11: Sensor clusterization
+
+\begin{frame}
+  Recall \(\tar( \obs) = \frac12 \log \det ( I + 
+  \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\).
+
+  \begin{definition}
+  \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
+  \argmax_{\obs} \tar(\obs)\).
+  \end{definition}
+  
+  %% , where entries of \(\obs \in (\hil^*)^m\)
+  %% are constrained to some allowed set of measurements in \(\hil^*\). 
+
+  %% \(\obs\) must be constrained somehow! E.g.~norm has to be bounded.
+\end{frame}
+
+
 \begin{frame}
 \frametitle{Problem: Sensor clusterization}
 \begin{figure}
     \centering
     \includegraphics[height=0.5\textwidth]{example.pdf}
-  %%   \caption{Measurement clusterization for optimal designs when
-  %%     inverting for the initial condition of the 1D heat equation (see
-  %%     supplementary material for details). Measurement locations were
-  %%     chosen according to the Bayesian D-optimality criterion of
-  %%     Theorem \ref{thm:d optimality}. Measurement locations are
-  %%     plotted over the computational domain \(\Omega = [0, 1]\)
-  %%     (x-axis), for varying numbers of measurements (y-axis). The
-  %%     colored numbers are measurement indices, plotted for visual
-  %%     clarity. Measurement clusterization already occurs for three
-  %%     measurements: the second measurement (red) is overlaid with the
-  %%     third (green). For five measurements, first (blue) and second
-  %%     (red) measurements are clustered, as well as the fourth (black)
-  %%     and the fifth (magenta).}
-  %% \label{fig:clusterization illustration}
 \end{figure}
 
 % Discuss sensor clusterization in the 1D heat equation example
 % Show figure from the paper (placeholder for figure)
 \end{frame}
 
-% Slide 12: Avoiding clusterization
 \begin{frame}
-\frametitle{Avoiding clusterization}
-\begin{itemize}
-\item Model correlation
-\item Choose from a finite set of sensor locations
-\end{itemize}
+  \frametitle{Avoiding clusterization}
+
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+      \item<1> Distance constraints, correlated errors (Ucinski 2005).
+      \item<2> Merging close measurements (Fedorov 1997).
+      \item<3> A finite set of locations (Alexanderian et al. 2020).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \only<1>{\includegraphics[width=\textwidth]{constraints.png}}
+      \only<2>{\includegraphics[width=\textwidth]{merge.png}}
+      \only<3>{\includegraphics[width=\textwidth]{stadler_OED.png}}
+    \end{column}
+  \end{columns}  
 \end{frame}
 
-% Slide 13: Main questions
+
+
 \begin{frame}
-\frametitle{Main questions}
-% Present the main questions from the introduction of the paper
+\frametitle{Generic Questions}
 \begin{itemize}
 \item Why does imposing correlations between observations alleviate
 measurement clusterization?
@@ -177,19 +237,28 @@ measurement clusterization?
 \end{itemize}
 \end{frame}
 
-% Slide 14: Proposed approach
 \begin{frame}
 \frametitle{A "generic" inverse problem}
-Recall definitions
 
-\begin{align}\label{eq:inverse problem}
-    \data := \obs \fwd \param + \eps
-\end{align}
+\begin{itemize}
+\item Hilbert space \(\hil\).
+\item Forward operator \(\fwd: \hil \to \hil\).
+\item Observations \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\).
+\item Prior and posterior covariance \( \prcov, \postcov\).
+\item Data \(\data := \obs \fwd \param + \eps\).
+\item \(\tar( \obs) = \frac12 \log \det ( I + 
+  \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\).
+\item \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
+  \argmax_{\obs} \tar(\obs)\).
+\end{itemize}
+
+\(\obs\) must be constrained somehow! E.g.~norm has to be bounded.
+Constrain \(\meas_j\) to the unit ball \(B_{\hil} := \{x\in \hil| \|x\| = 1\}\).
 
 %% \begin{align}\label{eq:objective}
 %%   \begin{split}
 %%     \tar( \obs) &= \frac12 \log \det 
-%%     ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}).
+%%     ( I + \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2}).
 %%   \end{split}
 %% \end{align}
 
@@ -206,65 +275,262 @@ Recall definitions
 % Restate the unit norm constraints
 % Pose the problem as a constrained optimization problem
 % Ask the audience how to solve constrained optimization problems (Lagrange multipliers)
-Let The D-optimality design criterion
-\cite{AlexanderianGloorGhattas14}:
+\begin{align*}
+  \begin{split}
+  \obs &= \argmax\tar(\obs)\\
+  \text{subject to }& \|\meas_j\| = 1 \text{ for } j=1,\dots,m.
+  \end{split}
+\end{align*}
+
+Where
 \begin{align*}
   \begin{split}
     \tar(\obs) %:&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
     % 
     % 
     % 
-    &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
-    \obs^* \obs \fwd \prcov^{1/2}), 
+    &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \obs \fwd
+    \prcov^{1/2}).
   \end{split}
 \end{align*}
-The constrained optimization problem of D-Optimal designs entails finding
-\begin{equation*}
-  \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs),
-\end{equation*}
 \end{frame}
 
-% Slide 16: Necessary conditions for optimality
 \begin{frame}
-\frametitle{Necessary conditions for optimality}
+%% \frametitle{Necessary conditions for optimality}
 % Present the nonlinear eigenvalue problem for the vanishing model error case
 % Explain why it is called a "nonlinear" eigenvalue problem
 
-\begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
+%% \begin{theorem}[Necessary conditions for D-Optimality]
   Let:
-  \begin{equation*}
-    \obs^{\star} &= \tar(\obs).
-    \text{subject to: } \|\meas_j\| &= 1\ \text{ for } j=1,\dots,m
-  \end{equation*}
+  \begin{align*}
+    \begin{split}
+      \obs &= \argmax\tar(\obs)\\
+      \text{subject to }& \|\meas_j\| = 1 \text{ for } j=1,\dots,m.
+    \end{split}
+  \end{align*}
   
   Then:
+  \[
+   \fwd \postcov \fwd^* \obs^* = \obs^* \Xi
+  \]
+
+  %% \begin{equation*}
+  %%    \fwd \postcov \fwd^* \obs^* = \obs^* \Xi, 
+  %% \end{equation*}
+  where \(\Xi \in \mathbb{R}^{m \times m}\) is diagonal.
+%% \end{theorem}
+
+\end{frame}
+
+
+\begin{frame}
+%% \frametitle{Implication of first-order conditions}
+  \frametitle{Theorem (part 1)}
+
+  \begin{gather*}
+    \fwd\prcov\fwd^* \text{ and } \obs^* \obs \text{ are simultaneously diagonalizable}.\\
+    \Uparrow \\
+    \onslide<2->{\left( (\fwd\prcov\fwd^*)^{-1} + \obs^* \obs \right)^{-1} \obs^* = \obs^* \Xi \\
+    \Uparrow  \\
+    \fwd  \left(\prcov^{-1} + \fwd^* \obs^*\obs \fwd \right)^{-1} \fwd^* \obs^* = \obs^* \Xi  \\
+    \Uparrow}  \\
+    \fwd \postcov \fwd^* \obs^* = \obs^* \Xi  \\
+  \end{gather*}
+\end{frame}
+
+
+\begin{frame}
+  %\frametitle{Simultaneous diagonizability}
+  \begin{lemma}
+    %% Let \(\hil\) separable Hilbert space,
+    Let \(C:\hil \to \hil\) with orthogonal eigenbasis.
+    %% and \(\func_1,\dots,\func_m \in \hil\). Denote \(\func^*\) the element
+    %% \(\func\) acting as a linear functional. If
   \begin{equation*}
-    \fwd \postcov \fwd^* \obs^*  \Sigma^{-1}  = \obs^* \Xi, 
+    (C + \sum_{j=1}^m \func_j\func_j^*) \func_l = \xi_l \func_l,\ l = 1, \dots, m.
   \end{equation*}
-  where $\Xi \in \mathbb{R}^{m \times m}$ is diagonal.
-\end{theorem}
-
+  $\Rightarrow$ \(C\) and \(\sum_{j=1}^m \func_j \func_j^*\) are simultaneously
+  diagonalizable.
+  \end{lemma}
+Proof idea: Consider invariant space of each eigenvalue, use spectral decomposition.
 \end{frame}
 
-% Slide 17: Lemma 17
+
 \begin{frame}
-\frametitle{Lemma 17}
-% State Lemma 17 (placeholder for the actual lemma)
+  \frametitle{Theorem (part 2)}
+  Let:
+  \begin{itemize}
+  \item \(\{\eta_i\}_{i=1}^{\infty}\) eigenvalues of \(\obs^*\obs\).
+  \item \(\{\lambda_i\}_{i=1}^{\infty}\) corresponding eigenvalues of \(\fwd \prcov \fwd^*\).
+  \item \(\obs\) D-optimal.
+  \end{itemize}
+  Then \(\eta_i > 0\) for eigenvectors corresponding to largest \(\lambda_i\).
+
+  How many? \(\rank \obs^*\obs\).
+
+  Why?
+  \begin{align*}
+    \det(I + \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2}) \sim \prod (1+\lambda_i\eta_i)
+  \end{align*}
+    %% INTRODUCE CYLINDERS!!!!
 \end{frame}
 
-% Slide 18: Main theorem
+
+\pgfplotstableread{
+  Label     prior  optimal  sub-optimal  worst
+  1         0.2    1.8           1.7      1.7
+  2         0.8    1.2           0.8      0.0
+  3         2.2    0             0.5      0.5
+  4         3.5    0             0.0      0.0
+}\optimalvsnot
+
 \begin{frame}
-\frametitle{Main theorem}
-% State the main theorem
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.6]
+      \begin{axis}[
+          ybar stacked,
+          ymin=0,
+          ymax=4,
+          xtick=data,
+          legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+          reverse legend=false, % set to false to get correct display, but I'd like to have this true
+          xticklabels from table={\optimalvsnot}{Label},
+          xticklabel style={text width=2cm,align=center},
+          legend plot pos=right,
+          ylabel={\LARGE precision --- prior and posterior},
+          xlabel={\LARGE eigenvector},
+        ]
+        \addplot [fill=blue!60]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
+        \addplot [pattern=north east lines, pattern color=green!80]  table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};     
+        \addlegendentry[scale=1.4]{$\lambda_i^{-1}$}
+        \addlegendentry[scale=1.4]{optimal $\eta_i$s}
+      \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.6]
+      \begin{axis}[
+          ybar stacked,
+          ymin=0,
+          ymax=4,
+          xtick=data,
+          legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+          reverse legend=false, % set to false to get correct display, but I'd like to have this true
+          xticklabels from table={\optimalvsnot}{Label},
+          xticklabel style={text width=2cm,align=center},
+          legend plot pos=right,
+          ylabel={\LARGE precision --- prior and posterior},
+          xlabel={\LARGE eigenvector} ,
+        ]   
+        \addplot [fill=blue!60]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
+        \addplot [pattern=north east lines, pattern color=green!80]  table [y=worst, meta=Label, x expr=\coordindex] {\optimalvsnot};
+        \addlegendentry[scale=1.4]{$\lambda_i^{-1}$}
+        \addlegendentry[scale=1.4]{sub-optimal $\eta_i$s}
+      \end{axis}
+    \end{tikzpicture}
+  \end{figure}
 \end{frame}
 
-% Slide 19: Main theorem explanation
+
+%% \begin{frame}
+%% %% \begin{proposition}
+%%   Let \(\tar: \mathbb{R}^m \to \mathbb{R}\), \(\tar(\eta) =
+%%   \frac{1}{2}\sum_{i=1}^m \log (1+\lambda_i \eta_i)\), with
+%%   \(\lambda_i > 0\). Then the maximum of \(\tar\)
+%%   subject to \(\eta_i \geq 0\) and \(\sum\eta_i = m\) is obtained at
+%%   \begin{equation}
+%%   \eta_i = \begin{cases}
+%%     \frac{m}{k} -  \lambda_i^{-1} +  \frac{1}{k} \sum_{j\in A} \lambda_j^{-1} & i \in A \\
+%%     0 & i \in A^c
+%%   \end{cases}
+%%   \end{equation}
+%%   where \(A:= \{1\leq i \leq m: \eta_i > 0\}\) and \(A^c = \{1,\dots, m\}
+%%   \backslash A\), and \(k = |A|\), the cardinality of \(A\).
+%% %% \end{proposition}
+%% \end{frame}
+
+
 \begin{frame}
-\frametitle{Main theorem explanation}
-% Explain the main theorem using a graph and three graduated lab cylinders
+  \frametitle{Theorem (part 3)}
+  The covariance of the pushforwad \(\fwd_{*} \post\)
+  %is \(\left ( (\fwd \prcov \fwd^*)^{-1} +  \obs^*\obs
+  %\right )^{-1}\) and its
+  has eigenvalues 
+  \begin{equation*}
+    \theta_i =
+    \begin{cases}
+      \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} & i \leq k \\
+      \lambda_i &  i > k 
+    \end{cases}
+  \end{equation*}
 \end{frame}
 
-% Add the remaining slides here
-% ...
+\begin{frame}
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.6]
+      \begin{axis}[
+          ybar stacked,
+          ymin=0,
+          ymax=4,
+          xtick=data,
+          legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+          reverse legend=false, % set to false to get correct display, but I'd like to have this true
+          xticklabels from table={\optimalvsnot}{Label},
+          xticklabel style={text width=2cm,align=center},
+          legend plot pos=right,
+          ylabel={\LARGE precision --- prior and posterior},
+          xlabel={\LARGE eigenvector},
+        ]
+        \addplot [fill=blue!60]  table [y=prior,   meta=Label, x expr=\coordindex] {\optimalvsnot};
+        \addplot [pattern=north east lines, pattern color=green!80]  table [y=optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};     
+        \addlegendentry[scale=1.4]{$\lambda_i^{-1}$}
+        \addlegendentry[scale=1.4]{optimal $\eta_i$s}
+      \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.6]
+      \begin{axis}[
+          ybar stacked,
+          ymin=0,
+          ymax=4,
+          xtick=data,
+          legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
+          reverse legend=false, % set to false to get correct display, but I'd like to have this true
+          xticklabels from table={\optimalvsnot}{Label},
+          xticklabel style={text width=2cm,align=center},
+          legend plot pos=right,
+          ylabel={\LARGE precision --- prior and posterior},
+          xlabel={\LARGE eigenvector} ,
+        ]   
+        \addplot [fill=blue!60]  table [y=prior,       meta=Label, x expr=\coordindex] {\optimalvsnot};
+        \addplot [pattern=north east lines, pattern color=green!80]  table [y=sub-optimal, meta=Label, x expr=\coordindex] {\optimalvsnot};
+        \addlegendentry[scale=1.4]{$\lambda_i^{-1}$}
+        \addlegendentry[scale=1.4]{sub-optimal $\eta_i$s}
+      \end{axis}
+    \end{tikzpicture}
+  \end{figure}
+\end{frame}
 
+\begin{frame}
+  \frametitle{Four Sensors in the 1D Heat Equation}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{eigenvectors.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Summary}
+  \begin{itemize}
+  \item Study a generic inverse problem with unit ball constraints.
+  \item D-optimality implies \(\fwd \postcov\fwd^* \obs^* = \obs^* \Xi\).
+  \item Key: $\obs^*\obs$ and \(\fwd \prcov\fwd^* \obs^*\) are
+    simultaneously diagonalizable.
+  \item A D-optimal design concentrates on smallest prior covariance eigenvectors...
+  \item ... and a D-optimal design reduces uncertainty uniformly on these.
+  \item Saw manifestation in the 1D heat equation.
+  \item Clusterization is just a result of avoiding higher eigenvectors
+    and pigeonhole principle.
+  \item Did not review: correlated errors, genericity of clusterization.
+  \end{itemize}
+\end{frame}
 \end{document}
