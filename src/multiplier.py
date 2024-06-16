@@ -7,8 +7,9 @@ from functools import partial
 
 
 class Operator(LinearOperator):
-    """An operator, that extends scipy's LinearOperator like most objects
-    we are dealing with.
+    """An operator class, that extends scipy's LinearOperator like most
+    objects we are dealing with.
+
     """ 
 
     def __init__(self,
@@ -45,9 +46,9 @@ class Operator(LinearOperator):
 
 
 class FourierMultiplier(Operator):
-    """We solve the heat equation from scratch in its eigenspace. In this
-    space the Laplace operator is a Fourier multiplier, so applying
-    and inverting it are easy.
+    """We solve the heat equation from scratch in frequency domain. In
+    this space the Laplace operator is a Fourier multiplier, so
+    applying and inverting it are easy.
 
     We implement three such eigenspaces, each based on a different transform:
     fft - Fast Fourier Transform. Implements *periodic* boundary condition.
@@ -72,13 +73,16 @@ class FourierMultiplier(Operator):
             
     @property
     def specs(self):
-        """Convenieve function to move copy around specifications of a
-        Fourier Multiplier"""
+        """Convenience function to move around specifications of a Fourier
+        Multiplier.
+
+        """
         return {"N": self.N, "L": self.L, "transform":self.transform}
 
     def to_freq_domain(self, x, axis=-1):
         """Change a spatial function to the frequency domain, depending on
         which transform we use (fft, dst or dct).
+
         """
         
         if self.transform == 'dct':
@@ -88,14 +92,11 @@ class FourierMultiplier(Operator):
         elif self.transform == 'dst':
              return fft.dst(x, norm='ortho', type=2, axis=axis) * self.sqrt_h
 
-         
-    def to_freq_domain_from_right(self, x):
-        return self.to_time_domain(x.conjugate(), axis=1).conjugate() * self.h
-
-    
+             
     def to_time_domain(self, x, axis=-1):
         """Change a frequency function to the time domain, depending on which
         transform we use (fft, dst or dct).
+
         """
         
         if self.transform == 'dct':
@@ -146,9 +147,7 @@ class FourierMultiplier(Operator):
         """ Create the ith eigenvector, as an array"""
         return self.eigenfunction(i)(self.x)
 
-    # def coeff2u(self, coeff):
-    #     return self.to_time_domain(coeff) / self.sqrt_h
-
+    
     def normal(self, n_sample=1):
         if self.transform == 'fft':
             # Divide by sqrt(2) to get real and imaginary parts with sqrt(2) standard deviation,
@@ -158,14 +157,6 @@ class FourierMultiplier(Operator):
             Z = randn(n_sample, self.N)
         return Z
 
-    # def mult2time(self, mult):
-    #     """mult is assumed 2D!!!"""
-    #     assert len(mult.shape) == 2
-    #     # M4 = ifft(mult, axis=0)
-    #     # M4 = ifft(M4.H, axis=0)
-    #     M = self.to_time_domain(mult, axis=0)
-    #     M = self.to_time_domain(M.conjugate().T, axis=0)
-    #     return M
 
     def _matvec(self, v):
         """ Apply operator self on vector v"""

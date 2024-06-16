@@ -98,7 +98,36 @@ def main():
     plt.tight_layout()
 
     plt.savefig(f"latex/{transform}_modelError{model_error}.pdf")
+    #plt.show()
+
+    ####################################
+    #### Plot scaled eigenvectors ######
+    ####################################
+    
+    ## Number of measurements
+    m = 4
+    design = dic[m]
+    
+    ## Show eigenvectors and design for last design
+    plt.close('all')
+    fig = plt.figure(figsize=(8,4))
+    fs = 18
+    lss = ['solid', 'dotted', 'dashed', 'dashdot']
+    vals = np.zeros(m)
+    plt.scatter(design, vals)
+    x = fwd.x
+    for i,ls in enumerate(lss):
+        print(i, ls)
+        ev = fwd.eigenvector(i)
+        lam = np.sqrt(fwd.multiplier[i])
+        plt.plot(x, ev * lam, label=i+1, ls=ls)
+    plt.plot([0,1], [0,0], ls='-', color='k', alpha=0.5)    
+    plt.xlabel(r"$x \in \Omega$", fontsize=fs)
+    plt.legend(title='eigenvector, weighted')
+    plt.tight_layout()
+    plt.savefig(f"latex/eigenvectors_{transform}.pdf")
     plt.show()
 
-    
+
 main()
+
