@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 import pdb
 
 from src.multiplier import FourierMultiplier
-from src.observations import PointObservation, DiagObservation
+from src.observations import PointObservation#, DiagObservation
 from src.forward import Heat
 
 
@@ -78,7 +78,7 @@ class Posterior(FourierMultiplier):
                  fwd=None,
                  prior=None,
                  sigSqr=0.1,
-                 model_error=False,
+                 model_error=0,
                  **kwargs):
         """
         Parameters:
@@ -97,26 +97,26 @@ class Posterior(FourierMultiplier):
         assert np.all(self.C_sqrt_fwd.real >= 0)
         
 
-    def make_diagonal(self, m, k):
-        eigs = self.sigSqr / self.C_sqrt_fwd[:k]**2
-        uniform = np.mean(eigs) + m / k
-        return uniform - eigs
-
-    def make_optimal_diagonal(self, m):
-        k = 1
-        while True:
-            eta = self.make_diagonal(m, k)
-            if np.any(eta <= 0):
-                break
-            self.optimal_diagonal_O = np.sqrt(eta)
-            k += 1
-          
-        self.optimal_diagonal_O_matrix = np.zeros((m, self.N))
-        np.fill_diagonal(self.optimal_diagonal_O_matrix, self.optimal_diagonal_O)
-
-        power = np.sum(self.optimal_diagonal_O**2)
-        assert abs(power - m) < 1e-12, (power, m)
-        return self.optimal_diagonal_O
+    # def make_diagonal(self, m, k):
+    #     eigs = self.sigSqr / self.C_sqrt_fwd[:k]**2
+    #     uniform = np.mean(eigs) + m / k
+    #     return uniform - eigs
+    #
+    # def make_optimal_diagonal(self, m):
+    #     k = 1
+    #     while True:
+    #         eta = self.make_diagonal(m, k)
+    #         if np.any(eta <= 0):
+    #             break
+    #         self.optimal_diagonal_O = np.sqrt(eta)
+    #         k += 1
+    #
+    #     self.optimal_diagonal_O_matrix = np.zeros((m, self.N))
+    #     np.fill_diagonal(self.optimal_diagonal_O_matrix, self.optimal_diagonal_O)
+    #
+    #     power = np.sum(self.optimal_diagonal_O**2)
+    #     assert abs(power - m) < 1e-12, (power, m)
+    #     return self.optimal_diagonal_O
     #
     # def operators(self, obs):
     #     self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
@@ -153,8 +153,7 @@ class Posterior(FourierMultiplier):
         m = len(measurements)
         obs = PointObservation(**self.specs, measurements=measurements)
         Sigma = np.eye(m) * self.sigSqr
-        if self.model_error:
-            Sigma += np.einsum('ik, k, kj-> ij',obs.multiplier, self.prior.multiplier**2, obs.multiplier.conjugate().T) 
+        Sigma = Sigma + self.model_error * np.einsum('ik, k, kj-> ij',obs.multiplier, self.prior.multiplier**2, obs.multiplier.conjugate().T)
         OstarO = obs.multiplier.conjugate().T @ np.linalg.solve(Sigma, obs.multiplier)
         tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd.conjugate(), OstarO, self.C_sqrt_fwd)
         tmp = tmp + np.eye(self.N)
@@ -184,7 +183,7 @@ class Posterior(FourierMultiplier):
                  full=False):
 
         # self.make_optimal_diagonal(m)
-        f = self.minimization_point if target == 'utility' else self.close2diagonal
+        f = self.minimization_point #if target == 'utility' else self.close2diagonal
         bounds = [(0+eps, self.L-eps)] * m
         parallelized = partial(minimize, bounds=bounds)
         x0s = np.random.uniform(low=0, high=self.L, size=(n_iterations, m))
@@ -196,8 +195,8 @@ class Posterior(FourierMultiplier):
             tmp = {}
             tmp['x'] = x
             tmp['sum_eigenvalues'] = np.sum(obs.eigenvalues())
-            tmp['utility'] = -res['fun'] if target == 'utility' else self.point_utility(res['x']) 
-            tmp['diag_dist'] = res['fun'] if 'diag' in target else self.close2diagonal(res['x'])
+            #tmp['utility'] = -res['fun'] if target == 'utility' else self.point_utility(res['x'])
+            #tmp['diag_dist'] = res['fun'] if 'diag' in target else self.close2diagonal(res['x'])
             tmp['target'] = target
             tmp['m'] = m
             tmp['transform'] = self.transform
@@ -210,43 +209,43 @@ class Posterior(FourierMultiplier):
         return agg if full else min(agg, key=lambda x: x['fun'])
 
 
-    def minimization_diag(self, diag):
-        return -self.diag_utility(np.sqrt(diag))
+    # def minimization_diag(self, diag):
+    #     return -self.diag_utility(np.sqrt(diag))
 
     
-    def optimize_diag(self,
-                      m,
-                      n_iterations=1,
-                      n_jobs=6,
-                      full=False):
-
-        f = self.minimization_diag
-        constraints = {'type': 'eq',
-                       'fun': lambda x: np.sum(x) - m, 
-                       'jac': lambda x: np.ones_like(x)}
-
-        #constraints = LinearConstraint(A=np.ones((1,self.N)), lb=[0], ub=[m])
-        #import pdb; pdb.set_trace()
-        parallelized = partial(minimize, constraints=constraints)
-        x0s = np.random.uniform(low=0, high=m, size=(n_iterations, m))
-        results = Parallel(n_jobs=n_jobs)(delayed(parallelized)(f, x0=x0) for x0 in x0s)
-        agg = []
-        for res in results:
-            x = res['x']
-            obs = DiagObservation(**self.specs, multiplier=x)
-            tmp = {}
-            tmp['x'] = x
-            tmp['sum_eigenvalues'] = np.sum(obs.multiplier**2)
-            tmp['utility'] = -res['fun']
-            tmp['m'] = m
-            tmp['transform'] = self.transform
-            tmp['N'] = self.N
-            tmp['L'] = self.L
-            tmp['success'] = res['success']
-            tmp['object'] = obs
-            tmp['fun'] = res['fun']
-            agg.append(tmp)
-        return agg if full else min(agg, key=lambda x: x['fun'])
+    # def optimize_diag(self,
+    #                   m,
+    #                   n_iterations=1,
+    #                   n_jobs=6,
+    #                   full=False):
+    #
+    #     f = self.minimization_diag
+    #     constraints = {'type': 'eq',
+    #                    'fun': lambda x: np.sum(x) - m,
+    #                    'jac': lambda x: np.ones_like(x)}
+    #
+    #     #constraints = LinearConstraint(A=np.ones((1,self.N)), lb=[0], ub=[m])
+    #     #import pdb; pdb.set_trace()
+    #     parallelized = partial(minimize, constraints=constraints)
+    #     x0s = np.random.uniform(low=0, high=m, size=(n_iterations, m))
+    #     results = Parallel(n_jobs=n_jobs)(delayed(parallelized)(f, x0=x0) for x0 in x0s)
+    #     agg = []
+    #     for res in results:
+    #         x = res['x']
+    #         obs = DiagObservation(**self.specs, multiplier=x)
+    #         tmp = {}
+    #         tmp['x'] = x
+    #         tmp['sum_eigenvalues'] = np.sum(obs.multiplier**2)
+    #         tmp['utility'] = -res['fun']
+    #         tmp['m'] = m
+    #         tmp['transform'] = self.transform
+    #         tmp['N'] = self.N
+    #         tmp['L'] = self.L
+    #         tmp['success'] = res['success']
+    #         tmp['object'] = obs
+    #         tmp['fun'] = res['fun']
+    #         agg.append(tmp)
+    #     return agg if full else min(agg, key=lambda x: x['fun'])
 
 
     def minimization_point(self, measurements):
