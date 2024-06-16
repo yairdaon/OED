@@ -1,5 +1,5 @@
-# This here code implements (and tests) the algorithm outlined in
-# Lemma B.5 in the paper.
+# The goal of this module is to implement (and test) the construction
+# outlined in the proof of Lemma B.5 in the paper.
 #
 # Given M symmetric positive definite in R^{k X k} such that
 #
@@ -9,11 +9,15 @@
 #
 # A's columns have unit norm, and
 # AA^t = M.
+#
+# The required functionality is found in method get_A below.
+
+# The method generic generates many PSD matrices, constructs their
+# corresponding A, verifies whether they display clusterization and
+# saves results to the file simulations.csv.
 
 import numpy as np
 import pandas as pd
-import pytest
-from joblib import delayed, Parallel
 from pandas import isnull
 from numpy import sin, cos
 from scipy.stats import ortho_group
@@ -24,20 +28,6 @@ ortho = ortho_group.rvs
 cot = lambda x: cos(x) / sin(x)
 
 
-@pytest.fixture
-def params():
-    """ generate random  m (number of observations) and k (rank of O*O).
-    """
-
-    
-    params = []
-    for m in np.random.randint(low=3, high=80, size=30):
-        for k in np.random.randint(low=2, high=m + 1, size=1):
-            params.append({'m': m, 'k': k})
-            params.append({'m': m, 'k': m})
-    return params
-
-
 def conj(D, U):
     ''' Returns UDU^t'''
     assert U.shape == D.shape
@@ -45,6 +35,10 @@ def conj(D, U):
 
 
 def givens(theta, dims, lower, upper):
+    """Implement a Givens rotation
+
+    """
+    
     assert theta >= 0 and theta <= np.pi
     assert lower < upper
     assert upper <= dims
@@ -57,9 +51,7 @@ def givens(theta, dims, lower, upper):
 
     return R
 
-
-
-    
+   
 def MDUS(m, k):
     """ Generate random:
     M symmetric positive definite
@@ -165,7 +157,21 @@ def caller(m, k):
     #         print(ind)
 
 
-def get_A(M, m):
+def get_A(M,
+          m):
+    """Implement the construction in Lemma ...
+
+    Parameters
+    M: PSD matrix 
+    m: integer
+
+    Returns 
+    
+    A: matrix of shape (M.shape[0], m) such that A has unit norm
+    columns, i.e. np.linalg.norm(A, axis=0) is all ones and A @ A.T ==
+    M to numerical precision
+
+    """
     k = M.shape[0]
     assert abs(m - np.trace(M)) < EPS
 
@@ -199,53 +205,23 @@ def get_A(M, m):
     return A
 
 
-def test_theta(big_dim=20, dim=9, upper=4):
-    assert big_dim > dim > upper
-    M, D, U, S = MDUS(big_dim, dim)
-
-    C = M - np.identity(dim) * np.trace(M) / dim
-    assert abs(np.trace(C)) < EPS
-
-    theta, lower = get_theta(C, upper)
-    R = givens(theta=theta, dims=dim, lower=lower, upper=upper)
-    T = conj(C, R)
-
-    cot = cos(theta) / sin(theta)
-    eqn = cot ** 2 * C[upper, upper] + 2 * cot * C[upper, lower] + C[lower, lower]
-    assert abs(eqn) < EPS
-    assert abs(T[upper, upper]) < EPS
-    print("pass theta")
-
-def test_givens(k=8, lower=4, upper=6):
-    M, D, U, S = MDUS(k + 2, k)
-
-    ## Testing Givens rotations R
-    R = givens(2.3, k, lower, upper)
-    C = conj(M, R)
-
-    res = np.abs(M - C)
-    res[lower, :] = 0
-    res[upper, :] = 0
-    res[:, lower] = 0
-    res[:, upper] = 0
-
-    assert np.all(np.abs(res) < EPS)
-    print("pass givens")
-
-    
-def test_all(params):
-    Parallel(n_jobs=7)(delayed(caller)(**param) for param in params)
-
 
 def generic():
-    """ We run randomized simulations of D-optimal design with our relaxed model.
-    """
-    
-    N = 1000
-    res = []
-    for m in range(6, 9):
-        for k in range(3, m-1):
+    """Run randomized simulations of D-optimal design with our model.
 
+    """
+
+    ## Number of simulations per pair m, k.
+    N = 5000
+    
+    res = []
+    for m in range(4, 16):
+        print()
+        print(f'm={m}: k=', end=' ')
+        
+        for k in range(2, m-1):
+            print(k, end=' ')
+            
             ## Counts how many simulated designs are clustered
             counter = 0 
 
@@ -254,20 +230,21 @@ def generic():
 
                 ## Random matrices such that:
                 ## M is symmetric positive definite
-                ## M = UDU^*
-                ## S = sqrd(D)
                 ## m = number of measurements
                 ## Number of nonzero entries in D
-                M, D, U, S = MDUS(m, k)
+                M, _, _, _ = MDUS(m, k)
 
-                ## AA^t = M, and A has unit norm columns
-                A = get_A(D, m)
-
+                ## AA^t = M, and A has unit norm columns.
+                A = get_A(M, m)
+                
                 ## distances between columns of A
                 distances = cdist(A.T, A.T)
 
-                ## Diagonal has 0 entries. We do not want to count
-                ## them, so we fill diagonal with 1's
+                ## Clusterization does not occur if all off-diagonal
+                ## distances are large. Diagonal has 0 entries, but
+                ## obviously that does not mean clusterization
+                ## occurs. Since we do not want to count the diagonal
+                ## entries as clustered, we fill diagonal with 1's
                 np.fill_diagonal(distances, 1)
 
                 ## Which distances are > 0 <==> which pairs of
@@ -282,21 +259,18 @@ def generic():
                     counter += 1
 
                 dic = dict(m=m, ## Number of measurements
-                           k=k, ## Rank of O
+                           k=k, ## Rank of O^*O
                            cluster=1-counter/N ## Fraction of designs that ***are** clustered
                            )
-                
+
             res.append(dic)
     res = pd.DataFrame(res)
-    res = res.assign(mk=res.m-res.k) 
-    # res.to_pickle("simulation.pickle") ## Save this if u take a long run
-    print("Parameters such that the probability of clusterization is < 1:\n", res.query("cluster < 1"))
+    res.to_csv("simulations.csv")
+    print("\nParameters such that the probability of clusterization is < 0.95:\n", res.query("cluster < 0.95"))
 
-
+    
 if __name__ == '__main__':
     try:
-        df = pd.read_pickle("simulation.pickle")
-        print(df)
         generic()
         test_givens()
         test_theta()
