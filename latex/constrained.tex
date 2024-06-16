@@ -98,7 +98,6 @@ recall that:
     \end{split}
   \end{align}
 
-
   We now record a lemma which generalizes a known result in linear
   algebra \cite[Chapter 9, Theorem 4]{Lax07}. Its proof is delegated
   to the supplementary material.
@@ -322,12 +321,12 @@ Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:
   \begin{equation*}
-    \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs).
+    \opt = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs).
   \end{equation*}
   
   Then:
   \begin{equation*}
-    ( I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*  \Sigma^{-1}
+    ( I - \modcov \opt^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \opt^*  \Sigma^{-1}
     = \obs^* \Xi, 
   \end{equation*}
   where $\Xi \in \mathbb{R}^{m \times m}$ is diagonal.

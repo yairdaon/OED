@@ -12,8 +12,22 @@ from src.forward import Heat
 
 
 class Prior(FourierMultiplier):
-    """ Implement a negative Laplacian prior Delta^{gamma}, where gamma < 0"""
-    def __init__(self, gamma=-0.6, delta=0.5, **kwargs):
+    """ Implement a prior with the following *precision* \delta I +  \Delta^{-gamma}, where gamma < 0"""
+    def __init__(self,
+                 gamma=-0.6,
+                 delta=0.5,
+                 **kwargs):
+        """
+        Parameters:
+
+        gamma: float
+            the power of the Laplacian is the prior precision.
+        delta: float
+            a regularizing constant used for the case of Homogeneous Neumann boundary condition, so that
+            \delta I + \Delta^{-gamma} is invertible.
+
+        """
+
         assert gamma < 0
         super().__init__(**kwargs)
         inv_mult = np.power(np.pi**2 * self.freqs**2, -gamma) + delta
@@ -40,7 +54,7 @@ class Prior(FourierMultiplier):
         return u0
 
     def inverse(self, v):
-        ''' A bit of a hack - change multiplier to inverse multiplier and back'''
+        '''Implement the inverse of  A bit of a hack - change multiplier to inverse multiplier and back'''
         tmp = self.multiplier
         self.multiplier = self.inv_mult
         ret = self(v)
@@ -57,17 +71,27 @@ class Prior(FourierMultiplier):
 
         
 class Posterior(FourierMultiplier):
-    ''' Based on Andrew Stuart's Acta Numerica paper 2.16a and 2.16b'''
+    '''Posterior Gaussian. Formula for posterior covariance/ precision is based on
+    equations 2.16a and 2.16b from Andrew Stuart's Acta Numerica (2010) paper.'''
 
     def __init__(self,
                  fwd=None,
                  prior=None,
                  sigSqr=0.1,
+                 model_error=False,
                  **kwargs):
+        """
+        Parameters:
+        fwd: the forward operator. We implement the heat equation in 1D
+        prior: prior operator. We implement a Laplacian-like prior.
+
+        """
+
         super().__init__(**kwargs)
         self.fwd = Heat(**self.specs) if fwd is None else fwd
         self.prior = Prior(**self.specs) if prior is None else prior
         self.sigSqr = sigSqr
+        self.model_error = True
         self.C_sqrt_fwd = np.sqrt(self.prior.multiplier) * self.fwd.multiplier
         assert np.all(np.abs(self.C_sqrt_fwd.imag) < 1e-12)
         assert np.all(self.C_sqrt_fwd.real >= 0)
@@ -93,60 +117,63 @@ class Posterior(FourierMultiplier):
         power = np.sum(self.optimal_diagonal_O**2)
         assert abs(power - m) < 1e-12, (power, m)
         return self.optimal_diagonal_O
-
-    def operators(self, obs):
-        self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
-        assert not np.any(np.isnan(self.A)), 'NaN in A'
-        assert not np.any(np.isinf(self.A)), 'inf in A'
-
-        self.AstarA = np.einsum('ik, kj-> ij', self.A.conjugate().T, self.A)
-        assert not np.any(np.isnan(self.AstarA)), 'NaN in AstarA'
-        assert not np.any(np.isinf(self.AstarA)), 'inf in AstarA'
-        assert np.allclose(self.AstarA.conjugate().T, self.AstarA, atol=1e-12, rtol=1e-3)
-
-        self.precision = self.AstarA / self.sigSqr + np.diag(self.prior.inv_mult)
-        assert not np.any(np.isnan(self.precision)), 'NaN in precision'
-        assert not np.any(np.isinf(self.precision)), 'inf in precision'
-
-        return self
-
-    def Astar_data(self, data):
-        return np.einsum('ji, j->i', self.A.conjugate(), data)
-
-    def mean_std(self, obs, data=None):
-        self.operators(obs)
-        Sigma = self.to_time_domain(solve(self.precision, self.to_freq_domain(np.eye(self.N), axis=0)), axis=0)
-        pointwise_std = np.sqrt(np.diag(Sigma).real) / self.sqrt_h
-        if data is None:
-            return pointwise_std
-        mean = solve(self.precision, self.Astar_data(data), assume_a='pos') / self.sigSqr
-        mean = self.to_time_domain(mean)
-        return mean, pointwise_std
+    #
+    # def operators(self, obs):
+    #     self.A = np.einsum('ij,j->ij', obs.multiplier, self.fwd.multiplier)
+    #     assert not np.any(np.isnan(self.A)), 'NaN in A'
+    #     assert not np.any(np.isinf(self.A)), 'inf in A'
+    #
+    #     self.AstarA = np.einsum('ik, kj-> ij', self.A.conjugate().T, self.A)
+    #     assert not np.any(np.isnan(self.AstarA)), 'NaN in AstarA'
+    #     assert not np.any(np.isinf(self.AstarA)), 'inf in AstarA'
+    #     assert np.allclose(self.AstarA.conjugate().T, self.AstarA, atol=1e-12, rtol=1e-3)
+    #
+    #     self.precision = self.AstarA / self.sigSqr + np.diag(self.prior.inv_mult)
+    #     assert not np.any(np.isnan(self.precision)), 'NaN in precision'
+    #     assert not np.any(np.isinf(self.precision)), 'inf in precision'
+    #
+    #     return self
+    #
+    # def Astar_data(self, data):
+    #     return np.einsum('ji, j->i', self.A.conjugate(), data)
+    #
+    # def mean_std(self, obs, data=None):
+    #     self.operators(obs)
+    #     Sigma = self.to_time_domain(solve(self.precision, self.to_freq_domain(np.eye(self.N), axis=0)), axis=0)
+    #     pointwise_std = np.sqrt(np.diag(Sigma).real) / self.sqrt_h
+    #     if data is None:
+    #         return pointwise_std
+    #     mean = solve(self.precision, self.Astar_data(data), assume_a='pos') / self.sigSqr
+    #     mean = self.to_time_domain(mean)
+    #     return mean, pointwise_std
 
 
     def point_utility(self, measurements):
+
+        m = len(measurements)
         obs = PointObservation(**self.specs, measurements=measurements)
-        OstarO = obs.multiplier.conjugate().T @ obs.multiplier
-        tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd, OstarO, self.C_sqrt_fwd)
-        tmp = tmp / self.sigSqr + np.eye(self.N)
+        Sigma = np.eye(m) * self.sigSqr
+        if self.model_error:
+            Sigma += np.einsum('ik, k, kj-> ij',obs.multiplier, self.prior.multiplier**2, obs.multiplier.conjugate().T) 
+        OstarO = obs.multiplier.conjugate().T @ np.linalg.solve(Sigma, obs.multiplier)
+        tmp = np.einsum('i,ij,j->ij', self.C_sqrt_fwd.conjugate(), OstarO, self.C_sqrt_fwd)
+        tmp = tmp + np.eye(self.N)
         utility = np.linalg.slogdet(tmp)
         assert abs(utility[0] - 1) < 1e-7, abs(utility[0])
-        # [plt.plot(self.x, x) for x in self.to_freq_domain(obs.multiplier)]
-        # plt.scatter(obs.measurements, 1+np.zeros_like(obs.measurements))
-        # plt.show()
         return utility[1]
+    
 
-    def diag_utility(self, diag):
-        tmp = self.C_sqrt_fwd.copy()[:diag.size]
-        tmp = tmp*diag
-        tmp = tmp ** 2 / self.sigSqr + 1
-        return np.sum(np.log(tmp))
+    # def diag_utility(self, diag):
+    #     tmp = self.C_sqrt_fwd.copy()[:diag.size]
+    #     tmp = tmp*diag
+    #     tmp = tmp ** 2 / self.sigSqr + 1
+    #     return np.sum(np.log(tmp))
 
                 
-    def close2diagonal(self, measurements):
-        obs = PointObservation(**self.specs,
-                               measurements=measurements)
-        return np.linalg.norm(obs.multiplier-self.optimal_diagonal_O_matrix)
+    # def close2diagonal(self, measurements):
+    #     obs = PointObservation(**self.specs,
+    #                            measurements=measurements)
+    #     return np.linalg.norm(obs.multiplier-self.optimal_diagonal_O_matrix)
 
     def optimize(self,
                  m,
@@ -156,7 +183,7 @@ class Posterior(FourierMultiplier):
                  eps=0,
                  full=False):
 
-        self.make_optimal_diagonal(m)
+        # self.make_optimal_diagonal(m)
         f = self.minimization_point if target == 'utility' else self.close2diagonal
         bounds = [(0+eps, self.L-eps)] * m
         parallelized = partial(minimize, bounds=bounds)

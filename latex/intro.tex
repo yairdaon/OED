@@ -1,38 +1,121 @@
 \section{Introduction}\label{section:intro}
-Measurements play a fundamental role in generating observations and
-are indispensable to any inference process. Selecting the optimal set
-of measurements holds particular significance when inferring
-parameters of a physical process. Unlike many other fields, where
-measurements are fixed, in this context, we have the freedom to choose
-which measurements to take. This freedom should be taken advantage of:
-measurements should be chosen to enhance accuracy, reduce costs, or
-both. Whether measurements involve specifying electrode locations on
-the skin in electric impedance tomography \cite{horesh2010impedance},
-determining certain wavelengths in MRI \cite{horesh2008mri},
-positioning sensors for detecting ground-reflected waves in the search
-for oil \cite{horesh2008borehole}, or optimizing sensor locations in a
-seismographic network \cite{rabinowitz1990, steinberg1995} --- the
-selection of optimal measurements, referred to as the problem of
-\emph{optimal design}, becomes crucial. Optimal measurements are
-chosen according to specific \emph{design criteria}, with A- and
-D-optimality being two of the most widely recognized and extensively
-studied design criteria \cite{Chaloner1995,
-  AlexanderianGloorGhattas14}.
+The practice of experimental design entails specifying every detail of
+running an experiment \cite{chaloner}: at its simplest form,
+experimental design involves choosing a set of measurements to be
+taken. In a medical experiment, experimental design may involve
+choosing participants to whom some drug will be administered, and
+measuring their blood pressure. Experimental design also arises 
+process of searching for oil. Since measuremnts are expensive and
+require digging holes in the ground, only a limited number of
+measuremnts can be taken, hence carefully choosing measuremt locations
+is crucial.
+
+Specifiyng the right set of measurements holds particular significance
+when solving an \emph{inverse problem} --- i.e. making inference of
+the physical world utilizing a physical model of some phenomenon of
+interest. In an inverse problem, we seek to infer physical quantities,
+based on observations and a model of the physical world, typically
+phrased in the language of ordinary or partial differential equations.
 
 
-Surprisingly, A- and D-optimal designs have been observed to yield
-remarkably similar measurements in certain cases \cite{fedorov1996,
-  nyberg2012, fedorov1997, Ucinski05, neitzel2019sparse}. To
-illustrate this point, we consider a toy problem: inferring
-the initial condition of the 1D heat equation (details in the
-supplementary material). In Fig.~\ref{fig:clusterization
-  illustration} D-optimal measurement locations are shown for
-different numbers of measurements. Notably, for six measurements, a
-D-optimal design yields two sets of measurements that are almost
-indistinguishable from one another. We refer to this intriguing
-phenomenon as \emph{measurement clusterization} \cite{Ucinski05}, and
-we refer to a design that exhibits measurement clusterization as a
-\emph{clustered design}.
+Inverse problems are ubiquitous in science and engineering, and we
+will now give several illustrative examples. In electric impedance
+tomography (EIT) we seek to infer the impedance of the inside of a
+human body from observations of electrical current impedence measured
+at specific electrode locations on the skin, leveraging known
+equations of electric current flow
+\cite{horesh2010impedance}. Magnetic Resonance Imaging (MRI) also
+entails solving an inverse problem, where radio-frequency pulses are
+sent through the human body in the presence of a strong magnetic field
+and the response of our bodies' contents to such perutrbations is
+measured, allowing a radiologist to view the internals of a body in a
+noninvasive manner \cite{horesh2008mri}. Yet another example of an
+inverse problem arises in oil and gas exploration, where acoustic
+waves are sent through "boreholes" --- deep cylindrical wells drilled
+into the ground --- and data of travel and return times of said waves
+are recorded. Since travel and return time is influenced by the
+properties of the subsurface materials, such as density, elasticity,
+and the presence of fluids or voids, we can combine travel data with a
+geophisical models of contents of the earth's crust to facilitate
+reconstructing and inferring the structure of the subsurface in a
+process called \emph{borehole tomography}
+\cite{horesh2008borehole}. Inverse problems also arise in many other
+areas of seismology and geology \cite{rabinowitz1990, steinberg1995}
+and medical imaging \cite{tarantola}. Importantly, note that in the
+above examples our goal is to infer some function $f \in C(\Omega)$,
+where \(\Omega \subseteq \mathbb{R}^d, d=1,2,3\) is a spatial domain
+of interest.
+
+%% In EIT, electrode locations determine the quality of the
+%% reconstructed impedance field, while in MRI utilizng certain
+%% radio-frequency pulses may give more accurate information than
+%% others. In borehole tomogrpahy, only several boreholes could be dug
+%% and the choice of their locations is also crucial for oil and gas
+%% discovery. Thus, the selection of optimal measurements, referred to as
+%% the problem of \emph{optimal design}, becomes crucial.
+%% in a specific location (in a typical
+%% medical application to measure inverventions on, . These experimental
+%% units may be individual patients, but also Although common sense is
+%% useful in this process, it is often the case that naive intuition
+%% results in experiments that do not generate the maximal amount of
+%% information possible. To this end
+
+We will now introduce a toy model which we will use to define a toy
+inverse problem: the heat equation in one dimension with a homogeneous
+Dirichlet boundary condition. The equations are presented below for
+completeness, but readers less familiar with partial differential
+equations should think of the heat equation as follows: before us
+there is a perfectly insulated metal rod. At each point on the rod the
+temperature is different, and we call this temperature distribution
+the \emph{initial condition}. We wait for a short time and let the
+heat dissipate a bit inside the rod. The final heat distribution in
+the rod is dictated by the \emph{1D heat equation}:
+\begin{subequations}\label{eq:heat equation}
+  \begin{alignat}{2}
+    u_t &= \Delta u &&\qquad \text{in } [0,1] \times [0,\infty),\\ u
+      &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty),\\ u &= u_0
+        &&\qquad \text{on }[0,1] \times \{0\}.
+  \end{alignat}
+\end{subequations}
+
+In the inverse problem, our goal is to infer the initial condition
+(i.e.~initial temperature distribution inside the rod). We are allowed
+to take some number of temperature readings on the rod once our
+waiting time has passed. The inverse problem of the 1D heat equation
+is difficult ("ill-posed") since heat spreads in a diffusive manner
+and any roughness in the initial condition is quickly smoothed, see
+Supplementary movies S1 and S2. We will give a fully Bayesian
+formulation of this inverse problem in Section \ref{section:prelims}.
+
+
+In all of the examples of inverse problems we have seen, as well as in
+many other applications, measurements should be chosen to most benefit
+the user. Hence, the user may consider some utility, called a
+\emph{design criterion} and take measurements that maximize this
+utility. Two of the most widely recognized and extensively studied
+design criteria are A- and D-optimality. We focus on the Bayesian
+D-optimality criterion, which carries a simple and intuitive meaning:
+measurements chosen according to the D-optimality criterion maximize
+the expected Kullback-Liebler divergence from posterior to prior
+\cite{Chaloner1995, AlexanderianGloorGhattas14}, see also precise
+definition in Section \ref{subsec:D optimal design}. We refer to a set
+of measuremnts that maximizes the Bayesian D-optimality criterion a
+\emph{D-optimal design}.
+
+
+Surprisingly, A- and D-optimal designs for inverse problems have been
+observed to yield remarkably similar measurements in certain cases
+\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+  neitzel2019sparse}. This phenomenon is illustrated for our toy
+inverse problem in Fig.~\ref{fig:clusterization illustration}, where
+D-optimal measurement locations are shown for different numbers of
+measurements. Notably, for six measurements, a D-optimal design yields
+two sets of measurements that are almost indistinguishable from one
+another. We refer to this intriguing phenomenon as \emph{measurement
+clusterization} \cite{Ucinski05}. For our purposes, it suffices for
+measurements to be visibly close for clusterization to hold. We refer
+to a design that exhibits measurement clusterization as a
+\emph{clustered design},
 
 
 %% first: blue, second: red, third: green, fourth: black,
@@ -40,30 +123,49 @@ we refer to a design that exhibits measurement clusterization as a
 \begin{figure}
     \centering
     \includegraphics[height=0.5\textwidth]{example.pdf}
-    \caption{Measurement clusterization for optimal designs when
-      inverting for the initial condition of the 1D heat equation (see
-      supplementary material for details). Measurement locations were
+    \caption{Measurement clusterization for D-optimal designs for the
+      inverse problem of the heat equation. Measurement locations were
       chosen according to the Bayesian D-optimality criterion of
       Theorem \ref{thm:d optimality}. Measurement locations are
       plotted over the computational domain \(\Omega = [0, 1]\)
       (x-axis), for varying numbers of measurements (y-axis). The
       colored numbers are measurement indices, plotted for visual
       clarity. Measurement clusterization already occurs for three
-      measurements: the second measurement (red) is overlaid with the
+      measurements: the second measurement (red) is overlaid on the
       third (green). For five measurements, first (blue) and second
       (red) measurements are clustered, as well as the fourth (black)
       and the fifth (magenta).}
   \label{fig:clusterization illustration}
 \end{figure}
 
+Clusterization should not be confused with either repetition nor with
+replication, which are commonly viewed as beneficial and even
+necessary aspects of an optimal design \cite{morris, fisher
+  schafer2001replication}. For example, in his famous milk and tea
+experiment, \cite[Section 11]{fisher} suggested that repetition is a
+"way of enlarging the experiment and, thereby, increasing its
+sensitiveness". In another example, \cite{fay2000rainfall} measured
+the effect of rainfall on grass growth in plots of land. The
+experiment involved fifteen "rainfall manipulation shelters", where
+"Four rainfall manipulation treatments (three replicates) then were
+assigned to 12 of the plots". It seems reasonable the researchers
+replicate the phenomenon they are trying to study. Clusterization
+seems like a whole different beast: a clustered design in the rainfall
+experiment would imply the researchers should take a repeated
+measurement \emph{on the same plot}, at the expense of measuring grass
+growth in other plots. In sharp contrast to repetition and
+replication, clusterization is highly nonintuitive and, as we will
+see, its origins run considerably deeper.
 
-Researchers widely agree that measurement clusterization is
-undesirable \cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
-  neitzel2019sparse}, prompting the exploration of various remedies to
-address this issue. One approach involves merging close measurements
-\cite{fedorov1997}; however, this strategy merely overlooks the
-phenomenon of measurement clusterization. An alternative solution lies
-in \emph{clusterization-free design}s, where measurement locations are
+
+Researchers of inverse problems widely agree that measurement
+clusterization is undesirable \cite{fedorov1996, nyberg2012,
+  fedorov1997, Ucinski05, neitzel2019sparse}, prompting the
+exploration of various remedies to address this issue. One approach
+involves merging close measurements \cite{fedorov1997}; however, this
+strategy merely overlooks the phenomenon of measurement
+clusterization. An alternative solution lies in
+\emph{clusterization-free design}s, where measurement locations are
 deliberately chosen to be distant from one another. This can be
 achieved by imposing distance constraints between measurements or by
 introducing correlated errors that account for both observation error
@@ -112,7 +214,7 @@ questions:
 Why does imposing correlations between observations alleviate
 measurement clusterization?
 %
-Is measurement clusterization a generic phenomenon?
+Is measurement clusterization a generic phenomenon? 
 %
 And, most importantly: Why does measurement clusterization occur?
 %
@@ -122,6 +224,7 @@ And, most importantly: Why does measurement clusterization occur?
 %equally optimal non-clustered design?
 %Can an optimal clustered design be relpaced with an equally optimal
 %non-clustered design?
+
 
 
 \subsection{Contribution}
@@ -220,97 +323,40 @@ posed at the end of the previous paragraph:
 
 \end{enumerate}
 
-The cornerstone of our investigation into measurement clusterization
-is Theorem \ref{thm:char} proven in Section
-\ref{section:vanishing}. The key insight of Theorem \ref{thm:char}
-lies in its fifth component, which highlights that a D-optimal design
-aims to uniformly reduce posterior uncertainties for posterior
-covariance eigenvectors in observation space. A similar conclusion was
-reached by Koval et al.~\cite{koval2020}, who showed that A-optimal
-designs are best constructed in the space of observations.
+The first insight our study gives is that a D-optimal design aims to
+uniformly reduce uncertainties not over space (i.e.~$\Omega$), but
+rather over \emph{eigenvectors}. This insight is a part of Theorem
+\ref{thm:char}, see Section \ref{section:vanishing} for precise
+statement and proof, and see Fig.~\ref{cluste} for an illustration.
 
-Before we state Theorem \ref{thm:char} we give some definitions: Let
-\(\hilp, \hilo\) Hilbert spaces, \(\fwd:\hilp \to \hilo\) a linear
-compact operator. Let \(\obs: \hilo \to \mathbb{R}^m\) a linear
-measurement operator, where \(m \in \mathbb{N}\) is the number of
-measurements taken. Let \(\sigma^2 \in \mathbb{R}_{+}\) observation
-noise variance, \(\data = \obs \fwd \param + \eps\), where \(\eps \in
-\mathbb{R}^m\) is iid \(\mathcal{N}(0, \sigma^2)\) noise. Let \(\pr
-\sim \mathcal{N}(\prmean, \prcov)\) prior Gaussian measure on
-\(\hilp\), where \(\prcov\) is the prior covariance operator and let
-\(\post\) the posterior (Gaussian) measure.
-  
-\begin{restatable}{theorem}{char}\label{thm:char}
-  Let:
-  \begin{itemize}
-    \item The D-optimality design criterion
-    \cite{AlexanderianGloorGhattas14}:
-    \begin{align*}
-      \begin{split}
-        \tar(\obs) %:&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
-        % 
-        % 
-        % 
-        &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
-        \obs^* \obs \fwd \prcov^{1/2}), 
-      \end{split}
-    \end{align*}
-  \item \(\obs\) a D-optimal design operator
-    \begin{equation*}
-      \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs),
-    \end{equation*}
-  \item \(\{\lambda_i\}_{i=1}^\infty\) eigenvalues of
-    \(\fwd\prcov\fwd^*\) in decreasing order of magnitude.
-    %% \item \(\{\ev_i\}_{i=1}^\infty\) their corresponding eigenvectors.
-  \item \(\{\eta_i\}_{i=1}^\infty\) eigenvalues of \(\obs^*\obs\).
- 
-  \end{itemize}
-
-  Then:
-  \begin{enumerate}
-  \item  \(\tr{\obs^*\obs} = m\).
-  \item \(\obs^*\obs\) and \(\fwd\prcov\fwd^*\) are simultaneously
-    diagonalizable.
-  \item \(k := \rank \obs^*\obs \leq m\) and
-    \begin{equation*}
-      \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). %= \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
-    \end{equation*}
-  %% \item 
-  %%   \begin{equation*}
-  %%     k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
-  %%     \lambda_j^{-1} \right \}.
-  %%   \end{equation*}
-  \item
-    \begin{equation*}
-        \eta_i = \begin{cases}
-          \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
-          0 & i > k 
-        \end{cases}.
-    \end{equation*}
-  \item The covariance of the pushforwad \(\fwd_{*} \post\) is \(\left
-    ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right
-    )^{-1}\) and its eigenvalues are
-    \begin{equation*}
-      \theta_i =
-      \begin{cases}
-        \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}m}{k} \right )^{-1} & i \leq k \\
-        \lambda_i &  i > k 
-      \end{cases}
-    \end{equation*}
-  \end{enumerate}
-%\end{theorem}
-\end{restatable}
+In Theorem \ref{thm:char}, we also show that D-optimal designs are
+best understood in the sapce of \emph{observations}. Again, a precise
+statement could be found in Section \ref{section:vanishing}.  This
+result is in accordance with previous work by \cite{koval2020}, who
+showed that A-optimal designs are best constructed in the space of
+observations.
 
 In the process of proving Theorem \ref{thm:char} we prove and
 generalize several lemmas. Among those, is Lemma \ref{lemma:free},
-which is (to the the best of my knowledge) a novel lemma in linear
-algebra: We decompose a symmetric positive definite matrix \(M \in
-\mathbb{R}^{k \times k}\) with \(\ttr M = m \in \mathbb{N}\) as \(M =
-AA^t\), where \(A\) has unit norm columns.
+which is a lemma in linear algebra that (to the the best of my
+knowledge) is novel: We decompose a symmetric positive definite matrix
+\(M \in \mathbb{R}^{k \times k}\) with \(\ttr M = m \in \mathbb{N}\)
+as \(M = AA^t\), where \(A\in \mathbb{R}^{k \times m}\) has unit norm
+columns.
 
 %% Finally, in Lemma \ref{lemma:lax} we generalize a lemma for
 %% calculating \(\frac{\der}{\der t} \log \det (I + X(t))\), where
 %% \(X(t)\)is an operator valued function \cite{Lax07}.
+
+Finally, we must stress that we do not suggest that clustered designs
+should be abandoned, nor do we support the use of clustered designs in
+any circumstances. We merely investigate an intriguing phenomenon of
+clusterization and seek a deeper understanding for it. Researchers in
+other disciplinesis not viewed as a problem. For example, \cite{lozan}
+suggest in the introduction section that repeated measurements are
+necessary. Our results align with that common wisdom and settle the
+seemed contradiction.
+
 
 \subsection{Limitations}\label{subsec:limitations}
 The main limitation of this study is that our generic model does not

@@ -10,8 +10,8 @@ reviewed here.
 Let \(\hilp\) and \(\hilo\) separable Hilbert spaces (the subscripts p
 and o are for "parameter" and "observation", respectively), and let
 \(\fwd: \hilp \to \hilo\) the \emph{forward operator}. The forward
-operator \(\fwd\) is assumed linear and strongly smoothing (the heat
-operator of the 1D heat equation introduced in Section
+operator \(\fwd\) is assumed linear with fast decaying singular values
+(the heat operator of the 1D heat equation introduced in Section
 \ref{section:intro} is a prime example). Take a Gaussian prior
 \(\param \sim \pr = \normal(\prmean ,\prcov)\) with some appropriate
 covariance operator \(\prcov\) on \(\hilp\) \cite{Stuart10}. Note that
@@ -117,7 +117,7 @@ for more general covariance matrices
 %% \(\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}\) is
 %% trace-class.
 \begin{definition}\label{def:d optimality}
-  We say \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
+  We say \(\opt\) is \emph{D-optimal} if \(\opt =
   \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
   are constrained to some allowed set of measurements in \(\hilo^*\).
 \end{definition}

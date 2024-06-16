@@ -1,0 +1,163 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{tikz}
+
+% Add your custom macros and definitions here
+% ...
+
+\begin{document}
+
+% Slide 1: Title
+\begin{frame}
+\frametitle{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
+\end{frame}
+
+% Slide 2: Forward problem
+\begin{frame}
+\frametitle{What is a forward problem?}
+% Example 1: Ball toss
+% Example 2: Flow field (placeholder for image)
+\[
+\mathcal{F}: \text{Parameter Space} \rightarrow \text{Observation Space}
+\]
+\end{frame}
+
+% Slide 3: Inverse problem
+\begin{frame}
+\frametitle{Inverse problem}
+% Explain the inverse problems for the ball toss and flow field examples
+% Argue that there are many valid solutions
+% Explain that such problems are ill-posed
+\end{frame}
+
+% Slide 4: Toy example
+\begin{frame}
+\frametitle{Toy example: 1D heat equation}
+% Present the 1D heat equation with homogeneous Dirichlet boundary condition
+\end{frame}
+
+% Slide 5: Solving inverse problems
+\begin{frame}
+\frametitle{How do we solve an inverse problem?}
+% Take measurements
+% Show "sensor" and discuss measurement placement
+% Introduce the measurement operator $\mathcal{O}$
+% Introduce D-Optimality heuristically
+\end{frame}
+
+% Slide 6: Prior and posterior measures
+\begin{frame}
+\frametitle{Prior and posterior measures}
+% Introduce prior measure $\mu_{\text{pr}}$ and posterior measure $\mu_{\text{post}}$
+% Define KL-divergence and provide an intuitive explanation
+\end{frame}
+
+% Slide 7: Gaussian measures on Hilbert spaces
+\begin{frame}
+\frametitle{Gaussian measures on Hilbert spaces}
+% Define Gaussian measure
+% Show a 2D example with iso-density lines and projections
+% Introduce notation for mean $\mathbf{m}$ and covariance $\Gamma$
+\end{frame}
+
+% Slide 8: Recap and notation summary
+\begin{frame}
+\frametitle{Recap and notation summary}
+% Summarize notation:
+% - Forward operator
+% - Parameter space
+% - Observation space
+% - Observation operator
+% - Prior measure and covariance
+% - Posterior measure and covariance
+% - 1D heat equation
+\end{frame}
+
+% Slide 9: Formalism of inverse problems
+\begin{frame}
+\frametitle{Formalism of inverse problems}
+% Present the entire formalism of inverse problems from the paper, for zero model error
+\end{frame}
+
+% Slide 10: D-optimality criterion
+\begin{frame}
+\frametitle{D-optimality criterion}
+% Show the D-optimality criterion from Alexanderian et al.
+% Assume linear forward operator and linear observation operator
+% Provide intuition about the log det of quotient of posterior and prior covariance/precision operators
+\end{frame}
+
+% Slide 11: Sensor clusterization
+\begin{frame}
+\frametitle{Problem: Sensor clusterization}
+% Discuss sensor clusterization in the 1D heat equation example
+% Show figure from the paper (placeholder for figure)
+\end{frame}
+
+% Slide 12: Avoiding clusterization
+\begin{frame}
+\frametitle{Avoiding clusterization}
+\begin{itemize}
+\item Model correlation
+\item Choose from a finite set of sensor locations
+\end{itemize}
+\end{frame}
+
+% Slide 13: Main questions
+\begin{frame}
+\frametitle{Main questions}
+% Present the main questions from the introduction of the paper
+% How do we tackle this problem?
+\end{frame}
+
+% Slide 14: Proposed approach
+\begin{frame}
+\frametitle{Proposed approach}
+% Study a "generic" inverse problem
+% Discuss the main obstacle: the measurement operator
+% Impose unit-norm constraints
+% Explain that sensors have a unit inf-norm (show example)
+% Show relevant equation from the paper
+\end{frame}
+
+% Slide 15: Constrained optimization problem
+\begin{frame}
+\frametitle{Constrained optimization problem}
+% Restate the optimization criterion from Alexandrian et al.'s theorem
+% Restate the unit norm constraints
+% Pose the problem as a constrained optimization problem
+% Ask the audience how to solve constrained optimization problems (Lagrange multipliers)
+\end{frame}
+
+% Slide 16: Necessary conditions for optimality
+\begin{frame}
+\frametitle{Necessary conditions for optimality}
+% Present the nonlinear eigenvalue problem for the vanishing model error case
+% Explain why it is called a "nonlinear" eigenvalue problem
+\end{frame}
+
+% Slide 17: Lemma 17
+\begin{frame}
+\frametitle{Lemma 17}
+% State Lemma 17 (placeholder for the actual lemma)
+\end{frame}
+
+% Slide 18: Main theorem
+\begin{frame}
+\frametitle{Main theorem}
+% State the main theorem
+\end{frame}
+
+% Slide 19: Main theorem explanation
+\begin{frame}
+\frametitle{Main theorem explanation}
+% Explain the main theorem using a graph and three graduated lab cylinders
+\end{frame}
+
+% Add the remaining slides here
+% ...
+
+\end{document}

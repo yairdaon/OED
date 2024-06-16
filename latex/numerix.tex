@@ -1,0 +1,46 @@
+\section{Numerical Experiments}
+We provide numerical evidence supporting our conclusions.
+
+
+\subsection{Heat Equation}
+Our goal is to infer the initial condition of
+the one-dimensional heat equation with a homogeneous Dirichlet
+boundary condition:
+\begin{subequations}\label{eq:heat equation}
+  \begin{alignat}{2}
+    u_t &= \Delta u &&\qquad \text{in } [0,1] \times [0,\infty),\\
+      u &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty),\\
+        u &= u_0 &&\qquad \text{on }[0,1] \times \{0\}.
+  \end{alignat}
+\end{subequations}
+
+Model the prior for the initial condition as $u_0 \sim
+\normal(0,\prcov)$, for $\prcov = (-\Delta)^{-1}$ with a homogeneous
+Dirichlet boundary condition. Let the final time $T = 0.03$ and denote
+$\fwd$ the forward operator, so that $u(\cdot, T) = \fwd u_0$. Let
+$\obs$ a measurement operator, so that $u(\x_j,T) = (\obs u)_j,
+j=1,\dots,m$, where $m$ is the number of allowed measurements. Assume
+iid centered Gaussian observation error, so observations are given by
+$u(\x_j,T) + \eps(\x_j)$ with $\eps(\x_j) \sim \normal(0, \sigma^2)$
+iid, $\sigma = 0.05$. Measurement locations $\x_j,j=1,\dots,m$ are
+chosen according to the D-optimality criterion
+\cite{AlexanderianGloorGhattas14}.
+
+Implementation of this inverse problem can be found in this 
+\href{https://github.com/yairdaon/OED}{repository}, including an optimization
+routine for finding D-optimal designs. Unfortunately, I was not able
+to install PyOED \cite{attia2023pyoed}, nor was I able to utilize
+hIPPYlib \cite{VillaPetraGhattas16, VillaPetraGhattas18,
+  VillaPetraGhattas21}, hence the inverse problem is implemented from
+scratch.
+
+
+\subsection{Simulating Lemma ... }
+In theorem 17 we explicitly construct a D-optimal design in a Hilbert
+space where the base vectors diagonalize $\fwd \prcov\fwd^*$. We
+explicitly implement the algorithm outlined in Lemma
+
+
+
+\subsection{Correlated errors}
+We simulate the 1D heat eq

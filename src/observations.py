@@ -10,11 +10,14 @@ class Observation(FourierMultiplier):
 
     
 class PointObservation(Observation):
-    def __init__(self, measurements=[], **kwargs):
+    """A point obeservation, at arbitrary location, calculated via the frequency domain."""
+
+    def __init__(self,
+                 measurements=[],
+                 **kwargs):
         super().__init__(**kwargs, size=len(measurements))
         self.measurements = np.array(measurements)
         self.multiplier = self.normalized_block(self.measurements).T
-        
 
     def __str__(self):
         return 'Point observations at ' + ', '.join([f'{me:.4f}' for me in self.measurements])

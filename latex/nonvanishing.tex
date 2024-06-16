@@ -311,11 +311,25 @@ is bounded, and
 \end{equation*}
 
 We have shown that in the limit $\sigma^2 \to 0$, no increase in
-$\tar$ is achieved by repeating a measurement, so designs that exhibit
-measurement clusterization are not D-optimal. Since $\tar$ is not
-defined for $\sigma^2 = 0$ and identical measurements, we cannot make
-a statement regarding $\sigma^2 = 0$, except in the limiting sense
-described above. In conclusion, for small observation error $\sigma^2$
-levels, measurement clusterization is mitigated by the presence of a
-non-zero model error $\modcov$ --- answering Question \ref{q:mitigate}
-posed in the Introduction.% Section \ref{section:intro}.
+$\tar$ is achieved by repeating a measurement. Thus, for vanishing
+noise levels, clustered designs cannot be D-optimal. For repeated
+measurements and $\sigma^2=0$, $\Sigma$ is not invertible and the
+posterior covariance is not defined in \ref{eq:postcov}. We can
+\emph{define} the posterior in this case to equal the posterior when
+the repeated measurement is dropped, and under this definition, a
+repeated measurement trivially does not increase the design criterion
+when $\sigma^2=0$. Our results are stronger, since we show
+\emph{continuity} in $\sigma^2$.
+
+It is worth noting that by the nonnegativity of the Kullback-Liebler
+divergence, $\tar$ cannot decrease upon adding measuremnts. However,
+we can construct examples where the posterior is not changed upon
+taking a new measurement e.g.~if the prior variance vanishes on some
+eigenvector and a measuremnt is taken on said eigenvector. We do not
+expect a measurement to generate no information whatsoever in any
+realistic scenario, and we choose to ignore such pathologies.
+
+In conclusion, for small observation error $\sigma^2$ levels,
+measurement clusterization is mitigated by the presence of a non-zero
+model error $\modcov$ --- answering Question \ref{q:mitigate} posed in
+the Introduction.% Section \ref{section:intro}.
