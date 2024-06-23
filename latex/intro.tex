@@ -41,10 +41,11 @@ reconstructing and inferring the structure of the subsurface in a
 process called \emph{borehole tomography}
 \cite{horesh2008borehole}. Inverse problems also arise in many other
 areas of seismology and geology \cite{rabinowitz1990, steinberg1995}
-and medical imaging \cite{tarantola}. Importantly, note that in the
-above examples our goal is to infer some function $f \in C(\Omega)$,
-where \(\Omega \subseteq \mathbb{R}^d, d=1,2,3\) is a spatial domain
-of interest.
+and medical imaging \cite{tarantola}. While in many inverse problems
+the goal is to infer some parameter, in all of the above examples and
+in the formulation we consider here, the goal is to infer some
+\emph{function} over $ \Omega$, where \(\Omega \subseteq \mathbb{R}^d,
+d=1,2,3\) is the spatial domain of interest.
 
 %% In EIT, electrode locations determine the quality of the
 %% reconstructed impedance field, while in MRI utilizng certain
@@ -60,33 +61,50 @@ of interest.
 %% results in experiments that do not generate the maximal amount of
 %% information possible. To this end
 
-We will now introduce a toy model which we will use to define a toy
-inverse problem: the heat equation in one dimension with a homogeneous
-Dirichlet boundary condition. The equations are presented below for
-completeness, but readers less familiar with partial differential
+For concreteness, let us consider a toy model of an inverse problem:
+the \emph{heat equation} in one dimension (1D heat equation
+henceforth, see Section \ref{subsec:1d heat} for more details). The
+heat equation is a partial differential equation which is in fact a
+set of three equations: eqs.~\eqref{eq:heat1}, \eqref{eq:heat2}, and
+\eqref{eq:heat3}. Readers less familiar with partial differential
 equations should think of the heat equation as follows: before us
 there is a perfectly insulated metal rod. At each point on the rod the
-temperature is different, and we call this temperature distribution
-the \emph{initial condition}. We wait for a short time and let the
-heat dissipate a bit inside the rod. The final heat distribution in
-the rod is dictated by the \emph{1D heat equation}:
-\begin{subequations}\label{eq:heat equation}
+temperature is different and unknown, and we call this temperature
+distribution the \emph{initial condition}. We wait for a short time
+and let the heat dissipate a bit inside the rod. The final heat
+distribution in the rod is dictated by the following set of equations
+which defines the 1D heat equation:
+\begin{subequations}%\label{eq:heat equation}
   \begin{alignat}{2}
-    u_t &= \Delta u &&\qquad \text{in } [0,1] \times [0,\infty),\\ u
-      &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty),\\ u &= u_0
-        &&\qquad \text{on }[0,1] \times \{0\}.
+    u_t &= \alpha \Delta u &&\qquad \text{in } [0,1] \times [0,\infty), \label{eq:heat1}\\
+    u &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty), \label{eq:heat2}\\
+    u &= u_0 &&\qquad \text{on }[0,1] \times \{0\}. \label{eq:heat3}\\
   \end{alignat}
 \end{subequations}
 
-In the inverse problem, our goal is to infer the initial condition
-(i.e.~initial temperature distribution inside the rod). We are allowed
-to take some number of temperature readings on the rod once our
-waiting time has passed. The inverse problem of the 1D heat equation
-is difficult ("ill-posed") since heat spreads in a diffusive manner
-and any roughness in the initial condition is quickly smoothed, see
-Supplementary movies S1 and S2. We will give a fully Bayesian
-formulation of this inverse problem in Section \ref{section:prelims}.
+As time passes, heat disspates across the rod as hotter regions,
+e.g.~local maximas of the heat distribution, become cooler. This
+behavior is captured by eq.~\eqref{eq:heat1}: the Laplacian at local
+maxima is negative, so $u_t = \Delta u$ implies $u$ decreases at its
+maximas, and the reverse happens at local minima. Eq.~\eqref{eq:heat2}
+describes the \emph{boundary condition}, i.e.~the interaction of the
+heat inside the rod with the boundary of the domain $\Omega =
+[0,1]$. Here we consider a \emph{homogeneous Dirichlet boundary
+condition} which is best understood as an absorbing boundary: heat
+that interacts with the boundary immediately
+disappears. Eq.~\eqref{eq:heat3} describes the \emph{initial
+condition} of the heat, i.e.~the heat distribution at time $t=0$.
 
+So far, we described the \emph{forward} problem: how heat evolves in
+time. In the inverse problem, our goal is to infer the initial
+condition $u_0 = u(\cdot, 0)$ from observations of the final condition
+$u(\cdot, T)$. We are allowed to take some number of temperature
+measurements on the rod once our waiting time has passed. The inverse
+problem of the 1D heat equation is difficult ("ill-posed") since heat
+spreads in a diffusive manner and any roughness in the initial
+condition is quickly smoothed, see Supplementary movies S1 and S2. We
+will give a fully Bayesian formulation of a generic linear inverse
+problem in Section \ref{section:prelims}.
 
 In all of the examples of inverse problems we have seen, as well as in
 many other applications, measurements should be chosen to most benefit
@@ -97,10 +115,10 @@ design criteria are A- and D-optimality. We focus on the Bayesian
 D-optimality criterion, which carries a simple and intuitive meaning:
 measurements chosen according to the D-optimality criterion maximize
 the expected Kullback-Liebler divergence from posterior to prior
-\cite{Chaloner1995, AlexanderianGloorGhattas14}, see also precise
-definition in Section \ref{subsec:D optimal design}. We refer to a set
-of measuremnts that maximizes the Bayesian D-optimality criterion a
-\emph{D-optimal design}.
+\cite{Chaloner1995, AlexanderianGloorGhattas14}, see Section
+\ref{subsec:D optimal design} for a precise definition. We refer to a
+set of measuremnts that maximizes the Bayesian D-optimality criterion
+a \emph{D-optimal design}.
 
 
 Surprisingly, A- and D-optimal designs for inverse problems have been
@@ -112,17 +130,15 @@ D-optimal measurement locations are shown for different numbers of
 measurements. Notably, for six measurements, a D-optimal design yields
 two sets of measurements that are almost indistinguishable from one
 another. We refer to this intriguing phenomenon as \emph{measurement
-clusterization} \cite{Ucinski05}. For our purposes, it suffices for
-measurements to be visibly close for clusterization to hold. We refer
-to a design that exhibits measurement clusterization as a
-\emph{clustered design},
-
+clusterization} \cite{Ucinski05}. We consider a design to be
+\emph{clustered} when two or more of its constituent measurements are
+identical.
 
 %% first: blue, second: red, third: green, fourth: black,
 %% fifth:magenta
 \begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{example.pdf}
+    \includegraphics[height=0.5\textwidth]{dst_modelError0.pdf}
     \caption{Measurement clusterization for D-optimal designs for the
       inverse problem of the heat equation. Measurement locations were
       chosen according to the Bayesian D-optimality criterion of
@@ -137,6 +153,7 @@ to a design that exhibits measurement clusterization as a
       and the fifth (magenta).}
   \label{fig:clusterization illustration}
 \end{figure}
+
 
 Clusterization should not be confused with either repetition nor with
 replication, which are commonly viewed as beneficial and even
@@ -184,21 +201,22 @@ measurements from a coarse grid in \(\Omega\) \cite{koval2020,
   alexanderian2018efficient, brunton2016}. This approach incurs a
 significant computational cost as it requires solving a difficult
 combinatorial optimization problem for measurement locations over a
-finite set. The combinatorial optimization problem is usually relaxed
-by first assigning optimal measurement weights in \(\mathbb{R}_+\) to
-the potential measurement locations. Some researchers incorporate a
-sparsifying \(\ell_1\) penalty term into the design criterion, which
-is subsequently thresholded to achieve the desired binary design over
-the coarse grid \cite{horesh2008borehole}. Others progressively relax
-the \(\ell_1\) penalty to an \(\ell_0\) penalty via a continuation
-method \cite{alexanderian2016, alexanderian2014}. Others cast the
-problem of finding optimal measurement weights as a stochastic
-optimization problem \cite{attia2022stochastic}. All of the
-aforementioned methods may indeed find a binary optimal design
-restricted to a given coarse grid. However, none addresses one
-fundamental issue: the restriction of measurement locations to a
-coarse grid in \(\Omega\) fundamentally changes the optimal design
-problem and thus results in a sub-optimal design.
+discrete set. The combinatorial optimization problem is usually
+relaxed by first assigning optimal measurement weights in
+\(\mathbb{R}_+\) to the potential measurement locations. Some
+researchers incorporate a sparsifying \(\ell_1\) penalty term into the
+design criterion, which is subsequently thresholded to achieve the
+desired binary design over the coarse grid
+\cite{horesh2008borehole}. Others progressively relax the \(\ell_1\)
+penalty to an \(\ell_0\) penalty via a continuation method
+\cite{alexanderian2016, alexanderian2014}. Others cast the problem of
+finding optimal measurement weights as a stochastic optimization
+problem \cite{attia2022stochastic}. All of the aforementioned methods
+may indeed find a binary optimal design restricted to a given coarse
+grid. However, none addresses one fundamental issue: the restriction
+of measurement locations to a coarse grid in \(\Omega\) fundamentally
+changes the optimal design problem and thus results in a sub-optimal
+design.
 
 Avoiding measurement clusterization is a pragmatic approach:
 intuitively, researchers recognize that measurement clusterization is
@@ -226,41 +244,20 @@ And, most importantly: Why does measurement clusterization occur?
 %non-clustered design?
 
 
-
 \subsection{Contribution}
 The primary objective of this study is to provide a comprehensive
 understanding of measurement clusterization by addressing the
 aforementioned questions. Our focus centers around investigating the
-Bayesian D-optimality criterion, which involves maximizing the
-expected Kullback-Leibler divergence between the posterior and prior
-measures \cite{CoverThomas91, Chaloner1995}. We conduct an analysis of
-Bayesian D-optimal designs within the context of linear inverse
-problems over Hilbert spaces. We propose a novel relaxed model for
-D-optimality that maintains analytical tractability and enables the
-identification of D-optimal designs using Lagrange multipliers. This
-analytical framework facilitates the exploration of the questions
-posed at the end of the previous paragraph:
+Bayesian D-optimality criterion. We conduct an analysis of Bayesian
+D-optimal designs within the context of linear inverse problems over
+Hilbert spaces. We propose a novel relaxed model for D-optimality that
+maintains analytical tractability and enables the identification of
+D-optimal designs using Lagrange multipliers. This analytical
+framework facilitates the exploration of the questions posed at the
+end of the previous paragraph:
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{eigenvectors.pdf}
-    \caption{D-optimal measurement locations ($m=4$ measurements) and
-      weighted eigenvectors for finding the initial condition of
-      the 1D heat equation. Measurement locations and weighted
-      eigenvectors are plotted over the computational domain $\Omega =
-      [0, 1]$ (x-axis). Measurement clusterization occurs
-      approximately at $0.31$ and $0.69$. These two locations are a
-      compromise between zeros of eigenvectors a D-optimal design aims
-      to ignore (third and up) and staying far from zeros of the
-      eigenvectors a D-optimal design aims to measure (first and
-      second). Allocating $m=4$ measurements into two locations
-      results in clusterization, according to the pigeonhole
-      principle.}
-  \label{fig:why}
-\end{figure}
 
 \begin{enumerate}
-
 \item \label{q:generic} \textbf{Is measurement clusterization a
   generic phenomenon?}
   %\subsection{An answer for Question \ref{q:generic}: Genericity of measurement clusterization}
@@ -269,28 +266,34 @@ posed at the end of the previous paragraph:
   %% as a solution to the D-optimal design problem.  Furthermore,
   Randomized numerical simulations of our model give rise to D-optimal
   designs that exhibit clusterization more than 95\% of the time (see
-  code in supplementary material). Given our model's genericity, we
-  expect measurement clusterization to be a generic phenomenon.
+  Section \ref{subsec:lemma sims} for details). Given the genericity
+  of our model, we expect measurement clusterization to be a generic
+  and ubiquitous phenomenon.
 
 \item \label{q:mitigate} \textbf{Why does imposing correlations
   between observations alleviate measurement clusterization?} In
   Section \ref{section:non vanishing}, we rigorously demonstrate the
   role of model error in mitigating clusterization, thereby
-  corroborating earlier observations made by various researchers.
+  corroborating earlier observations made by various researchers. We
+  also show that adding to the inverse problem of the 1D heat
+  equationan error term corresponding to correlations between
+  measurements mitigates clusterization, see Section \ref{subsec:corr
+    errors sims}.
 
 \item \label{q:why} \textbf{Why does measurement clusterization
-  occur?} In Section \ref{section:why}, we present a compelling
-  explanation for the optimality of clustered designs in the absence
-  of model error. Our analysis reveals that, in our model, a D-optimal
-  design focuses on a select set of prior eigenvectors, specifically
-  those with the largest eigenvalues in the prior covariance
-  spectrum. In practical scenarios, the number of locations where (a)
-  the relevant prior eigenvectors are significantly large, and (b)
-  other eigenvectors are close to zero, is limited. Consequently, the
-  clusterization of measurements arises as a natural consequence of
-  the pigeonhole principle, as there are more measurements available
-  than there are locations satisfying conditions (a) and (b). See
-  Fig~\ref{fig:why}.
+  occur?} Answering this question is the main contribution of this
+  study, and it is arrived at in Section \ref{section:why}. There, we
+  present a compelling explanation for the optimality of clustered
+  designs in the absence of model error. Our analysis reveals that a
+  D-optimal design focuses on a select set of prior eigenvectors,
+  specifically those with the largest eigenvalues in the prior
+  covariance spectrum. In practical scenarios, the number of locations
+  where (a) the relevant prior eigenvectors are significantly large,
+  and (b) other eigenvectors are close to zero, is
+  limited. Consequently, the clusterization of measurements arises as
+  a natural consequence of the pigeonhole principle, as there are more
+  measurements available than there are locations satisfying
+  conditions (a) and (b). See Fig~\ref{fig:why}.
 
 
   %% In Section \ref{section:vanishing}, we provide an insightful
@@ -323,12 +326,28 @@ posed at the end of the previous paragraph:
 
 \end{enumerate}
 
-The first insight our study gives is that a D-optimal design aims to
-uniformly reduce uncertainties not over space (i.e.~$\Omega$), but
-rather over \emph{eigenvectors}. This insight is a part of Theorem
-\ref{thm:char}, see Section \ref{section:vanishing} for precise
-statement and proof, and see Fig.~\ref{cluste} for an illustration.
+The implication of the answers we give to Questions \ref{q:generic},
+\ref{q:mitigate}, and \ref{q:why} is two-fold:
 
+The implication of our answer to Question \ref{q:generic} is that
+encountering clusterization should be expected in many different
+inverse problems across many different scientific fields and
+disciplines. Thus, researchers that encounter clusterization should
+not be surprised or wary. Then, in our answer to Question \ref{q:why},
+we explain what is the source of clusterization. As it appears, the
+source is universal: a D-optimal design reduces uncertainty for a
+select set of prior covariance eigenvectors --- those with the most
+prior uncertainty, i.e.~those the practitioner cares about the most!
+Consequently, practitioners should not try to avoid measurement
+clusterization. Rather, practitioners should should take repeated
+measurements (e.g.~in MRI and borehole tomography), increase apparatus
+sensitivity (e.g.~in EIT), or take consecutive measurements (e.g.~in
+the 1D heat equation). Overall, we show that measurement
+clusterization is a natural and (almost) inevitable part of Bayesian
+D-optimal designs.
+
+
+\subsubsection{Further Contributions}
 In Theorem \ref{thm:char}, we also show that D-optimal designs are
 best understood in the sapce of \emph{observations}. Again, a precise
 statement could be found in Section \ref{section:vanishing}.  This
@@ -360,11 +379,13 @@ seemed contradiction.
 
 \subsection{Limitations}\label{subsec:limitations}
 The main limitation of this study is that our generic model does not
-correspond to any specific real-life problem. It is generic enough to
-be analytically tractable, but one may argue our model is too far
-removed from any real application. To these claims I would answer that
-scientists have a long history of studying models that are bare-bones
-simplifications of real systems, e.g. the Ising model
+correspond to any specific real-life problem. Specifically, in its
+current form, our model does not allow point evaluations, see the
+Discussion for a deeper analysis of this subject. Our model is generic
+enough to be analytically tractable, but one may argue our model is
+too far removed from any real application. To these claims I would
+answer that scientists have a long history of studying models that are
+bare-bones simplifications of real systems, e.g. the Ising model
 \cite{cipra1987}, the Lorenz system \cite{brin}, the Lotka-Volterra
 equations \cite{logan2006}, the Carnot engine \cite{kardar2007}, and
 many others.

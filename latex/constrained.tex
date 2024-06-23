@@ -34,126 +34,13 @@ recall that:
   \end{equation*}
 \end{proposition}
 
-\begin{proof}  
-  From the definition of $\Sigma(\obs)$ \eqref{eq:Sigma}: 
+The proof amounts to calculating the variational derivative of $\tar$
+at $\obs$ for any direction $V$ (by Definition \ref{def:var}) and is
+delegated to the Supplementary:
+\begin{equation*}
+  \delta \tar(\obs) V := \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V).
+\end{equation*}
 
-  \begin{align}\label{eq:der sig}
-    \begin{split}
-      \frac{\der}{\der \tau} \Big |_{\tau=0} \Sigma( \obs + \tau V )
-      &= \frac{\der}{\der \tau} \Big |_{\tau=0} 
-      (\obs + \tau V ) \modcov (\obs + \tau V )^*  + \sigma^2I\\
-      % 
-      % 
-      % 
-      &= V \modcov \obs^* + \obs \modcov V^*.
-    \end{split}
-  \end{align}
-
-  Then, using \eqref{eq:der sig}: 
-  \begin{align*}
-    0 &= \frac{\der}{\der \tau} \Big |_{\tau=0} I \\
-    % 
-    % 
-    % 
-    &= \frac{\der}{\der \tau} \Big |_{\tau=0}
-    \left (\Sigma(\obs+\tau V)^{-1} \Sigma(\obs+\tau V) \right ) \\
-    % 
-    % 
-    % 
-    &= \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0} \Sigma+
-    \Sigma^{-1} \frac{\der \Sigma(\obs+\tau V)}{\der \tau} \Big |_{\tau=0}\\  
-    %
-    %
-    %
-    &= \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0} \Sigma+
-    \Sigma^{-1} (V\modcov \obs^* + \obs \modcov V^*). 
-    %\text{, by \eqref{eq:der sig}. }
-  \end{align*}
-
-  Thus:
-  \begin{align}\label{eq:der sig inv}
-    \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0}  
-      &= -\Sigma^{-1} (V \modcov \obs^* + \obs \modcov V^*) \Sigma^{-1}.
-    \end{align}
-  % 
-
-  Let
-  \begin{equation*}
-    T(\obs) = \obs^* \Sigma^{-1}(\obs)\obs.
-  \end{equation*}
-  
-  By Leibniz (product) rule and \eqref{eq:der sig inv}:
-  % 
-  \begin{align}\label{eq:T}
-    \begin{split}
-    \delta T(\obs) V 
-    &= \frac{\der T(\obs + \tau V)}{\der \tau} \Big |_{\tau=0} \\
-    %
-    %
-    %
-    &= V^* \Sigma^{-1} \obs 
-    - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
-    &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs
-    + \obs^* \Sigma^{-1} V.
-    \end{split}
-  \end{align}
-
-  We now record a lemma which generalizes a known result in linear
-  algebra \cite[Chapter 9, Theorem 4]{Lax07}. Its proof is delegated
-  to the supplementary material.
-  \begin{lemma}\label{lemma:lax}
-    Let $Y(t)$ be a differentiable operator-valued function. Assume 
-    $I+Y(t)$ is invertible, $Y(t)$ self-adjoint and trace-class. Then
-    \begin{equation*}
-      \frac{\der \log \det (I+Y(t))}{\der t} = \tr{(I+Y(t))^{-1} \dot{Y}(t)}.
-    \end{equation*}
-  \end{lemma}
-  
-  We employ Lemma \ref{lemma:lax} and calculate the first variation of
-  $\tar$:
-
-  \begin{align*}
-    %\begin{split}
-      \delta \tar(\obs) V 
-      :&= \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V) \text{ (Definition \ref{def:var})}\\
-      % 
-      % 
-      % 
-      &= \frac12 \frac{\der}{\der \tau} \Big |_{\tau=0} \log \det 
-      (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (Theorem \ref{thm:d optimality})} \\
-      % 
-      % 
-      % 
-      &= \frac12 \tr{( I + \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1}
-        \obs\fwd \prcov^{1/2} )^{-1}
-        \frac{\der}{\der \tau} \Big |_{\tau=0}
-        \prcov^{1/2} \fwd^* T(\obs+\tau V) \fwd \prcov^{1/2}}\ \text{ (Lemma \ref{lemma:lax})} \\
-      % 
-      % 
-      % 
-      &= \frac12 \ttr\Big \{ \postcov \fwd^* (V^* \Sigma^{-1} \obs 
-      - \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs \\
-      &\ \ \ - \obs^* \Sigma^{-1} \obs \modcov V^* \Sigma^{-1}\obs 
-      + \obs^* \Sigma^{-1} V ) \fwd \Big \}  \text{ (by \eqref{eq:T})} \\
-      %
-      %
-      %
-      &= \tr{\postcov \fwd^* ( \obs^* \Sigma^{-1} V -
-      \obs^*\Sigma^{-1} V\modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
-      %
-      %
-      % 
-      &= \tr{\postcov \fwd^* \obs^* \Sigma^{-1} V 
-      ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd} \\
-      % 
-      %
-      %
-      &= \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
-      \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
-    %\end{split}
-  \end{align*} 
-  Recalling Definition \ref{def:var} concludes the proof.
-\end{proof}
 
 In a real-life optimal design problem we cannot choose any measurement
 operator $\obs \in (\hilo^*)^m$. In order to facilitate analysis, we
@@ -250,42 +137,7 @@ them and find their gradients in Proposition \ref{prop:constraints
   \end{equation*}
 \end{proposition}
 
-\begin{proof}
-  \begin{align*}
-    \delta \phi_j(\obs)V  
-    &= \frac12\lim_{\tau \to 0}\tau^{-1}
-    ( \|(\obs + \tau V)^*e_j \|_{\hilp}^2 - \|\obs ^*e_j \|_{\hilp}^2  ) \\
-    %
-    %
-    %
-    &= \frac12\lim_{\tau \to 0}\tau^{-1}
-    ( \langle (\obs + \tau V)^*e_j, (\obs + \tau V)^*e_j \rangle_{\hilp} - 
-    \langle \obs^*e_j, \obs^*e_j \rangle_{\hilp} ) \\
-    % 
-    % 
-    %
-    &= \frac12\lim_{\tau \to 0}\tau^{-1}
-    (2\tau \langle \obs^*e_j,V^*e_j \rangle_{\hilp} 
-    +\tau^2 \langle V^*e_j, V^*e_j \rangle_{\hilp} ) \\
-    %
-    %
-    % 
-    &= \langle \obs^*e_j,V^*e_j \rangle_{\hilp} \\
-    %
-    %
-    % 
-    &= \langle V \obs^*e_j,e_j \rangle_{\R^m} \\
-    %
-    %
-    %
-    &= e_j^t V \obs^* e_j \\
-    % 
-    %
-    %
-    &= \tr{V \obs^* e_je_j^t}.
-  \end{align*}
-\end{proof}
-
+The proof is straightforward and we delegate it to the Supplementary.
 
 %% The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
 

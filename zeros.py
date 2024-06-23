@@ -22,6 +22,10 @@ from pandas import isnull
 from numpy import sin, cos
 from scipy.stats import ortho_group
 from scipy.spatial.distance import cdist
+from matplotlib import pyplot as plt
+from joblib import Parallel, delayed
+from tqdm import tqdm
+import seaborn as sns
 
 EPS = 1e-9
 ortho = ortho_group.rvs
@@ -53,7 +57,7 @@ def givens(theta, dims, lower, upper):
 
    
 def MDUS(m, k):
-    """ Generate random:
+    """Generate and return random:
     M symmetric positive definite
     D diagonal with decreasing diagonal entries
     U orthogonal such that M = UDU^t
@@ -205,6 +209,47 @@ def get_A(M,
     return A
 
 
+def simulate(m, k):
+    """   
+    Generate a random D-optimal design, following Lemma from paper.
+    
+    Parameters
+
+    m: number of measurement points
+    k: Rank of O^*O
+
+    Returns
+    True if the design is clustered, False o.w.
+
+    """
+    
+    ## Random matrices such that:
+    ## M is symmetric positive definite
+    ## m = number of measurements
+    ## Number of nonzero entries in D
+    M, _, _, _ = MDUS(m, k)
+                
+    ## AA^t = M, and A has unit norm columns.
+    A = get_A(M, m)
+    
+    ## distances between columns of A
+    distances = cdist(A.T, A.T)
+    
+    ## Clusterization does not occur if all off-diagonal
+    ## distances are large. Diagonal has 0 entries, but
+    ## obviously that does not mean clusterization
+    ## occurs. Since we do not want to count the diagonal
+    ## entries as clustered, we fill diagonal with 1's
+    np.fill_diagonal(distances, 1)
+
+    ## Which distances are > 0 <==> which pairs of
+    ## measurements are ***not*** clustered
+    dis = distances > EPS
+    
+    ## If all distances are large, then measurements are not clustered
+    ## and the design does not exhibit sensor clusterization.
+    return {'m': m, 'k': k, 'cluster': not dis.all()}
+    
 
 def generic():
     """Run randomized simulations of D-optimal design with our model.
@@ -212,68 +257,49 @@ def generic():
     """
 
     ## Number of simulations per pair m, k.
-    N = 5000
-    
-    res = []
-    for m in range(4, 16):
-        print()
-        print(f'm={m}: k=', end=' ')
-        
-        for k in range(2, m-1):
-            print(k, end=' ')
-            
-            ## Counts how many simulated designs are clustered
-            counter = 0 
-
-            # N == number of simulations
-            for i in range(N):
-
-                ## Random matrices such that:
-                ## M is symmetric positive definite
-                ## m = number of measurements
-                ## Number of nonzero entries in D
-                M, _, _, _ = MDUS(m, k)
-
-                ## AA^t = M, and A has unit norm columns.
-                A = get_A(M, m)
-                
-                ## distances between columns of A
-                distances = cdist(A.T, A.T)
-
-                ## Clusterization does not occur if all off-diagonal
-                ## distances are large. Diagonal has 0 entries, but
-                ## obviously that does not mean clusterization
-                ## occurs. Since we do not want to count the diagonal
-                ## entries as clustered, we fill diagonal with 1's
-                np.fill_diagonal(distances, 1)
-
-                ## Which distances are > 0 <==> which pairs of
-                ## measurements are ***not*** clustered
-                dis = distances > 1e-9
-
-                ## If all measurements are not clustered --- the
-                ## design does not exhibit sensor clusterization.
-                if dis.all():
-
-                    ## Increment counter of non clustered designs
-                    counter += 1
-
-                dic = dict(m=m, ## Number of measurements
-                           k=k, ## Rank of O^*O
-                           cluster=1-counter/N ## Fraction of designs that ***are** clustered
-                           )
-
-            res.append(dic)
+    N = 50000
+   
+    def generator(N):
+        for m in range(4, 16):
+            for k in range(2, m):
+                for i in range(N):
+                    yield m, k
+                    
+    pairs = tqdm(list(generator(N)))
+    res = Parallel(n_jobs=-3)(delayed(simulate)(*pair) for pair in pairs)
     res = pd.DataFrame(res)
+    res = res.groupby(['m', 'k']).cluster.mean()
     res.to_csv("simulations.csv")
-    print("\nParameters such that the probability of clusterization is < 0.95:\n", res.query("cluster < 0.95"))
+  
+
+def main():
+    dd = pd.read_csv('simulations.csv')
+    dd['mmk'] = dd.m - dd.k
+    
+
+    b = sns.lineplot(data=dd,
+                     x='mmk',
+                     y='cluster',
+                     hue='m')
+
 
     
+    b.set_xlabel("m - k",fontsize=22)
+    b.set_ylabel("Clusterization Fraction",fontsize=22)
+    b.tick_params(labelsize=12)
+    plt.setp(b.get_legend().get_texts(), fontsize='12') # for legend text
+    plt.setp(b.get_legend().get_title(), fontsize='23') # for legend title
+
+    plt.tight_layout()
+    
+    plt.savefig("latex/simulations.png")
+    plt.show()
+
+
 if __name__ == '__main__':
     try:
-        generic()
-        test_givens()
-        test_theta()
+        # generic() ## Run this if you have time
+        main()
     except:
         import pdb, traceback, sys
         traceback.print_exc()

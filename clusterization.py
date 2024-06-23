@@ -13,7 +13,7 @@ def main():
     L = 1 ## Length of computational domain
     time = 3e-2 ## Time for heat dissipation in arbitrary units.
     alpha = 1. ## Coefficient of Laplacian in heat equation
-    gamma = -1. ## Exponent of Laplacian in prior. 
+    gamma = -1.1 ## Exponent of Laplacian in prior. 
 
     ## Choose one, comment out the other
     transform = 'dct' ## dct - Discrete Cosine Transform. Corresponds
@@ -59,10 +59,10 @@ def main():
     dic = {}
 
     ## Form  number of observations in this range
-    for m in range(2, 6):
+    for m in range(2, 7):
 
         ## Calculate an optimal design
-        design = post.optimize(m=m, n_iterations=25)['x']
+        design = post.optimize(m=m, n_iterations=500)['x']
 
         ## And store it in dic
         dic[m] = design
@@ -79,7 +79,7 @@ def main():
     ## at ordinate m, with different colors.
     for m, array in dic.items():
 
-        colors = iter(list("brgkm"))
+        colors = iter(list("brgkmc"))
         vals = np.repeat(m, len(array))
         ax.scatter(array, vals, s=0)
         for i, val in enumerate(array):
@@ -97,7 +97,7 @@ def main():
     ax.set_xlim(0,1)
     plt.tight_layout()
 
-    plt.savefig(f"latex/{transform}_modelError{model_error}.pdf")
+    plt.savefig(f"latex/{transform}_modelError{model_error}.png")
     #plt.show()
 
     ####################################
@@ -125,7 +125,7 @@ def main():
     plt.xlabel(r"$x \in \Omega$", fontsize=fs)
     plt.legend(title='eigenvector, weighted')
     plt.tight_layout()
-    plt.savefig(f"latex/eigenvectors_{transform}.pdf")
+    plt.savefig(f"latex/eigenvectors_{transform}.png")
     plt.show()
 
 

@@ -40,7 +40,7 @@ def main():
     #ax.set_ylim(np.min(u), np.max(u))
     ax.set_xlabel('Position')
     ax.set_ylabel('Temperature')
-    plt.savefig('forward_heat_equation.png')
+    plt.savefig('latex/forward_heat_equation.png')
 
     time_template = 'Time elapsed {}' 
     time_text = ax.text(0.95, 0.95, '', transform=ax.transAxes, ha='right', va='top')
@@ -53,7 +53,7 @@ def main():
         return line, time_text
 
     ani = animation.FuncAnimation(fig, update, frames=n, blit=True)
-    ani.save('forward_heat_equation.mp4', writer='ffmpeg', fps=30)
+    ani.save('latex/forward_heat_equation.mp4', writer='ffmpeg', fps=30)
     print('Done forward animation')
     
     ######################################
@@ -67,7 +67,7 @@ def main():
     ax.set_ylim(0, 0.7)
     ax.set_xlabel('Position')
     ax.set_ylabel('Temperature')
-    plt.savefig('reverse_heat_equation.png')
+    plt.savefig('latex/reverse_heat_equation.png')
 
     u_reversed = us[::-1]
     time_reversed = np.array(times)[::-1]
@@ -82,7 +82,7 @@ def main():
         return line, time_text
 
     ani = animation.FuncAnimation(fig, update, frames=n, blit=True)
-    ani.save('reverse_heat_equation.mp4', writer='ffmpeg', fps=30)
+    ani.save('latex/reverse_heat_equation.mp4', writer='ffmpeg', fps=30)
     print('Done backwards animation')
     plt.show()
 

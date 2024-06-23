@@ -5,7 +5,7 @@
 
 \setbeamertemplate{footline}[frame number]
 
-\title{Sensor Clusterization in Bayesian D-optimal Designs for Inverse Problems}
+\title{Sensor Clusterization in Bayesian D-optimal Designs}
 \author{Yair Daon}
 \institute{Azrieli Faculty of Medicine, Bar-Ilan University}
 \date{}
@@ -47,17 +47,24 @@
   \end{align*}
 \end{subequations}
 
-
 \begin{figure}
   \centering
-  \href{run:forward_heat_equation.mp4}{\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}}    
-
-  %% \includemovie[inline=false,text={\includegraphics[scale=0.25]{forward_heat_equation.png}}]{}{}{forward_heat_equation.mp4}
-  %% \flashmovie[width=12cm,height=8cm,engine=flv-player,auto=1]{forward_heat_equation.mp4}
-  %% \movie[width=10cm,height=6cm,poster,autostart,loop]{
-  %%   %\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}
-  %% }{forward_heat_equation.mp4}
+  \includegraphics[width=10cm,height=6cm]{heat_rod.png} 
 \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \begin{figure}
+%    \centering
+    \href{run:forward_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{forward_heat_equation.png}}    
+    
+    %% \includemovie[inline=false,text={\includegraphics[scale=0.25]{forward_heat_equation.png}}]{}{}{forward_heat_equation.mp4}
+    %% \flashmovie[width=12cm,height=8cm,engine=flv-player,auto=1]{forward_heat_equation.mp4}
+    %% \movie[width=10cm,height=6cm,poster,autostart,loop]{
+    %%   %\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}
+    %% }{forward_heat_equation.mp4}
+  \end{figure}
 \end{frame}
 
 
@@ -67,12 +74,21 @@
 % Argue that there are many valid solutions
 % Explain that such problems are ill-posed
 
-\begin{itemize}
-  \item<1-> \(\fwd: \hil \to \hil\). 
-  \item<2-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
-  \item<3-> \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
-\end{itemize}
-
+\begin{minipage}{0.5\textwidth}
+  \begin{itemize}
+    \item<1-> Separable Hilbert space $\hil$.
+    \item<2-> \(\fwd: \hil \to \hil\).
+    \item<3-> \(\meas_j \in \hil^*, j=1,\dots,m \).
+    \item<4-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
+    \item<5-> \(\data := \obs \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
+  \end{itemize}
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.99\textwidth]{CT.png}\\
+    \vspace{0.5cm}
+    \includegraphics[width=0.99\textwidth]{borehole.png}
+\end{minipage}
 % Show "sensor" and discuss measurement placement
 
 % Present the entire formalism of inverse problems from the paper, for zero model error
@@ -82,10 +98,10 @@
 \begin{frame}
   \frametitle{Ill Posedness}
   %% \begin{figure}
-    \href{run:reversed_heat_equation.mp4}{\includegraphics[width=10cm,height=6cm]{reversed_heat_equation.png}}    
+    \href{run:reverse_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{reverse_heat_equation.png}}    
   %%   \movie[width=10cm,height=6cm,poster,autostart,loop]{
-  %%     \includegraphics[width=10cm,height=6cm]{reversed_heat_equation.png}
-  %% }{reversed_heat_equation.mp4}
+  %%     \includegraphics[width=10cm,height=6cm]{reverse_heat_equation.png}
+  %% }{reverse_heat_equation.mp4}
   %% \end{figure}
 \end{frame}
 
@@ -93,6 +109,7 @@
 \begin{frame}
 \frametitle{Bayesian Inverse Problems (Stuart 2010)}
 \begin{itemize}
+\item Separable Hilbert space $\hil$.
 \item \(\fwd: \hil \to \hil\). 
 \item \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
 \item \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,I_m)\)
@@ -104,7 +121,7 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Gaussian measures on Hilbert spaces}
+\frametitle{Gaussian measures on Separable Hilbert spaces}
 \begin{figure}
    \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
 \end{figure}
@@ -123,7 +140,7 @@
 \frametitle{Recap and notation summary}
 
 \begin{itemize}
-\item Hilbert space \(\hil\) 
+\item Separable Hilbert space \(\hil\).
 \item Forward operator \(\fwd: \hil \to \hil\).
 %\item Observation operator \(\obs: \hil \to \mathbb{R}^m\).
 \item Observation operator \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\ u \in \hil\).
@@ -135,18 +152,64 @@
 \end{frame}
 
 \begin{frame}
-  Best \(\obs\) maximizes \(D_{\text{KL}} (\post || \pr )\).
+ 
+\end{frame}
+
+
+
+
+
+\begin{frame}
+ 
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{borehole.png}
+      \end{figure}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{heat_rod.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{CT.png}
+      \end{figure}
+      How do we choose $\obs$?
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}
+  D-optimal \(\obs\) maximizes
+  \begin{equation*}
+    \onslide<3->{\mathbb{E}_{\data} \Big [}D_{\text{KL}} (\post || \pr ) \onslide<3->{\Big ]}
+    \onslide<2->{=} \onslide<3->{\mathbb{E}_{\data} \Big [}\onslide<2->{\int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)}  \onslide<3->{\Big ]}
+  \end{equation*}
+
+
+
+  %% \begin{equation*}
+  %%   \onslide<1->{\phantom{\mathbb{E_{\data}}}}D_{\text{KL}} (\post || \pr ) = \onslide<1->{\phantom{\mathbb{E_{\data}}}} \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)
+  %%   \onslide<2->{\mathbb{E_{\data}}}
+  %% \end{equation*}
+  %% \vspace{-2.5em} % Adjust this value if necessary to align the second line correctly
+  %% \begin{equation*}
+  %%   \onslide<2->{\mathbb{E_{\data}}}
+  %% \end{eion*}
+
+  
 \end{frame}
 
 % Slide 10: D-optimality criterion
 \begin{frame}
   \frametitle{D-optimality criterion}
-  \begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
-    Let \(\pr = \normal(\prmean,\prcov)\) a Gaussian prior on \(\hil\)
-    and let \(\post = \normal(\postmean,\postcov)\) the posterior.
+  \begin{theorem}[Alexanderian, Gloor, Ghattas (2014)]\label{thm:d optimality}
+    %% Let \(\pr = \normal(\prmean,\prcov)\) a Gaussian prior on \(\hil\)
+    %% and let \(\post = \normal(\postmean,\postcov)\) the posterior.
     %% measure on \(\hil\) for the Bayesian linear inverse problem
     %% \(\data = \obs \fwd\param + \eps\).
-    Then
+    %% Then
     \begin{align*}
       \begin{split}
         \tar( \obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
@@ -158,6 +221,13 @@
       \end{split}
     \end{align*}
   \end{theorem}
+
+  \pause
+  \begin{definition}
+  \(\opt\) is \emph{D-optimal} if \(\opt = \argmax_{\obs}
+  \tar(\obs)\).
+  \end{definition}
+
 
 % Show the D-optimality criterion from Alexanderian et al.
 % Assume linear forward operator and linear observation operator
@@ -173,30 +243,32 @@
     %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
   \end{split}
   \end{align*}
+
+  \pause D-optimal designs minimize $\det \postcov$.
 \end{frame}
 
 
-\begin{frame}
-  Recall \(\tar( \obs) = \frac12 \log \det ( I + 
-  \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\).
+%% \begin{frame}
+%%   Recall \(\tar( \obs) = \frac12 \log \det ( I + 
+%%   \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\).
 
-  \begin{definition}
-  \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
-  \argmax_{\obs} \tar(\obs)\).
-  \end{definition}
+%%   \begin{definition}
+%%   \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
+%%   \argmax_{\obs} \tar(\obs)\).
+%%   \end{definition}
   
-  %% , where entries of \(\obs \in (\hil^*)^m\)
-  %% are constrained to some allowed set of measurements in \(\hil^*\). 
+%%   %% , where entries of \(\obs \in (\hil^*)^m\)
+%%   %% are constrained to some allowed set of measurements in \(\hil^*\). 
 
-  %% \(\obs\) must be constrained somehow! E.g.~norm has to be bounded.
-\end{frame}
+%%   %% \(\obs\) must be constrained somehow! E.g.~norm has to be bounded.
+%% \end{frame}
 
 
 \begin{frame}
 \frametitle{Problem: Sensor clusterization}
 \begin{figure}
-    \centering
-    \includegraphics[height=0.5\textwidth]{example.pdf}
+  \centering
+  \includegraphics[height=0.5\textwidth]{dst_modelError0.png}
 \end{figure}
 
 % Discuss sensor clusterization in the 1D heat equation example
@@ -209,14 +281,14 @@
   \begin{columns}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
-      \item<1> Distance constraints, correlated errors (Ucinski 2005).
-      \item<2> Merging close measurements (Fedorov 1997).
+      \item<1> Merging close measurements (Fedorov 1997).
+      \item<2> Distance constraints, correlated errors (Ucinski 2005).
       \item<3> A finite set of locations (Alexanderian et al. 2020).
       \end{itemize}
     \end{column}
     \begin{column}{0.55\textwidth}
-      \only<1>{\includegraphics[width=\textwidth]{constraints.png}}
-      \only<2>{\includegraphics[width=\textwidth]{merge.png}}
+      \only<1>{\includegraphics[width=\textwidth]{merge.png}}
+      \only<2>{\includegraphics[width=\textwidth]{constraints.png}}
       \only<3>{\includegraphics[width=\textwidth]{stadler_OED.png}}
     \end{column}
   \end{columns}  
@@ -225,7 +297,7 @@
 
 
 \begin{frame}
-\frametitle{Generic Questions}
+\frametitle{Questions}
 \begin{itemize}
 \item Why does imposing correlations between observations alleviate
 measurement clusterization?
@@ -238,10 +310,10 @@ measurement clusterization?
 \end{frame}
 
 \begin{frame}
-\frametitle{A "generic" inverse problem}
+\frametitle{A generic formulation for D-optimality}
 
 \begin{itemize}
-\item Hilbert space \(\hil\).
+\item Separable Hilbert space \(\hil\).
 \item Forward operator \(\fwd: \hil \to \hil\).
 \item Observations \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\).
 \item Prior and posterior covariance \( \prcov, \postcov\).
@@ -252,8 +324,7 @@ measurement clusterization?
   \argmax_{\obs} \tar(\obs)\).
 \end{itemize}
 
-\(\obs\) must be constrained somehow! E.g.~norm has to be bounded.
-Constrain \(\meas_j\) to the unit ball \(B_{\hil} := \{x\in \hil| \|x\| = 1\}\).
+\(\obs\) must be constrained somehow: \(\|\meas_j\| \leq 1\).
 
 %% \begin{align}\label{eq:objective}
 %%   \begin{split}
@@ -277,7 +348,7 @@ Constrain \(\meas_j\) to the unit ball \(B_{\hil} := \{x\in \hil| \|x\| = 1\}\).
 % Ask the audience how to solve constrained optimization problems (Lagrange multipliers)
 \begin{align*}
   \begin{split}
-  \obs &= \argmax\tar(\obs)\\
+  \opt &= \argmax\tar(\obs)\\
   \text{subject to }& \|\meas_j\| = 1 \text{ for } j=1,\dots,m.
   \end{split}
 \end{align*}
@@ -289,7 +360,7 @@ Where
     % 
     % 
     % 
-    &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \obs \fwd
+    &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \opt^* \opt \fwd
     \prcov^{1/2}).
   \end{split}
 \end{align*}
@@ -299,80 +370,85 @@ Where
 %% \frametitle{Necessary conditions for optimality}
 % Present the nonlinear eigenvalue problem for the vanishing model error case
 % Explain why it is called a "nonlinear" eigenvalue problem
-
-%% \begin{theorem}[Necessary conditions for D-Optimality]
-  Let:
-  \begin{align*}
-    \begin{split}
-      \obs &= \argmax\tar(\obs)\\
-      \text{subject to }& \|\meas_j\| = 1 \text{ for } j=1,\dots,m.
-    \end{split}
-  \end{align*}
   
-  Then:
-  \[
-   \fwd \postcov \fwd^* \obs^* = \obs^* \Xi
-  \]
-
-  %% \begin{equation*}
-  %%    \fwd \postcov \fwd^* \obs^* = \obs^* \Xi, 
-  %% \end{equation*}
-  where \(\Xi \in \mathbb{R}^{m \times m}\) is diagonal.
-%% \end{theorem}
+  \begin{theorem}[D.]
+    Let:
+    \begin{align*}
+      \begin{split}
+        \opt &= \argmax\tar(\obs)\\
+        \text{subject to }& \|\meas_j\| = 1 \text{ for } j=1,\dots,m.
+      \end{split}
+  \end{align*}
+    
+    Then:
+    \[
+    \fwd \postcov \fwd^* \opt^* = \opt^* \Xi
+    \]
+  
+    %% \begin{equation*}
+    %%    \fwd \postcov \fwd^* \obs^* = \obs^* \Xi, 
+    %% \end{equation*}
+    where \(\Xi \in \mathbb{R}^{m \times m}\) is diagonal.
+  \end{theorem}
 
 \end{frame}
 
 
 \begin{frame}
 %% \frametitle{Implication of first-order conditions}
-  \frametitle{Theorem (part 1)}
-
-  \begin{gather*}
-    \fwd\prcov\fwd^* \text{ and } \obs^* \obs \text{ are simultaneously diagonalizable}.\\
-    \Uparrow \\
-    \onslide<2->{\left( (\fwd\prcov\fwd^*)^{-1} + \obs^* \obs \right)^{-1} \obs^* = \obs^* \Xi \\
-    \Uparrow  \\
-    \fwd  \left(\prcov^{-1} + \fwd^* \obs^*\obs \fwd \right)^{-1} \fwd^* \obs^* = \obs^* \Xi  \\
-    \Uparrow}  \\
-    \fwd \postcov \fwd^* \obs^* = \obs^* \Xi  \\
-  \end{gather*}
+ 
+  \begin{theorem}[D.]
+    \begin{gather*}
+      \fwd\prcov\fwd^* \text{ and } \opt^* \opt \text{ are simultaneously diagonalizable}.\\
+      \Uparrow \\
+      \onslide<3->{\left( (\fwd\prcov\fwd^*)^{-1} + \opt^* \opt \right)^{-1} \opt^* = \opt^* \Xi \\
+        \Uparrow}  \\
+      \onslide<2->{\fwd  \left(\prcov^{-1} + \fwd^* \opt^*\opt \fwd \right)^{-1} \fwd^* \opt^* = \opt^* \Xi  \\
+        \Uparrow}  \\
+      \fwd \postcov \fwd^* \opt^* = \opt^* \Xi  \\
+    \end{gather*}
+  \end{theorem}
+  \uncover<4->{Proof idea: Consider invariant space of each eigenvalue, use spectral decomposition.}
 \end{frame}
 
 
-\begin{frame}
-  %\frametitle{Simultaneous diagonizability}
-  \begin{lemma}
-    %% Let \(\hil\) separable Hilbert space,
-    Let \(C:\hil \to \hil\) with orthogonal eigenbasis.
-    %% and \(\func_1,\dots,\func_m \in \hil\). Denote \(\func^*\) the element
-    %% \(\func\) acting as a linear functional. If
-  \begin{equation*}
-    (C + \sum_{j=1}^m \func_j\func_j^*) \func_l = \xi_l \func_l,\ l = 1, \dots, m.
-  \end{equation*}
-  $\Rightarrow$ \(C\) and \(\sum_{j=1}^m \func_j \func_j^*\) are simultaneously
-  diagonalizable.
-  \end{lemma}
-Proof idea: Consider invariant space of each eigenvalue, use spectral decomposition.
-\end{frame}
+%% \begin{frame}
+%%   %\frametitle{Simultaneous diagonizability}
+%%   \begin{lemma}
+%%     %% Let \(\hil\) separable ilbert space,
+%%     Let \(C:\hil \to \hil\) with orthogonal eigenbasis.
+%%     %% and \(\func_1,\dots,\func_m \in \hil\). Denote \(\func^*\) the element
+%%     %% \(\func\) acting as a linear functional. If
+%%   \begin{equation*}
+%%     (C + \sum_{j=1}^m \func_j\func_j^*) \func_l = \xi_l \func_l,\ l = 1, \dots, m.
+%%   \end{equation*}
+%%   $\Rightarrow$ \(C\) and \(\sum_{j=1}^m \func_j \func_j^*\) are simultaneously
+%%   diagonalizable.
+%%   \end{lemma}
+%% Proof idea: Consider invariant space of each eigenvalue, use spectral decomposition.
+%% \end{frame}
 
 
 \begin{frame}
-  \frametitle{Theorem (part 2)}
-  Let:
-  \begin{itemize}
-  \item \(\{\eta_i\}_{i=1}^{\infty}\) eigenvalues of \(\obs^*\obs\).
-  \item \(\{\lambda_i\}_{i=1}^{\infty}\) corresponding eigenvalues of \(\fwd \prcov \fwd^*\).
-  \item \(\obs\) D-optimal.
-  \end{itemize}
-  Then \(\eta_i > 0\) for eigenvectors corresponding to largest \(\lambda_i\).
+  \begin{theorem}[D.]
+    Let:
+    \begin{itemize}
+      \item \(\opt\) a D-optimal design.
+      \item \(\{\eta_i\}_{i=1}^{\infty}\) eigenvalues of \(\opt^*\opt\).
+      \item \(\{\lambda_i\}_{i=1}^{\infty}\) corresponding eigenvalues of \(\fwd \prcov \fwd^*\).
+    \end{itemize}
+    Then \(\eta_i > 0\) for eigenvectors corresponding to largest \(\lambda_i\).
+  \end{theorem}
+  
+  
+  \uncover<2->{How many? \(\rank \opt^*\opt\).}
 
-  How many? \(\rank \obs^*\obs\).
-
-  Why?
-  \begin{align*}
-    \det(I + \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2}) \sim \prod (1+\lambda_i\eta_i)
-  \end{align*}
-    %% INTRODUCE CYLINDERS!!!!
+  \uncover<3->{Why?
+    \begin{align*}
+      \det(I + \prcov^{1/2}  \fwd ^* \opt^* \opt \fwd \prcov^{1/2}) \sim \prod (1+\lambda_i\eta_i)
+    \end{align*}
+  }
+  %% INTRODUCE CYLINDERS!!!!
 \end{frame}
 
 
@@ -450,18 +526,19 @@ Proof idea: Consider invariant space of each eigenvalue, use spectral decomposit
 
 
 \begin{frame}
-  \frametitle{Theorem (part 3)}
-  The covariance of the pushforwad \(\fwd_{*} \post\)
-  %is \(\left ( (\fwd \prcov \fwd^*)^{-1} +  \obs^*\obs
-  %\right )^{-1}\) and its
-  has eigenvalues 
-  \begin{equation*}
-    \theta_i =
-    \begin{cases}
-      \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} & i \leq k \\
-      \lambda_i &  i > k 
-    \end{cases}
-  \end{equation*}
+  \begin{theorem}[D.]
+    The covariance of the pushforwad \(\fwd_{*} \post\)
+    %is \(\left ( (\fwd \prcov \fwd^*)^{-1} +  \obs^*\obs
+    %\right )^{-1}\) and its
+    has eigenvalues 
+    \begin{equation*}
+      \theta_i =
+      \begin{cases}
+        \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} & i \leq k \\
+        \lambda_i &  i > k 
+      \end{cases}
+    \end{equation*}
+  \end{theorem}
 \end{frame}
 
 \begin{frame}
@@ -514,7 +591,7 @@ Proof idea: Consider invariant space of each eigenvalue, use spectral decomposit
   \frametitle{Four Sensors in the 1D Heat Equation}
   \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{eigenvectors.pdf}
+    \includegraphics[width=\textwidth]{eigenvectors_dst.png}
   \end{figure}
 \end{frame}
 
