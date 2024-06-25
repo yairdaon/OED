@@ -1,11 +1,14 @@
 \documentclass{beamer}
 \input{definitions}
 
+\usefonttheme{professionalfonts} % using non standard fonts for beamer
+\usefonttheme{serif} % default family is serif
+\usepackage{fontspec}
+\setmainfont{Liberation Serif}
 \usepackage{multimedia}
-
 \setbeamertemplate{footline}[frame number]
 
-\title{Sensor Clusterization in Bayesian D-optimal Designs}
+\title{Measurement Clusterization in Bayesian D-optimal Designs}
 \author{Yair Daon}
 \institute{Azrieli Faculty of Medicine, Bar-Ilan University}
 \date{}
@@ -19,8 +22,62 @@
   \titlepage
 \end{frame}
 
+
 \begin{frame}
-\frametitle{Forward problem}
+  \frametitle{Inverse Problems}
+  % Explain the inverse problems for the ball toss, flow field examples
+  % Argue that there are many valid solutions
+  % Explain that such problems are ill-posed
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{inverse_problem.png}
+  \end{figure}
+
+  \footnotesize{Neumayer, Suppan and Bretterklieber (2019)}
+  %Paper: Statistical solution of inverse problems using a state
+  %reduction. Image of electrical capacitance tomography (ECT).
+\end{frame}
+
+
+\begin{frame}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      
+      \begin{itemize}
+      \item<3-> Separable Hilbert space $\hil$.
+      \item<4-> \(\fwd: \hil \to \hil\).
+      \item<5-> \(\meas_j \in \hil^*, j=1,\dots,m \).
+      %\item<6-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
+      \item<6-> \(\data_j := \meas_j \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
+      \end{itemize}
+  
+      \begin{figure}
+        \centering
+        \only<2->{\includegraphics[width=1.3\textwidth, height=0.76\textwidth]{heat_rod.png}}
+      \end{figure}
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{CT.png}
+      \end{figure}
+
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth, height=4cm]{borehole.png}
+      \end{figure}
+      
+    \end{column}
+  \end{columns}
+  \footnotesize{Wikimedia Commons, Conroy and Guy 2005, radiologykey.com }
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Forward Problems}
 % Example 1: Ball toss
 % Example 2: Flow field (placeholder for image)
 % Example 3: Ink in water
@@ -37,26 +94,29 @@
 
 
 
+
 \begin{frame}
-\frametitle{1D Heat Equation}
+\frametitle{Heat Equation}
 \begin{subequations}
   \begin{align*}
-    u_t &= \Delta u &&\qquad \text{in } [0,1] \times [0,\infty),\\
-      u &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty),\\
-        u &= u_0 &&\qquad \text{on }[0,1] \times \{0\}.
+    u_t &= \Delta u &&\qquad \text{in } [0,l] \times [0,\infty),\\
+    u &= 0 &&\qquad \text{on } \{0, l\} \times [0,\infty),\\
+    u &= f &&\qquad \text{on }[0,l] \times \{0\}.
   \end{align*}
 \end{subequations}
 
 \begin{figure}
   \centering
-  \includegraphics[width=10cm,height=6cm]{heat_rod.png} 
+  \includegraphics[width=8cm,height=5cm]{heat_rod.png} 
 \end{figure}
+
+\footnotesize{Wikimedia Commons}
 \end{frame}
 
 
 \begin{frame}
   \begin{figure}
-%    \centering
+    \centering
     \href{run:forward_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{forward_heat_equation.png}}    
     
     %% \includemovie[inline=false,text={\includegraphics[scale=0.25]{forward_heat_equation.png}}]{}{}{forward_heat_equation.mp4}
@@ -68,43 +128,79 @@
 \end{frame}
 
 
-\begin{frame}
-\frametitle{Inverse Problems}
-% Explain the inverse problems for the ball toss, flow field examples
-% Argue that there are many valid solutions
-% Explain that such problems are ill-posed
+  
+%% \begin{minipage}{0.5\textwidth}
+%%   \begin{itemize}
+%%     \item<1-> Separable Hilbert space $\hil$.
+%%     \item<2-> \(\fwd: \hil \to \hil\).
+%%     \item<3-> \(\meas_j \in \hil^*, j=1,\dots,m \).
+%%     \item<4-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
+%%     \item<5-> \(\data := \obs \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
+%%   \end{itemize}
+%% \end{minipage}%
+%% \begin{minipage}[t]{0.5\textwidth}
+%%     \centering
+%%     \includegraphics[width=0.99\textwidth]{CT.png}\\
+%%     \vspace{0.5cm}
+%%     \includegraphics[width=0.99\textwidth]{borehole.png}
+%% \end{minipage}
 
-\begin{minipage}{0.5\textwidth}
-  \begin{itemize}
-    \item<1-> Separable Hilbert space $\hil$.
-    \item<2-> \(\fwd: \hil \to \hil\).
-    \item<3-> \(\meas_j \in \hil^*, j=1,\dots,m \).
-    \item<4-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
-    \item<5-> \(\data := \obs \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
-  \end{itemize}
-\end{minipage}%
-\begin{minipage}[t]{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.99\textwidth]{CT.png}\\
-    \vspace{0.5cm}
-    \includegraphics[width=0.99\textwidth]{borehole.png}
-\end{minipage}
 % Show "sensor" and discuss measurement placement
 
 % Present the entire formalism of inverse problems from the paper, for zero model error
-\end{frame}
+% \end{frame}
 
 
 \begin{frame}
   \frametitle{Ill Posedness}
-  %% \begin{figure}
+  \begin{figure}
+    \centering
     \href{run:reverse_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{reverse_heat_equation.png}}    
-  %%   \movie[width=10cm,height=6cm,poster,autostart,loop]{
-  %%     \includegraphics[width=10cm,height=6cm]{reverse_heat_equation.png}
-  %% }{reverse_heat_equation.mp4}
-  %% \end{figure}
+    %% \movie[width=10cm,height=6cm,poster,autostart,loop]{
+    %% \includegraphics[width=10cm,height=6cm]{reverse_heat_equation.png}
+    %% }{reverse_heat_equation.mp4}
+  \end{figure}
 \end{frame}
 
+
+\begin{frame}
+  \frametitle{Bayes' Theorem}
+  \begin{center}
+    \begin{tikzpicture}[scale=1.5]
+      
+      % Bayes' Theorem formula
+      \node (theorem) at (0,0) {\huge $\Pr(\param|\data) \propto \Pr(\data|\param) \Pr(\param)$};
+      
+      % Likelihood arrow
+      \draw[->, thick, blue] (2.5,1.5) -- (2,0.5) node[pos=0, above] {Prior};
+
+      % Prior arrow
+      \draw[->, thick, green] (0,1.5) -- (0.5,0.5) node[pos=0, above] {Likelihood};
+
+      % Posterior arrow
+      \draw[->, thick, red] (-2.5,1.5) -- (-1.5,0.5) node[pos=0, above] {Posterior};
+
+    \end{tikzpicture}
+  \end{center}
+
+\end{frame}
+
+
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{bayes.png}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{bayesian_inverse_problems.jpg}
+  \end{center}
+
+  \footnotesize{Alexanderian (2021).}
+\end{frame}
 
 \begin{frame}
 \frametitle{Bayesian Inverse Problems (Stuart 2010)}
@@ -112,32 +208,35 @@
 \item Separable Hilbert space $\hil$.
 \item \(\fwd: \hil \to \hil\). 
 \item \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
-\item \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,I_m)\)
+\item \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,I_m)\).
 \item \(\pr \sim \mathcal{N}(\prmean, \prcov)\).
 \item \(\post \sim \mathcal{N}(\postmean, \postcov)\).
 \end{itemize}
-
-% Introduce prior and posterior measurea 
-\end{frame}
-
-\begin{frame}
-\frametitle{Gaussian measures on Separable Hilbert spaces}
-\begin{figure}
-   \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
-\end{figure}
-
-\begin{align*}
-  \postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd
-\end{align*}
 
 % Define Gaussian measure
 % Show a 2D example with iso-density lines and projections
 % Introduce notation for mean $\mathbf{m}$ and covariance $\Gamma$
 \end{frame}
 
+\begin{frame}
+\frametitle{Gaussian measures}
+\begin{figure}
+   \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
+\end{figure}
+
+\begin{align*}
+  \pr &\sim \mathcal{N}(\prmean, \prcov), \text{ $\prcov$ is trace-class}\\
+  \onslide<2->{&\postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd} 
+\end{align*}
+
+\footnotesize{Wikimedia Commons}
+% Introduce prior and posterior measurea 
+\end{frame}
+
+
 % Slide 8: Recap and notation summary
 \begin{frame}
-\frametitle{Recap and notation summary}
+\frametitle{Recap}
 
 \begin{itemize}
 \item Separable Hilbert space \(\hil\).
@@ -146,42 +245,60 @@
 \item Observation operator \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\ u \in \hil\).
 \item Data \(\data := \obs \fwd \param + \eps,\ \eps \sim \mathcal{N}(0,I_m)\).
 \item Prior \(\pr\) with covariance \(\prcov\).
-\item Posterior \(\post\) with covariance \(\postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd\)
+\item Posterior \(\post\) with precision \(\postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd\).
 \end{itemize}
-%% 1D heat equation
-\end{frame}
-
-\begin{frame}
- 
+%% heat equation
 \end{frame}
 
 
 
 
 
+
+
+
+
+
+
 \begin{frame}
- 
+  \frametitle{How to choose $\obs$?}
   \begin{columns}
     \begin{column}{0.5\textwidth}
+      
+      \begin{itemize}
+      \item \(\fwd: \hil \to \hil\).
+      \item \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
+      \item \(\data := \obs \fwd \param + \eps\).
+      \item Prior $\pr$, posterior $\post$ ...
+      \end{itemize}
+  
       \begin{figure}
-        \includegraphics[width=\linewidth]{borehole.png}
-      \end{figure}
-      \begin{figure}
-        \includegraphics[width=\linewidth]{heat_rod.png}
+        \centering
+        \includegraphics[width=1.2\textwidth, height=0.66\textwidth]{heat_rod.png}
       \end{figure}
     \end{column}
+
     \begin{column}{0.5\textwidth}
+
       \begin{figure}
-        \includegraphics[width=\linewidth]{CT.png}
+        \centering
+        \includegraphics[width=\linewidth, height=3.5cm]{CT.png}
       \end{figure}
-      How do we choose $\obs$?
+
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth, height=3.5cm]{borehole.png}
+      \end{figure}
+      
     \end{column}
   \end{columns}
+  %\footnotesize{Wikimedia Commons, Conroy and Guy 2005, radiologykey.com }
 \end{frame}
 
 
+
 \begin{frame}
-  D-optimal \(\obs\) maximizes
+  Maximize \only<4->{over $\obs$}
   \begin{equation*}
     \onslide<3->{\mathbb{E}_{\data} \Big [}D_{\text{KL}} (\post || \pr ) \onslide<3->{\Big ]}
     \onslide<2->{=} \onslide<3->{\mathbb{E}_{\data} \Big [}\onslide<2->{\int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)}  \onslide<3->{\Big ]}
@@ -203,7 +320,7 @@
 
 % Slide 10: D-optimality criterion
 \begin{frame}
-  \frametitle{D-optimality criterion}
+  % \frametitle{D-optimality criterion}
   \begin{theorem}[Alexanderian, Gloor, Ghattas (2014)]\label{thm:d optimality}
     %% Let \(\pr = \normal(\prmean,\prcov)\) a Gaussian prior on \(\hil\)
     %% and let \(\post = \normal(\postmean,\postcov)\) the posterior.
@@ -238,13 +355,13 @@
   \begin{align*}
   \begin{split}
     \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\\ 
-    &= \frac12 \log \det \Big( \prcov ( \prcov^{-1} +  \fwd ^* \obs^* \obs \fwd) \Big )\\
-    &= \frac12 \log \det \prcov \postcov^{-1}.
+    \onslide<2->{&= \frac12 \log \det \Big( \prcov ( \prcov^{-1} +  \fwd ^* \obs^* \obs \fwd) \Big )\\}
+    \onslide<3->{&= \frac12 \log \det \prcov \postcov^{-1}.}
     %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
   \end{split}
   \end{align*}
 
-  \pause D-optimal designs minimize $\det \postcov$.
+  \onslide<4->{D-optimal designs minimize $\det \postcov$.}
 \end{frame}
 
 
@@ -253,7 +370,7 @@
 %%   \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\).
 
 %%   \begin{definition}
-%%   \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
+%%   \(\opt\) is \emph{D-optimal} if \(\opt =
 %%   \argmax_{\obs} \tar(\obs)\).
 %%   \end{definition}
   
@@ -265,13 +382,13 @@
 
 
 \begin{frame}
-\frametitle{Problem: Sensor clusterization}
+\frametitle{Problem: Clusterization}
 \begin{figure}
   \centering
   \includegraphics[height=0.5\textwidth]{dst_modelError0.png}
 \end{figure}
 
-% Discuss sensor clusterization in the 1D heat equation example
+% Discuss sensor clusterization in the heat equation example
 % Show figure from the paper (placeholder for figure)
 \end{frame}
 
@@ -299,12 +416,12 @@
 \begin{frame}
 \frametitle{Questions}
 \begin{itemize}
-\item Why does imposing correlations between observations alleviate
+\item<2-> Why does imposing correlations between observations alleviate
 measurement clusterization?
 %
-\item Is measurement clusterization a generic phenomenon?
+\item<3-> Is measurement clusterization a generic phenomenon?
 %
-\item And, most importantly: Why does measurement clusterization occur?
+\item<4-> And, most importantly: \onslide<5->{Why does measurement clusterization occur?}
 % How do we tackle this problem?
 \end{itemize}
 \end{frame}
@@ -315,16 +432,16 @@ measurement clusterization?
 \begin{itemize}
 \item Separable Hilbert space \(\hil\).
 \item Forward operator \(\fwd: \hil \to \hil\).
-\item Observations \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\).
+\item Observations \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
 \item Prior and posterior covariance \( \prcov, \postcov\).
 \item Data \(\data := \obs \fwd \param + \eps\).
 \item \(\tar( \obs) = \frac12 \log \det ( I + 
   \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})\).
-\item \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
-  \argmax_{\obs} \tar(\obs)\).
+\item \(\opt\) is \emph{D-optimal} if \(\opt = \argmax_{\obs}
+  \tar(\obs)\).
 \end{itemize}
 
-\(\obs\) must be constrained somehow: \(\|\meas_j\| \leq 1\).
+\pause \(\obs\) must be constrained somehow:\pause \(\|\meas_j\| \leq 1\).
 
 %% \begin{align}\label{eq:objective}
 %%   \begin{split}
@@ -341,7 +458,7 @@ measurement clusterization?
 
 % Slide 15: Constrained optimization problem
 \begin{frame}
-\frametitle{Constrained optimization problem}
+%\frametitle{Constrained optimization problem}
 % Restate the optimization criterion from Alexandrian et al.'s theorem
 % Restate the unit norm constraints
 % Pose the problem as a constrained optimization problem
@@ -360,7 +477,7 @@ Where
     % 
     % 
     % 
-    &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \opt^* \opt \fwd
+    &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \obs \fwd
     \prcov^{1/2}).
   \end{split}
 \end{align*}
@@ -390,7 +507,7 @@ Where
     %% \end{equation*}
     where \(\Xi \in \mathbb{R}^{m \times m}\) is diagonal.
   \end{theorem}
-
+  \pause Proof idea: Lagrange multipliers.
 \end{frame}
 
 
@@ -408,7 +525,7 @@ Where
       \fwd \postcov \fwd^* \opt^* = \opt^* \Xi  \\
     \end{gather*}
   \end{theorem}
-  \uncover<4->{Proof idea: Consider invariant space of each eigenvalue, use spectral decomposition.}
+  \uncover<4->{Proof idea: invariant space for each eigenvalue, use spectral decomposition.}
 \end{frame}
 
 
@@ -437,13 +554,13 @@ Where
       \item \(\{\eta_i\}_{i=1}^{\infty}\) eigenvalues of \(\opt^*\opt\).
       \item \(\{\lambda_i\}_{i=1}^{\infty}\) corresponding eigenvalues of \(\fwd \prcov \fwd^*\).
     \end{itemize}
-    Then \(\eta_i > 0\) for eigenvectors corresponding to largest \(\lambda_i\).
+    \uncover<2->{Then \(\eta_i > 0\) for eigenvectors corresponding to largest \(\lambda_i\).}
   \end{theorem}
   
   
-  \uncover<2->{How many? \(\rank \opt^*\opt\).}
+  \uncover<3->{How many? \(\rank \opt^*\opt\).}
 
-  \uncover<3->{Why?
+  \uncover<4->{Why?
     \begin{align*}
       \det(I + \prcov^{1/2}  \fwd ^* \opt^* \opt \fwd \prcov^{1/2}) \sim \prod (1+\lambda_i\eta_i)
     \end{align*}
@@ -454,9 +571,9 @@ Where
 
 \pgfplotstableread{
   Label     prior  optimal  sub-optimal  worst
-  1         0.2    1.8           1.7      1.7
+  1         0.2    1.8           1.7      2.3
   2         0.8    1.2           0.8      0.0
-  3         2.2    0             0.5      0.5
+  3         2.2    0             0.5      0.7
   4         3.5    0             0.0      0.0
 }\optimalvsnot
 
@@ -527,17 +644,13 @@ Where
 
 \begin{frame}
   \begin{theorem}[D.]
-    The covariance of the pushforwad \(\fwd_{*} \post\)
-    %is \(\left ( (\fwd \prcov \fwd^*)^{-1} +  \obs^*\obs
-    %\right )^{-1}\) and its
+    \( \fwd \postcov \fwd^*\)
+    %of the pushforward \(\fwd_{*} \post\) is and its
     has eigenvalues 
-    \begin{equation*}
-      \theta_i =
-      \begin{cases}
-        \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} & i \leq k \\
-        \lambda_i &  i > k 
-      \end{cases}
-    \end{equation*}
+    \begin{align*}
+      &\left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} &&\quad i \leq \rank \opt^*\opt \\
+      &\lambda_i  &&\quad \text{ o.w.}
+    \end{align*}
   \end{theorem}
 \end{frame}
 
@@ -588,7 +701,7 @@ Where
 \end{frame}
 
 \begin{frame}
-  \frametitle{Four Sensors in the 1D Heat Equation}
+  \frametitle{Four Sensors for the Heat Equation}
   \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{eigenvectors_dst.png}
@@ -599,12 +712,12 @@ Where
   \frametitle{Summary}
   \begin{itemize}
   \item Study a generic inverse problem with unit ball constraints.
-  \item D-optimality implies \(\fwd \postcov\fwd^* \obs^* = \obs^* \Xi\).
-  \item Key: $\obs^*\obs$ and \(\fwd \prcov\fwd^* \obs^*\) are
+  \item D-optimality implies \(\fwd \postcov\fwd^* \opt^* = \opt^* \Xi\).
+  \item Key: $\opt^*\opt$ and \(\fwd \prcov\fwd^*\) are
     simultaneously diagonalizable.
   \item A D-optimal design concentrates on smallest prior covariance eigenvectors...
   \item ... and a D-optimal design reduces uncertainty uniformly on these.
-  \item Saw manifestation in the 1D heat equation.
+  \item Saw manifestation in the heat equation.
   \item Clusterization is just a result of avoiding higher eigenvectors
     and pigeonhole principle.
   \item Did not review: correlated errors, genericity of clusterization.
