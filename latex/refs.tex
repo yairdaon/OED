@@ -58,18 +58,27 @@ clusterization in Bayesian D-optimal designs in infinite dimensions
 and why adding a correlated measurement process decluster the design
 points. Its theoretical results are valuable to the field of inverse
 problems/uncertainty quantification and the conclusions should be
-useful to practitioners in this field.  However, I feel changing the
-assumption from independent to correlated measurements is quite
-artificial: people tweak a data generation process assumption to solve
-an optimal design problem, and the author just takes the assumption as
-it is. Since the author proves the clusterization issue under the
-independent measurement assumption, I expect the author to go deeper
-and explain why an ordinary data generation assumption + a common
-optimal design leads to a “suboptimal” design? Not just by the
-mathematical proof, but from an information theory point of view. For
-example, does the redundancy points mean additional points does not
-reduce the variance of the estimation at all? If that’s the case, how
-does correlated measurement assumption “help” with it?
+useful to practitioners in this field.
+
+\answer: I appreciate the kind words.
+
+However, I feel changing the assumption from independent to correlated
+measurements is quite artificial: people tweak a data generation
+process assumption to solve an optimal design problem, and the author
+just takes the assumption as it is. Since the author proves the
+clusterization issue under the independent measurement assumption, I
+expect the author to go deeper and explain why an ordinary data
+generation assumption + a common optimal design leads to a
+“suboptimal” design? Not just by the mathematical proof, but from an
+information theory point of view. For example, does the redundancy
+points mean additional points does not reduce the variance of the
+estimation at all? If that’s the case, how does correlated measurement
+assumption “help” with it?
+
+\answer: Thanks for your questions. I am not a proponent of using
+correlated noise, I just wanted to show the usefullness of my model by
+rigorously proving how correlated noise mitigates clusterization. I
+have added several lines clearing this issue.
 
 
 \section{Reviewer 2}
@@ -83,6 +92,7 @@ definition matches the references of Fedorov (1996) and Nyberg et al
 (2012). So I will assume for the rest of this review that, measurement
 clusterisation refers to repeated measurements.
 
+\answer: 
 
 Nearly all textbooks on classical design of experiments (e.g. Morris,
 2011, Section 1.2.4) will feature a section with the three words
@@ -90,9 +100,16 @@ randomisation, blocking and repetition: the important principles of
 design of experiments.  In these texts, repeated measurements are
 considered to be a beneficial property of a design. Interestingly,
 when optimal designs are found, they are often found to have repeated
-measurements.  The paper does not explain why the author thinks
+measurements. The paper does not explain why the author thinks
 repeated measurements (measurement clusterisation) is an undesirable
-property. If one looks at, for example, Fedorov (1996) and Nyberg et
+property.
+
+\answer: I do not view clusterization as an undesired property, I only
+mentioned many authors consider it to be undesirable. I have added a
+section contrasting repetition and replication with clusterization and
+why I believe they may be different.
+
+If one looks at, for example, Fedorov (1996) and Nyberg et
 al (2012), it is an undesirable property because they are interested
 in sensor location, and two or more sensors cannot be in the same
 location. However, there are many experiments where repeated
@@ -105,6 +122,8 @@ observation) after a specified period of time. This process is then
 duplicated with a potentially different set of variables.  It is
 perfectly possible to have repeated variables.
 
+\answer: again 
+
 \begin{enumerate}
  
 \item The author needs to make clear that they are considering
@@ -113,6 +132,11 @@ perfectly possible to have repeated variables.
   examples given on page 1. However, it needs to be made explicit in
   the Abstract and the first paragraph of the paper.
 
+  \answer: I do consider experiments where repeated measurements are
+  possible. I am giving insight on why such designs are useful, even
+  though repeated measurements may be non-intuitive in certain
+  settings.
+  
 \item The paper explains why repeated measurements can be optimal
   (answer to Question 3). The author should expand on this and draw
   the link with how repeated measurements are, typically, regarded as
@@ -122,6 +146,8 @@ perfectly possible to have repeated variables.
   Pronzato \& Pazman (2013, page 139). The support points are the
   unique design points, so if this is less than m, then there are
   repeated design points.
+
+  \answer: great comment
 \end{enumerate}
 
 \subsection{Context}

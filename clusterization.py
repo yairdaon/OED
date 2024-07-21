@@ -5,6 +5,7 @@ from src.probability import Prior, Posterior
 from src.forward import Heat
 from src.observations import PointObservation
 
+FS = 24 ## Font size
 
 def main():
 
@@ -13,7 +14,7 @@ def main():
     L = 1 ## Length of computational domain
     time = 3e-2 ## Time for heat dissipation in arbitrary units.
     alpha = 1. ## Coefficient of Laplacian in heat equation
-    gamma = -1.1 ## Exponent of Laplacian in prior. 
+    gamma = -1. ## Exponent of Laplacian in prior. 
 
     ## Choose one, comment out the other
     transform = 'dct' ## dct - Discrete Cosine Transform. Corresponds
@@ -56,10 +57,42 @@ def main():
                      model_error=model_error)
 
 
+    
+    F_gamma_Fstar = fwd.multiplier**2 * pr.multiplier ## Prior covariance in H_o
+    precision = 1 / F_gamma_Fstar ## Prior precision
+    
+    k = 2 ## rank O^*O
+    m = 4 ## Number of measurements
+
+    ## See last part of Theorem in paper. This is the value the pusforward 
+    ## posterior precision takes for the first k eigenvalues
+    sigSqr = 2e-4
+    theta = ((np.sum(precision[:k]) + m /sigSqr ) / k) 
+
+    ## Plotting
+    n = 4 ## Truncate after this many eigevanlues, for visualization purposes
+    y = precision[:n]
+    x = np.arange(n, dtype=int) + 1
+    xtra = np.zeros(n)
+    xtra[:k] = theta - y[:k]
+   
+    plt.bar(x, y, label=r"prior")
+    plt.bar(x, xtra, bottom=y, label="measurements")
+    plt.yscale('log')
+    plt.xlabel("Eigenvector", fontsize=FS)
+    plt.ylabel("Precision", fontsize=FS)
+    plt.tight_layout()
+    plt.savefig(f"latex/FgammaFstar_modelError{model_error}.png")
+    
+    
+    ###################################
+    ## find and plot optimal designs ##
+    ###################################
+    
     dic = {}
 
     ## Form  number of observations in this range
-    for m in range(2, 7):
+    for m in range(1, 7):
 
         ## Calculate an optimal design
         design = post.optimize(m=m, n_iterations=500)['x']
@@ -69,10 +102,8 @@ def main():
 
         ## Print it so we see
         print(transform, m, design)
-        
-
+            
     
-    fs = 24 ## Font size
     fig, ax = plt.subplots(figsize=(10,5)) ## Create figure object
 
     ## For every pair in dic, plot a the locations of the measurements
@@ -87,12 +118,12 @@ def main():
                         xy=(val, m),
                         ha='center', 
                         va='center',
-                        fontsize=fs,
+                        fontsize=FS,
                         color=next(colors))
 
 
-    ax.set_xlabel('Measurement Location', fontsize=fs)
-    ax.set_ylabel('No. of Measurements', fontsize=fs)
+    ax.set_xlabel('Measurement Location', fontsize=FS)
+    ax.set_ylabel('No. of Measurements', fontsize=FS)
     ax.set_yticks(list(dic.keys()))
     ax.set_xlim(0,1)
     plt.tight_layout()
@@ -100,15 +131,15 @@ def main():
     plt.savefig(f"latex/{transform}_modelError{model_error}.png")
     #plt.show()
 
-    ####################################
-    #### Plot scaled eigenvectors ######
-    ####################################
+    ##############################
+    ## Plot scaled eigenvectors ##
+    ##############################
     
     ## Number of measurements
     m = 4
     design = dic[m]
     
-    ## Show eigenvectors and design for last design
+   
     plt.close('all')
     fig = plt.figure(figsize=(8,4))
     fs = 18
@@ -119,15 +150,36 @@ def main():
     for i,ls in enumerate(lss):
         print(i, ls)
         ev = fwd.eigenvector(i)
-        lam = np.sqrt(fwd.multiplier[i])
-        plt.plot(x, ev * lam, label=i+1, ls=ls)
+        lam = fwd.multiplier[i] * np.sqrt(pr.multiplier[i])
+        plt.plot(x, lam * ev, label=i+1, ls=ls)
     plt.plot([0,1], [0,0], ls='-', color='k', alpha=0.5)    
     plt.xlabel(r"$x \in \Omega$", fontsize=fs)
     plt.legend(title='eigenvector, weighted')
     plt.tight_layout()
-    plt.savefig(f"latex/eigenvectors_{transform}.png")
-    plt.show()
+    plt.savefig(f"latex/eigenvectors_{transform}_scaled.png")
 
+
+    
+    plt.close('all')
+    fig = plt.figure(figsize=(8,4))
+    fs = 18
+    lss = ['solid', 'dotted', 'dashed', 'dashdot']
+    vals = np.zeros(m)
+    plt.scatter(design, vals)
+    x = fwd.x
+    for i,ls in enumerate(lss):
+        print(i, ls)
+        ev = fwd.eigenvector(i)
+        lam = fwd.multiplier[i] * np.sqrt(pr.multiplier[i])
+        plt.plot(x, ev, label=i+1, ls=ls)
+    plt.plot([0,1], [0,0], ls='-', color='k', alpha=0.5)    
+    plt.xlabel(r"$x \in \Omega$", fontsize=fs)
+    plt.legend(title='eigenvector, weighted')
+    plt.tight_layout()
+    plt.savefig(f"latex/eigenvectors_{transform}_modelError{model_error}.png")
+   
+
+    
 
 main()
 

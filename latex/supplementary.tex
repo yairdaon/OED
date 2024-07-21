@@ -22,17 +22,23 @@
 Below, we give details of the inverse problem of the 1D heat
 equation. Our goal is to infer the initial condition of the
 one-dimensional heat equation with a homogeneous Dirichlet boundary
-condition \ref{eq:heat equation}. A homogeneous Dirichlet boundary
-condition is best thought of as an absorbing boundary; i.e.~heat that
-interacts with the boundary immediately disappears.
-
-Model the prior for the initial condition as $u_0 \sim
+condition \ref{eq:heat equation}, i.e.~ an absorbing boundary. We
+model the prior for the initial condition as $u_0 \sim
 \normal(0,\prcov)$, for $\prcov = (-\Delta)^{-1}$ with a homogeneous
-Dirichlet boundary condition. Let the final time $T = 0.03$ and denote
-$\fwd$ the forward operator, so that $u(\cdot, T) = \fwd u_0$. Let
-$\obs$ a measurement operator, so that $u(\x_j,T) = (\obs u)_j,
-j=1,\dots,m$, where $m$ is the number of allowed measurements. Assume
-iid centered Gaussian observation error, so observations are given by
+Dirichlet boundary condition. Recall that by Weyl's law, eigenvalues
+$\lambda_j$ of the Laplace operator increase as $\lambda_j \sim
+j^{d/2}$, where $d = \dim \Omega$ is the dimensionality of the
+domain. In accordance with Weyl's law, \cite[Theorem 3.1]{Stuart10}
+suggests taking priors as "Laplacian-like" operators raised to a power
+smaller than $-\frac{d}{2}$, to maintain regularity of posterior
+realizations.By Weyl's law, eigenvalues of the Laplacian decay like
+
+
+We let the final time $T = 0.03$ and denote $\fwd$ the forward
+operator, so that $u(\cdot, T) = \fwd u_0$. We let $\obs$ a
+measurement operator, so that $u(\x_j,T) = (\obs u)_j, j=1,\dots,m$,
+where $m$ is the number of allowed measurements. We assume iid
+centered Gaussian observation error, so observations are given by
 $u(\x_j,T) + \eps(\x_j)$ with $\eps(\x_j) \sim \normal(0, \sigma^2)$
 iid, $\sigma = 0.05$. Measurement locations $\x_j,j=1,\dots,m$ are
 chosen according to the D-optimality criterion
@@ -50,9 +56,9 @@ the boundary to equal zero:
   \end{alignat}
 \end{subequations}
 where $\mathbf{n}$ is the vector perpendicular to the boundary. A
-homogeneous Neumann boundary condition is typically though of as a
-reflective boundary. i.e.~heat that interacts with the boundary is
-immediately reflected back into $\Omega$.
+homogeneous Neumann boundary condition implements a reflective
+boundary, i.e.~heat that interacts with the boundary is immediately
+reflected back into $\Omega$.
 
 
 \subsection{Numerical Implementation}

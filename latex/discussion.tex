@@ -12,34 +12,88 @@ others. Clusterization manifests the true underlying objective
 
 
 \subsubsection{Answer to Question \ref{q:why}}
-Armed with Theorem \ref{thm:char} we can give a compelling explanation
-of the measurement clusterization we obeserved in
-Fig.~\ref{fig:}. From part (..) of the Theorem \ref{thm:char} and
-Fig.~\ref{fig:tikz clusterization}, we know that a D-optimal design
-aims to reduce uncertainty of eigenvectors of
-$(\fwd\prcov\fwd^*)^{-1}$ where prior covariance eigenvalues
-$\lambda_j$ are highest. D-optimal design will try to focus on the
-leading eigenvectors of $(\fwd\prcov\fwd^*)^{-1}$ and take
-measurements where other \emph{scaled} eigenvectors are close to
-zero.
+Theorem \ref{thm:char} helps us give a compelling explanation of the
+measurement clusterization we obeserved for the inverse problem of the
+heat equation (Fig.~\ref{fig:}). Below, we take the following steps:
+We first utilize Theorem \ref{thm:char} to understand what a D-optimal
+design will look like for our relaxed model; we then argue that
+although not identical, a D-optimal design for the full inverse
+problem of the heat equation shares similar charachteristics to the
+relaxed design; finally, we show how ...
 
-For concreteness, let us assume that in a certain problem, a D-optimal
-design aims to measure only the two leading eigenvectors, i.e.~$\rank
-\obs^*\obs =: k=2$. Thus, a D-optimal design will (try to) ignore all
-eigenvectors corresponding to $j > 2$. Since $\lambda_j$ decay to
-zero, a D-optimal design should only try to avoid eigenvectors for
-which $\lambda_j$ is not already small --- e.g.~eigenvectors
-$j=3,4$. It is possible that the geometry of the domain $\Omega$ and
-the structure of the eigenvectors leave only a few locations in
-$\Omega$ where the amplitude of eigenvectors $j=1,2$ is high while the
-amplitude of eigenvectors $j=3,4$ is low. In such case, clusterization
-will occur whenever the number of measurements $m$ is large enough, by
-the pigeonhole principle. This scenario is illustrated for the inverse
-problem of the 1D heat equation in Fig.~\ref{fig:eigenvectors}.
+First, recall from Theorem \ref{thm:char} that in our relaxed model,
+for a D-optimal design $\opt$:
+\begin{enumerate}
+  \item $\opt^*\opt$ is simultaneously diagonalizable with $\fwd
+    \prcov \fwd^*$.
+  \item $\opt^*\opt$ has non-zero eigenvalues only for the $k:=\rank
+    \opt^*\opt$ smallest eigenvalues $\lambda_j$ of
+    $\fwd\prcov\fwd^*$.
+  \item $k$ is monotonic in $m$, the number of measurements we take.
+\end{enumerate}
+
+Now, consider $\fwd$ and $\prcov$ from the \emph{the inverse problem
+of the heat equation}. As before, we denote the eigenvalues of
+$\fwd\prcov\fwd^*$ by $\lambda_j$. We input these eigenvalues into our
+\emph{relaxed} model, and find a D-optimal design $\opt$. In our
+relaxed model, the measurements we take are best utilized in reducing
+uncertainty for the first $k$ eigenvectors. So, a D-optimal design
+arising from our \emph{relaxed model} completely avoids measuring
+eigenvectors $k+1$ and above.
+
+Of course, in a real life problem --- such as the inverse problem of
+the heat equatiion --- it is likely impossible to find measurement
+locations for which all eigenvectors $k+1$ and above are
+zero. However, we can still expect a D-optimal design to give as
+little weight as possible to eigenvectors $k+1$ and above. Thus a
+D-optimal design is a trade-off between measuring eigenvectors we want
+(eigenvectors for which $\lambda_j$ is large) and treating the rest as
+noise.
+
+
+We explore the abovementione trade-off for the inverse problem of the
+heat equation in Fig.~\ref{fig:eigs}. We allow $m=4$ measurements in
+$[0,1]$ and observe that D-optimal measurement locations are clustered
+at $x_1 = 0.31$ and $x_2 = 0.69$. Upon close inspection of the scaled
+eigenvectors of $\fwd \prcov \fwd^*$, we first observe that
+eigenvectors $3$ and above have negligible prior amplitude. Since we
+only have $m=4$ measurements at our disposal, Theorem \ref{thm:char}
+tells us we should only care about measuring the first and second
+eigenvectors. Then, we note the D-optimal $x_1,x_2$ present a
+compromise between the amplitude of the first and second
+eigenvectors. For example, a measurement at $x=0.5$ would have ignored
+the second eigenvector altogether, since its value is zero at $x=0.5$.
+Now we can understand measurement clusterization: attempting to
+measure what we want and ignoring the rest, along with the spatial
+limitations on measurements imposed by the structure of eigenvectors
+of $\fwd \prcov \fwd^*$ is the cause for measurement clusterization in
+D-optimal designs.
+
+
+%% In the inverse problem of the heat equation, \ev_3, \ev_4,\dots$
+%% implies we seek measurement locations for which $\lambda_1\ev_1,
+%% \lambda_2\ev_2$ are large, while $\lambda_3\ev_3,
+%% \lambda_3\ev_3,\dots$ are small. It turns out that there are two
+%% locations that give the best trade-off, and measurements are taken in
+%% those two locations. Once we have more than two measurements at our
+%% disposal, measurement locations becomde clustered, by the pigeonhole
+%% principle, see Fig.~\ref{fig:eigenvectors}.
+
+%% The way a D-optimal design tries to ignore all eigenvectors
+%% corresponding to $j > 2$. Since $\lambda_j$ decay to zero, a D-optimal
+%% design should only try to avoid eigenvectors for which $\lambda_j$ is
+%% not already small --- e.g.~eigenvectors $j=3,4$. It is possible that
+%% the geometry of the domain $\Omega$ and the structure of the
+%% eigenvectors leave only a few locations in $\Omega$ where the
+%% amplitude of eigenvectors $j=1,2$ is high while the amplitude of
+%% eigenvectors $j=3,4$ is low. In such case, clusterization will occur
+%% whenever the number of measurements $m$ is large enough, by the
+%% pigeonhole principle. This scenario is illustrated for the inverse
+%% problem of the 1D heat equation in Fig.~\ref{fig:eigenvectors}.
 
 \begin{figure}\label{fig:eigenvectors}
     \centering
-    \includegraphics[width=\textwidth]{eigenvectors_dst.pdf}
+    \includegraphics[width=\textwidth]{eigenvectors_dst_scaled.png}
     \caption{D-optimal measurement locations ($m=4$ measurements) and
       weighted eigenvectors for finding the initial condition of
       the 1D heat equation. Measurement locations and weighted
@@ -54,22 +108,6 @@ problem of the 1D heat equation in Fig.~\ref{fig:eigenvectors}.
       principle.}
   \label{fig:why}
 \end{figure}
-
-
-
-By Weyl's law, eigenvalues $\lambda_j$ of the Laplace operator
-increase as $\lambda_j \sim j^{d/2}$, where $d = \dim \Omega$ is the
-dimensionality of the domain. In accordance with Weyl's law,
-\cite[Theorem 3.1]{Stuart10} suggests taking priors as
-"Laplacian-like" operators to power smaller than $-\frac{d}{2}$, to
-maintain regularity of posterior realizations. Thus, even though the
-computational domain is getting larger and sparser as the dimension
-$d$ grows, clusterization is not necessarily harder to achieve.
-
-%% In our model we did not specify any specific prior, so it is possible
-%% that one will be able to devise a prior that will not result in
-%% clusterization. Indeed, if the rate of increase of prior precision
-%% eigenvalues is small, 
 
 
 As mentioned in the Limitations section, our model does not accomodate

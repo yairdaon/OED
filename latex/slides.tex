@@ -7,6 +7,7 @@
 \setmainfont{Liberation Serif}
 \usepackage{multimedia}
 \setbeamertemplate{footline}[frame number]
+\usepgfplotslibrary{fillbetween}
 
 \title{Measurement Clusterization in Bayesian D-optimal Designs}
 \author{Yair Daon}
@@ -76,21 +77,21 @@
 \end{frame}
 
 
-\begin{frame}
-\frametitle{Forward Problems}
-% Example 1: Ball toss
-% Example 2: Flow field (placeholder for image)
-% Example 3: Ink in water
+%% \begin{frame}
+%% \frametitle{Forward Problems}
+%% % Example 1: Ball toss
+%% % Example 2: Flow field (placeholder for image)
+%% % Example 3: Ink in water
 
-\[
-\fwd: \hil \to \hil
-\]
+%% \[
+%% \fwd: \hil \to \hil
+%% \]
 
-\begin{figure}
-  \centering
-  %\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}
-\end{figure}
-\end{frame}
+%% \begin{figure}
+%%   \centering
+%%   %\includegraphics[width=10cm,height=6cm]{forward_heat_equation.png}
+%% \end{figure}
+%% \end{frame}
 
 
 
@@ -162,7 +163,6 @@
   \end{figure}
 \end{frame}
 
-
 \begin{frame}
   \frametitle{Bayes' Theorem}
   \begin{center}
@@ -175,30 +175,39 @@
       \draw[->, thick, blue] (2.5,1.5) -- (2,0.5) node[pos=0, above] {Prior};
 
       % Prior arrow
-      \draw[->, thick, green] (0,1.5) -- (0.5,0.5) node[pos=0, above] {Likelihood};
+      \draw[->, thick, green] (0,1.5) -- (0.5,0.5) node[pos=0, above] {\only<1>{Likelihood}\only<2>{Inverse Problem}};
 
       % Posterior arrow
       \draw[->, thick, red] (-2.5,1.5) -- (-1.5,0.5) node[pos=0, above] {Posterior};
 
     \end{tikzpicture}
   \end{center}
-
 \end{frame}
 
 
 
 \begin{frame}
-  \begin{center}
-    \includegraphics[width=\textwidth]{bayes.png}
-  \end{center}
+
+  \only<1>{
+    \begin{center}
+      \includegraphics[width=1\textwidth]{bayes.png}
+    \end{center}
+  }
+  
+  \only<2>{
+    \begin{center}
+      \includegraphics[width=1\textwidth]{kl.png}
+    \end{center}
+  }
+  
 \end{frame}
+
 
 
 \begin{frame}
   \begin{center}
     \includegraphics[width=\textwidth]{bayesian_inverse_problems.jpg}
   \end{center}
-
   \footnotesize{Alexanderian (2021).}
 \end{frame}
 
@@ -209,8 +218,7 @@
 \item \(\fwd: \hil \to \hil\). 
 \item \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
 \item \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,I_m)\).
-\item \(\pr \sim \mathcal{N}(\prmean, \prcov)\).
-\item \(\post \sim \mathcal{N}(\postmean, \postcov)\).
+\item Prior $\pr$, posterior $\post$.
 \end{itemize}
 
 % Define Gaussian measure
@@ -220,14 +228,14 @@
 
 \begin{frame}
 \frametitle{Gaussian measures}
-\begin{figure}
-   \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
-\end{figure}
-
 \begin{align*}
   \pr &\sim \mathcal{N}(\prmean, \prcov), \text{ $\prcov$ is trace-class}\\
   \onslide<2->{&\postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd} 
 \end{align*}
+
+\begin{figure}
+   \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
+\end{figure}
 
 \footnotesize{Wikimedia Commons}
 % Introduce prior and posterior measurea 
@@ -249,12 +257,6 @@
 \end{itemize}
 %% heat equation
 \end{frame}
-
-
-
-
-
-
 
 
 
@@ -580,7 +582,7 @@ Where
 \begin{frame}
   \begin{figure}
     \centering
-    \begin{tikzpicture}[scale=0.6]
+    \begin{tikzpicture}[scale=0.61]
       \begin{axis}[
           ybar stacked,
           ymin=0,
@@ -600,7 +602,7 @@ Where
         \addlegendentry[scale=1.4]{optimal $\eta_i$s}
       \end{axis}
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.6]
+    \begin{tikzpicture}[scale=0.61]
       \begin{axis}[
           ybar stacked,
           ymin=0,
