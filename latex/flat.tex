@@ -1,5 +1,6 @@
 % \documentclass[ba,preprint]{imsart}% use this for supplement article
 \documentclass[ba]{imsart}
+
 %\input{definitions}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -215,7 +216,7 @@ we refer to a design that exhibits measurement clusterization as a
 %% fifth:magenta
 \begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{example.pdf}
+    \includegraphics[height=0.5\textwidth]{dst_modelError0.png}
     \caption{Measurement clusterization for optimal designs when
       inverting for the initial condition of the 1D heat equation (see
       supplementary material for details). Measurement locations were
@@ -316,7 +317,7 @@ posed at the end of the previous paragraph:
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{eigenvectors.pdf}
+    \includegraphics[width=\textwidth]{eigenvectors_dst_scaled.png}
     \caption{D-optimal measurement locations ($m=4$ measurements) and
       weighted eigenvectors for finding the initial condition of
       the 1D heat equation. Measurement locations and weighted
@@ -333,7 +334,6 @@ posed at the end of the previous paragraph:
 \end{figure}
 
 \begin{enumerate}
-
 \item \label{q:generic} \textbf{Is measurement clusterization a
   generic phenomenon?}
   %\subsection{An answer for Question \ref{q:generic}: Genericity of measurement clusterization}
@@ -364,36 +364,6 @@ posed at the end of the previous paragraph:
   the pigeonhole principle, as there are more measurements available
   than there are locations satisfying conditions (a) and (b). See
   Fig~\ref{fig:why}.
-
-
-  %% In Section \ref{section:vanishing}, we provide an insightful
-  %% explanation for the optimality of clustered designs when no model
-  %% error is present. We demonstrate that for our model, a D-optimal
-  %% design measures only a small subset of prior eigenvectors, which are
-  %% the prior eigenvectors with largest power spectrum. In real-life
-  %% problems there are limited number of locations where: (a) the
-  %% relevant prior eigenvectors are large, and other prior eigenvectors
-  %% with large power in the prior spectrum are zero. Then measurement
-  %% clusterization is a result of the pigeonhole principle, where there
-  %% are more measurements than measurement locations satisfying (a) and
-  %% (b).
-
-  %% We conjecture that the prevalence of measurement clusterization
-  %% arises due to the ease of discovering clustered designs.
-
-
-%% \item \label{q:avoid} \textbf{Should we aim to avoid measurement
-%%   clusterization?} Based on the analysis conducted in this study, we
-%%   did not find any compelling reason to explicitly avoid optimal
-%%   clustered designs.
-
-%% \item \label{q:replace} \textbf{Is it possible to substitute an
-%%   optimal clustered design with an equally optimal non-clustered
-%%   design?} In Section \ref{section:vanishing}, we answer this question
-%%   in the affirmative, although we show that numerical experiments
-%%   conducted using our model indicate a strong preference for clustered
-%%   designs.
-
 \end{enumerate}
 
 The cornerstone of our investigation into measurement clusterization
@@ -498,13 +468,6 @@ simplifications of real systems, e.g. the Ising model
 \cite{cipra1987}, the Lorenz system \cite{brin}, the Lotka-Volterra
 equations \cite{logan2006}, the Carnot engine \cite{kardar2007}, and
 many others.
-
-
-
-
-
-
-
 
 %\input{prelims}
 \section{Preliminaries and Notation}\label{section:prelim}
