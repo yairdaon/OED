@@ -384,8 +384,65 @@ The final ingredient we require for the proof of Theorem
   R^{(1)} R^{(2)} \dots R^{(m-1)}R^{(m)}$ completes the proof.
 \end{proof}
 
-\char*
+\begin{theorem}\label{thm:char}
+  Let:
+  \begin{itemize}
+    \item The D-optimality design criterion
+    \cite{AlexanderianGloorGhattas14}:
+    \begin{align*}
+      \begin{split}
+        \tar(\obs) %:&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
+        % 
+        % 
+        % 
+        &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
+        \obs^* \obs \fwd \prcov^{1/2}), 
+      \end{split}
+    \end{align*}
+  \item \(\obs\) a D-optimal design operator
+    \begin{equation*}
+      \obs = \argmax_{\|\meas_j\| = 1, j=1,\dots,m}\tar(\obs),
+    \end{equation*}
+  \item \(\{\lambda_i\}_{i=1}^\infty\) eigenvalues of
+    \(\fwd\prcov\fwd^*\) in decreasing order of magnitude.
+    %% \item \(\{\ev_i\}_{i=1}^\infty\) their corresponding eigenvectors.
+  \item \(\{\eta_i\}_{i=1}^\infty\) eigenvalues of \(\obs^*\obs\).
+ 
+  \end{itemize}
 
+  Then:
+  \begin{enumerate}
+  \item  \(\tr{\obs^*\obs} = m\).
+  \item \(\obs^*\obs\) and \(\fwd\prcov\fwd^*\) are simultaneously
+    diagonalizable.
+  \item \(k := \rank \obs^*\obs \leq m\) and
+    \begin{equation*}
+      \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). %= \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
+    \end{equation*}
+  %% \item 
+  %%   \begin{equation*}
+  %%     k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+  %%     \lambda_j^{-1} \right \}.
+  %%   \end{equation*}
+  \item
+    \begin{equation*}
+        \eta_i = \begin{cases}
+          \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
+          0 & i > k 
+        \end{cases}.
+    \end{equation*}
+  \item The covariance of the pushforwad \(\fwd_{*} \post\) is \(\left
+    ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right
+    )^{-1}\) and its eigenvalues are
+    \begin{equation*}
+      \theta_i =
+      \begin{cases}
+        \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}m}{k} \right )^{-1} & i \leq k \\
+        \lambda_i &  i > k 
+      \end{cases}
+    \end{equation*}
+  \end{enumerate}
+\end{theorem}
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
   satisfies the unit norm constraint on measurements. Part (2)
