@@ -1,14 +1,14 @@
 \section{Preliminaries and Notation}\label{section:prelim}
 Here we present the basics of Bayesian inverse problems over hilbert
-spaces. Since we are ultimately interested in inferring a function over some
-domain, we will keep in mind that these Hilbert spaces should really
-be thought of as function spaces. The theoretical foundations for
-inverse problems over function spaces can be found in \cite{Stuart10}
-and will be only briefly reviewed here.
+spaces. Since we are ultimately interested in inferring a function
+over some domain, we will keep in mind that these Hilbert spaces
+should really be thought of as function spaces. A deeper treatment of
+the foundations for inverse problems over function spaces can be found
+in \cite{Stuart10}.
 
 
 \subsection{Forward Problems}\label{subsec:abstract OED}
-In this section we give definitions and notations for forward probles,
+In this section we give definitions and notations for forward problems,
 which are an essential part of the inverse problems we discuss
 later. Consider a "parameter space" \(\hilp\) and an "observation
 space" \(\hilo\) --- both separable Hilbert spaces (the subscripts p
@@ -23,8 +23,7 @@ The connection between parameter and observation spaces is made by the
 \emph{forward operator} \(\fwd: \hilp \to \hilo\). We assume the
 forward operator \(\fwd\) is linear. In the inverse problem of the 1D
 heat, the forward operator is determined by the time evolution of the
-1D heat equation \eqref{eq:heat1}, \eqref{eq:heat2} and
-\eqref{eq:heat3}.
+1D heat equation \eqref{eq:heat1} and \eqref{eq:heat2}.
 
 Measurements are taken via a \emph{measurement operator} \(\obs\). It
 is common for the measurement and forward operators to be merged
@@ -35,12 +34,12 @@ and \(\obs\) are explicitly separated (as in
 \in ( \hilo^* )^m\), where \(m\) is the number of measurements
 taken\footnote{The alert reader will likely ask how do we reconcile
 point measurements $\delta_x$ as suggested by the formulation of the
-1D heat equation. We don't. This entire study could be formulated for
-Banach spaces where point measurements are allowed. We avoid this
-technical difficulty because: (1) it does not add much to the study,
-(2) it is beyond the technical abilities of the author}. Entries
-\(\meas_j, j=1,\dots,m\) of the measurement operator \(\obs\) are
-called \emph{measurements}:
+1D heat equation with workin in Hilbert spaces. We don't. This entire
+study could be formulated for Banach spaces where point measurements
+are allowed. We avoid this technical difficulty because: (1) it does
+not add much to the study, (2) it is beyond the technical abilities of
+the author}. Entries \(\meas_j, j=1,\dots,m\) of the measurement
+operator \(\obs\) are called \emph{measurements}:
 
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
@@ -48,10 +47,11 @@ called \emph{measurements}:
 
 Data is acquired via noisy observations, and we consider two types of
 error terms: Spatially correlated model error \(\eps' \sim
-\normal(0,\modcov)\) with \(\modcov\) a covariance operator. Observation
-error is denoted \(\eps \sim \normal(0, \sigma^2 I_m)\), with \(I_m \in
-\mathbb{R}^{m \times m}\) the identity. Both error terms and the prior
-are assumed independent of each other. Thus, data is acquired via
+\normal(0,\modcov)\) with \(\modcov\) a covariance operator; and
+observation error denoted \(\eps \sim \normal(0, \sigma^2 I_m)\), with
+\(I_m \in \mathbb{R}^{m \times m}\) the identity. Both error terms and
+the prior (see below) are assumed independent of each other. Thus,
+data is acquired via
 \begin{align}\label{eq:inverse problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
@@ -79,16 +79,16 @@ where
   \end{split}
 \end{align}
 Taking \(\modcov = 0\) is a common practice
-\cite{tarantola2005,Kaipio2005,Vogel02} and then \(\Sigma =
+\cite{tarantola2005,kaipio2005,Vogel02} and then \(\Sigma =
 \sigma^2I_m\) is a scalar matrix which does not depend on \(\obs\).
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian inverse problems}
 In the previous section, we saw how a parameter $u\in \hilp$ is
 transported to the observation space via the forward operaror $\fwd u
-\in \hilo$, how observations are generated via $\obs \fwd u$ and how
-observations and noise give rise to data $\data$. It is time to
-formulate the process of inferring the parameter as a Bayesian inverse
-problem. The first ingredient we need is a prior.
+\in \hilo$, how observations are generated from a parameter via $\obs
+\fwd u$ and how observations and noise give rise to data $\data$. It
+is time to formulate the process of inferring the parameter as a
+Bayesian inverse problem. The first ingredient we need is a prior.
 
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
@@ -97,23 +97,25 @@ equation we choose $\prcov = -\Delta^{-1}$ --- see Section
 \ref{subsec:1d heat} for details and a short discussion of
 "Laplacian-like" covariance operators. Note that \(\fwd \prcov
 \fwd^*\) is the prior covariance in \(\hilo\) \cite{Stuart10}, and as
-such, \(\fwd \prcov \fwd^*\) is assumed invertible --- an assumption
-which will be used below (if \(\fwd\) has a nontrivial kernel we
-utilize Occam's Razor and ignore said kernel altogether).
+such is assumed invertible --- an assumption which we will use later
+(if \(\fwd\) has a nontrivial kernel we utilize Occam's Razor and
+ignore said kernel altogether).
 
-Since this inverse problem is linear and the prior is Gaussian --- the
-posterior measure \(\post\) is Gaussian as well. We do not utilize the
-posterior mean in this study and posterior covariance operator
-$\postcov$ is given by \cite{Stuart10}:
+Since $\fwd$ is linear and $\pr$ is Gaussian --- the posterior
+\(\post\) is Gaussian as well. We do not utilize the posterior mean in
+this study, but the posterior covariance operator $\postcov$ is given
+by \cite{Stuart10}:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
 \end{align}
 
 \subsection{Bayesian D-Optimal Designs}\label{subsec:D optimal design} 
-A Bayesian D-optimal design maximizes expected Kullback-Leibler (KL)
-divergence between posterior \(\post\) and prior measures \(\pr\). It is
-useful to first recall the definition of KL divergence \cite{CoverThomas91}:
+A Bayesian D-optimal design maximizes the expected Kullback-Leibler
+(KL) divergence between posterior \(\post\) and prior measures
+\(\pr\). For arbitrary posterior and prior measures, the KL divergence
+is defined, analogously to eq.~\ref{eq:basic KL}, via the
+Radon-Nikodym derivative:
 \begin{equation*}
   D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
 \end{equation*}
@@ -156,12 +158,12 @@ for more general covariance matrices
 \end{definition}
 
 Intuition for Theorem \ref{thm:d optimality} can be gained by
-considering a Bayesian linear model in finite dimensions, with
-Gaussian prior and Gaussian noise. Then, a D-optimal design minimizes
-the determinant of the posterior covariance matrix, and this turns out
-to be a regularized version of the frequentist D-optimality criterion
-\cite{Chaloner1995}. Theorem \ref{thm:d optimality} and Definition
-\ref{def:d optimality} carry a similar intuition:
+recalling from Section \ref{subsec:D} that for a Bayesian linear model
+in finite dimensions, with Gaussian prior and Gaussian noise, a
+D-optimal design minimizes the determinant of the posterior covariance
+matrix. Theorem
+\ref{thm:d optimality} and Definition \ref{def:d optimality} carry a
+similar intuition:
 \begin{align*}
   \begin{split}
     \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \text{ by \eqref{eq:objective}}\\
@@ -170,7 +172,8 @@ to be a regularized version of the frequentist D-optimality criterion
     %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
   \end{split}
 \end{align*}
-We think of \(\prcov\) as constant, so a D-optimal design minimizes a
+We think of \(\prcov\) as constant, in the sense that $\prcov$ does
+not depend on data $\data$. Thus, a D-optimal design minimizes a
 quantity analogous to the posterior covariance determinant, similarly
 to the finite-dimensional case.
 
