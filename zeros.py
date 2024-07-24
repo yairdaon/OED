@@ -27,7 +27,7 @@ from joblib import Parallel, delayed
 from tqdm import tqdm
 import seaborn as sns
 
-EPS = 1e-9 ## Numerical tolerance
+EPS = 1e-5 ## Numerical tolerance
 ortho = ortho_group.rvs ## Generates random orthogonal matrices
 cot = lambda x: cos(x) / sin(x)
 
@@ -67,7 +67,7 @@ def MDUS(m, k):
     
     assert m >= k
 
-    D = np.random.lognormal(mean=15, sigma=5, size=k)
+    D = np.random.lognormal(mean=25, sigma=15, size=k)
     D = np.sort(D)[::-1]
     # D = np.array([np.random.lognormal(mean=i, sigma=1) for i in range(k)]) 
     D = D * m / np.sum(D)
@@ -260,10 +260,10 @@ def generic():
     """
 
     ## Number of simulations per pair m, k.
-    N = 50000
+    N = 5000
    
     def generator(N):
-        for m in range(4, 19):
+        for m in range(4, 25):
             for k in range(2, m):
                 for i in range(N):
                     yield m, k
