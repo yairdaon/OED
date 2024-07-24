@@ -152,8 +152,21 @@ S2 (code generating these movies is located in module
 \href{https://github.com/yairdaon/OED}{repository}). For ill-posed
 problems regularization is required, and we implement such
 regularization via a fully Bayesian formulation of the inverse
-problem, see Section \ref{section:prelims} for details.
+problem.
 
+Specifically, we set a prior on the initial condition $u_0 \sim
+\mathcal{N}(0, (-\Delta)^{-1})$, where we impose the homogeneous
+Dirichlet boundary condition on the Laplacian. We choose
+$(-\Delta)^{-1}$ as our covariance operator following \cite{Stuart10}:
+our choice ensures the power of the negative Laplacian inside the
+parentheses is larger than $d/2$, where $d=1$ is the dimension of our
+computational domain $\Omega$. One can intuitively understand this
+choice from Weyl's asymptotics, that states that the eigenvalues of
+Laplacian increase as $n^{d/2}$. Thus, our choice of covariance
+$(-\Delta)^{-1}$ ensures higher modes decay sufficiently quickly, so
+prior samples have sufficient regularity. Our choice of prior
+covariance ensures the posterior is well-defined and well-behaved
+\cite[Theorem 3.1 and Lemma 6.25]{Stuart10}.
 
 \subsection{Measurement Clusterization}
 Surprisingly, A- and D-optimal designs for inverse problems have been

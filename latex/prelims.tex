@@ -92,19 +92,18 @@ Bayesian inverse problem. The first ingredient we need is a prior.
 
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
-\(\hilp\) \cite{Stuart10}. For the inverse problem of the 1D heat
-equation we choose $\prcov = -\Delta^{-1}$ --- see Section
-\ref{subsec:1d heat} for details and a short discussion of
-"Laplacian-like" covariance operators. Note that \(\fwd \prcov
-\fwd^*\) is the prior covariance in \(\hilo\) \cite{Stuart10}, and as
-such is assumed invertible --- an assumption which we will use later
-(if \(\fwd\) has a nontrivial kernel we utilize Occam's Razor and
-ignore said kernel altogether).
+\(\hilp\) \cite{Stuart10}. For example, for the inverse problem of the
+1D heat equation we chose $\prcov = -\Delta^{-1}$ --- see Section
+\ref{subsec:toy}. Note that \(\fwd \prcov \fwd^*\) is the prior
+covariance in \(\hilo\) \cite{Stuart10}, and as such is assumed
+invertible --- an assumption which we will use later (if \(\fwd\) has
+a nontrivial kernel we utilize Occam's Razor and ignore said kernel
+altogether).
 
 Since $\fwd$ is linear and $\pr$ is Gaussian --- the posterior
 \(\post\) is Gaussian as well. We do not utilize the posterior mean in
 this study, but the posterior covariance operator $\postcov$ is given
-by \cite{Stuart10}:
+by the known formula\cite{Stuart10}:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
