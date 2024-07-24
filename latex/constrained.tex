@@ -36,12 +36,10 @@ recall that:
 
 The proof amounts to calculating the variational derivative of $\tar$
 at $\obs$ for any direction $V$ (by Definition \ref{def:var}) and is
-delegated to the Supplementary:
-\begin{equation*}
-  \delta \tar(\obs) V := \frac{\der}{\der\tau} \Big |_{\tau=0} \tar(\obs + \tau V).
-\end{equation*}
+delegated to the Supplementary.
 
 
+\subsection{Unit norm constraints and their gradient}
 In a real-life optimal design problem we cannot choose any measurement
 operator $\obs \in (\hilo^*)^m$. In order to facilitate analysis, we
 seek reasonable constraints on $\obs$ for which finding a D-optimal
@@ -102,12 +100,13 @@ us in finding such constraints.
 
 Proposition \ref{prop:bigger better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
-measurements in $span\{\meas\}$ for some $\meas \neq 0$, then a
-maximum for the D-optimality criterion does not exist, as it is not
-bounded. In contrast, in any real-life problem where sensors are
-concerned, the norm of measurements recorded by sensors is always one
-(of course, point evaluations are not in any Hilbert space of
-functions we wish to consider):
+measurements in $\textup{span}\{\meas\}$ for some $\meas \neq 0$, then
+the the D-optimality criterion is unbounded. In contrast, in any
+real-life problem where sensors are concerned, the norm of
+measurements recorded by sensors is always one\footnote{Again, our
+analysis does not apply to point evaluations. These are just used for
+motivation and can be approximated by elements in $\hilo^*$ as long as
+$\hilo$ is a function space, e.g.~$L^2(\Omega)$.}:
 
 \begin{equation}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}
@@ -123,7 +122,8 @@ Thus, it is reasonable to consider measurements with unit $\hilo^*$
 norm. We can write the unit norm constraints as a series of $m$
 equality constraints (one for each measurement) on $\obs$. We define
 them and find their gradients in Proposition \ref{prop:constraints
-  grad} below:
+  grad} below, whose proof is straightforward and delegated to the
+Supplementary:
 
 \begin{proposition}\label{prop:constraints grad}
   Let
@@ -137,8 +137,6 @@ them and find their gradients in Proposition \ref{prop:constraints
   \end{equation*}
 \end{proposition}
 
-The proof is straightforward and we delegate it to the Supplementary.
-
 %% The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
 
 %% \begin{align}\label{eq:grad constraints}
@@ -150,7 +148,7 @@ The proof is straightforward and we delegate it to the Supplementary.
 %% The gradients $\nabla \tar(\obs)$ and $\nabla \phi_j(\obs)$ are best
 %% thought of as row vectors.
 
-
+\subsection{Necessary conditions for D-optimality}
 We find necessary first-order conditions for D-optimality via Lagrange
 multipliers:
 
@@ -178,8 +176,8 @@ Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
   
   Then:
   \begin{equation*}
-    ( I - \modcov \opt^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \opt^*  \Sigma^{-1}
-    = \obs^* \Xi, 
+    ( I - \modcov \opt^* \Sigma^{-1} \opt) \fwd \postcov \fwd^* \opt^*  \Sigma^{-1}
+    = \opt^* \Xi, 
   \end{equation*}
   where $\Xi \in \mathbb{R}^{m \times m}$ is diagonal.
 \end{theorem}

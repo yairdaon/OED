@@ -29,7 +29,7 @@ to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
 
 As we mentioned in Section \ref{subsec:bayesian inverse problems},
 $\fwd \prcov \fwd^*$ is the prior covariance $\hilo$ and could be
-safely assumed invertible. Proof of Proposition \ref{prop:twice
+safely assumed invertible. The proof of Proposition \ref{prop:twice
   woodbury} is delegated to the Supplementary. It amounts to using
 Woodbury's matrix identity twice. The standard proof for Woodbury's
 matrix identity works for separable Hilbert spaces, as long as all
@@ -144,7 +144,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 The proof of Proposition \ref{prop:kkt} amounts to utilizing the
 Karush-Kuhn-Tucker conditions and is delegated to the
 Supplementary. The final ingredient we require for the proof of
-Theorem \ref{thm:char} is:
+Theorem \ref{thm:char} characterizing D-optimal designs is:
 
 
 \begin{lemma}[Unit norm decomposition]\label{lemma:free}
@@ -154,10 +154,10 @@ Theorem \ref{thm:char} is:
   $AA^t = M$.
 \end{lemma}
 
-The proof of Lemma is delegated to the Supplementary. It is however
-important to note that this proof is construcive. It will give us a
-way to construct D-optimal designs, once we fully characterize them in
-Theorem \ref{thm:char} below.
+The proof of Lemma is also delegated to the Supplementary. It is
+however important to note that this proof is construcive. It will give
+us a way to construct D-optimal designs, once we fully characterize
+them in Theorem \ref{thm:char} below.
 
 
 \begin{theorem}\label{thm:char}
@@ -210,13 +210,13 @@ Theorem \ref{thm:char} below.
   \item The covariance of the pushforwad \(\fwd_{*} \postopt\) is \(\left
     ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \opt^*\opt \right
     )^{-1}\) and its eigenvalues are
-    \begin{equation*}
+    \begin{equation}\label{eq:cylinders}
       \theta_i =
       \begin{cases}
         \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}m}{k} \right )^{-1} & i \leq k \\
         \lambda_i &  i > k 
       \end{cases}
-    \end{equation*}
+    \end{equation}
   \end{enumerate}
 \end{theorem}
 
@@ -235,7 +235,7 @@ Theorem \ref{thm:char} below.
   Lemma \ref{lemma:free}.
   
   Recall from \eqref{eq:postcov}, that the posterior precision is
-  $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\obs^*\obs\fwd$. The
+  $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\opt^*\opt\fwd$. The
   first statement in part (5) now follows from Proposition
   \ref{prop:twice woodbury}, while the second statement follows from
   parts (1) and (4).
@@ -304,23 +304,89 @@ Theorem \ref{thm:char} below.
 \end{figure}
 
 
-Theorem \ref{thm:char} facilitates understanding of D-optimal designs
-when $\modcov = 0$: Imagine each eigenvector of $\fwd \prcov \fwd^*$
-corresponds to a graduated lab cylinder.
-%% (Figure \ref{fig:cylinder})
-Each cylinder $i$ is filled, a-priori, with green liquid of
+Part (5) of Theorem \ref{thm:char} gives us deep understanding of
+D-optimal designs when $\modcov = 0$: Imagine each eigenvector of the
+\emph{precision} $\left(\fwd \prcov \fwd^*\right )^{-1}$ corresponds
+to a graduated lab cylinder. % (see Fig\ref{fig:cylinder}) Each
+cylinder $i$ is filled, a-priori, with green liquid of
 $\lambda_i^{-1}$ volume units. We are allowed $m$ measurement, so we
 have blue liquid of volume $\sigma^{-2}m$ units at our disposal. When
 we seek a D-optimal design, we distribute the blue liquid by
 repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
-such a procedure is illustrated in Fig.~\ref{fig:optimal vs not}.
+such a procedure is that the precision for the first $k$ eigenvectors
+is the average of the total precision $\sum_{j=1}^k \lambda_j^{-1} +
+\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and Fig.~\ref{fig:optimal
+  vs not} for an illustration.
 %% \begin{figure}%{r}{0.25\textwidth} 
 %%     \centering
 %%     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
 %%     \caption{Three graduated lab cylinders, corresponding to three
-%%       eigenvectors. Prior eigenvalues not shown.}
+%%      eigenvectors. Prior precision eigenvalues not shown.}
 %%     \label{fig:cylinder}
 %% \end{figure}
 
+
+
+\subsection{Answer to Question \ref{q:why}}\label{subsec:why}
+Theorem \ref{thm:char} helps us give a compelling explanation of the
+measurement clusterization we obeserved for the inverse problem of the
+heat equation (Fig.~\ref{fig:}). Below, we take the following steps:
+We first utilize Theorem \ref{thm:char} to understand what a D-optimal
+design will look like for our relaxed model; we then argue that
+although not identical, a D-optimal design for the full inverse
+problem of the heat equation shares similar charachteristics to the
+relaxed design; finally, we show how ...
+
+First, recall the relevant parts of Theorem \ref{thm:char}. In our
+relaxed model, for a D-optimal design $\opt$:
+\begin{itemize}
+  \item $\opt^*\opt$ and $\fwd\prcov \fwd^*$ are simultaneously
+    diagonalizable.
+  \item $\opt^*\opt$ has non-zero eigenvalues only for the $k:=\rank
+    \opt^*\opt$ largest eigenvalues $\lambda_j$ of $\fwd\prcov\fwd^*$,
+    i.e.~$\eta_j=0$ for $j>k$.
+  \item $k$ is monotonic in $m$, the number of measurements we take.
+\end{itemize}
+
+Consider $\fwd$ and $\prcov$ from the \emph{the inverse problem of the
+heat equation}. As before, we denote the eigenvalues of
+$\fwd\prcov\fwd^*$ by $\lambda_j$. We input these eigenvalues into our
+\emph{relaxed} model, and find a D-optimal design $\opt$ for our
+relaxed model, e.g.~by using Lemma \ref{lemma:free} in the proof of
+Theorem \ref{thm:char}. In our relaxed model, the measurements we take
+are best utilized in reducing uncertainty for the first $k$
+eigenvectors. So, a D-optimal design arising from our \emph{relaxed
+model} completely avoids measuring eigenvectors $k+1$ and above.
+
+Of course, in a real life problem --- such as the inverse problem of
+the heat equation --- it is likely impossible to find measurement
+locations for which all eigenvectors $k+1$ and above are
+zero. Luckily, the eigenvalues of $\fwd\prcov\fwd^*$ decay very
+quickly: for example, recall from Section \ref{subsec:toy} that the
+eigenvalues of the forward model for the 1D heat equation are $-(2\pi
+n)^{-2}$. Thus a D-optimal design is a trade-off between measuring the
+small number of eigenvectors we are interested in.
+
+We explore the abovementione trade-off for the inverse problem of the
+heat equation in Fig.~\ref{fig:eigenvectors}. We allow $m=4$
+measurements in $\Omega = [0,1]$ and observe that D-optimal
+measurement locations are clustered at $x_1 = 0.31$ and $x_2 =
+0.69$. Upon close inspection of the scaled eigenvectors of $\fwd
+\prcov \fwd^*$, we first observe that eigenvectors $3$ and above have
+negligible prior amplitude. Since we only have $m=4$ measurements at
+our disposal, we interpret these results, following Theorem
+\ref{thm:char}, as implying we should only care about measuring the
+first and second eigenvectors. Then, we note the D-optimal $x_1,x_2$
+present a compromise between the amplitude of the first and second
+eigenvectors. For example, a measurement at $x=0.5$ would have ignored
+the second eigenvector altogether, since the second eigenvector is
+zero at $x=0.5$.  Now we can understand measurement clusterization:
+attempting to measure what we want and ignoring the rest, along with
+the spatial limitations on measurements imposed by the structure of
+eigenvectors of $\fwd \prcov \fwd^*$ is the cause for measurement
+clusterization in D-optimal designs: we have $m=4$ measuremnts at our
+disposal but only two spatial locations that are a good compromise
+between the scaled eigenvectors. Thus, clusterization arises by the
+pigeonhole principle.
 

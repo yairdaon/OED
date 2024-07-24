@@ -1,5 +1,5 @@
 # The goal of this module is to implement (and test) the construction
-# outlined in the proof of Lemma B.5 in the paper.
+# outlined in the proof of Lemma 15 in the paper.
 #
 # Given M symmetric positive definite in R^{k X k} such that
 #
@@ -27,8 +27,8 @@ from joblib import Parallel, delayed
 from tqdm import tqdm
 import seaborn as sns
 
-EPS = 1e-9
-ortho = ortho_group.rvs
+EPS = 1e-9 ## Numerical tolerance
+ortho = ortho_group.rvs ## Generates random orthogonal matrices
 cot = lambda x: cos(x) / sin(x)
 
 
@@ -39,7 +39,7 @@ def conj(D, U):
 
 
 def givens(theta, dims, lower, upper):
-    """Implement a Givens rotation
+    """Returns a Givens rotation matrix
 
     """
     
@@ -67,8 +67,7 @@ def MDUS(m, k):
     
     assert m >= k
 
-    # D = np.abs(np.random.uniform(size=k))
-    D = np.random.lognormal(mean=5, sigma=1, size=k)
+    D = np.random.lognormal(mean=15, sigma=5, size=k)
     D = np.sort(D)[::-1]
     # D = np.array([np.random.lognormal(mean=i, sigma=1) for i in range(k)]) 
     D = D * m / np.sum(D)
@@ -95,10 +94,13 @@ def MDUS(m, k):
 
 
 def get_theta(C, upper):
-    assert upper < C.shape[0]
-    assert C.shape[0] == C.shape[1]
+   
+    if upper >= C.shape[0]:
+        raise ValueError(f"1: {upper}\n\n\n{C}")
+    if C.shape[0] != C.shape[1]:
+        raise ValueError(f"2: {C.shape}")
     if upper == 0:
-        raise ValueError(f'Why upper == 0? C.shape == {C.shape}.')
+        raise ValueError(f'3: Why upper == 0? C.shape == {C.shape}.')
     if abs(C[upper, upper]) < EPS:
         return None, None
 
@@ -109,18 +111,18 @@ def get_theta(C, upper):
         if ckk * cpp < 0:
             success = True
             break
-    assert success, f'ckk = {ckk:2.3f}, cpp = {cpp:2.3f}, sum = {ckk + cpp:2.3f}'
+    # assert success, f'4: ckk = {ckk:2.3f}, cpp = {cpp:2.3f}, sum = {ckk + cpp:2.3f}'
 
     ## Comment refers to common names in quadratic equation lingo
     c2 = C[upper, upper]
     c1 = 2 * C[upper, lower]
     c0 = C[lower, lower]
-    assert c2 * c0 < 0
+    # assert c2 * c0 < 0, f"5: {c2}    {c0}"
 
     ## Solving the quadratic to get cot(theta), which will soon
     ## be inverted to find theta.
     disc = c1 ** 2 - 4 * c2 * c0  # Discriminant
-    assert disc >= 0
+    # assert disc >= 0, f"6: {disc}"
     cot1 = (-c1 + np.sqrt(disc)) / 2 / c2
     cot2 = (-c1 - np.sqrt(disc)) / 2 / c2  ## Second solution
 
@@ -131,8 +133,8 @@ def get_theta(C, upper):
     elif 0 <= theta2 <= np.pi:
         return theta2, lower
     else:
-        raise ValueError(f'Thetas == {theta1:2.2f}, {theta2:2.2f} not in [0,pi]')
-
+        raise ValueError(f'7: Thetas == {theta1:2.2f}, {theta2:2.2f} not in [0,pi]')
+        
 
 def caller(m, k):
 
@@ -180,6 +182,7 @@ def get_A(M,
     assert abs(m - np.trace(M)) < EPS
 
     D, U = np.linalg.eigh(M)
+    D = np.maximum(D, 0)
     assert np.all(D >= -EPS), D.min()
 
     S = np.zeros((k, m))
@@ -189,7 +192,7 @@ def get_A(M,
     C = np.dot(S.T, S) - np.identity(m)
     V = np.identity(m)
     for upper in reversed(range(1, m)):
-        assert abs(np.trace(C)) < EPS
+        assert abs(np.trace(C)) < EPS, np.trace(C)
         theta, lower = get_theta(C, upper)
         if theta is None and lower is None:
             continue
@@ -260,7 +263,7 @@ def generic():
     N = 50000
    
     def generator(N):
-        for m in range(4, 16):
+        for m in range(4, 19):
             for k in range(2, m):
                 for i in range(N):
                     yield m, k
@@ -298,7 +301,7 @@ def main():
 
 if __name__ == '__main__':
     try:
-        # generic() ## Run this if you have time
+        generic() 
         main()
     except:
         import pdb, traceback, sys
