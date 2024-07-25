@@ -1,19 +1,14 @@
 \documentclass[ba]{imsart}
-
-% \documentclass[ba,preprint]{imsart}% use this for supplement article
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{amsthm}
-%% \usepackage{amsaddr}
 
 
 \usepackage{thm-restate}
 \usepackage{tikz,pgfplotstable}
 \usetikzlibrary{patterns}
-\pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
-%\usepackage{hyperref}
-
+\pgfplotsset{compat=1.9} 
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\M}{\mathcal{M}}
@@ -40,41 +35,23 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-% Definitions for second chapter
 \newcommand{\data}{\mathbf{d}}
 \newcommand{\param}{\mathbf{m}}
 \newcommand{\normal}{\mathcal{N}}
-\newcommand{\pr}{\mu_{\textup{pr}}} %Prior measure
-%\newcommand{\post}{\mu_{\textup{post}}^{\data, \obs}} % Posterior measure
-\newcommand{\post}{\mu_{\textup{post}}} % Posterior measure for slides
-\newcommand{\prmean}{\param_{\textup{pr}}} % Prior mean
-\newcommand{\postmean}{\param_{\textup{post}}} % Posterior mean
-\newcommand{\postcov}{\Gamma_{\textup{post}}} % Posterior covariance
-\newcommand{\prcov}{\Gamma_{\textup{pr}}} % Prior covariance
-\newcommand{\modcov}{\Gamma_{\textup{model}}} % Model covariance
-\newcommand{\tmp}{\mathcal{G}}
+\newcommand{\pr}{\mu_{\textup{pr}}} \newcommand{\post}{\mu_{\textup{post}}} \newcommand{\prmean}{\param_{\textup{pr}}} \newcommand{\postmean}{\param_{\textup{post}}} \newcommand{\postcov}{\Gamma_{\textup{post}}} \newcommand{\prcov}{\Gamma_{\textup{pr}}} \newcommand{\modcov}{\Gamma_{\textup{model}}} \newcommand{\tmp}{\mathcal{G}}
 \newcommand{\meas}{\mathbf{o}}
-\newcommand{\ev}{\mathbf{e}} % eigenvector 
-\newcommand{\func}{\mathbf{a}}
+\newcommand{\ev}{\mathbf{e}} \newcommand{\func}{\mathbf{a}}
 \newcommand{\tr}[1]{\textup{tr}\left \{#1 \right \} }
 \newcommand{\ttr}[1]{\textup{tr}\ #1}
 \newcommand{\rank}{\textup{rank}\ }
-\newcommand{\des}{\eta} % vector of design parameters
-\newcommand{\sigsqr}{\sigma^2}
+\newcommand{\des}{\eta} \newcommand{\sigsqr}{\sigma^2}
 
-%% \newcommand{\opt}{\mathfrak{D}}
 \newcommand{\opt}{\mathcal{D}}
-\newcommand{\postopt}{\mu_{\textup{post}}^{\data, \opt}} % Posterior measure
-
-%% %\usepackage{comment}% http://ctan.org/pkg/comment
-%% %% %% %\excludecomment{proof}
-%% %% \excludecomment{figure}
-%% %% \let\endfigure\relax
+\newcommand{\postopt}{\mu_{\textup{post}}^{\data, \opt}} 
 
 
-%% %\overfullrule=0pt
 
-\theoremstyle{plain}
+ \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -85,12 +62,9 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-%
-\pubyear{2021}
+ \pubyear{2021}
 \volume{TBA}
 \issue{TBA}
-% \doi{0000}
-%\arxiv{}
 \firstpage{1}
 \lastpage{1}
 
@@ -101,44 +75,33 @@
 \usepackage{graphicx}
 
 \startlocaldefs
-% ** Local definitions **
 \endlocaldefs
 
 \begin{document}
 
-%% *** Frontmatter *** 
+
 
 \begin{frontmatter}
 \title{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
 
-%\title{\support{}}
 \runtitle{Measurement Clusterization in D-optimal Designs}
-%\author{Yair Daon}
-%\numberwithin{equation}{section}
+
 
 \begin{aug}
 \author{\fnms{Yair} \snm{Daon}\thanksref{addr1}\ead[label=e1]{yair.daon@gmail.com}}
 \runauthor{Yair Daon}
 
 \address[addr1]{Azrieli Faculty of Medicine, Bar-Ilan University, Safed, Israel
-    \printead{e1} % print email address of "e1"
-}
+    \printead{e1} }
 
 \end{aug}
 
 \begin{abstract}
-Estimation of parameters in physical processes often demands costly measurements, prompting the pursuit of an optimal measurement strategy. Finding such strategy is termed the problem of \emph{optimal experimental design}, abbreviated as optimal design. Remarkably, optimal designs can yield tightly clustered measurement locations, leading researchers to fundamentally revise the design problem just to circumvent this issue. Some authors introduce error correlation among error terms that are initially independent, while others restrict measurement locations to a finite set of locations. While both approaches may prevent clusterization, they also fundamentally alter the optimal design problem.
+  Estimation of parameters in physical processes often demands costly measurements, prompting the pursuit of an optimal measurement strategy. Finding such strategy is termed the problem of \emph{optimal experimental design}, abbreviated as optimal design. Remarkably, optimal designs can yield tightly clustered measurement locations, leading researchers to fundamentally revise the design problem just to circumvent this issue. Some authors introduce error correlation among error terms that are initially independent, while others restrict measurement locations to a finite set of locations. While both approaches may prevent clusterization, they also fundamentally alter the optimal design problem.
 
 In this study, we consider Bayesian D-optimal designs, i.e.~designs that maximize the expected Kullback-Leibler divergence between posterior and prior. We propose an analytically tractable model for D-optimal designs over Hilbert spaces. In this framework, we make several key contributions: \textbf{(a)} We establish that measurement clusterization is a generic trait of D-optimal designs with independent Gaussian measurement errors, and prove that introducing correlations among measurement error terms mitigates clusterization. \textbf{(b)} We characterize D-optimal designs as reducing uncertainty across a subset of prior covariance eigenvectors. Finally, \textbf{(c)} We leverage this characterization to argue that measurement clusterization arises as a consequence of the pigeonhole principle: when more measurements are taken than there are locations where the select eigenvectors are large and others are small --- clusterization occurs. 
-%
-%% In summary, in this study we shed light on an often ignored issue with
-%% Bayesian D-optimal designs. We characterize such designs and show why
-%% clusterization arisesit arisestheir inherent properties, propose
-%% strategies to address clusterization, and provide insights into the
-%% fundamental attributes underlying measurement design optimization.
-\end{abstract}
+ \end{abstract}
 
-%% ** Keywords **
 \begin{keyword}[class=MSC]
 \kwd[Primary ]{62F15}
 \kwd{35R30}
@@ -253,8 +216,7 @@ $t=T$.
 
 The full time evolution of heat in the rod $\Omega=[0,1]$ is formally
 described by the following three equations:
-\begin{subequations}%\label{eq:heat equation}
-  \begin{alignat}{2}
+\begin{subequations}\begin{alignat}{2}
     u_t &= \Delta u &&\qquad \text{in } [0,1] \times [0,\infty), \label{eq:heat1}\\
     u &= 0 &&\qquad \text{on } \{0, 1\} \times [0,\infty), \label{eq:heat2}\\
     u &= u_0 &&\qquad \text{on }[0,1] \times \{0\}. \label{eq:heat3}
@@ -331,11 +293,9 @@ yields two sets of measurements that are identical. Following
 \emph{clustered} when two or more of its constituent measurements are
 identical.
 
-%% first: blue, second: red, third: green, fourth: black,
-%% fifth:magenta
 \begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{dst_modelError0.png}
+    \includegraphics[height=0.5\textwidth]{figs/dst_modelError0.png}
     \caption{Measurement clusterization for D-optimal designs for the
       inverse problem of the heat equation. Measurement locations were
       chosen according to the Bayesian D-optimality criterion of
@@ -424,20 +384,11 @@ methodologies achieves its objective by imposing restrictions on
 measurement locations, thereby fundamentally altering the optimal
 design problem. To the best of my knowledge, no previous study has
 tried to address some seemingly simple yet fundamental questions:
-%
 Why does imposing correlations between observations alleviate
 measurement clusterization?
-%
 Is measurement clusterization a generic phenomenon? 
-%
 And, most importantly: Why does measurement clusterization occur?
-%
-%Should we aim to avoid measurement clusterization?
-%
-%Is it possible to substitute an optimal clustered design with an
-%equally optimal non-clustered design?
-%Can an optimal clustered design be relpaced with an equally optimal
-%non-clustered design?
+
 
 
 \subsection{Contribution}
@@ -460,11 +411,7 @@ previous section:
 \begin{enumerate}
 \item \label{q:generic} \textbf{Is measurement clusterization a
   generic phenomenon?}
-  %\subsection{An answer for Question \ref{q:generic}: Genericity of measurement clusterization}
-  %% Computer implementation of Lemma \ref{thm:char} for the inverse
-  %% problem outlined in Section \ref{section:how} also generates \(\obs\)
-  %% as a solution to the D-optimal design problem.  Furthermore,
-  We give two complementing answers to this question. First, from a
+We give two complementing answers to this question. First, from a
   theoretical perspective, we show that clusterization mainly depends
   on how quickly the eigenvalues of the prior measure in observation
   space decay. This decay depends mostly on how ill-posed the problem
@@ -505,33 +452,13 @@ previous section:
   conditions (a) and (b).
 
 
-  %% In Section \ref{section:vanishing}, we provide an insightful
-  %% explanation for the optimality of clustered designs when no model
-  %% error is present. We demonstrate that for our model, a D-optimal
-  %% design measures only a small subset of prior eigenvectors, which are
-  %% the prior eigenvectors with largest power spectrum. In real-life
-  %% problems there are limited number of locations where: (a) the
-  %% relevant prior eigenvectors are large, and other prior eigenvectors
-  %% with large power in the prior spectrum are zero. Then measurement
-  %% clusterization is a result of the pigeonhole principle, where there
-  %% are more measurements than measurement locations satisfying (a) and
-  %% (b).
-
-  %% We conjecture that the prevalence of measurement clusterization
-  %% arises due to the ease of discovering clustered designs.
 
 
-%% \item \label{q:avoid} \textbf{Should we aim to avoid measurement
-%%   clusterization?} Based on the analysis conducted in this study, we
-%%   did not find any compelling reason to explicitly avoid optimal
-%%   clustered designs.
 
-%% \item \label{q:replace} \textbf{Is it possible to substitute an
-%%   optimal clustered design with an equally optimal non-clustered
-%%   design?} In Section \ref{section:vanishing}, we answer this question
-%%   in the affirmative, although we show that numerical experiments
-%%   conducted using our model indicate a strong preference for clustered
-%%   designs.
+
+
+
+
 \end{enumerate}
 
 \subsubsection{Implications}
@@ -610,19 +537,9 @@ symmetric positive definite matrix \(M \in \mathbb{R}^{k \times k}\)
 with \(\ttr M = m \in \mathbb{N}\) as \(M = AA^t\), where \(A\in
 \mathbb{R}^{k \times m}\) has unit norm columns.
 
-%% Finally, in Lemma \ref{lemma:lax} we generalize a lemma for
-%% calculating \(\frac{\der}{\der t} \log \det (I + X(t))\), where
-%% \(X(t)\)is an operator valued function \cite{Lax07}.
 
-%% Finally, we must stress that we do not advocate any particular
-%% solution to clusterization. We do not suggest that clustered designs
-%% should be abandoned, nor do we support the use of clustered designs in
-%% any circumstances. Our goal is to investigate an intriguing phenomenon
-%% of clusterization and seek a deeper understanding for it. Different
-%% researchers in different disciplines have differenot viewed as a problem. For
-%% example, \cite{lozan} suggest in the introduction section that
-%% repeated measurements are necessary. Our results align with that
-%% common wisdom and settle the seemed contradiction.
+
+
 
 
 \subsection{Limitations}\label{subsec:limitations}
@@ -636,7 +553,7 @@ studying models that are bare-bones simplifications of real systems,
 e.g.~the Ising model \cite{cipra1987}, the Lorenz system \cite{brin},
 the Lotka-Volterra equations \cite{logan2006}, the Carnot engine
 \cite{kardar2007} and many others.
-\section{Preliminaries and Notation}\label{section:prelim}
+ \section{Preliminaries and Notation}\label{section:prelim}
 Here we present the basics of Bayesian inverse problems over hilbert
 spaces. Since we are ultimately interested in inferring a function
 over some domain, we will keep in mind that these Hilbert spaces
@@ -679,8 +596,7 @@ not add much to the study, (2) it is beyond the technical abilities of
 the author}. Entries \(\meas_j, j=1,\dots,m\) of the measurement
 operator \(\obs\) are called \emph{measurements}:
 
-\begin{equation*}%\label{eq:O}
-  \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
+\begin{equation*}\obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
 \end{equation*}
 
 Data is acquired via noisy observations, and we consider two types of
@@ -701,20 +617,14 @@ Gaussian random vector with covariance matrix
   \begin{split}
     \Sigma(\obs) :&= \mathbb{E}[ (\obs \eps' + \eps) (\obs \eps' +
       \eps)^t ]
-    % 
-    % 
-    = \obs \modcov \obs^* + \sigma^2I_m , 
+= \obs \modcov \obs^* + \sigma^2I_m , 
   \end{split}
 \end{align}
 where
 \begin{align}\label{eq:modcov explained}
   \begin{split}
     [\obs \modcov \obs^*]_{ij} & = e_i^t \obs \modcov \obs^* e_j 
-    %
-    %
-    %
-    = \meas_i (\modcov \meas_j).% \text{ (by \eqref{eq:obs*})}.
-  \end{split}
+= \meas_i (\modcov \meas_j).\end{split}
 \end{align}
 Taking \(\modcov = 0\) is a common practice
 \cite{tarantola2005,kaipio2005,Vogel02} and then \(\Sigma =
@@ -770,10 +680,7 @@ summarized (in our notation) below:
   \begin{align}\label{eq:objective}
     \begin{split}
       \tar( \obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
-      % 
-      % 
-      % 
-      &= \frac12 \log \det 
+&= \frac12 \log \det 
       ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}).
     \end{split}
   \end{align}
@@ -785,9 +692,6 @@ Note that in \cite{AlexanderianGloorGhattas14,
 for more general covariance matrices
 \cite[p. 681]{AlexanderianGloorGhattas14}.
 
-%% It is important to note that since \(\obs\) is finite-rank,
-%% \(\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}\) is
-%% trace-class.
 \begin{definition}\label{def:d optimality}
   We say \(\opt\) is \emph{D-optimal} if \(\opt =
   \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
@@ -806,8 +710,7 @@ similar intuition:
     \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \text{ by \eqref{eq:objective}}\\
     &= \frac12 \log \det \Big( \prcov ( \prcov^{-1} + \fwd ^* \obs^* \Sigma^{-1} \obs \fwd) \Big )\\
     &= \frac12 \log \det \prcov \postcov^{-1} \text{ by \eqref{eq:postcov}}.
-    %%  &= \frac12 \log \det \prcov -\frac12 \log \det \postcov.
-  \end{split}
+\end{split}
 \end{align*}
 We think of \(\prcov\) as constant, in the sense that $\prcov$ does
 not depend on data $\data$. Thus, a D-optimal design minimizes a
@@ -815,74 +718,16 @@ quantity analogous to the posterior covariance determinant, similarly
 to the finite-dimensional case.
 
 
-%% \subsection{Notation Summary}\label{subsec:notation}
-%%   Our notation is summarized below. We let:
-%%   \begin{itemize}
-%%   \item \(\hilp, \hilo\) Hilbert spaces.
-%%   \item \(\fwd:\hilp \to \hilo\) a linear compact operator.
-%%   \item \(\pr \sim \mathcal{N}(0, \prcov)\) prior Gaussian measure on
-%%     \(\hilp$, with prior covariance operator \(\prcov:\hilp \to \hilp$.
-%%   \item \(\obs: \hilo \to \mathbb{R}^m\) measurement operator, where \(m
-%%     \in \mathbb{N}\) is the number of measurements taken.
-%%   \item \(\sigma^2 \in \mathbb{R}_{+}\) observation noise variance.
-%%   \item \(\modcov\) model error covariance operator.
-%%     %% \(\data = \obs \fwd \param + \eps$, where \(\eps \in
-%%     %% \mathbb{R}^m\) isiid \(\mathcal{N}(0, \sigma^2)\) noise.
-%%   \item \(\Sigma(\obs) = \obs \modcov \obs^* + \sigma^2I$. 
-%%   \item \(\post\) the posterior measure, with covariance \(\postcov$.
-%%   \item A D-optimality design criterion
-%%     \cite{AlexanderianGloorGhattas14}:
-%%     \begin{align*}
-%%       \begin{split}
-%%         \tar(\obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
-%%         % 
-%%         % 
-%%         % 
-%%         &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \Sigma(\obs)^{-1} \obs
-%%         \fwd \prcov^{1/2}).
-%%       \end{split}
-%%     \end{align*}
-%%   %% \item \(\{\lambda_i\}_{i=1}^\infty\) eigenvalues of \(\fwd\prcov\fwd^*$
-%%   %%   in decreasing order of magnitude.
-%%   %% %% \item \(\{\ev_i\}_{i=1}^\infty\) their corresponding eigenvectors.
-%%   %% \item \(\{\eta_i\}_{i=1}^\infty\) eigenvalues of \(\obs^*\obs$.
-%%   \end{itemize}
 
 
-%% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq vs sim}
-%% From defintion \ref{def:d optimality} we wish to characterize solution(s) of the
-%% following optimization problem for \(\tar$. %%: (\hilo^*)^m \to \R$:
-%% \begin{align}\label{eq:optimization}
-%%   \obs^{\star} := \argmax_{\obs} \tar( \obs ) 
-%%   = \argmax_{\obs} \frac12 \log \det 
-%%   (I + \prcov^{1/2} \fwd^*\obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}),
-%% \end{align}
-%% where \(\obs\) is constrained to some allowed set of observations. We
-%% call this problem ``simultaneous optimization'', since all
-%% observations are decided on simulatneously.
 
-%% For computational reasons, one may prefer to find the best
-%% observations in a sequential manner. Denote
-%% \begin{equation}\label{eq:def obs_k}
-%%   \obs_k := (\meas_1,\dots, \meas_k)^t,  k\leq m.
-%% \end{equation}
-%% Sequential optimal design proceeds as follows. Find \(\meas_1\) by
-%% maximizing \(\tar(\obs_1)$. Then, keeping \(\meas_1\) fixed --- find
-%% \(\meas_2\) as the maximizer of \(\tar(\obs_2)$. Then, find \(\meas_3\) by
-%% keeping \(\meas_1,\meas_2\) fixed and taking \(\meas_3\) as the maximizer
-%% of \(\tar(\obs_3)$. Continue this way until \(\obs_m = \obs\) is
-%% found, where \(m\) is the number of available observations. %% It is
-%% %% important to notice that this scheme does not require actually
-%% %% observing data --- in \eqref{eq:objective} data is averaged out.
 
-%% The analysis in this paper is conducted for the general simultaneous
-%% optimization case. The sequential optimization case is dealt with in
-%% section \ref{subsec:clusterization sequential}. It is important to
-%% note, however that all conclusions we arrive at for the simultaneous
-%% case easily specialize to the sequential case by considering the
-%% posterior as the next sequential step's prior.
 
-\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+
+
+
+
+ \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
 We seek a formulation of the D-optimal design problem via Lagrange
 multipliers. We first find the gradient of $\tar$, then we suggest
 unit-norm constraints on $\obs$ and find their gradients. Results of
@@ -902,18 +747,15 @@ recall that:
   then we call $\nabla F(\obs)$ the gradient of $F$ at $\obs$. 
 \end{definition}
 
-%% Gradients are best thought of as row vectors. This will prove
-%% important in section \ref{subsec:necessary}.
 
 
-%% \subsection{The gradient of $\tar$}\label{section:objective}
+
+
 
 \begin{proposition}\label{prop:tar grad}
   The gradient of the D-optimality objective $\tar$ is
   \begin{equation*}
-    %% \delta \tar(\obs) V = \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
-    %%   \fwd \postcov \fwd^* \obs^* \Sigma^{-1}}.
-    \nabla \tar(\obs) = ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd
+\nabla \tar(\obs) = ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd
     \postcov \fwd^* \obs^* \Sigma^{-1}
   \end{equation*}
 \end{proposition}
@@ -943,39 +785,19 @@ us in finding such constraints.
     Vu = e_je_j^t (\meas_1(u),\dots,\meas_m(u) )^t = e_j \meas_j(u)
     = (0,\dots,0,\meas_j(u),0,\dots,0)^t.
   \end{equation*}
-  %% This way, $V$ has the same $j$th entry as $\obs$ while the rest
-  %% are set to zero.
-  We now calculate the variation of $\tar$ at $\obs$ in the direction
+We now calculate the variation of $\tar$ at $\obs$ in the direction
   of $V$. Denote $\tmp: = \fwd \postcov \fwd^*$. From Proposition
   \ref{prop:tar grad}:
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
-    % 
-    %
-    %
-    &= \tr{e_je_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
-    %
-    % 
-    %
-    &= e_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}e_j \\
-    %
-    % 
-    %
-    &= e_j^t ( I - \obs \modcov \obs^*\Sigma^{-1})\obs \tmp \obs^* \Sigma^{-1}e_j \\  
-    % 
-    %
-    %
-    &=  e_j^t(\Sigma-\obs \modcov \obs^*) \Sigma^{-1}\obs \tmp \obs^* \Sigma^{-1}e_j \\
-    %
-    %
-    %
-    &=\sigma^2 e_j^t \Sigma^{-1}\obs \tmp \obs^* \Sigma^{-1}e_j
+&= \tr{e_je_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
+&= e_j^t \obs ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}e_j \\
+&= e_j^t ( I - \obs \modcov \obs^*\Sigma^{-1})\obs \tmp \obs^* \Sigma^{-1}e_j \\  
+&=  e_j^t(\Sigma-\obs \modcov \obs^*) \Sigma^{-1}\obs \tmp \obs^* \Sigma^{-1}e_j \\
+&=\sigma^2 e_j^t \Sigma^{-1}\obs \tmp \obs^* \Sigma^{-1}e_j
     \text{ by \eqref{eq:Sigma} }\\
-    %
-    % 
-    %
-    &=\sigma^2 e_j^t \Sigma^{-1}\obs \fwd \postcov \fwd^* \obs^* \Sigma^{-1}e_j.
+&=\sigma^2 e_j^t \Sigma^{-1}\obs \fwd \postcov \fwd^* \obs^* \Sigma^{-1}e_j.
   \end{align*} 
   Since $\postcov$ is positive definite, we conclude that $\delta
   \tar(\obs) V > 0$. This means that increasing the magnitude of the
@@ -1016,21 +838,15 @@ Supplementary:
   \end{align*}
   Then
   \begin{equation*}
-    %% \delta \phi_j(\obs)V = \tr{V \obs^* e_je_j^t}.
-    \nabla \phi_j(\obs) = \obs^* e_je_j^t.
+\nabla \phi_j(\obs) = \obs^* e_je_j^t.
   \end{equation*}
 \end{proposition}
 
-%% The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
 
-%% \begin{align}\label{eq:grad constraints}
-%% \nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
-%% \end{align}
-%% where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
-%% Section \ref{section:objective},
 
-%% The gradients $\nabla \tar(\obs)$ and $\nabla \phi_j(\obs)$ are best
-%% thought of as row vectors.
+
+
+
 
 \subsection{Necessary conditions for D-optimality}
 We find necessary first-order conditions for D-optimality via Lagrange
@@ -1069,8 +885,7 @@ Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
 
 
 
-%% Imposing correlations between observations alleviate measurement clusterization
-\section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non vanishing}
+ \section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non vanishing}
 We now show that if $\modcov \neq 0$ clusterization will not occur. It
 is known that including a model error term mitigates the
 clusterization phenomenon \cite{Ucinski05}, and here we prove this
@@ -1121,24 +936,14 @@ The proof is long and tedious, and is delegated to the Supplementary.
     \Sigmam^{-1} \obsm \modcov \meas_m = \Sigmam^{-1}v_j = (A +\sigma^2I_{m-1})^{-1} v_j =
     e_j -\sigma^2 \Sigmam^{-1}e_j.
   \end{equation}
-  %
-  Using \eqref{eq:observation}:
+Using \eqref{eq:observation}:
   \begin{align}\label{eq:denominator}
     \begin{split}
       \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m
       &= \meas_m \modcov \obsm^* ( e_j - \sigma^2 \Sigmam^{-1} e_j )\\
-      %
-      %
-      %
-      &= \meas_m \modcov \meas_j - \sigma^2 \meas_m \modcov \obsm^* \Sigmam^{-1}e_j \\
-      %
-      %
-      %
-      &= \meas_m \modcov \meas_j -\sigma^2 (e_j - \sigma^2 \Sigmam^{-1}e_j)^t e_j \\
-      %
-      %
-      %
-      &= \meas_m \modcov \meas_m -\sigma^2 + \sigma^4 e_j^t\Sigmam^{-1}e_j.
+&= \meas_m \modcov \meas_j - \sigma^2 \meas_m \modcov \obsm^* \Sigmam^{-1}e_j \\
+&= \meas_m \modcov \meas_j -\sigma^2 (e_j - \sigma^2 \Sigmam^{-1}e_j)^t e_j \\
+&= \meas_m \modcov \meas_m -\sigma^2 + \sigma^4 e_j^t\Sigmam^{-1}e_j.
     \end{split}
   \end{align}
   We use \eqref{eq:observation} to simplify the enumerator in
@@ -1147,21 +952,13 @@ The proof is long and tedious, and is delegated to the Supplementary.
     \begin{split}
       (\obsm^* \Sigmam^{-1} \obsm \modcov - I ) \meas_m
       &= \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m - \meas_m \\
-      %
-      %
-      %
-      &= \obsm^* (e_j - \sigma^2 \Sigmam^{-1} e_j) -\meas_j \\ 
-      %
-      %
-      %
-      &= -\sigma^2 \obsm^* \Sigma^{-1}e_j. 
+&= \obsm^* (e_j - \sigma^2 \Sigmam^{-1} e_j) -\meas_j \\ 
+&= -\sigma^2 \obsm^* \Sigma^{-1}e_j. 
     \end{split}
   \end{align}
-  %
-  Now, we substitute \eqref{eq:enumerator} and \eqref{eq:denominator}
+Now, we substitute \eqref{eq:enumerator} and \eqref{eq:denominator}
   to the enumerator and denominator of \eqref{eq:conclusion}:
-  %
-  \begin{align*}
+\begin{align*}
     \tar( \obs ) - \tar (\obsm ) &=
     \log \left ( 1 + \frac{
       \langle \fwd \postcovm \fwd^* (\obsm^* \Sigmam^{-1} \modcov - I ) \meas_m,
@@ -1170,20 +967,14 @@ The proof is long and tedious, and is delegated to the Supplementary.
       \sigma^2 + \meas_m \modcov \meas_m - \meas_m \modcov \obsm^* \Sigmam^{-1} \obsm \modcov \meas_m 
     }       
     \right ) \\
-    %
-    %
-    %
-    &= \log \left ( 1 + \frac{\sigma^4
+&= \log \left ( 1 + \frac{\sigma^4
       \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1} e_j,
       \obsm^* \Sigmam^{-1}e_j \rangle
     }{
       2\sigma^2 - \sigma^4 e_j^t\Sigmam^{-1}e_j 
     }       
     \right ) \\
-    %
-    %
-    %
-    &= \log \left ( 1 + \frac{\sigma^2
+&= \log \left ( 1 + \frac{\sigma^2
       \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1} e_j,
       \obsm^* \Sigmam^{-1}e_j \rangle
     }{
@@ -1209,9 +1000,7 @@ Consequently,
 \begin{equation*}
    \langle \fwd \postcovm \fwd^* \obsm^* \Sigmam^{-1}
     e_j, \obsm^* \Sigmam^{-1}e_j \rangle 
-  %
-  %
-  = \langle \fwd \postcovm \fwd^* u, u \rangle
+= \langle \fwd \postcovm \fwd^* u, u \rangle
 \end{equation*}
 
 is bounded, and
@@ -1242,8 +1031,7 @@ realistic scenario, and we choose to ignore such pathologies.
 In conclusion, for small observation error $\sigma^2$ levels,
 measurement clusterization is mitigated by the presence of a non-zero
 model error $\modcov$ --- answering Question \ref{q:mitigate} posed in
-the Introduction.% Section \ref{section:intro}.
-\section{D-Optimal Designs Without Model Error}\label{section:vanishing}
+the Introduction. \section{D-Optimal Designs Without Model Error}\label{section:vanishing}
 Our goal in this section is to prove Theorem \ref{thm:char} which
 characterizes D-optimal designs when $\modcov = 0$. The necessary
 first-order condition for D-optimality of Theorem
@@ -1257,17 +1045,14 @@ eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
 are eigenvectors. However, $\postcov$ depends on $\obs$, so we refer
 to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
-%% Proposition \ref{prop:twice woodbury} and Lemma \ref{lemma:sim
-%% diag} required
+
 
 \begin{proposition}\label{prop:twice woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
   \begin{align*}
     \begin{split}
       \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* \obs^* \obs \fwd )^{-1} \fwd^* 
-      %
-      %
-      = \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1},
+= \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1},
     \end{split}
   \end{align*}  
 \end{proposition}
@@ -1303,14 +1088,8 @@ Supplementary.
   \begin{align}\label{eq:mod conditions}
     \begin{split}
       \obs^* \Xi &= \sigma^{-2}\fwd \postcov \fwd^* \obs^*  \text{ (by \eqref{eq:eigenproblem})}\\
-      %
-      %
-      %
-      &= \sigma^{-2} \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* \obs^* \obs \fwd )^{-1} \fwd^* \obs^*  \text{ (by \eqref{eq:postcov})} \\
-      %
-      %
-      %
-      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice woodbury})}.
+&= \sigma^{-2} \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* \obs^* \obs \fwd )^{-1} \fwd^* \obs^*  \text{ (by \eqref{eq:postcov})} \\
+&= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice woodbury})}.
     \end{split}
   \end{align}
 
@@ -1345,27 +1124,12 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
   \begin{align}
     \begin{split}
       \tar(\obs) &= \frac12\log \det \left (I + \sigma^{-2} \prcov^{1/2} \fwd ^* \obs^*
-      \obs \fwd \prcov^{1/2}\right )\\% \text{ (by definition)}\\
-      %
-      &= \frac12 \log \det \left (I + \sigma^{-2} \obs^* \obs \fwd
+      \obs \fwd \prcov^{1/2}\right )\\&= \frac12 \log \det \left (I + \sigma^{-2} \obs^* \obs \fwd
       \prcov\fwd^* \right ) \text{ (Sylvester's Determinant
       Theorem)}\\
-      %
-      %
-      %
-      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same ev})} \\
-      %
-      %
-      %
-      %&=\frac12 \log \left ( \prod_{i=1}^{k} ( \lambda_i^{-1} + \sigma^{-2} \eta_i )\prod_{i=1}^{k} \lambda_i \right )
-      %
-      %
-      %
-      &=\frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). 
-      %
-      %
-      %% &=\frac12 \sum_{i=1}^{k} \log(\sigma^2\lambda_i^{-1} + \eta_i) - k\log \sigma + \frac12\sum_{i=1}^k \log \lambda_i.
-    \end{split}
+&=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same ev})} \\
+&=\frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). 
+\end{split}
   \end{align}
   Part (3) holds since $\log$ is increasing and $\eta_i \geq 0$.
 \end{proof}
@@ -1412,11 +1176,7 @@ them in Theorem \ref{thm:char} below.
     \cite{AlexanderianGloorGhattas14}:
     \begin{align*}
       \begin{split}
-        \tar(\obs) %:&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
-        % 
-        % 
-        % 
-        &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
+        \tar(\obs) &= \frac12 \log \det ( I + \sigma^{-2} \prcov^{1/2} \fwd ^*
         \obs^* \obs \fwd \prcov^{1/2}), 
       \end{split}
     \end{align*}
@@ -1426,8 +1186,7 @@ them in Theorem \ref{thm:char} below.
     \end{equation*}
   \item \(\{\lambda_i\}_{i=1}^\infty\) eigenvalues of
     \(\fwd\prcov\fwd^*\) in decreasing order of magnitude.
-    %% \item \(\{\ev_i\}_{i=1}^\infty\) their corresponding eigenvectors.
-  \item \(\{\eta_i\}_{i=1}^\infty\) eigenvalues of \(\opt^*\opt\).
+\item \(\{\eta_i\}_{i=1}^\infty\) eigenvalues of \(\opt^*\opt\).
  
   \end{itemize}
 
@@ -1438,14 +1197,8 @@ them in Theorem \ref{thm:char} below.
     diagonalizable.
   \item \(k := \rank \opt^*\opt \leq m\) and
     \begin{equation*}
-      \tar(\opt) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). %= \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
-    \end{equation*}
-  %% \item 
-  %%   \begin{equation*}
-  %%     k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
-  %%     \lambda_j^{-1} \right \}.
-  %%   \end{equation*}
-  \item
+      \tar(\opt) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). \end{equation*}
+\item
     \begin{equation*}
         \eta_i = \begin{cases}
           \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
@@ -1504,8 +1257,7 @@ them in Theorem \ref{thm:char} below.
         ymax=4,
         xtick=data,
         legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
-        reverse legend=false, % set to false to get correct display, but I'd like to have this true
-        xticklabels from table={\optimalvsnot}{Label},
+        reverse legend=false, xticklabels from table={\optimalvsnot}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
         ylabel={\LARGE precision --- prior and posterior},
@@ -1524,8 +1276,7 @@ them in Theorem \ref{thm:char} below.
         ymax=4,
         xtick=data,
         legend style={cells={anchor=east}, legend pos=north west, legend columns=-1},
-        reverse legend=false, % set to false to get correct display, but I'd like to have this true
-        xticklabels from table={\optimalvsnot}{Label},
+        reverse legend=false, xticklabels from table={\optimalvsnot}{Label},
         xticklabel style={text width=2cm,align=center},
         legend plot pos=right,
         ylabel={\LARGE precision --- prior and posterior},
@@ -1552,8 +1303,7 @@ them in Theorem \ref{thm:char} below.
 Part (5) of Theorem \ref{thm:char} gives us deep understanding of
 D-optimal designs when $\modcov = 0$: Imagine each eigenvector of the
 \emph{precision} $\left(\fwd \prcov \fwd^*\right )^{-1}$ corresponds
-to a graduated lab cylinder. % (see Fig\ref{fig:cylinder}) Each
-cylinder $i$ is filled, a-priori, with green liquid of
+to a graduated lab cylinder. cylinder $i$ is filled, a-priori, with green liquid of
 $\lambda_i^{-1}$ volume units. We are allowed $m$ measurement, so we
 have blue liquid of volume $\sigma^{-2}m$ units at our disposal. When
 we seek a D-optimal design, we distribute the blue liquid by
@@ -1563,13 +1313,7 @@ such a procedure is that the precision for the first $k$ eigenvectors
 is the average of the total precision $\sum_{j=1}^k \lambda_j^{-1} +
 \sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and Fig.~\ref{fig:optimal
   vs not} for an illustration.
-%% \begin{figure}%{r}{0.25\textwidth} 
-%%     \centering
-%%     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}
-%%     \caption{Three graduated lab cylinders, corresponding to three
-%%      eigenvectors. Prior precision eigenvalues not shown.}
-%%     \label{fig:cylinder}
-%% \end{figure}
+
 
 
 
@@ -1637,7 +1381,7 @@ pigeonhole principle.
 
 \begin{figure}\label{fig:eigenvectors}
     \centering
-    \includegraphics[width=\textwidth]{eigenvectors_dst_scaled.png}
+    \includegraphics[width=\textwidth]{figs/eigenvectors_dst_scaled.png}
     \caption{D-optimal measurement locations ($m=4$ measurements) and
       weighted eigenvectors for finding the initial condition of the
       1D heat equation. Measurement locations and weighted
@@ -1651,8 +1395,8 @@ pigeonhole principle.
       principle.}
   \label{fig:why}
 \end{figure}
-\section{Numerical Experiments}
-%We provide numerical evidence supporting our conclusions.
+ \section{Numerical Experiments}
+
 
 
 \subsection{Simulating Lemma \ref{lemma:free}}\label{subsec:lemma sims}
@@ -1686,7 +1430,7 @@ study.
 
 \begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{simulations.png}
+    \includegraphics[height=0.5\textwidth]{figs/simulations.png}
     \caption{Fraction of clustered $A$ for $AA^t = M$ and $M$
       generated randomly (see text and repository for details on
       generating $M$). It is evident that when $m-k >3$ clusterization
@@ -1712,7 +1456,7 @@ module \texttt{clusterization.py} in the accompanying
 
 \begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{dst_modelError4.png}
+    \includegraphics[height=0.5\textwidth]{figs/dst_modelError4.png}
     \caption{Model correlation mitigates clusterization. We add a
       model correlation term to the error terms in the 1D heat
       equation inverse problem. Lo and behold, measurements are not
@@ -1720,11 +1464,11 @@ module \texttt{clusterization.py} in the accompanying
       term.}
   \label{fig:corr errors}
 \end{figure}
-%\input{discussion}
+ 
 
 
 \begin{acks}[Acknowledgments]
-This study is a result of research I started during my PhD studies
+  This study is a result of research I started during my PhD studies
 under the instruction of Prof.~Georg Stadler at the Courant Institute
 of Mathematical Sciences. I would like to thank him for his great
 mentorship, attention to details and kindness. I would also like to
@@ -1735,10 +1479,8 @@ Last, but certainly not least, I would like to thank the three
 referees, associate editor and editor in chief for providing detailed
 and insightful reviewes that have made this manuscript a whole lot
 better.
-%Having worked on this manuscript alone for several years, they have
-%almost become my coautoh
-  
-This research was supported in part by an appointment with the
+   
+  This research was supported in part by an appointment with the
 National Science Foundation (NSF) Mathematical Sciences Graduate
 Internship (MSGI) Program sponsored by the NSF Division of
 Mathematical Sciences. This program is administered by the Oak Ridge
@@ -1747,13 +1489,10 @@ agreement between the U.S. Department of Energy (DOE) and NSF. ORISE
 is managed for DOE by ORAU. All opinions expressed in this paper are
 the author's and do not necessarily reflect the policies and views of
 NSF, ORAU/ORISE, or DOE.
-% This work was also supported by The Raymond and Beverly Sackler
-% Post-Doctoral Scholarship.
-\end{acks}
+ \end{acks}
 
 \bibliographystyle{ba}
 \bibliography{../../lib.bib}
 
 
 \end{document}
-

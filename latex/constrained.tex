@@ -101,12 +101,12 @@ us in finding such constraints.
 Proposition \ref{prop:bigger better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
 measurements in $\textup{span}\{\meas\}$ for some $\meas \neq 0$, then
-the the D-optimality criterion is unbounded. In contrast, in any
-real-life problem where sensors are concerned, the norm of
-measurements recorded by sensors is always one\footnote{Again, our
-analysis does not apply to point evaluations. These are just used for
-motivation and can be approximated by elements in $\hilo^*$ as long as
-$\hilo$ is a function space, e.g.~$L^2(\Omega)$.}:
+the D-optimality criterion is unbounded. In contrast, in any real-life
+problem where sensors are concerned, the norm of measurements recorded
+by sensors is always one\footnote{Again, our analysis does not apply
+to point evaluations. These are just used for motivation and can be
+approximated by elements in $\hilo^*$ as long as $\hilo$ is a function
+space, e.g.~$L^2(\Omega)$.}:
 
 \begin{equation}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}
@@ -121,11 +121,11 @@ $\hilo$ is a function space, e.g.~$L^2(\Omega)$.}:
 Thus, it is reasonable to consider measurements with unit $\hilo^*$
 norm. We can write the unit norm constraints as a series of $m$
 equality constraints (one for each measurement) on $\obs$. We define
-them and find their gradients in Proposition \ref{prop:constraints
-  grad} below, whose proof is straightforward and delegated to the
-Supplementary:
+them and find their gradients in Proposition
+\ref{prop:constraints_grad} below, whose proof is straightforward and
+delegated to the Supplementary:
 
-\begin{proposition}\label{prop:constraints grad}
+\begin{proposition}\label{prop:constraints_grad}
   Let
   \begin{align*}
     \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.
@@ -154,8 +154,8 @@ multipliers:
 
 \begin{align}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
-  \label{eq:Lagrange mult1} \\
-    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
+  \label{eq:Lagrange_mult1} \\
+    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange_mult2}
 \end{align}
 
 We now substitute the gradients calculated in Propositions
