@@ -82,7 +82,7 @@ def main():
     plt.xlabel("Eigenvector", fontsize=FS)
     plt.ylabel("Precision", fontsize=FS)
     plt.tight_layout()
-    plt.savefig(f"latex/FgammaFstar_modelError{model_error}.png")
+    plt.savefig(f"latex/figs/FgammaFstar_modelError{model_error}.png")
     
     
     ###################################
@@ -128,7 +128,7 @@ def main():
     ax.set_xlim(0,1)
     plt.tight_layout()
 
-    plt.savefig(f"latex/{transform}_modelError{model_error}.png")
+    plt.savefig(f"latex/figs/{transform}_modelError{model_error}.png")
     #plt.show()
 
     ##############################
@@ -176,7 +176,7 @@ def main():
     plt.xlabel(r"$x \in \Omega$", fontsize=fs)
     plt.legend(title='eigenvector, weighted')
     plt.tight_layout()
-    plt.savefig(f"latex/eigenvectors_{transform}_modelError{model_error}.png")
+    plt.savefig(f"latex/figs/eigenvectors_{transform}_modelError{model_error}.png")
    
 
     

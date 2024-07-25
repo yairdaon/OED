@@ -13,20 +13,38 @@ author the possibility to revise the paper. However, I must stress
 that there is no guarantee of a successful outcome, which will solely
 depend on the quality of the revision. In particular:
 
+\answer: I appreciate the many thoughtful comments by yourself, the
+associate editor and the reviewers. I also appreciate the option to
+improve the paper. Please see my answers below in blue.
+
 \begin{description}
   \item[a] the Introduction is to be made accessible to the whole BA
     readership;
+    \answer: I have considerably extended the introduction.
+    
   \item[b] the motivation and the practical statistical implications are to be
     developed and discussed;
+    \answer: I added a section on the implications in the introduction.
+    
   \item[c] the contribution has to be better contextualized with
     respect to the literature in both inverse problems and D-optimal
     designs;
-  \item[d] numerical evidence and code, mentioned in the paper
-    but actually not provided, need to be made available;
+  \answer: 
+    
+  \item[d] numerical evidence and code, mentioned in the paper but
+    actually not provided, need to be made available;
+
+    \answer: I added a section describing numerical experiments and
+    their results. I also added documentation to the accompanying
+    \href{https://github.com/yairdaon/OED}{repository} and made sure
+    all scripts there run.
+    
   \item[e] the mathematical derivations have to be watertight and some
     clarifications are needed in this respect (see Report of Referee
     3).
 
+    \answer: I am not sure which specific comment of Reviewer 3 this
+    refers to, please see my answers to Reviewer 3 below.
 \end{description}
 
 
@@ -39,6 +57,9 @@ context. This makes the paper less accessible to readers who aren't
 already quite familiar with inverse problems (which are introduced
 with very little preamble, and it's not even immediately explicit what
 are the parameters being learned) and optimal experimental design.
+
+\answer: I have added considerably to the introduction. See revised
+manuscript and diff file.
 
 A referee makes valid points as to whether clusterization of
 measurements is a problem in general, when in fact in can be an
@@ -65,21 +86,24 @@ useful to practitioners in this field.
 However, I feel changing the assumption from independent to correlated
 measurements is quite artificial: people tweak a data generation
 process assumption to solve an optimal design problem, and the author
-just takes the assumption as it is. Since the author proves the
-clusterization issue under the independent measurement assumption, I
-expect the author to go deeper and explain why an ordinary data
-generation assumption + a common optimal design leads to a
-“suboptimal” design? Not just by the mathematical proof, but from an
-information theory point of view. For example, does the redundancy
-points mean additional points does not reduce the variance of the
-estimation at all? If that’s the case, how does correlated measurement
-assumption “help” with it?
+just takes the assumption as it is.
 
-\answer: Thanks for your questions. I am not a proponent of using
-correlated noise, I just wanted to show the usefullness of my model by
-rigorously proving how correlated noise mitigates clusterization. I
-have added several lines clearing this issue.
+\answer: If I understand correctly --- I completely agree. I added
+text emphasizing that I do not endorse using correlated errors.
 
+Since the author proves the clusterization issue under the independent
+measurement assumption, I expect the author to go deeper and explain
+why an ordinary data generation assumption + a common optimal design
+leads to a “suboptimal” design?
+\answer: Aagain, my apologies for the misunderstanding.
+
+Not just by the mathematical proof, but from an information theory
+point of view. For example, does the redundancy points mean additional
+points does not reduce the variance of the estimation at all? If
+that’s the case, how does correlated measurement assumption “help”
+with it?
+
+\answer: Bla
 
 \section{Reviewer 2}
 \subsection{Measurement Clusterization vs Repetition}
@@ -92,7 +116,8 @@ definition matches the references of Fedorov (1996) and Nyberg et al
 (2012). So I will assume for the rest of this review that, measurement
 clusterisation refers to repeated measurements.
 
-\answer: 
+\answer: I appreciate the comment, I fixed the relevant line in the
+manuscript.
 
 Nearly all textbooks on classical design of experiments (e.g. Morris,
 2011, Section 1.2.4) will feature a section with the three words
@@ -113,16 +138,33 @@ If one looks at, for example, Fedorov (1996) and Nyberg et
 al (2012), it is an undesirable property because they are interested
 in sensor location, and two or more sensors cannot be in the same
 location. However, there are many experiments where repeated
-measurements are possible, and are therefore optimal (if the model is
-correct, which it won’t be). An example, is a chemical engineering
-experiment where one wishes to learn the relationship between a series
-of variables and yield of a chemical reaction. The experiment will
+measurements are possible, and are therefore optimal
+
+\answer: I believe that even in an application where repeated
+experiments are allowed they may be unintuitive. For example, in a
+medical imaging application --- taking a repeated slice in an MRI scan
+might seem suboptimal to some. Of course, there is no argument
+regarding the optimality give a model, which, as you mention might be
+wrong.
+
+
+(if the model is correct, which it won’t be).
+
+\answer: I believe clusterization may imply a model is somehow in
+adequate, see text below.
+
+
+An example, is a chemical engineering experiment
+where one wishes to learn the relationship between a series of
+variables and yield of a chemical reaction. The experiment will
 involve specifying the variables, and measuring the yield (the
 observation) after a specified period of time. This process is then
 duplicated with a potentially different set of variables.  It is
 perfectly possible to have repeated variables.
 
-\answer: again 
+\answer: I couldn't agree more. Indeed, the suboptimality of clustered
+design is a matter of personal opinion; once a design criterion and a
+model are agreed upon there can be no disagreement.
 
 \begin{enumerate}
  
@@ -159,6 +201,10 @@ with no explanation or intuition. It might be better to relegate much
 of the mathematical detail to Supplementary Material and use the main
 manuscript for exposition.
 
+\answer: Thanks for this comment. I considerably expanded the
+introduction and delegated many proofs to the Supplementary. I also
+added a section on practical implications, reproduced below.
+
 \subsection{Avoiding measurement clusterisation}
 The approaches to avoid measurement clusterisation, described on page
 3, are described as pragmatic and "fundamentally altering the optimal
@@ -173,6 +219,13 @@ thing occurs with the eletrode locations on the skin in impedence
 tomography: the physical size of the sensor imposes a miniumum
 distance between sensors.
 
+\answer: To a certain extend I agree: indeed, the impossibility of
+taking identical measurements is indeed natural. However, this is not
+encoded in the mathematical formulation of the problem. One can then
+take one of two approaches: either accept what the mathematics
+suggest, even if it counterintuitive, or find ways to circumvent the
+mathematics because the result seems non-intuitive.
+
 Secondly, the paper seems to suggest “imposing correlations between
 observations” as a solution. However, isn’t this imposition pragmatic
 as well? I suppose it is argued that the $\obs \eps′$ term is
@@ -180,19 +233,35 @@ accounting for model error: but it is still pragmatic: the data
 acquisition given by equation (1) is not the true data-generating
 process.
 
+\answer: I do not support imposing correlations in the paper, I just
+used correlations to show how my framework can be used to rigorously
+prove what is widely accepted. Other referees also understood that the
+paper endorses imposing correlations and I accept that this is my
+error in writing. I added a clause clearing the issue.
 
 \subsection{Minor comments}
 \begin{itemize}
 \item The author uses two different forms of asterisk: one for
   optimality of the design (e.g. Definition 3) and one for the
   adjoint. Suggest changing the one for optimality.
+
+  \answer: I changed $\obs^\star$ to $\opt$.
+  
 \item I do not like the use of the term measurements as used in the
-  paper. The measurements are the $\data$’s since these are a result of
-  measuring a physical quantity. However, the paper refers to the
+  paper. The measurements are the $\data$’s since these are a result
+  of measuring a physical quantity. However, the paper refers to the
   quantities that are controlled as the measurements.
+
+  \answer: I was not able to find a better term to replace
+  "measurements", so I stuck to it.
+  
 \item Proof of Proposition 12 uses $\eps$ as part of the
   regularisation trick but this has been used previously for error
   (e.g. equation (1)).
+
+  \answer: Absolutely correct, I changed it to $\nu$. You will not
+  find the revised proof in the manuscript since I moved it to the
+  Supplementray.
 \end{itemize}
 
 
@@ -218,18 +287,29 @@ exhibit clusterization more than 95\% of the time (see the code in
 supplementary material)". However, in the version of the supplementary
 materials I had access to there is no further mention of these
 numerical simulations and results; only a link to a Github repository
-is provided, which is however not functioning. Evidently, this issue
-needs to be fixed before any future consideration can be given to the
-manuscript. For example, a detailed description of the repeated
-experiments could be provided either in the main article or in the
-supplement, with tables indicating the various values of the
-parameters for the simulations and the precise percentages
-obtained. Also, the code needs to be publicly available for
-reproducibility.
+is provided, which is however not functioning.
+
+\answer: I apologize for not properly maintainig the repository. It is
+now functioning and well-documented.
+
+Evidently, this issue needs to be fixed before any future
+consideration can be given to the manuscript. For example, a detailed
+description of the repeated experiments could be provided either in
+the main article or in the supplement, with tables indicating the
+various values of the parameters for the simulations and the precise
+percentages obtained. Also, the code needs to be publicly available
+for reproducibility.
+
+\answer: I appreciate the suggestion. I added a section on numerical
+simulations to the main atricle. It is reproduced below.
+
+
 
 \subsection{Further comments}
-I have a number of further comments in regards to the results and the overall presentation of
-the manuscript.
+I have a number of further comments in regards to the results and the
+overall presentation of the manuscript.
+
+
 \begin{itemize}
 \item D-optimal design vs. statistical recovery rates: being more
   familiar with the statistical inverse problem literature than with
@@ -238,13 +318,13 @@ the manuscript.
   unknown (m in the notation of this paper) is possible under this
   choice. All the results I am aware of either assume white
   noise/equally spaced design (e.g. [1]) or measurement loctions
-  sampled uni- formly at random (e.g. [2]). There are also some
+  sampled uniformly at random (e.g. [2]). There are also some
   results with more general design under conditions on the
   fill-distance of the grid (e.g. [3]). All of these specifically
-  prevent clusteri- sation, which is key to the statistical
+  prevent clusterisation, which is key to the statistical
   analysis. Hence, it is not clear to me even if D-optimal design
   should be pursued at all, if it indeed it leads to clusterisation as
-  implied by the present 1paper. I think a discussion on this would be
+  implied by the present paper. I think a discussion on this would be
   illuminating for the reader and help draw a connection to the
   broader statistical inverse problems literature.
 
@@ -253,8 +333,11 @@ the manuscript.
   placed. Perhaps using dots with numbers here would help the
   readability.
 
-  Answer: It is impossible to visually discern the measurements, even
-  when resolution is increased.
+  \answer: It is impossible to visually discern the measurements, even
+  when resolution is increased. These measurements are not identical
+  numerically, but they are identical to five decimal digits. Since I
+  find these points via optimization over point location in
+  $\Omega=[0,1]$ I view an error $<10^{-5}$ as reasonable.
 
 \item Experiment with the 1D heat equation: the experiment showcases
   some interesting phenomena, but also raises many questions. For
@@ -262,7 +345,7 @@ the manuscript.
   (here the unit interval [0, 1]) to play a role, since larger
   dimension allow for higher freedom in placing the design points.
 
-  Answer: That is a great point! I added the followng discussion: 
+  \answer: That is a great point! 
 
 \item Further, a dimensionality effect should also arise directly from
   Theorem 1 via the prior covariance eigenvalues: in the experiment
@@ -272,9 +355,14 @@ the manuscript.
   growing as $j^{2/d}$, which should then impact the index after
   which the eigenvalues are ‘thresholded’ by the procedure.
 
-\item Also, it should be relatively easy here to also study empirically the effect of the correlated
-error model in preventing clusterisation. Investigating all these issues in the context of the
-presented numerical set up would considerably enlarge the breath of the present work.
+\item Also, it should be relatively easy here to also study
+  empirically the effect of the correlated error model in preventing
+  clusterisation. Investigating all these issues in the context of the
+  presented numerical set up would considerably enlarge the breath of
+  the present work.
+
+  \answer: I added relevant simulations to a new section Numerical
+  Experiments.
 
 \item I found very hard to understand Theorem 1 immediately at the end
   of Section 1, as all the necessary background is introduced only
@@ -283,46 +371,98 @@ presented numerical set up would considerably enlarge the breath of the present 
   and 5 already do a good job presenting the results, and the
   repetition of the formal statement does not seem necessary here.
 
-\item Denoting the optimal design in Theorem 1 by simply O is somewhat confusing, cf. the
-equation in the second item. Perhaps a separate notation such as Ō would help readability.
+  \answer: I removed the statement of Theorem 1 from the introudction.
 
-\item Section 1.2 seems altogether unnecessary; the inverse regression model considered in the
-paper are a modelisation of many real-world phenomena, and they are routinely studied in
-statistical papers.
+\item Denoting the optimal design in Theorem 1 by simply O is somewhat
+  confusing, cf. the equation in the second item. Perhaps a separate
+  notation such as Ō would help readability.
 
-Answer: Thanks for this comment but I would rather keep this section
-here since...
+  \answer: Thank you for the comment, I completely agree. Optimal
+  designs are now denoted $\opt$.
+
+\item Section 1.2 seems altogether unnecessary; the inverse regression
+  model considered in the paper are a modelisation of many real-world
+  phenomena, and they are routinely studied in statistical papers.
+
+  \answer: I am glad you view this part as unnecessary, but I feel the
+  model might feel too abstract to some practitioners. Thus, I choose
+  to keep this part to avoid complaints from other readers.
 
 
 \item What does ‘strongly smoothning’ operator means in the thid line of Section 2.1?
 
+  \answer: Basically I meant that its eigenvalues decrease
+  "quickly". I understand this is not a commot or well-defined term so
+  I removed the relevant sentence.
+  
 \item Section 4: the conclusion reached at the end of the section on
   p.15 seem to imply that in the noiseless limit, repeating any
-  measurement does not improve the objective criterion, if corre-
-  lated error model are present. Is it clear however that adding any
+  measurement does not improve the objective criterion, if correlated
+  error model are present. Is it clear however that adding any
   (non-reapted) measurement always strictly increases it? I.e., there
   could be situations where adding one measurement does not change the
-  value of the optimised criterion? Also, can the conclusion drawn
-  here be extended to the case of noisy observations σ > 0?
+  value of the optimised criterion?
 
+  \answer: Great comment! Such cases are possible but I view them as
+  pathological. See short paragraph below.
+
+
+  Also, can the conclusion drawn here be extended to the
+  case of noisy observations $\sigma > 0$?
+
+  \answer: I do not expect this conclusion to hold: if noise is
+  present, any measurement will result in some information gain and an
+  increase in design criterion.
+
+  
 \item At the end of Section 4 on p.15 it is mentioned that $\tar$ is not
   defined for $\sigma^2= 0$, but in the latter case, could not a Gaussian
   posterior measure be still defined as in Gaussian process
-  regression, e.g.[4]
+  regression, e.g.[4].
 
+  \answer: I believe a posterior can be defined, and so a KL
+  divergence from said posterior to prior could be calculated and
+  $\tar$ evaluated. However, taking $\sigma = 0$ in the main theorem
+  implies $\tar \equiv \infty$. I believe this is because do not know
+  how to mitigate this
+  
 \item Theorem 1 is expressed in terms of the prior covariance matrix,
   which is a user specified quantity. Hence, it seems to me that all
-  sort of design behaviour under the D-optimal crite- rior can occur
-  by engineering the prior. It would perhaps be informative to study
-  in more details some representative example of inverse problem and
+  sort of design behaviour under the D-optimal criterion can occur by
+  engineering the prior. It would perhaps be informative to study in
+  more details some representative example of inverse problem and
   Gaussian prior. For example, the recovery of the initial condition
-  with the ‘Matérn-like’ Gaussian prior laid out in the sup- plement
-  are good candidates. For these it is still not clear how the
-  conclusion from Theorem 1 translates into the Figure 1, also because
-  I am unsure about the applicability of the result to point
-  evaluations. In particular, how the conclusion that with m = 4
-  measurements the D-optimal procedure will aim to ignore the third
-  and fourth eigenvalue/function was drawn?
+  with the ‘Matérn-like’ Gaussian prior laid out in the supplement are
+  good candidates.
+
+  \answer: the Matern-like prior actually arises by using a
+  Laplacian-like operator as a prior, see Rue and Lindgren \cite{}. So
+  a study of this example (with and without correlated errors) is
+  already included in the paper. I am afraid implementing another
+  inverse problem is out of scope for the present paper since I was
+  not able to install common packages for inverse problems on my machine.
+
+  For these it is still not clear how the conclusion from Theorem 1
+  translates into the Figure 1, also because I am unsure about the
+  applicability of the result to point evaluations.
+
+  \answer: Indeed, point evaluations $\delta_x$ are not in any
+  function space I consider in the paper since my analysis is limited
+  to Hilbert spaces. Point evaluations can be approximated well,
+  though so in my opinion this is not a deal breaker. The only caveat
+  is that upon approximating point evaluations e.g.~by $R(x;t) =
+  t\mathbb{1}_{-t/2, t/2}(x)$ we will need to change the norm
+  constraints to the norsomething different (i.e.~$\|R(\cdot;t\|$) but
+  that does not change the analysis. I skim over this issue in the
+  paper since I think it is confusing and adds little context.
+  
+  In particular, how the conclusion that with $m = 4$ measurements the
+  D-optimal procedure will aim to ignore the third and fourth
+  eigenvalue/function was drawn?
+
+  \answer: I explain this in more detail in the paper. See text below.
+
+  
 \end{itemize}
 
 \end{document}
