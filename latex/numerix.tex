@@ -2,19 +2,18 @@
 %We provide numerical evidence supporting our conclusions.
 
 
-\subsection{Simulating Lemma \ref{lemma:free}}\label{subsec:lemma_sims}
+\subsection{Simulating Theorem \ref{thm:char}}\label{subsec:lemma_sims}
 In the proof of Theorem \ref{thm:char} we utilize Lemma
-\ref{lemma:free} to construct D-optimal designs. We implement the
-construction in Lemma \ref{lemma:free} with the goal of testing
-numerically how prevalent are clustered designs. We iterate over the
-number of measurements $m \in \{4,\dots, 15\}$, and for every $m$ we
-then iterate over $k:=\rank \obs^*\obs \in \{2,\dots, m-1\}$. For each
-pair $m,k$ we run $N=5000$ simulations according to the following
-steps:
+\ref{lemma:free} to construct D-optimal designs. We implement this
+construction with the goal of testing numerically how prevalent are
+clustered designs. We iterate over the number of measurements $m \in
+\{4,\dots, 24\}$, and for every $m$ we then iterate over $k:=\rank
+\obs^*\obs \in \{2,\dots, m-1\}$. For each pair $m,k$ we run $N=5000$
+simulations according to the following steps:
 \begin{enumerate}
 \item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
-  entries $\log (d_i) \sim \mathcal{N}(5,1)$ and normalize it so that
-  $\ttr D = m$.
+  entries $\log (d_i) \sim \mathcal{N}(25,15)$ and normalize it so
+  that $\ttr D = m$.
 \item Conjugate $D$ by a random orthogonal matrix to form a positive
   semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$.
 \item Apply the construction of Lemma \ref{lemma:free} to calculate
@@ -24,10 +23,10 @@ steps:
   numerical precision threshold).
 \end{enumerate}
 We then calculate the fraction of clustered designs of the simulations
-we ran, for each pair $m,k$. Clusteriztion occured at high rates
-($>95\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
+we ran, for each pair $m,k$. Clusterization occurred at high rates
+($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
 these simulations, clusterization is a generic property. However, when
-$m-k \leq 2$, clusterization does not occur. We do not why and further
+$m-k = 1$, clusterization does not occur. We do not why and further
 investigation into this phenomenon is out of scope for the current
 study.
 
@@ -36,7 +35,7 @@ study.
     \includegraphics[height=0.5\textwidth]{figs/simulations.png}
     \caption{Fraction of clustered $A$ for $AA^t = M$ and $M$
       generated randomly (see text and repository for details on
-      generating $M$). It is evident that when $m-k >3$ clusterization
+      generating $M$). It is evident that when $m-k \geq 2$ clusterization
       is ubiquitous, whereas for lower $m-k$ clusterization does not
       occur.}
   \label{fig:sim_AAt}
