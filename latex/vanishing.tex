@@ -36,7 +36,7 @@ for Woodbury's matrix identity works for separable Hilbert spaces, as
 long as all terms are well defined. Unfortunately, $\obs^*\obs$ is not
 invertible, so we utilize a regularization trick to force it to be.
 
-\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim_diag}
+\begin{lemma}[Simultaneous diagonalizability]\label{lemma:sim_diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
@@ -154,10 +154,10 @@ Theorem \ref{thm:char} characterizing D-optimal designs is:
   $AA^t = M$.
 \end{lemma}
 
-The proof of Lemma is also delegated to the Supplementary. It is
-however important to note that this proof is construcive. It will give
-us a way to construct D-optimal designs, once we fully characterize
-them in Theorem \ref{thm:char} below.
+The proof of Lemma \ref{lemma:free} is also delegated to the
+Supplementary. It is however important to note that this proof is
+constructive; it will allow us to construct D-optimal designs, once we
+fully characterize them in Theorem \ref{thm:char} below.
 
 
 \begin{theorem}\label{thm:char}
@@ -207,7 +207,7 @@ them in Theorem \ref{thm:char} below.
           0 & i > k 
         \end{cases}.
     \end{equation*}
-  \item The covariance of the pushforwad \(\fwd_{*} \postopt\) is \(\left
+  \item The covariance of the pushforward \(\fwd_{*} \postopt\) is \(\left
     ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \opt^*\opt \right
     )^{-1}\) and its eigenvalues are
     \begin{equation}\label{eq:cylinders}
@@ -215,7 +215,7 @@ them in Theorem \ref{thm:char} below.
       \begin{cases}
         \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}m}{k} \right )^{-1} & i \leq k \\
         \lambda_i &  i > k 
-      \end{cases}
+      \end{cases}.
     \end{equation}
   \end{enumerate}
 \end{theorem}
@@ -329,66 +329,54 @@ Fig.~\ref{fig:optimal_vs_not} for an illustration.
 
 
 \subsection{Answer to Question \ref{q:why}}\label{subsec:why}
-Theorem \ref{thm:char} helps us give a compelling explanation of the
-measurement clusterization we obeserved for the inverse problem of the
-heat equation (Fig.~\ref{fig:}). Below, we take the following steps:
-We first utilize Theorem \ref{thm:char} to understand what a D-optimal
-design will look like for our relaxed model; we then argue that
-although not identical, a D-optimal design for the full inverse
-problem of the heat equation shares similar charachteristics to the
-relaxed design; finally, we show how ...
+Building on Theorem \ref{thm:char}, we can now give a compelling
+explanation to the measurement clusterization we observed for the
+inverse problem of the heat equation (Fig.~\ref{fig:eigenvectors}).
 
-First, recall the relevant parts of Theorem \ref{thm:char}. In our
-relaxed model, for a D-optimal design $\opt$:
-\begin{itemize}
-  \item $\opt^*\opt$ and $\fwd\prcov \fwd^*$ are simultaneously
-    diagonalizable.
-  \item $\opt^*\opt$ has non-zero eigenvalues only for the $k:=\rank
-    \opt^*\opt$ largest eigenvalues $\lambda_j$ of $\fwd\prcov\fwd^*$,
-    i.e.~$\eta_j=0$ for $j>k$.
-  \item $k$ is monotonic in $m$, the number of measurements we take.
-\end{itemize}
-
-Consider $\fwd$ and $\prcov$ from the \emph{the inverse problem of the
+Consider $\fwd$ and $\prcov$ from \emph{the inverse problem of the
 heat equation}. As before, we denote the eigenvalues of
 $\fwd\prcov\fwd^*$ by $\lambda_j$. We input these eigenvalues into our
-\emph{relaxed} model, and find a D-optimal design $\opt$ for our
-relaxed model, e.g.~by using Lemma \ref{lemma:free} in the proof of
-Theorem \ref{thm:char}. In our relaxed model, the measurements we take
-are best utilized in reducing uncertainty for the first $k$
-eigenvectors. So, a D-optimal design arising from our \emph{relaxed
-model} completely avoids measuring eigenvectors $k+1$ and above.
+\emph{generic} model, and find a D-optimal design $\opt$ for our
+generic model using Theorem \ref{thm:char}. In our generic model, the
+measurements we take are best utilized in reducing uncertainty for the
+first $k$ eigenvectors. So, a D-optimal design arising from our
+\emph{generic model} completely avoids measuring eigenvectors $k+1$
+and above.
 
 Of course, in a real life problem --- such as the inverse problem of
-the heat equation --- it is likely impossible to find measurement
+the 1D heat equation --- it is likely impossible to find measurement
 locations for which all eigenvectors $k+1$ and above are
-zero. Luckily, the eigenvalues of $\fwd\prcov\fwd^*$ decay very
-quickly: for example, recall from Section \ref{subsec:toy} that the
-eigenvalues of the forward model for the 1D heat equation are $-(2\pi
-n)^{-2}$. Thus a D-optimal design is a trade-off between measuring the
-small number of eigenvectors we are interested in.
+zero. However, if the eigenvalues of $\fwd\prcov\fwd^*$ decay quickly
+(recall the square-exponential decay for eigenvalues of the 1D heat
+equation in eq.\eqref{eq:decay}), a D-optimal design will try to
+balance measuring a small number (i.e.~$k$) of the leading
+eigenvectors.
 
-We explore the abovementione trade-off for the inverse problem of the
-heat equation in Fig.~\ref{fig:eigenvectors}. We allow $m=4$
-measurements in $\Omega = [0,1]$ and observe that D-optimal
-measurement locations are clustered at $x_1 = 0.31$ and $x_2 =
-0.69$. Upon close inspection of the scaled eigenvectors of $\fwd
-\prcov \fwd^*$, we first observe that eigenvectors $3$ and above have
-negligible prior amplitude. Since we only have $m=4$ measurements at
-our disposal, we interpret these results, following Theorem
-\ref{thm:char}, as implying we should only care about measuring the
-first and second eigenvectors. Then, we note the D-optimal $x_1,x_2$
-present a compromise between the amplitude of the first and second
-eigenvectors. For example, a measurement at $x=0.5$ would have ignored
-the second eigenvector altogether, since the second eigenvector is
-zero at $x=0.5$.  Now we can understand measurement clusterization:
-attempting to measure what we want and ignoring the rest, along with
-the spatial limitations on measurements imposed by the structure of
-eigenvectors of $\fwd \prcov \fwd^*$ is the cause for measurement
-clusterization in D-optimal designs: we have $m=4$ measuremnts at our
-disposal but only two spatial locations that are a good compromise
-between the scaled eigenvectors. Thus, clusterization arises by the
-pigeonhole principle.
+The abovementioned trade-off is explored in
+Fig.~\ref{fig:eigenvectors}. We allow $m=4$ measurements in $\Omega =
+[0,1]$ and observe that D-optimal measurement locations are clustered
+at $x_1 = 0.31$ and $x_2 = 0.69$. Upon close inspection of the scaled
+eigenvectors of $\fwd \prcov \fwd^*$, we first observe that
+eigenvectors $3$ and above have negligible prior amplitude. Since we
+only have $m=4$ measurements at our disposal, we interpret these
+results, following Theorem \ref{thm:char}, as implying we should only
+care about measuring the first and second eigenvectors. Then, we note
+the D-optimal $x_1,x_2$ present a compromise between the amplitude of
+the first and second eigenvectors. For example, a measurement at
+$x=0.5$ would have ignored the second eigenvector altogether, since
+the second eigenvector is zero at $x=0.5$.
+
+Now we can understand measurement clusterization for the inverse
+problem of the heat equation. A D-optimal design attempts to measure
+the first $k$ eigenvectors of $\fwd \prcov \fwd^*$. But there may be
+(spatial) limitations on where these $k$ eigenvectors have large
+amplitude. For the inverse problem of the heat equation there are two
+spatial locations that present a good compromise between the
+amplitudes of the first and second eigenvectors, namely $x_1$ and
+$x_2$ --- see Fig.~\ref{fig:eigenvectors}. We have $m=4$ measurements
+at our disposal but only two spatial locations that are a good
+compromise between the first and second scaled eigenvectors. Thus,
+clusterization arises as a consequence of the pigeonhole principle.
 
 \begin{figure}\label{fig:eigenvectors}
     \centering
@@ -400,9 +388,9 @@ pigeonhole principle.
       [0, 1]$ (x-axis). Measurement clusterization occurs
       approximately at $0.31$ and $0.69$. These two locations are a
       compromise between the magnitudes of the first and second
-      eigenvectors. These are the eigenvectors a D-optimal design aims
-      to measure. The rest of the eAllocating $m=4$ measurements into two locations
-      results in clusterization, according to the pigeonhole
+      eigenvectors, which are the eigenvectors that a D-optimal design
+      aims to measure. Allocating $m=4$ measurements into two
+      locations results in clusterization, according to the pigeonhole
       principle.}
   \label{fig:why}
 \end{figure}
