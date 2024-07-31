@@ -1,5 +1,5 @@
 \section{Preliminaries and Notation}\label{section:prelim}
-Here we present the basics of Bayesian inverse problems over hilbert
+Here we present the basics of Bayesian inverse problems over Hilbert
 spaces. Since we are ultimately interested in inferring a function
 over some domain, we will keep in mind that these Hilbert spaces
 should really be thought of as function spaces. A deeper treatment of
@@ -22,36 +22,38 @@ the 1D heat equation, $u(\cdot, T) \in \hilo$.
 The connection between parameter and observation spaces is made by the
 \emph{forward operator} \(\fwd: \hilp \to \hilo\). We assume the
 forward operator \(\fwd\) is linear. In the inverse problem of the 1D
-heat equatin, the forward operator is determined by the time evolution
-of the 1D heat equation \eqref{eq:heat1} and \eqref{eq:heat2}.
+heat equation, the forward operator is determined by the time
+evolution of the 1D heat equation \eqref{eq:heat1} and
+\eqref{eq:heat2}, so $u(\cdot, T) = \fwd u_0$.
 
-Measurements are taken via a \emph{measurement operator} \(\obs\). It
-is common for the measurement and forward operators to be merged
-\(\tmp := \obs \fwd\) \cite{AlexanderianGloorGhattas14}, but the
-analysis carried out in the following sections requires that \(\fwd\)
-and \(\obs\) are explicitly separated (as in
-\cite{attia2022stochastic, cvetkovic2023choosing}). Note that \(\obs
-\in ( \hilo^* )^m\), where \(m\) is the number of measurements
-taken\footnote{The alert reader will likely ask how do we reconcile
-point measurements $\delta_x$ as suggested by the formulation of the
-1D heat equation with workin in Hilbert spaces. We don't. This entire
-study could be formulated for Banach spaces where point measurements
-are allowed. We avoid this technical difficulty because: (1) it does
-not add much to the study, (2) it is beyond the technical abilities of
-the author}. Entries \(\meas_j, j=1,\dots,m\) of the measurement
-operator \(\obs\) are called \emph{measurements}:
-
+Measurements are taken via a linear \emph{measurement operator}
+\(\obs\), which is the concatenation of linear functionals
+$\meas_1,\dots,\meas_m$ we call \emph{measurements}:
 \begin{equation*}%\label{eq:O}
   \obs u = (\meas_1(u), \dots, \meas_m(u) )^t \in \R^m,\ u \in \hilo.
 \end{equation*}
+%% \footnote{It is common for the measurement and forward
+%% operators to be merged \(\tmp := \obs \fwd\)
+%% \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
+%% following sections requires that \(\fwd\) and \(\obs\) are explicitly
+%% separated, as in \cite{attia2022stochastic,
+%%   cvetkovic2023choosing}.}
+Thus, \(\obs \in ( \hilo^* )^m\), where \(m\) is the number of
+measurements taken\footnote{The alert reader will likely ask how do we
+reconcile point measurements $\delta_x$ as suggested by the
+formulation of the 1D heat equation with working in Hilbert spaces. We
+don't. We follow standard practice in the literature and restrict our
+analysis to Hilbert spaces. We can satisfy ourselves with the fact
+that point evaluations could be approximated in a standard Hilbert
+space like $L^2(\Omega)$.}.
 
 Data is acquired via noisy observations, and we consider two types of
 error terms: Spatially correlated model error \(\eps' \sim
 \normal(0,\modcov)\) with \(\modcov\) a covariance operator; and
 observation error denoted \(\eps \sim \normal(0, \sigma^2 I_m)\), with
 \(I_m \in \mathbb{R}^{m \times m}\) the identity. Both error terms and
-the prior (see below) are assumed independent of each other. Thus,
-data is acquired via
+the prior (see Section \ref{subsec:bayesian_inverse_problems} below)
+are assumed independent of each other. Thus, data is acquired via
 \begin{align}\label{eq:inverse_problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
@@ -84,18 +86,19 @@ Taking \(\modcov = 0\) is a common practice
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian_inverse_problems}
 In the previous section, we saw how a parameter $u\in \hilp$ is
-transported to the observation space via the forward operaror $\fwd u
+transported to the observation space via the forward operator $\fwd u
 \in \hilo$, how observations are generated from a parameter via $\obs
 \fwd u$ and how observations and noise give rise to data $\data$. It
 is time to formulate the process of inferring the parameter as a
-Bayesian inverse problem. The first ingredient we need is a prior.
+Bayesian inverse problem. We have already defined the likelihood in
+the previous section, and now we will define the prior.
 
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
 \(\hilp\) \cite{Stuart10}. For example, for the inverse problem of the
-1D heat equation we chose $\prcov = (-\Delta)^{-1}$ --- see Section
-\ref{subsec:toy}. Note that \(\fwd \prcov \fwd^*\) is the prior
-covariance in \(\hilo\) \cite{Stuart10}, and as such is assumed
+1D heat equation we chose $\prcov = (-\Delta)^{-1}$, as described in
+Section \ref{subsec:toy}. Note that \(\fwd \prcov \fwd^*\) is the
+prior covariance in \(\hilo\) \cite{Stuart10}, and as such is assumed
 invertible --- an assumption which we will use later (if \(\fwd\) has
 a nontrivial kernel we utilize Occam's Razor and ignore said kernel
 altogether).
@@ -103,7 +106,7 @@ altogether).
 Since $\fwd$ is linear and $\pr$ is Gaussian --- the posterior
 \(\post\) is Gaussian as well. We do not utilize the posterior mean in
 this study, but the posterior covariance operator $\postcov$ is given
-by the known formula\cite{Stuart10}:
+by the known formula \cite{Stuart10}:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
@@ -113,7 +116,7 @@ by the known formula\cite{Stuart10}:
 A Bayesian D-optimal design maximizes the expected KL divergence
 between posterior \(\post\) and prior measures \(\pr\). For arbitrary
 posterior and prior measures, the KL divergence is defined,
-analogously to eq.~\ref{eq:basic_KL}, via the Radon-Nikodym
+analogously to eq.~\eqref{eq:basic_KL}, via the Radon-Nikodym
 derivative:
 \begin{equation*}
   D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
@@ -141,11 +144,10 @@ summarized (in our notation) below:
   \end{align}
 \end{theorem}
 
-Note that in \cite{AlexanderianGloorGhattas14,
-  alexanderian2018efficient}, results are stated for \(\Sigma=I\)
-(implied by \(\modcov = 0,\sigma^2=1\)), but these results also hold
-for more general covariance matrices
-\cite[p. 681]{AlexanderianGloorGhattas14}.
+In \cite{AlexanderianGloorGhattas14, alexanderian2018efficient},
+results are stated for \(\Sigma=I\) (implied by \(\modcov =
+0,\sigma^2=1\)), but these results also hold for more general
+covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.
 
 %% It is important to note that since \(\obs\) is finite-rank,
 %% \(\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}\) is
