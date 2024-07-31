@@ -7,7 +7,7 @@ the foundations for inverse problems over function spaces can be found
 in \cite{Stuart10}.
 
 
-\subsection{Forward Problems}\label{subsec:abstract OED}
+\subsection{Forward Problems}\label{subsec:abstract_OED}
 In this section we give definitions and notations for forward problems,
 which are an essential part of the inverse problems we discuss
 later. Consider a "parameter space" \(\hilp\) and an "observation
@@ -52,7 +52,7 @@ observation error denoted \(\eps \sim \normal(0, \sigma^2 I_m)\), with
 \(I_m \in \mathbb{R}^{m \times m}\) the identity. Both error terms and
 the prior (see below) are assumed independent of each other. Thus,
 data is acquired via
-\begin{align}\label{eq:inverse problem}
+\begin{align}\label{eq:inverse_problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
 
@@ -69,7 +69,7 @@ Gaussian random vector with covariance matrix
   \end{split}
 \end{align}
 where
-\begin{align}\label{eq:modcov explained}
+\begin{align}\label{eq:modcov_explained}
   \begin{split}
     [\obs \modcov \obs^*]_{ij} & = e_i^t \obs \modcov \obs^* e_j 
     %
@@ -82,7 +82,7 @@ Taking \(\modcov = 0\) is a common practice
 \cite{tarantola2005,kaipio2005,Vogel02} and then \(\Sigma =
 \sigma^2I_m\) is a scalar matrix which does not depend on \(\obs\).
 
-\subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian inverse problems}
+\subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian_inverse_problems}
 In the previous section, we saw how a parameter $u\in \hilp$ is
 transported to the observation space via the forward operaror $\fwd u
 \in \hilo$, how observations are generated from a parameter via $\obs
@@ -93,7 +93,7 @@ Bayesian inverse problem. The first ingredient we need is a prior.
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
 \(\hilp\) \cite{Stuart10}. For example, for the inverse problem of the
-1D heat equation we chose $\prcov = -\Delta^{-1}$ --- see Section
+1D heat equation we chose $\prcov = (-\Delta)^{-1}$ --- see Section
 \ref{subsec:toy}. Note that \(\fwd \prcov \fwd^*\) is the prior
 covariance in \(\hilo\) \cite{Stuart10}, and as such is assumed
 invertible --- an assumption which we will use later (if \(\fwd\) has
@@ -109,11 +109,11 @@ by the known formula\cite{Stuart10}:
   )^{-1}.
 \end{align}
 
-\subsection{Bayesian D-Optimal Designs}\label{subsec:D optimal design} 
+\subsection{Bayesian D-Optimal Designs}\label{subsec:D_optimal_design} 
 A Bayesian D-optimal design maximizes the expected KL divergence
 between posterior \(\post\) and prior measures \(\pr\). For arbitrary
 posterior and prior measures, the KL divergence is defined,
-analogously to eq.~\ref{eq:basic KL}, via the Radon-Nikodym
+analogously to eq.~\ref{eq:basic_KL}, via the Radon-Nikodym
 derivative:
 \begin{equation*}
   D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
@@ -124,7 +124,7 @@ infinite dimensions was pioneered by \cite{AlexanderianGloorGhattas14,
   alexanderian2018efficient}. The main result we will make use of is
 summarized (in our notation) below:
 
-\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
+\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d_optimality}
   Let \(\pr = \normal(\prmean,\prcov)\) be a Gaussian prior on \(\hilp\)
   and let \(\post = \normal(\postmean,\postcov)\) the posterior measure
   on \(\hilp\) for the Bayesian linear inverse problem \(\data = \obs
@@ -150,18 +150,18 @@ for more general covariance matrices
 %% It is important to note that since \(\obs\) is finite-rank,
 %% \(\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}\) is
 %% trace-class.
-\begin{definition}\label{def:d optimality}
+\begin{definition}\label{def:d_optimality}
   We say \(\opt\) is \emph{D-optimal} if \(\opt =
   \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
   are constrained to some allowed set of measurements in \(\hilo^*\).
 \end{definition}
 
-Intuition for Theorem \ref{thm:d optimality} can be gained by
+Intuition for Theorem \ref{thm:d_optimality} can be gained by
 recalling from Section \ref{subsec:D} that for a Bayesian linear model
 in finite dimensions, with Gaussian prior and Gaussian noise, a
 D-optimal design minimizes the determinant of the posterior covariance
 matrix. Theorem
-\ref{thm:d optimality} and Definition \ref{def:d optimality} carry a
+\ref{thm:d_optimality} and Definition \ref{def:d_optimality} carry a
 similar intuition:
 \begin{align*}
   \begin{split}
@@ -211,8 +211,8 @@ to the finite-dimensional case.
 %%   \end{itemize}
 
 
-%% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq vs sim}
-%% From defintion \ref{def:d optimality} we wish to characterize solution(s) of the
+%% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq_vs_sim}
+%% From defintion \ref{def:d_optimality} we wish to characterize solution(s) of the
 %% following optimization problem for \(\tar$. %%: (\hilo^*)^m \to \R$:
 %% \begin{align}\label{eq:optimization}
 %%   \obs^{\star} := \argmax_{\obs} \tar( \obs ) 
@@ -225,7 +225,7 @@ to the finite-dimensional case.
 
 %% For computational reasons, one may prefer to find the best
 %% observations in a sequential manner. Denote
-%% \begin{equation}\label{eq:def obs_k}
+%% \begin{equation}\label{eq:def_obs_k}
 %%   \obs_k := (\meas_1,\dots, \meas_k)^t,  k\leq m.
 %% \end{equation}
 %% Sequential optimal design proceeds as follows. Find \(\meas_1\) by
@@ -239,7 +239,7 @@ to the finite-dimensional case.
 
 %% The analysis in this paper is conducted for the general simultaneous
 %% optimization case. The sequential optimization case is dealt with in
-%% section \ref{subsec:clusterization sequential}. It is important to
+%% section \ref{subsec:clusterization_sequential}. It is important to
 %% note, however that all conclusions we arrive at for the simultaneous
 %% case easily specialize to the sequential case by considering the
 %% posterior as the next sequential step's prior.

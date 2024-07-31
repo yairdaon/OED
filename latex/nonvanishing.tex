@@ -1,5 +1,5 @@
 %% Imposing correlations between observations alleviate measurement clusterization
-\section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non vanishing}
+\section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non_vanishing}
 We now show that if $\modcov \neq 0$ clusterization will not occur. It
 is known that including a model error term mitigates the
 clusterization phenomenon \cite{Ucinski05}, and here we prove this
@@ -8,7 +8,7 @@ rigorously. Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
 $\postcovm$ the posterior covariance that arises when $\obsm$ is
 utilized as a measurement operator.
 
-\begin{proposition}[Increase due to a measurement]\label{prop:design increase}
+\begin{proposition}[Increase due to a measurement]\label{prop:design_increase}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
   (\meas_1,\dots,\meas_{m-1})^t$. Then
   \begin{equation}\label{eq:conclusion}
@@ -25,7 +25,7 @@ utilized as a measurement operator.
 The proof is long and tedious, and is delegated to the Supplementary.
 
 
-\begin{corollary}\label{cor:same meas}
+\begin{corollary}\label{cor:same_meas}
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
     \tar(\obs) - \tar(\obsm) =
@@ -41,11 +41,11 @@ The proof is long and tedious, and is delegated to the Supplementary.
   vector.
 \end{corollary}
 
-\begin{proof} \label{cor:same meas proof}
+\begin{proof} \label{cor:same_meas_proof}
   Denote $A:= \obs \modcov \obs^*$ and $v_j$ the $j^{\text{th}}$
   column of $A$.  Note that $v_j = \obsm \modcov \meas_m$, since
   $(\obsm \modcov \obsm^*)_{ij} = \meas_i(\modcov \meas_j)$, as
-  explained in \eqref{eq:modcov explained}. We can now verify that
+  explained in \eqref{eq:modcov_explained}. We can now verify that
   \begin{equation}\label{eq:observation}
     \Sigmam^{-1} \obsm \modcov \meas_m = \Sigmam^{-1}v_j = (A +\sigma^2I_{m-1})^{-1} v_j =
     e_j -\sigma^2 \Sigmam^{-1}e_j.

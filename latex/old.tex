@@ -169,16 +169,15 @@ studied design criteria \cite{Chaloner1995,
 Surprisingly, A- and D-optimal designs have been observed to yield
 remarkably similar measurements in certain cases \cite{fedorov1996,
   nyberg2012, fedorov1997, Ucinski05, neitzel2019sparse}. To
-illustrate this point, we consider a toy problem: inferring
-the initial condition of the 1D heat equation (details in the
-supplementary material). In Fig.~\ref{fig:clusterization
-  illustration} D-optimal measurement locations are shown for
-different numbers of measurements. Notably, for six measurements, a
-D-optimal design yields two sets of measurements that are almost
-indistinguishable from one another. We refer to this intriguing
-phenomenon as \emph{measurement clusterization} \cite{Ucinski05}, and
-we refer to a design that exhibits measurement clusterization as a
-\emph{clustered design}.
+illustrate this point, we consider a toy problem: inferring the
+initial condition of the 1D heat equation (details in the
+supplementary material). In Fig.~\ref{fig:clusterization_illustration}
+D-optimal measurement locations are shown for different numbers of
+measurements. Notably, for six measurements, a D-optimal design yields
+two sets of measurements that are almost indistinguishable from one
+another. We refer to this intriguing phenomenon as \emph{measurement
+clusterization} \cite{Ucinski05}, and we refer to a design that
+exhibits measurement clusterization as a \emph{clustered design}.
 
 
 %% first: blue, second: red, third: green, fourth: black,
@@ -190,7 +189,7 @@ we refer to a design that exhibits measurement clusterization as a
       inverting for the initial condition of the 1D heat equation (see
       supplementary material for details). Measurement locations were
       chosen according to the Bayesian D-optimality criterion of
-      Theorem \ref{thm:d optimality}. Measurement locations are
+      Theorem \ref{thm:d_optimality}. Measurement locations are
       plotted over the computational domain \(\Omega = [0, 1]\)
       (x-axis), for varying numbers of measurements (y-axis). The
       colored numbers are measurement indices, plotted for visual
@@ -199,7 +198,7 @@ we refer to a design that exhibits measurement clusterization as a
       third (green). For five measurements, first (blue) and second
       (red) measurements are clustered, as well as the fourth (black)
       and the fifth (magenta).}
-  \label{fig:clusterization illustration}
+  \label{fig:clusterization_illustration}
 \end{figure}
 
 
@@ -317,7 +316,7 @@ posed at the end of the previous paragraph:
 
 \item \label{q:mitigate} \textbf{Why does imposing correlations
   between observations alleviate measurement clusterization?} In
-  Section \ref{section:non vanishing}, we rigorously demonstrate the
+  Section \ref{section:non_vanishing}, we rigorously demonstrate the
   role of model error in mitigating clusterization, thereby
   corroborating earlier observations made by various researchers.
 
@@ -476,7 +475,7 @@ function spaces can be found elsewhere \cite{Stuart10} and will not be
 reviewed here.
 
 
-\subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract OED}
+\subsection{Bayesian Linear Inverse Problems}\label{subsec:abstract_OED}
 Let \(\hilp\) and \(\hilo\) separable Hilbert spaces (the subscripts p
 and o are for "parameter" and "observation", respectively), and let
 \(\fwd: \hilp \to \hilo\) the \emph{forward operator}. The forward
@@ -509,7 +508,7 @@ error terms: Spatially correlated model error \(\eps' \sim
 error is denoted \(\eps \sim \normal(0, \sigma^2 I_m)\), with \(I_m \in
 \mathbb{R}^{m \times m}\) the identity. Both error terms and the prior
 are assumed independent of each other. Thus, data is acquired via
-\begin{align}\label{eq:inverse problem}
+\begin{align}\label{eq:inverse_problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
 
@@ -526,7 +525,7 @@ Gaussian random vector with covariance matrix
   \end{split}
 \end{align}
 where
-\begin{align}\label{eq:modcov explained}
+\begin{align}\label{eq:modcov_explained}
   \begin{split}
     [\obs \modcov \obs^*]_{ij} & = e_i^t \obs \modcov \obs^* e_j 
     %
@@ -547,7 +546,7 @@ depend on data \(\data\) \cite{Stuart10}:
   )^{-1}.
 \end{align}
 
-\subsection{Bayesian D-Optimal Designs in Infinite Dimensions}\label{subsec:D optimal design} 
+\subsection{Bayesian D-Optimal Designs in Infinite Dimensions}\label{subsec:D_optimal_design} 
 A Bayesian D-optimal design maximizes expected Kullback-Leibler (KL)
 divergence between posterior \(\post\) and prior measures \(\pr\). It is
 useful to first recall the definition of KL divergence \cite{CoverThomas91}:
@@ -560,7 +559,7 @@ infinite dimensions was pioneered by \cite{AlexanderianGloorGhattas14,
   alexanderian2018efficient}. The main result we will make use of is
 summarized (in our notation) below:
 
-\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
+\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d_optimality}
   Let \(\pr = \normal(\prmean,\prcov)\) be a Gaussian prior on \(\hilp\)
   and let \(\post = \normal(\postmean,\postcov)\) the posterior measure
   on \(\hilp\) for the Bayesian linear inverse problem \(\data = \obs
@@ -586,19 +585,19 @@ for more general covariance matrices
 %% It is important to note that since \(\obs\) is finite-rank,
 %% \(\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}\) is
 %% trace-class.
-\begin{definition}\label{def:d optimality}
+\begin{definition}\label{def:d_optimality}
   We say \(\obs^{\star}\) is \emph{D-optimal} if \(\obs^{\star} =
   \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
   are constrained to some allowed set of measurements in \(\hilo^*\).
 \end{definition}
 
-Intuition for Theorem \ref{thm:d optimality} can be gained by
+Intuition for Theorem \ref{thm:d_optimality} can be gained by
 considering a Bayesian linear model in finite dimensions, with
 Gaussian prior and Gaussian noise. Then, a D-optimal design minimizes
 the determinant of the posterior covariance matrix, and this turns out
 to be a regularized version of the frequentist D-optimality criterion
-\cite{Chaloner1995}. Theorem \ref{thm:d optimality} and Definition
-\ref{def:d optimality} carry a similar intuition:
+\cite{Chaloner1995}. Theorem \ref{thm:d_optimality} and Definition
+\ref{def:d_optimality} carry a similar intuition:
 \begin{align*}
   \begin{split}
     \tar(\obs) &= \frac12 \log \det ( I + \prcov^{1/2}  \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}) \text{ by \eqref{eq:objective}}\\
@@ -646,8 +645,8 @@ to the finite-dimensional case.
 %%   \end{itemize}
 
 
-%% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq vs sim}
-%% From defintion \ref{def:d optimality} we wish to characterize solution(s) of the
+%% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq_vs_sim}
+%% From defintion \ref{def:d_optimality} we wish to characterize solution(s) of the
 %% following optimization problem for \(\tar$. %%: (\hilo^*)^m \to \R$:
 %% \begin{align}\label{eq:optimization}
 %%   \obs^{\star} := \argmax_{\obs} \tar( \obs ) 
@@ -660,7 +659,7 @@ to the finite-dimensional case.
 
 %% For computational reasons, one may prefer to find the best
 %% observations in a sequential manner. Denote
-%% \begin{equation}\label{eq:def obs_k}
+%% \begin{equation}\label{eq:def_obs_k}
 %%   \obs_k := (\meas_1,\dots, \meas_k)^t,  k\leq m.
 %% \end{equation}
 %% Sequential optimal design proceeds as follows. Find \(\meas_1\) by
@@ -674,12 +673,12 @@ to the finite-dimensional case.
 
 %% The analysis in this paper is conducted for the general simultaneous
 %% optimization case. The sequential optimization case is dealt with in
-%% section \ref{subsec:clusterization sequential}. It is important to
+%% section \ref{subsec:clusterization_sequential}. It is important to
 %% note, however that all conclusions we arrive at for the simultaneous
 %% case easily specialize to the sequential case by considering the
 %% posterior as the next sequential step's prior.
 
-\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D_and_grad}
 We seek a formulation of the D-optimal design problem via Lagrange
 multipliers. We first find the gradient of $\tar$, then we suggest
 unit-norm constraints on $\obs$ and find their gradients. Results of
@@ -705,7 +704,7 @@ recall that:
 
 %% \subsection{The gradient of $\tar$}\label{section:objective}
 
-\begin{proposition}\label{prop:tar grad}
+\begin{proposition}\label{prop:tar_grad}
   The gradient of the D-optimality objective $\tar$ is
   \begin{equation*}
     %% \delta \tar(\obs) V = \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
@@ -718,7 +717,7 @@ recall that:
 \begin{proof}  
   From the definition of $\Sigma(\obs)$ \eqref{eq:Sigma}: 
 
-  \begin{align}\label{eq:der sig}
+  \begin{align}\label{eq:der_sig}
     \begin{split}
       \frac{\der}{\der \tau} \Big |_{\tau=0} \Sigma( \obs + \tau V )
       &= \frac{\der}{\der \tau} \Big |_{\tau=0} 
@@ -730,7 +729,7 @@ recall that:
     \end{split}
   \end{align}
 
-  Then, using \eqref{eq:der sig}: 
+  Then, using \eqref{eq:der_sig}: 
   \begin{align*}
     0 &= \frac{\der}{\der \tau} \Big |_{\tau=0} I \\
     % 
@@ -748,11 +747,11 @@ recall that:
     %
     &= \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0} \Sigma+
     \Sigma^{-1} (V\modcov \obs^* + \obs \modcov V^*). 
-    %\text{, by \eqref{eq:der sig}. }
+    %\text{, by \eqref{eq:der_sig}. }
   \end{align*}
 
   Thus:
-  \begin{align}\label{eq:der sig inv}
+  \begin{align}\label{eq:der_sig_inv}
     \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0}  
       &= -\Sigma^{-1} (V \modcov \obs^* + \obs \modcov V^*) \Sigma^{-1}.
     \end{align}
@@ -763,7 +762,7 @@ recall that:
     T(\obs) = \obs^* \Sigma^{-1}(\obs)\obs.
   \end{equation*}
   
-  By Leibniz (product) rule and \eqref{eq:der sig inv}:
+  By Leibniz (product) rule and \eqref{eq:der_sig_inv}:
   % 
   \begin{align}\label{eq:T}
     \begin{split}
@@ -802,7 +801,7 @@ recall that:
       % 
       % 
       &= \frac12 \frac{\der}{\der \tau} \Big |_{\tau=0} \log \det 
-      (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (Theorem \ref{thm:d optimality})} \\
+      (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (Theorem \ref{thm:d_optimality})} \\
       % 
       % 
       % 
@@ -843,7 +842,7 @@ seek reasonable constraints on $\obs$ for which finding a D-optimal
 design is analytically tractable. The following proposition will guide
 us in finding such constraints.
 
-\begin{proposition}\label{prop:bigger better}
+\begin{proposition}\label{prop:bigger_better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
   $\sigma^2 > 0$ and $|\zeta| > 1$. Then $\tar(\obs)$ increases if we
   use $\zeta \meas_j$ in $\obs$ instead of $\meas_j$.
@@ -860,7 +859,7 @@ us in finding such constraints.
   %% are set to zero.
   We now calculate the variation of $\tar$ at $\obs$ in the direction
   of $V$. Denote $\tmp: = \fwd \postcov \fwd^*$. From Proposition
-  \ref{prop:tar grad}:
+  \ref{prop:tar_grad}:
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
@@ -895,7 +894,7 @@ us in finding such constraints.
   $j^{\text{th}}$ measurement functional increases $\tar(\obs)$.
 \end{proof}
 
-Proposition \ref{prop:bigger better} implies that it is a good idea to
+Proposition \ref{prop:bigger_better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
 measurements in $span\{\meas\}$ for some $\meas \neq 0$, then a
 maximum for the D-optimality criterion does not exist, as it is not
@@ -917,10 +916,10 @@ functions we wish to consider):
 Thus, it is reasonable to consider measurements with unit $\hilo^*$
 norm. We can write the unit norm constraints as a series of $m$
 equality constraints (one for each measurement) on $\obs$. We define
-them and find their gradients in Proposition \ref{prop:constraints
-  grad} below:
+them and find their gradients in Proposition
+\ref{prop:constraints_grad} below:
 
-\begin{proposition}\label{prop:constraints grad}
+\begin{proposition}\label{prop:constraints_grad}
   Let
   \begin{align*}
     \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.
@@ -969,9 +968,9 @@ them and find their gradients in Proposition \ref{prop:constraints
 \end{proof}
 
 
-%% The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
+%% The same arguments justifying \eqref{eq:tar_grad} hold here, and thus:
 
-%% \begin{align}\label{eq:grad constraints}
+%% \begin{align}\label{eq:grad_constraints}
 %% \nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
 %% \end{align}
 %% where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
@@ -986,19 +985,19 @@ multipliers:
 
 \begin{align}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
-  \label{eq:Lagrange mult1} \\
-    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
+  \label{eq:Lagrange_mult1} \\
+    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange_mult2}
 \end{align}
 
 We now substitute the gradients calculated in Propositions
-\ref{prop:tar grad} and \ref{prop:constraints grad} into
-\eqref{eq:Lagrange mult1}:
+\ref{prop:tar_grad} and \ref{prop:constraints_grad} into
+\eqref{eq:Lagrange_mult1}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
 \end{equation} 
 Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
-\eqref{eq:Lagrange mult2} more compactly as:
+\eqref{eq:Lagrange_mult2} more compactly as:
 
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:
@@ -1018,7 +1017,7 @@ Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
 
 
 %% Imposing correlations between observations alleviate measurement clusterization
-\section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non vanishing}
+\section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non_vanishing}
 We now show that if $\modcov \neq 0$ clusterization will not occur. It
 is known that including a model error term mitigates the
 clusterization phenomenon \cite{Ucinski05}, and here we prove this
@@ -1027,7 +1026,7 @@ rigorously. Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
 $\postcovm$ the posterior covariance that arises when $\obsm$ is
 utilized as a measurement operator.
 
-\begin{proposition}[Increase due to a measurement]\label{prop:design increase}
+\begin{proposition}[Increase due to a measurement]\label{prop:design_increase}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
   (\meas_1,\dots,\meas_{m-1})^t$. Then
   \begin{equation}\label{eq:conclusion}
@@ -1085,12 +1084,12 @@ utilized as a measurement operator.
   %
   and denote:
   %
-  \begin{align}\label{eq:M def}
+  \begin{align}\label{eq:M_def}
     \M (\obs ):&= \prcov^{\frac12}\fwd^* \obs^* \Sigma^{-1} \obs \fwd
     \prcov^{\frac12}.
   \end{align}
   
-  From \eqref{eq:schur} and \eqref{eq:M def}:
+  From \eqref{eq:schur} and \eqref{eq:M_def}:
   \begin{align*}
     \M(\obs) &= \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2} \\
     %
@@ -1148,12 +1147,12 @@ utilized as a measurement operator.
   %
   so that
   %
-  \begin{equation}\label{eq:M plus I}
+  \begin{equation}\label{eq:M_plus_I}
     I + \M( \obs ) = I + \M (\obsm ) + uu^*.
   \end{equation}
   %
   Note that
-  \begin{equation}\label{eq:M postcov}
+  \begin{equation}\label{eq:M_postcov}
     \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
   \end{equation}
   From a generalization of the matrix determinant lemma to Hilbert
@@ -1177,7 +1176,7 @@ utilized as a measurement operator.
       &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ).
     \end{split}
   \end{align}
-  From \eqref{eq:u} and \eqref{eq:M postcov}:
+  From \eqref{eq:u} and \eqref{eq:M_postcov}:
   \begin{align}\label{eq:final}
     \begin{split}
       &\left \langle \left (I+\M (\obsm)\right )^{-1}u, u \right \rangle\\
@@ -1205,7 +1204,7 @@ utilized as a measurement operator.
 
 
 
-\begin{corollary}\label{cor:same meas}
+\begin{corollary}\label{cor:same_meas}
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
     \tar(\obs) - \tar(\obsm) =
@@ -1221,11 +1220,11 @@ utilized as a measurement operator.
   vector.
 \end{corollary}
 
-\begin{proof} \label{cor:same meas proof}
+\begin{proof} \label{cor:same_meas_proof}
   Denote $A:= \obs \modcov \obs^*$ and $v_j$ the $j^{\text{th}}$
   column of $A$.  Note that $v_j = \obsm \modcov \meas_m$, since
   $(\obsm \modcov \obsm^*)_{ij} = \meas_i(\modcov \meas_j)$, as
-  explained in \eqref{eq:modcov explained}. We can now verify that
+  explained in \eqref{eq:modcov_explained}. We can now verify that
   \begin{equation}\label{eq:observation}
     \Sigmam^{-1} \obsm \modcov \meas_m = \Sigmam^{-1}v_j = (A +\sigma^2I_{m-1})^{-1} v_j =
     e_j -\sigma^2 \Sigmam^{-1}e_j.
@@ -1352,10 +1351,10 @@ eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
 are eigenvectors. However, $\postcov$ depends on $\obs$, so we refer
 to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
-%% Proposition \ref{prop:twice woodbury} and Lemma \ref{lemma:sim
-%% diag} required
+%% Proposition \ref{prop:twice_woodbury} and Lemma \ref{lemma:sim
+%%_diag} required
 
-\begin{proposition}\label{prop:twice woodbury}
+\begin{proposition}\label{prop:twice_woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
   \begin{align*}
     \begin{split}
@@ -1447,7 +1446,7 @@ to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
 \end{proof}
 
 
-\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim diag}
+\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim_diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
@@ -1472,26 +1471,26 @@ to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
   $\sum_{j=1}^m \func_j\func_j^* = \sum_{i=1}^\ell A_i$. Second, $A_i
   \func_k = 0$ if $k\not \in S_i$, since eigenvectors of different
   eigenvalue are orthogonal. For $k \in S_i$
-  \begin{equation}\label{eq:on vi}
+  \begin{equation}\label{eq:on_vi}
     \xi_i \func_k = (C + \sum_{j=1}^m \func_j \func_j^* ) \func_k = (C + A_i) \func_k.
   \end{equation}
   Let $V_i := span \{\func_k \}_{k\in S_i}$. Observe that $V_i$ is
-  invariant under $A_i$, by definition, and under $C$, by \eqref{eq:on
-    vi}. A second application of \eqref{eq:on vi} shows that $A_i =
-  \xi_iI - C$ on $V_i$. This immediately implies $A_i$ and $C$ are
-  simultaneously diagonalizable on $V_i$. This holds for every $1 \leq
-  i \leq \ell$ and we conclude that $C$ and $A$ are simultaneously
-  diagonalizable.
+  invariant under $A_i$, by definition, and under $C$, by
+  \eqref{eq:on_vi}. A second application of \eqref{eq:on_vi} shows
+  that $A_i = \xi_iI - C$ on $V_i$. This immediately implies $A_i$ and
+  $C$ are simultaneously diagonalizable on $V_i$. This holds for every
+  $1 \leq i \leq \ell$ and we conclude that $C$ and $A$ are
+  simultaneously diagonalizable.
 \end{proof}
 
 
-\begin{proposition}\label{prop:same ev}
+\begin{proposition}\label{prop:same_ev}
   Let $\obs$ satisfy the nonlinear eigenvalue problem
   \eqref{eq:eigenproblem}. Then $\obs^*\obs$ and $\fwd \prcov \fwd^*$
   are simultaneously diagonalizable.
 \end{proposition}
 \begin{proof}
-  \begin{align}\label{eq:mod conditions}
+  \begin{align}\label{eq:mod_conditions}
     \begin{split}
       \obs^* \Xi &= \sigma^{-2}\fwd \postcov \fwd^* \obs^*  \text{ (by \eqref{eq:eigenproblem})}\\
       %
@@ -1501,19 +1500,19 @@ to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
       %
       %
       %
-      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice woodbury})}.
+      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice_woodbury})}.
     \end{split}
   \end{align}
 
   Now take $\func_j^{*} = \meas_j$ and $C := (\fwd \prcov
-  \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim diag}.
+  \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim_diag}.
 \end{proof}
 
 Since we made no assumption regarding the ordering of $\{\lambda_i\}$,
 we can denote the corresponding non-zero eigenvalues of $\obs^*\obs$
 by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
-\begin{proposition}\label{prop:true target}
+\begin{proposition}\label{prop:true_target}
   Let $\obs$ with $m$ measurements satisfy the nonlinear eigenvalue
   problem \eqref{eq:eigenproblem}. Let $\{\eta_i\}_{i=1}^{\infty}$
   eigenvalues of $\obs^*\obs$ and $\{\lambda_i\}_{i=1}^{\infty}$ the
@@ -1544,7 +1543,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       %
       %
       %
-      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same ev})} \\
+      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same_ev})} \\
       %
       %
       %
@@ -1680,7 +1679,7 @@ The final ingredient we require for the proof of Theorem
   eigenvectors by construction. If we can choose $V$ such that $A$
   also satisfies the unit norm constraints we are done. These
   constraints are, for $j=1,\dots,m$:
-  \begin{equation}\label{eq:V constraints}
+  \begin{equation}\label{eq:V_constraints}
    1 = [A^tA]_{jj} = [V S^tS V^t]_{jj},
   \end{equation}
   and we can expect to do this since we assumed $\ttr D = m$.
@@ -1786,10 +1785,10 @@ The final ingredient we require for the proof of Theorem
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
   satisfies the unit norm constraint on measurements. Part (2)
-  was proved in Proposition \ref{prop:same ev}. Part (3) was proved in
-  Proposition \ref{prop:true target}.
+  was proved in Proposition \ref{prop:same_ev}. Part (3) was proved in
+  Proposition \ref{prop:true_target}.
   
-  Part (4) is a consequence of Propositions \ref{prop:true target} and
+  Part (4) is a consequence of Propositions \ref{prop:true_target} and
   \ref{prop:kkt}, with the caveat that we did not show that finding
   $\obs$ so that $\obs^*\obs$ has the desired eigenvalues is
   feasible. To this end, we utilize Lemma \ref{lemma:free}: let $M =
@@ -1800,7 +1799,7 @@ The final ingredient we require for the proof of Theorem
   Recall from \eqref{eq:postcov}, that the posterior precision is
   $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\obs^*\obs\fwd$. The
   first statement in part (5) now follows from Proposition
-  \ref{prop:twice woodbury}, while the second statement follows from
+  \ref{prop:twice_woodbury}, while the second statement follows from
   parts (1) and (4).
 \end{proof}
 
@@ -1863,7 +1862,7 @@ The final ingredient we require for the proof of Theorem
     accumulated height of $\sigma^{-2}m = 3$ in both panels. The
     D-optimal design (left) increases precision where it is
     lowest. The sub-optimal design (right) does not.}
-  \label{fig:optimal vs not}
+  \label{fig:optimal_vs_not}
 \end{figure}
 
 
@@ -1877,7 +1876,7 @@ have blue liquid of volume $\sigma^{-2}m$ units at our disposal. When
 we seek a D-optimal design, we distribute the blue liquid by
 repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
-such a procedure is illustrated in Fig.~\ref{fig:optimal vs not}.
+such a procedure is illustrated in Fig.~\ref{fig:optimal_vs_not}.
 %% \begin{figure}%{r}{0.25\textwidth} 
 %%     \centering
 %%     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}

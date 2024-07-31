@@ -10,6 +10,7 @@
 \usetikzlibrary{patterns}
 \pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
 %\usepackage{hyperref}
+\usepackage{xcolor}
 
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\eps}{\varepsilon}
@@ -71,3 +72,14 @@
 
 %% %\overfullrule=0pt
 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}

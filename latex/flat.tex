@@ -8,7 +8,8 @@
 \usepackage{thm-restate}
 \usepackage{tikz,pgfplotstable}
 \usetikzlibrary{patterns}
-\pgfplotsset{compat=1.9} 
+\pgfplotsset{compat=1.9} \usepackage{xcolor}
+
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\M}{\mathcal{M}}
@@ -51,7 +52,7 @@
 
 
 
- \theoremstyle{plain}
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -62,7 +63,8 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
- \pubyear{2021}
+ 
+\pubyear{2021}
 \volume{TBA}
 \issue{TBA}
 \firstpage{1}
@@ -180,7 +182,7 @@ to prior \cite{chaloner1995, AlexanderianGloorGhattas14,
 between distributions is standard practice and we will not motivate it
 further here. For a discrete parameter $\param$ and data $\data$, the
 KL divergence is defined as
-\begin{equation}\label{eq:basic KL}
+\begin{equation}\label{eq:basic_KL}
   D_{KL}\left (\Pr(\param|\data)||\Pr(\param)\right ) =  \sum_{\param} \log
   \frac{\Pr(\param|\data)}{\Pr(\param)} \Pr(\param|\data). 
 \end{equation}
@@ -195,7 +197,7 @@ criterion as a \emph{D-optimal design}.
 
 For a linear model with Gaussian prior in finite dimensions, a
 D-optimal design minimizes the determinant of the posterior covariance
-\cite{chaloner1995}. In Section \ref{subsec:D optimal design} we give
+\cite{chaloner1995}. In Section \ref{subsec:D_optimal_design} we give
 a more general definition of the D-optimality criterion that applies
 to arbitrary measures. We also show how the D-optimality criterion
 generalizes to linear models over infinite-dimensional Hilbert spaces
@@ -238,14 +240,18 @@ inside the rod at time $t=0$.
 
 Solving the 1D heat equation is straightforward. Any initial heat
 distribution $u_0\in L^2([0,1])$ that satisfies the homogeneous
-Dirichlet boundary condition is a linear combination of sines
-$\ev_n(x) = \sin(2\pi n x)$. Now, note that $\ev_n$ are in fact
-eigenvectors of the Laplacian: $\Delta \ev_n = -(2\pi n)^2\ev_n$. The
-linearity of the Laplacian implies the linearity of the heat equation
-and we can solve in Fourier / frequency space. It is important to note
-that when solving the heat equation we \emph{invert} the
-Laplacian. I.e.~eigenvalues of the linear operator that describes the
-time evolution of heat are $(2\pi n)^{-2}$.
+Dirichlet boundary condition eq.~\eqref{eq:heat2} is a linear
+combination of sines $\ev_n(x) = \sin(\pi n x)$, so $u_0 = \sum_{n\geq
+  1} a_n \ev_n$ for some $\{a_n\}_{n\geq 1}$. Now, note that $\ev_n$
+are in fact eigenvectors of the Laplacian: $\Delta \ev_n = -\pi^2
+n^2\ev_n$. It should not be hard to believe that eq.~\eqref{eq:heat1}
+implies $u(\cdot, T) = \sum_{n\geq 1} a_n \exp(-\pi^2 n^2T ) \ev_n$
+\cite{renardy2006PDE}. Thus, eigenvectors of the linear operator that
+describes the time evolution of heat are $\ev_n(x) = \sin(\pi n x)$
+with corresponding eigenvalues
+\begin{equation}\label{eq:decay}
+  \exp(-\pi^2 n^2T ).
+\end{equation}
 
 In the \emph{inverse problem of the 1D heat equation}, our goal is to
 infer the initial condition $u_0 = u(\cdot, 0)$ from observations of
@@ -257,34 +263,31 @@ measurements.
 
 The inverse problem of the 1D heat equation is difficult ("ill-posed")
 since heat spreads in a diffusive manner and any roughness in the
-initial condition is quickly smoothed, see Supplementary movies S1 and
-S2 (code generating these movies is located in module
-\texttt{movies.py} in the accompanying
+initial condition is quickly smoothed, as implied by the squared
+exponential decay as $n\to\infty$ in eq.~\eqref{eq:decay}. See
+Supplementary movies S1 and S2 for an illustration of this phenomenon
+(code generating these movies is located in module \texttt{movies.py}
+in the accompanying
 \href{https://github.com/yairdaon/OED}{repository}). For ill-posed
 problems regularization is required, and we implement such
 regularization via a fully Bayesian formulation of the inverse
 problem.
 
-Specifically, we set a prior on the initial condition $u_0 \sim
-\mathcal{N}(0, (-\Delta)^{-1})$, where we impose the homogeneous
-Dirichlet boundary condition on the Laplacian. We choose
-$(-\Delta)^{-1}$ as our covariance operator following \cite{Stuart10}:
-our choice ensures the power of the negative Laplacian inside the
-parentheses is larger than $d/2$, where $d=1$ is the dimension of our
-computational domain $\Omega$. One can intuitively understand this
-choice from Weyl's asymptotics, that states that the eigenvalues of
-Laplacian increase as $n^{d/2}$. Thus, our choice of covariance
-$(-\Delta)^{-1}$ ensures higher modes decay sufficiently quickly, so
-prior samples have sufficient regularity. Our choice of prior
-covariance ensures the posterior is well-defined and well-behaved
-\cite[Theorem 3.1 and Lemma 6.25]{Stuart10}.
+We choose a prior for the initial condition $u_0 \sim \mathcal{N}(0,
+(-\Delta)^{-1})$, with homogeneous Dirichlet boundary condition. Choosing a prior This
+choice ensures the posterior is well-defined and prior realizations
+are well-behaved, see \cite[Theorem 3.1 and Lemma 6.25]{Stuart10} for
+details.
+
+
+
 
 \subsection{Measurement Clusterization}
 Surprisingly, A- and D-optimal designs for inverse problems have been
 observed to yield remarkably similar measurements in certain cases
 \cite{fedorovDesignSpatialExperiments1996, nyberg2012, fedorov1997,
   Ucinski05, neitzel2019sparse}. This phenomenon is illustrated for
-our toy inverse problem in Fig.~\ref{fig:clusterization illustration},
+our toy inverse problem in Fig.~\ref{fig:clusterization_illustration},
 where D-optimal measurement locations are shown for different numbers
 of measurements. Notably, for six measurements, a D-optimal design
 yields two sets of measurements that are identical. Following
@@ -299,7 +302,7 @@ identical.
     \caption{Measurement clusterization for D-optimal designs for the
       inverse problem of the heat equation. Measurement locations were
       chosen according to the Bayesian D-optimality criterion of
-      Theorem \ref{thm:d optimality}. Measurement locations are
+      Theorem \ref{thm:d_optimality}. Measurement locations are
       plotted over the computational domain \(\Omega = [0, 1]\)
       (x-axis), for varying numbers of measurements (y-axis). The
       colored numbers are measurement indices, plotted for visual
@@ -308,7 +311,7 @@ identical.
       third (green). For five measurements, first (blue) and second
       (red) measurements are clustered, as well as the fourth (black)
       and the fifth (magenta).}
-  \label{fig:clusterization illustration}
+  \label{fig:clusterization_illustration}
 \end{figure}
 
 
@@ -398,7 +401,7 @@ questions. Our focus centers around investigating the Bayesian
 D-optimality criterion. We conduct an analysis of Bayesian D-optimal
 designs within the context of linear inverse problems over Hilbert
 spaces and study two inverse problems: (a) In Sections
-\ref{section:prelim} and \ref{section:D and grad} we propose a novel
+\ref{section:prelim} and \ref{section:D_and_grad} we propose a novel
 relaxed model for an inverse problem where D-optimality maintains
 analytical tractability, where D-optimal designs are identified via
 Lagrange multipliers. This analytical framework facilitates the
@@ -420,21 +423,21 @@ We give two complementing answers to this question. First, from a
   the discussion following it. We also show results of numerical
   experiments, where simulations of our model give rise to D-optimal
   designs that exhibit clusterization with high probability in Section
-  \ref{subsec:lemma sims}. Thus, given the genericity of our model, we
+  \ref{subsec:lemma_sims}. Thus, given the genericity of our model, we
   expect measurement clusterization to be a generic and ubiquitous
   phenomenon.
 
 \item \label{q:mitigate} \textbf{Why does imposing correlations
   between observations alleviate measurement clusterization?} In
-  Section \ref{section:non vanishing}, we rigorously demonstrate the
+  Section \ref{section:non_vanishing}, we rigorously demonstrate the
   role of model error in mitigating clusterization, thereby
   corroborating earlier observations made by various
   researchers. Specifically, our proof shows that identical
   measurements result in no gain in design criterion when observation
-  error tends to zero. Moreover, in Section \ref{subsec:corr errors
-    sims}, we show that an error term corresponding to correlations
-  between measurements mitigates clusterization in the inverse problem
-  of the 1D heat equation.
+  error tends to zero. Moreover, in Section
+  \ref{subsec:corr_errors_sims}, we show that an error term
+  corresponding to correlations between measurements mitigates
+  clusterization in the inverse problem of the 1D heat equation.
 
 \item \label{q:why} \textbf{Why does measurement clusterization
   occur?} In Section \ref{subsec:why} (specifically, See
@@ -562,7 +565,7 @@ the foundations for inverse problems over function spaces can be found
 in \cite{Stuart10}.
 
 
-\subsection{Forward Problems}\label{subsec:abstract OED}
+\subsection{Forward Problems}\label{subsec:abstract_OED}
 In this section we give definitions and notations for forward problems,
 which are an essential part of the inverse problems we discuss
 later. Consider a "parameter space" \(\hilp\) and an "observation
@@ -577,8 +580,8 @@ the 1D heat equation, $u(\cdot, T) \in \hilo$.
 The connection between parameter and observation spaces is made by the
 \emph{forward operator} \(\fwd: \hilp \to \hilo\). We assume the
 forward operator \(\fwd\) is linear. In the inverse problem of the 1D
-heat, the forward operator is determined by the time evolution of the
-1D heat equation \eqref{eq:heat1} and \eqref{eq:heat2}.
+heat equatin, the forward operator is determined by the time evolution
+of the 1D heat equation \eqref{eq:heat1} and \eqref{eq:heat2}.
 
 Measurements are taken via a \emph{measurement operator} \(\obs\). It
 is common for the measurement and forward operators to be merged
@@ -606,7 +609,7 @@ observation error denoted \(\eps \sim \normal(0, \sigma^2 I_m)\), with
 \(I_m \in \mathbb{R}^{m \times m}\) the identity. Both error terms and
 the prior (see below) are assumed independent of each other. Thus,
 data is acquired via
-\begin{align}\label{eq:inverse problem}
+\begin{align}\label{eq:inverse_problem}
   \data := \obs (\fwd \param + \eps') + \eps = \obs \fwd \param + \obs \eps' + \eps.
 \end{align}
 
@@ -621,7 +624,7 @@ Gaussian random vector with covariance matrix
   \end{split}
 \end{align}
 where
-\begin{align}\label{eq:modcov explained}
+\begin{align}\label{eq:modcov_explained}
   \begin{split}
     [\obs \modcov \obs^*]_{ij} & = e_i^t \obs \modcov \obs^* e_j 
 = \meas_i (\modcov \meas_j).\end{split}
@@ -630,7 +633,7 @@ Taking \(\modcov = 0\) is a common practice
 \cite{tarantola2005,kaipio2005,Vogel02} and then \(\Sigma =
 \sigma^2I_m\) is a scalar matrix which does not depend on \(\obs\).
 
-\subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian inverse problems}
+\subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian_inverse_problems}
 In the previous section, we saw how a parameter $u\in \hilp$ is
 transported to the observation space via the forward operaror $\fwd u
 \in \hilo$, how observations are generated from a parameter via $\obs
@@ -641,7 +644,7 @@ Bayesian inverse problem. The first ingredient we need is a prior.
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
 \(\hilp\) \cite{Stuart10}. For example, for the inverse problem of the
-1D heat equation we chose $\prcov = -\Delta^{-1}$ --- see Section
+1D heat equation we chose $\prcov = (-\Delta)^{-1}$ --- see Section
 \ref{subsec:toy}. Note that \(\fwd \prcov \fwd^*\) is the prior
 covariance in \(\hilo\) \cite{Stuart10}, and as such is assumed
 invertible --- an assumption which we will use later (if \(\fwd\) has
@@ -657,11 +660,11 @@ by the known formula\cite{Stuart10}:
   )^{-1}.
 \end{align}
 
-\subsection{Bayesian D-Optimal Designs}\label{subsec:D optimal design} 
+\subsection{Bayesian D-Optimal Designs}\label{subsec:D_optimal_design} 
 A Bayesian D-optimal design maximizes the expected KL divergence
 between posterior \(\post\) and prior measures \(\pr\). For arbitrary
 posterior and prior measures, the KL divergence is defined,
-analogously to eq.~\ref{eq:basic KL}, via the Radon-Nikodym
+analogously to eq.~\ref{eq:basic_KL}, via the Radon-Nikodym
 derivative:
 \begin{equation*}
   D_{KL}(\post||\pr) = \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param).
@@ -672,7 +675,7 @@ infinite dimensions was pioneered by \cite{AlexanderianGloorGhattas14,
   alexanderian2018efficient}. The main result we will make use of is
 summarized (in our notation) below:
 
-\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d optimality}
+\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d_optimality}
   Let \(\pr = \normal(\prmean,\prcov)\) be a Gaussian prior on \(\hilp\)
   and let \(\post = \normal(\postmean,\postcov)\) the posterior measure
   on \(\hilp\) for the Bayesian linear inverse problem \(\data = \obs
@@ -692,18 +695,18 @@ Note that in \cite{AlexanderianGloorGhattas14,
 for more general covariance matrices
 \cite[p. 681]{AlexanderianGloorGhattas14}.
 
-\begin{definition}\label{def:d optimality}
+\begin{definition}\label{def:d_optimality}
   We say \(\opt\) is \emph{D-optimal} if \(\opt =
   \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
   are constrained to some allowed set of measurements in \(\hilo^*\).
 \end{definition}
 
-Intuition for Theorem \ref{thm:d optimality} can be gained by
+Intuition for Theorem \ref{thm:d_optimality} can be gained by
 recalling from Section \ref{subsec:D} that for a Bayesian linear model
 in finite dimensions, with Gaussian prior and Gaussian noise, a
 D-optimal design minimizes the determinant of the posterior covariance
 matrix. Theorem
-\ref{thm:d optimality} and Definition \ref{def:d optimality} carry a
+\ref{thm:d_optimality} and Definition \ref{def:d_optimality} carry a
 similar intuition:
 \begin{align*}
   \begin{split}
@@ -727,7 +730,7 @@ to the finite-dimensional case.
 
 
 
- \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+ \section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D_and_grad}
 We seek a formulation of the D-optimal design problem via Lagrange
 multipliers. We first find the gradient of $\tar$, then we suggest
 unit-norm constraints on $\obs$ and find their gradients. Results of
@@ -752,7 +755,7 @@ recall that:
 
 
 
-\begin{proposition}\label{prop:tar grad}
+\begin{proposition}\label{prop:tar_grad}
   The gradient of the D-optimality objective $\tar$ is
   \begin{equation*}
 \nabla \tar(\obs) = ( I - \modcov \obs^* \Sigma^{-1}\obs ) \fwd
@@ -772,7 +775,7 @@ seek reasonable constraints on $\obs$ for which finding a D-optimal
 design is analytically tractable. The following proposition will guide
 us in finding such constraints.
 
-\begin{proposition}\label{prop:bigger better}
+\begin{proposition}\label{prop:bigger_better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
   $\sigma^2 > 0$ and $|\zeta| > 1$. Then $\tar(\obs)$ increases if we
   use $\zeta \meas_j$ in $\obs$ instead of $\meas_j$.
@@ -787,7 +790,7 @@ us in finding such constraints.
   \end{equation*}
 We now calculate the variation of $\tar$ at $\obs$ in the direction
   of $V$. Denote $\tmp: = \fwd \postcov \fwd^*$. From Proposition
-  \ref{prop:tar grad}:
+  \ref{prop:tar_grad}:
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
@@ -804,15 +807,15 @@ We now calculate the variation of $\tar$ at $\obs$ in the direction
   $j^{\text{th}}$ measurement functional increases $\tar(\obs)$.
 \end{proof}
 
-Proposition \ref{prop:bigger better} implies that it is a good idea to
+Proposition \ref{prop:bigger_better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
 measurements in $\textup{span}\{\meas\}$ for some $\meas \neq 0$, then
-the the D-optimality criterion is unbounded. In contrast, in any
-real-life problem where sensors are concerned, the norm of
-measurements recorded by sensors is always one\footnote{Again, our
-analysis does not apply to point evaluations. These are just used for
-motivation and can be approximated by elements in $\hilo^*$ as long as
-$\hilo$ is a function space, e.g.~$L^2(\Omega)$.}:
+the D-optimality criterion is unbounded. In contrast, in any real-life
+problem where sensors are concerned, the norm of measurements recorded
+by sensors is always one\footnote{Again, our analysis does not apply
+to point evaluations. These are just used for motivation and can be
+approximated by elements in $\hilo^*$ as long as $\hilo$ is a function
+space, e.g.~$L^2(\Omega)$.}:
 
 \begin{equation}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}
@@ -827,11 +830,11 @@ $\hilo$ is a function space, e.g.~$L^2(\Omega)$.}:
 Thus, it is reasonable to consider measurements with unit $\hilo^*$
 norm. We can write the unit norm constraints as a series of $m$
 equality constraints (one for each measurement) on $\obs$. We define
-them and find their gradients in Proposition \ref{prop:constraints
-  grad} below, whose proof is straightforward and delegated to the
-Supplementary:
+them and find their gradients in Proposition
+\ref{prop:constraints_grad} below, whose proof is straightforward and
+delegated to the Supplementary:
 
-\begin{proposition}\label{prop:constraints grad}
+\begin{proposition}\label{prop:constraints_grad}
   Let
   \begin{align*}
     \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.
@@ -854,19 +857,19 @@ multipliers:
 
 \begin{align}
   &\nabla \tar(\obs) = \sum_{j=1}^m \xi_j \nabla \phi_j (\obs)
-  \label{eq:Lagrange mult1} \\
-    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange mult2}
+  \label{eq:Lagrange_mult1} \\
+    &\phi_j(\obs) = 0, j = 1,\dots,m. \label{eq:Lagrange_mult2}
 \end{align}
 
 We now substitute the gradients calculated in Propositions
-\ref{prop:tar grad} and \ref{prop:constraints grad} into
-\eqref{eq:Lagrange mult1}:
+\ref{prop:tar_grad} and \ref{prop:constraints_grad} into
+\eqref{eq:Lagrange_mult1}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
 \end{equation} 
 Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
-\eqref{eq:Lagrange mult2} more compactly as:
+\eqref{eq:Lagrange_mult2} more compactly as:
 
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:
@@ -885,7 +888,7 @@ Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
 
 
 
- \section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non vanishing}
+ \section{Answer to Question \ref{q:mitigate}: Model error mitigates clusterization}\label{section:non_vanishing}
 We now show that if $\modcov \neq 0$ clusterization will not occur. It
 is known that including a model error term mitigates the
 clusterization phenomenon \cite{Ucinski05}, and here we prove this
@@ -894,7 +897,7 @@ rigorously. Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
 $\postcovm$ the posterior covariance that arises when $\obsm$ is
 utilized as a measurement operator.
 
-\begin{proposition}[Increase due to a measurement]\label{prop:design increase}
+\begin{proposition}[Increase due to a measurement]\label{prop:design_increase}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$ and $\obsm :=
   (\meas_1,\dots,\meas_{m-1})^t$. Then
   \begin{equation}\label{eq:conclusion}
@@ -911,7 +914,7 @@ utilized as a measurement operator.
 The proof is long and tedious, and is delegated to the Supplementary.
 
 
-\begin{corollary}\label{cor:same meas}
+\begin{corollary}\label{cor:same_meas}
   If $\meas_m = \meas_j$ for some $1 \leq j \leq m-1$, then
   \begin{equation*}
     \tar(\obs) - \tar(\obsm) =
@@ -927,11 +930,11 @@ The proof is long and tedious, and is delegated to the Supplementary.
   vector.
 \end{corollary}
 
-\begin{proof} \label{cor:same meas proof}
+\begin{proof} \label{cor:same_meas_proof}
   Denote $A:= \obs \modcov \obs^*$ and $v_j$ the $j^{\text{th}}$
   column of $A$.  Note that $v_j = \obsm \modcov \meas_m$, since
   $(\obsm \modcov \obsm^*)_{ij} = \meas_i(\modcov \meas_j)$, as
-  explained in \eqref{eq:modcov explained}. We can now verify that
+  explained in \eqref{eq:modcov_explained}. We can now verify that
   \begin{equation}\label{eq:observation}
     \Sigmam^{-1} \obsm \modcov \meas_m = \Sigmam^{-1}v_j = (A +\sigma^2I_{m-1})^{-1} v_j =
     e_j -\sigma^2 \Sigmam^{-1}e_j.
@@ -1047,7 +1050,7 @@ are eigenvectors. However, $\postcov$ depends on $\obs$, so we refer
 to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
 
 
-\begin{proposition}\label{prop:twice woodbury}
+\begin{proposition}\label{prop:twice_woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
   \begin{align*}
     \begin{split}
@@ -1057,16 +1060,16 @@ to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
   \end{align*}  
 \end{proposition}
 
-As we mentioned in Section \ref{subsec:bayesian inverse problems},
-$\fwd \prcov \fwd^*$ is the prior covariance $\hilo$ and could be
-safely assumed invertible. The proof of Proposition \ref{prop:twice
-  woodbury} is delegated to the Supplementary. It amounts to using
-Woodbury's matrix identity twice. The standard proof for Woodbury's
-matrix identity works for separable Hilbert spaces, as long as all
-terms are well defined. Unfortunately, $\obs^*\obs$ is not invertible,
-so we utilize a regularization trick to force it to be.
+As we mentioned in Section \ref{subsec:bayesian_inverse_problems},
+$\fwd \prcov \fwd^*$ is the prior covariance in $\hilo$ and could be
+safely assumed invertible. The proof of Proposition
+\ref{prop:twice_woodbury} is delegated to the Supplementary. It
+amounts to using Woodbury's matrix identity twice. The standard proof
+for Woodbury's matrix identity works for separable Hilbert spaces, as
+long as all terms are well defined. Unfortunately, $\obs^*\obs$ is not
+invertible, so we utilize a regularization trick to force it to be.
 
-\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim diag}
+\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim_diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
@@ -1076,32 +1079,32 @@ so we utilize a regularization trick to force it to be.
   then $C$ and $\sum_{j=1}^m \func_j \func_j^*$ are simultaneously
   diagonalizable.
 \end{lemma}
-The proof of Lemma \ref{lemma:sim diag} is delegated to the
+The proof of Lemma \ref{lemma:sim_diag} is delegated to the
 Supplementary.
 
-\begin{proposition}\label{prop:same ev}
+\begin{proposition}\label{prop:same_ev}
   Let $\obs$ satisfy the nonlinear eigenvalue problem
   \eqref{eq:eigenproblem}. Then $\obs^*\obs$ and $\fwd \prcov \fwd^*$
   are simultaneously diagonalizable.
 \end{proposition}
 \begin{proof}
-  \begin{align}\label{eq:mod conditions}
+  \begin{align}\label{eq:mod_conditions}
     \begin{split}
       \obs^* \Xi &= \sigma^{-2}\fwd \postcov \fwd^* \obs^*  \text{ (by \eqref{eq:eigenproblem})}\\
 &= \sigma^{-2} \fwd( \prcov^{-1} + \sigma^{-2}  \fwd^* \obs^* \obs \fwd )^{-1} \fwd^* \obs^*  \text{ (by \eqref{eq:postcov})} \\
-&= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice woodbury})}.
+&= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice_woodbury})}.
     \end{split}
   \end{align}
 
   Now take $\func_j^{*} = \meas_j$ and $C := (\fwd \prcov
-  \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim diag}.
+  \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim_diag}.
 \end{proof}
 
 Since we made no assumption regarding the ordering of $\{\lambda_i\}$,
 we can denote the corresponding non-zero eigenvalues of $\obs^*\obs$
 by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
-\begin{proposition}\label{prop:true target}
+\begin{proposition}\label{prop:true_target}
   Let $\obs$ with $m$ measurements satisfy the nonlinear eigenvalue
   problem \eqref{eq:eigenproblem}. Let $\{\eta_i\}_{i=1}^{\infty}$
   eigenvalues of $\obs^*\obs$ and $\{\lambda_i\}_{i=1}^{\infty}$ the
@@ -1127,7 +1130,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       \obs \fwd \prcov^{1/2}\right )\\&= \frac12 \log \det \left (I + \sigma^{-2} \obs^* \obs \fwd
       \prcov\fwd^* \right ) \text{ (Sylvester's Determinant
       Theorem)}\\
-&=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same ev})} \\
+&=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same_ev})} \\
 &=\frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). 
 \end{split}
   \end{align}
@@ -1221,10 +1224,10 @@ them in Theorem \ref{thm:char} below.
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
   satisfies the unit norm constraint on measurements. Part (2)
-  was proved in Proposition \ref{prop:same ev}. Part (3) was proved in
-  Proposition \ref{prop:true target}.
+  was proved in Proposition \ref{prop:same_ev}. Part (3) was proved in
+  Proposition \ref{prop:true_target}.
   
-  Part (4) is a consequence of Propositions \ref{prop:true target} and
+  Part (4) is a consequence of Propositions \ref{prop:true_target} and
   \ref{prop:kkt}, with the caveat that we did not show that finding
   $\opt$ so that $\opt^*\opt$ has the desired eigenvalues is
   feasible. To this end, we utilize Lemma \ref{lemma:free}: let $M =
@@ -1235,7 +1238,7 @@ them in Theorem \ref{thm:char} below.
   Recall from \eqref{eq:postcov}, that the posterior precision is
   $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\opt^*\opt\fwd$. The
   first statement in part (5) now follows from Proposition
-  \ref{prop:twice woodbury}, while the second statement follows from
+  \ref{prop:twice_woodbury}, while the second statement follows from
   parts (1) and (4).
 \end{proof}
 
@@ -1248,7 +1251,7 @@ them in Theorem \ref{thm:char} below.
   4         3.5    0             0.0
 }\optimalvsnot
 
-\begin{figure}\label{fig:tikz clusterization}
+\begin{figure}\label{fig:tikz_clusterization}
   \centering
   \begin{tikzpicture}[scale=0.75]
     \begin{axis}[
@@ -1296,7 +1299,7 @@ them in Theorem \ref{thm:char} below.
     accumulated height of $\sigma^{-2}m = 3$ in both panels. The
     D-optimal design (left) increases precision where it is
     lowest. The sub-optimal design (right) does not.}
-  \label{fig:optimal vs not}
+  \label{fig:optimal_vs_not}
 \end{figure}
 
 
@@ -1311,8 +1314,8 @@ repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
 such a procedure is that the precision for the first $k$ eigenvectors
 is the average of the total precision $\sum_{j=1}^k \lambda_j^{-1} +
-\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and Fig.~\ref{fig:optimal
-  vs not} for an illustration.
+\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and
+Fig.~\ref{fig:optimal_vs_not} for an illustration.
 
 
 
@@ -1399,7 +1402,7 @@ pigeonhole principle.
 
 
 
-\subsection{Simulating Lemma \ref{lemma:free}}\label{subsec:lemma sims}
+\subsection{Simulating Lemma \ref{lemma:free}}\label{subsec:lemma_sims}
 In the proof of Theorem \ref{thm:char} we utilize Lemma
 \ref{lemma:free} to construct D-optimal designs. We implement the
 construction in Lemma \ref{lemma:free} with the goal of testing
@@ -1422,7 +1425,7 @@ steps:
 \end{enumerate}
 We then calculate the fraction of clustered designs of the simulations
 we ran, for each pair $m,k$. Clusteriztion occured at high rates
-($>95\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim AAt}. Hence, in
+($>95\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
 these simulations, clusterization is a generic property. However, when
 $m-k \leq 2$, clusterization does not occur. We do not why and further
 investigation into this phenomenon is out of scope for the current
@@ -1436,7 +1439,7 @@ study.
       generating $M$). It is evident that when $m-k >3$ clusterization
       is ubiquitous, whereas for lower $m-k$ clusterization does not
       occur.}
-  \label{fig:sim AAt}
+  \label{fig:sim_AAt}
 \end{figure}
 
 Full results are located in the \texttt{simulations.csv} file within
@@ -1445,13 +1448,13 @@ code implementing the experiments described above is located in module
 \texttt{zeros.py} of said repository.
 
 
-\subsection{Correlated errors}\label{subsec:corr errors sims}
-In order to verify the results of Section \ref{section:non vanishing},
+\subsection{Correlated errors}\label{subsec:corr_errors_sims}
+In order to verify the results of Section \ref{section:non_vanishing},
 we run simulations of the inverse problem of the 1D heat equation with
 nonvanishing model error \(\modcov = \prcov^2 \). Indeed, including
-model correlation pushes measurements apart, see Fig.~\ref{fig:corr
-  errors}. Code generating Fig.~\ref{fig:corr errors} is located in
-module \texttt{clusterization.py} in the accompanying
+model correlation pushes measurements apart, see
+Fig.~\ref{fig:corr_errors}. Code generating Fig.~\ref{fig:corr_errors}
+is located in module \texttt{clusterization.py} in the accompanying
 \href{https://github.com/yairdaon/OED}{repository}.
 
 \begin{figure}
@@ -1462,8 +1465,11 @@ module \texttt{clusterization.py} in the accompanying
       equation inverse problem. Lo and behold, measurements are not
       close anymore and are pushed away thanks to the model error
       term.}
-  \label{fig:corr errors}
+  \label{fig:corr_errors}
 \end{figure}
+
+
+
  
 
 

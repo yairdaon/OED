@@ -18,11 +18,11 @@
 
 
 
-\section{Inverse Problem of the 1D Heat Equation}\label{subsec:1d heat}
+\section{Inverse Problem of the 1D Heat Equation}\label{subsec:1d_heat}
 Below, we give details of the inverse problem of the 1D heat
 equation. Our goal is to infer the initial condition of the
 one-dimensional heat equation with a homogeneous Dirichlet boundary
-condition \ref{eq:heat equation}, i.e.~ an absorbing boundary. We
+condition \ref{eq:heat_equation}, i.e.~ an absorbing boundary. We
 model the prior for the initial condition as $u_0 \sim
 \normal(0,\prcov)$, for $\prcov = (-\Delta)^{-1}$ with a homogeneous
 Dirichlet boundary condition. Recall that by Weyl's law, eigenvalues
@@ -91,7 +91,7 @@ scratch.
 
 \section{Proofs from Main Text}
 
-\begin{proposition}[Proposition 4 from main text]%\label{prop:tar grad}
+\begin{proposition}[Proposition 4 from main text]%\label{prop:tar_grad}
   The gradient of the D-optimality objective $\tar$ is
   \begin{equation*}
     %% \delta \tar(\obs) V = \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
@@ -104,7 +104,7 @@ scratch.
 \begin{proof}  
   From the definition of $\Sigma(\obs)$ \eqref{eq:Sigma}: 
 
-  \begin{align}\label{eq:der sig}
+  \begin{align}\label{eq:der_sig}
     \begin{split}
       \frac{\der}{\der \tau} \Big |_{\tau=0} \Sigma( \obs + \tau V )
       &= \frac{\der}{\der \tau} \Big |_{\tau=0} 
@@ -116,7 +116,7 @@ scratch.
     \end{split}
   \end{align}
 
-  Then, using \eqref{eq:der sig}: 
+  Then, using \eqref{eq:der_sig}: 
   \begin{align*}
     0 &= \frac{\der}{\der \tau} \Big |_{\tau=0} I \\
     % 
@@ -134,11 +134,11 @@ scratch.
     %
     &= \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0} \Sigma+
     \Sigma^{-1} (V\modcov \obs^* + \obs \modcov V^*). 
-    %\text{, by \eqref{eq:der sig}. }
+    %\text{, by \eqref{eq:der_sig}. }
   \end{align*}
 
   Thus:
-  \begin{align}\label{eq:der sig inv}
+  \begin{align}\label{eq:der_sig_inv}
     \frac{\der \Sigma(\obs+\tau V)^{-1}}{\der \tau} \Big |_{\tau=0}  
       &= -\Sigma^{-1} (V \modcov \obs^* + \obs \modcov V^*) \Sigma^{-1}.
     \end{align}
@@ -149,7 +149,7 @@ scratch.
     T(\obs) = \obs^* \Sigma^{-1}(\obs)\obs.
   \end{equation*}
   
-  By Leibniz (product) rule and \eqref{eq:der sig inv}:
+  By Leibniz (product) rule and \eqref{eq:der_sig_inv}:
   % 
   \begin{align}\label{eq:T}
     \begin{split}
@@ -187,7 +187,7 @@ scratch.
       % 
       % 
       &= \frac12 \frac{\der}{\der \tau} \Big |_{\tau=0} \log \det 
-      (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (Theorem \ref{thm:d optimality})} \\
+      (I + \prcov^{1/2} \fwd^* T(\obs+\tau V)\fwd \prcov^{1/2} ) \text{ (Theorem \ref{thm:d_optimality})} \\
       % 
       % 
       % 
@@ -236,7 +236,7 @@ scratch.
 
 
 
-\begin{proposition}[Proposition 6 from main text]%\label{prop:constraints grad}
+\begin{proposition}[Proposition 6 from main text]%\label{prop:constraints_grad}
   Let
   \begin{align*}
     \phi_j(\obs) :=\frac12 \| \obs^* e_j\|_{\hilp}^2 - \frac12 = 0,\ j=1,\dots,m.
@@ -357,12 +357,12 @@ scratch.
   %
   and denote:
   %
-  \begin{align}\label{eq:M def}
+  \begin{align}\label{eq:M_def}
     \M (\obs ):&= \prcov^{\frac12}\fwd^* \obs^* \Sigma^{-1} \obs \fwd
     \prcov^{\frac12}.
   \end{align}
   
-  From \eqref{eq:schur} and \eqref{eq:M def}:
+  From \eqref{eq:schur} and \eqref{eq:M_def}:
   \begin{align*}
     \M(\obs) &= \prcov^{1/2} \fwd^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2} \\
     %
@@ -420,12 +420,12 @@ scratch.
   %
   so that
   %
-  \begin{equation}\label{eq:M plus I}
+  \begin{equation}\label{eq:M_plus_I}
     I + \M( \obs ) = I + \M (\obsm ) + uu^*.
   \end{equation}
   %
   Note that
-  \begin{equation}\label{eq:M postcov}
+  \begin{equation}\label{eq:M_postcov}
     \prcov^{1/2} \left (I + \M( \obsm ) \right )^{-1} \prcov^{1/2} = \postcovm.
   \end{equation}
   From a generalization of the matrix determinant lemma to Hilbert
@@ -449,7 +449,7 @@ scratch.
       &= \frac12 \log \left ( 1 + \left \langle \left ( I+\M(\obsm) \right )^{-1} u, u  \right \rangle \right ).
     \end{split}
   \end{align}
-  From \eqref{eq:u} and \eqref{eq:M postcov}:
+  From \eqref{eq:u} and \eqref{eq:M_postcov}:
   \begin{align}\label{eq:final}
     \begin{split}
       &\left \langle \left (I+\M (\obsm)\right )^{-1}u, u \right \rangle\\
@@ -482,7 +482,7 @@ scratch.
 
 
 
-\begin{lemma}[Lemma 11 from main text]%\label{lemma:sim diag}
+\begin{lemma}[Lemma 11 from main text]%\label{lemma:sim_diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
@@ -507,12 +507,12 @@ scratch.
   $\sum_{j=1}^m \func_j\func_j^* = \sum_{i=1}^\ell A_i$. Second, $A_i
   \func_k = 0$ if $k\not \in S_i$, since eigenvectors of different
   eigenvalue are orthogonal. For $k \in S_i$
-  \begin{equation}\label{eq:on vi}
+  \begin{equation}\label{eq:on_vi}
     \xi_i \func_k = (C + \sum_{j=1}^m \func_j \func_j^* ) \func_k = (C + A_i) \func_k.
   \end{equation}
   Let $V_i := span \{\func_k \}_{k\in S_i}$. Observe that $V_i$ is
   invariant under $A_i$, by definition, and under $C$, by \eqref{eq:on
-    vi}. A second application of \eqref{eq:on vi} shows that $A_i =
+____vi}. A second application of \eqref{eq:on_vi} shows that $A_i =
   \xi_iI - C$ on $V_i$. This immediately implies $A_i$ and $C$ are
   simultaneously diagonalizable on $V_i$. This holds for every $1 \leq
   i \leq \ell$ and we conclude that $C$ and $A$ are simultaneously
@@ -540,7 +540,7 @@ scratch.
 
 
 
-\begin{proposition}[proposition 10]%\label{prop:twice woodbury}
+\begin{proposition}[proposition 10]%\label{prop:twice_woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
   \begin{align*}
     \begin{split}
@@ -760,7 +760,7 @@ scratch.
   eigenvectors by construction. If we can choose $V$ such that $A$
   also satisfies the unit norm constraints we are done. These
   constraints are, for $j=1,\dots,m$:
-  \begin{equation}\label{eq:V constraints}
+  \begin{equation}\label{eq:V_constraints}
    1 = [A^tA]_{jj} = [V S^tS V^t]_{jj},
   \end{equation}
   and we can expect to do this since we assumed $\ttr D = m$.

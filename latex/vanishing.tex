@@ -12,10 +12,10 @@ eigenvalue problem for the self-adjoint operator $\sigma^{-2}\fwd
 \postcov \fwd^*$, where rows of $\obs$, namely $\meas_j,j=1,\dots, m$,
 are eigenvectors. However, $\postcov$ depends on $\obs$, so we refer
 to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
-%% Proposition \ref{prop:twice woodbury} and Lemma \ref{lemma:sim
-%% diag} required
+%% Proposition \ref{prop:twice_woodbury} and Lemma \ref{lemma:sim
+%%_diag} required
 
-\begin{proposition}\label{prop:twice woodbury}
+\begin{proposition}\label{prop:twice_woodbury}
   Assume $\fwd \prcov \fwd^*$ is invertible. Then
   \begin{align*}
     \begin{split}
@@ -27,16 +27,16 @@ to \eqref{eq:eigenproblem} as a \emph{nonlinear} eigenvalue problem.
   \end{align*}  
 \end{proposition}
 
-As we mentioned in Section \ref{subsec:bayesian inverse problems},
-$\fwd \prcov \fwd^*$ is the prior covariance $\hilo$ and could be
-safely assumed invertible. The proof of Proposition \ref{prop:twice
-  woodbury} is delegated to the Supplementary. It amounts to using
-Woodbury's matrix identity twice. The standard proof for Woodbury's
-matrix identity works for separable Hilbert spaces, as long as all
-terms are well defined. Unfortunately, $\obs^*\obs$ is not invertible,
-so we utilize a regularization trick to force it to be.
+As we mentioned in Section \ref{subsec:bayesian_inverse_problems},
+$\fwd \prcov \fwd^*$ is the prior covariance in $\hilo$ and could be
+safely assumed invertible. The proof of Proposition
+\ref{prop:twice_woodbury} is delegated to the Supplementary. It
+amounts to using Woodbury's matrix identity twice. The standard proof
+for Woodbury's matrix identity works for separable Hilbert spaces, as
+long as all terms are well defined. Unfortunately, $\obs^*\obs$ is not
+invertible, so we utilize a regularization trick to force it to be.
 
-\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim diag}
+\begin{lemma}[Simultaneous diagonizability]\label{lemma:sim_diag}
   Let $\hil$ separable Hilbert space, $C:\hil \to \hil$ self-adjoint
   and $\func_1,\dots,\func_m \in \hil$. Denote $\func^*$ the element
   $\func$ acting as a linear functional. If
@@ -46,16 +46,16 @@ so we utilize a regularization trick to force it to be.
   then $C$ and $\sum_{j=1}^m \func_j \func_j^*$ are simultaneously
   diagonalizable.
 \end{lemma}
-The proof of Lemma \ref{lemma:sim diag} is delegated to the
+The proof of Lemma \ref{lemma:sim_diag} is delegated to the
 Supplementary.
 
-\begin{proposition}\label{prop:same ev}
+\begin{proposition}\label{prop:same_ev}
   Let $\obs$ satisfy the nonlinear eigenvalue problem
   \eqref{eq:eigenproblem}. Then $\obs^*\obs$ and $\fwd \prcov \fwd^*$
   are simultaneously diagonalizable.
 \end{proposition}
 \begin{proof}
-  \begin{align}\label{eq:mod conditions}
+  \begin{align}\label{eq:mod_conditions}
     \begin{split}
       \obs^* \Xi &= \sigma^{-2}\fwd \postcov \fwd^* \obs^*  \text{ (by \eqref{eq:eigenproblem})}\\
       %
@@ -65,19 +65,19 @@ Supplementary.
       %
       %
       %
-      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice woodbury})}.
+      &= \sigma^{-2} \left ( (\fwd\prcov\fwd^*)^{-1} + \sigma^{-2}  \obs^* \obs \right )^{-1} \obs^* \text{ (by Proposition \ref{prop:twice_woodbury})}.
     \end{split}
   \end{align}
 
   Now take $\func_j^{*} = \meas_j$ and $C := (\fwd \prcov
-  \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim diag}.
+  \fwd^*)^{-1}$ and use Lemma \ref{lemma:sim_diag}.
 \end{proof}
 
 Since we made no assumption regarding the ordering of $\{\lambda_i\}$,
 we can denote the corresponding non-zero eigenvalues of $\obs^*\obs$
 by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
 
-\begin{proposition}\label{prop:true target}
+\begin{proposition}\label{prop:true_target}
   Let $\obs$ with $m$ measurements satisfy the nonlinear eigenvalue
   problem \eqref{eq:eigenproblem}. Let $\{\eta_i\}_{i=1}^{\infty}$
   eigenvalues of $\obs^*\obs$ and $\{\lambda_i\}_{i=1}^{\infty}$ the
@@ -108,7 +108,7 @@ by $\{\eta_i\}_{i=1}^{k}$ and let $\eta_i = 0$ for $i \geq k+1$.
       %
       %
       %
-      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same ev})} \\
+      &=\frac12 \log \prod_{i=1}^{\infty} ( 1 + \sigma^{-2} \lambda_i\eta_i ) \text{ (Proposition \ref{prop:same_ev})} \\
       %
       %
       %
@@ -223,10 +223,10 @@ them in Theorem \ref{thm:char} below.
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
   satisfies the unit norm constraint on measurements. Part (2)
-  was proved in Proposition \ref{prop:same ev}. Part (3) was proved in
-  Proposition \ref{prop:true target}.
+  was proved in Proposition \ref{prop:same_ev}. Part (3) was proved in
+  Proposition \ref{prop:true_target}.
   
-  Part (4) is a consequence of Propositions \ref{prop:true target} and
+  Part (4) is a consequence of Propositions \ref{prop:true_target} and
   \ref{prop:kkt}, with the caveat that we did not show that finding
   $\opt$ so that $\opt^*\opt$ has the desired eigenvalues is
   feasible. To this end, we utilize Lemma \ref{lemma:free}: let $M =
@@ -237,7 +237,7 @@ them in Theorem \ref{thm:char} below.
   Recall from \eqref{eq:postcov}, that the posterior precision is
   $\postcov^{-1} = \prcov^{-1} + \sigma^{-2}\fwd^*\opt^*\opt\fwd$. The
   first statement in part (5) now follows from Proposition
-  \ref{prop:twice woodbury}, while the second statement follows from
+  \ref{prop:twice_woodbury}, while the second statement follows from
   parts (1) and (4).
 \end{proof}
 
@@ -250,7 +250,7 @@ them in Theorem \ref{thm:char} below.
   4         3.5    0             0.0
 }\optimalvsnot
 
-\begin{figure}\label{fig:tikz clusterization}
+\begin{figure}\label{fig:tikz_clusterization}
   \centering
   \begin{tikzpicture}[scale=0.75]
     \begin{axis}[
@@ -300,7 +300,7 @@ them in Theorem \ref{thm:char} below.
     accumulated height of $\sigma^{-2}m = 3$ in both panels. The
     D-optimal design (left) increases precision where it is
     lowest. The sub-optimal design (right) does not.}
-  \label{fig:optimal vs not}
+  \label{fig:optimal_vs_not}
 \end{figure}
 
 
@@ -316,8 +316,8 @@ repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
 such a procedure is that the precision for the first $k$ eigenvectors
 is the average of the total precision $\sum_{j=1}^k \lambda_j^{-1} +
-\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and Fig.~\ref{fig:optimal
-  vs not} for an illustration.
+\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and
+Fig.~\ref{fig:optimal_vs_not} for an illustration.
 %% \begin{figure}%{r}{0.25\textwidth} 
 %%     \centering
 %%     \includegraphics[width=5cm, height=5cm]{cylinders.jpg}

@@ -2,7 +2,7 @@
 %We provide numerical evidence supporting our conclusions.
 
 
-\subsection{Simulating Lemma \ref{lemma:free}}\label{subsec:lemma sims}
+\subsection{Simulating Lemma \ref{lemma:free}}\label{subsec:lemma_sims}
 In the proof of Theorem \ref{thm:char} we utilize Lemma
 \ref{lemma:free} to construct D-optimal designs. We implement the
 construction in Lemma \ref{lemma:free} with the goal of testing
@@ -25,7 +25,7 @@ steps:
 \end{enumerate}
 We then calculate the fraction of clustered designs of the simulations
 we ran, for each pair $m,k$. Clusteriztion occured at high rates
-($>95\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim AAt}. Hence, in
+($>95\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
 these simulations, clusterization is a generic property. However, when
 $m-k \leq 2$, clusterization does not occur. We do not why and further
 investigation into this phenomenon is out of scope for the current
@@ -39,7 +39,7 @@ study.
       generating $M$). It is evident that when $m-k >3$ clusterization
       is ubiquitous, whereas for lower $m-k$ clusterization does not
       occur.}
-  \label{fig:sim AAt}
+  \label{fig:sim_AAt}
 \end{figure}
 
 Full results are located in the \texttt{simulations.csv} file within
@@ -48,13 +48,13 @@ code implementing the experiments described above is located in module
 \texttt{zeros.py} of said repository.
 
 
-\subsection{Correlated errors}\label{subsec:corr errors sims}
-In order to verify the results of Section \ref{section:non vanishing},
+\subsection{Correlated errors}\label{subsec:corr_errors_sims}
+In order to verify the results of Section \ref{section:non_vanishing},
 we run simulations of the inverse problem of the 1D heat equation with
 nonvanishing model error \(\modcov = \prcov^2 \). Indeed, including
-model correlation pushes measurements apart, see Fig.~\ref{fig:corr
-  errors}. Code generating Fig.~\ref{fig:corr errors} is located in
-module \texttt{clusterization.py} in the accompanying
+model correlation pushes measurements apart, see
+Fig.~\ref{fig:corr_errors}. Code generating Fig.~\ref{fig:corr_errors}
+is located in module \texttt{clusterization.py} in the accompanying
 \href{https://github.com/yairdaon/OED}{repository}.
 
 \begin{figure}
@@ -65,5 +65,15 @@ module \texttt{clusterization.py} in the accompanying
       equation inverse problem. Lo and behold, measurements are not
       close anymore and are pushed away thanks to the model error
       term.}
-  \label{fig:corr errors}
+  \label{fig:corr_errors}
 \end{figure}
+
+%% \subsection{Implementing the 1D heat equation}
+%% The Laplacian $\Delta$ is a Fourier multiplier \cite{stein2009}, so
+%% our implementation proceeds in frequency space. When we utilize the
+%% homogeneuous Dirichlet boundary condition, the eigenvectors of
+%% $\Delta$ are sines $\ev_n(x) = \sin(\pi n x), n=1,2,3,\dots$, whereas
+%% for the homogenoeous Neumann boundary condition the eigenvectors are
+%% cosines $\cos(\pi n x)$. Implementing point evaluations in Fourier
+%% space
+

@@ -1,4 +1,4 @@
-\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D and grad}
+\section{The Constrained Optimization Problem of D-Optimal Design}\label{section:D_and_grad}
 We seek a formulation of the D-optimal design problem via Lagrange
 multipliers. We first find the gradient of $\tar$, then we suggest
 unit-norm constraints on $\obs$ and find their gradients. Results of
@@ -24,7 +24,7 @@ recall that:
 
 %% \subsection{The gradient of $\tar$}\label{section:objective}
 
-\begin{proposition}\label{prop:tar grad}
+\begin{proposition}\label{prop:tar_grad}
   The gradient of the D-optimality objective $\tar$ is
   \begin{equation*}
     %% \delta \tar(\obs) V = \tr{V ( I - \modcov \obs^* \Sigma^{-1}\obs )
@@ -46,7 +46,7 @@ seek reasonable constraints on $\obs$ for which finding a D-optimal
 design is analytically tractable. The following proposition will guide
 us in finding such constraints.
 
-\begin{proposition}\label{prop:bigger better}
+\begin{proposition}\label{prop:bigger_better}
   Let $\obs = (\meas_1,\dots,\meas_m)^t$, $j \in \{1,\dots,m\}$,
   $\sigma^2 > 0$ and $|\zeta| > 1$. Then $\tar(\obs)$ increases if we
   use $\zeta \meas_j$ in $\obs$ instead of $\meas_j$.
@@ -63,7 +63,7 @@ us in finding such constraints.
   %% are set to zero.
   We now calculate the variation of $\tar$ at $\obs$ in the direction
   of $V$. Denote $\tmp: = \fwd \postcov \fwd^*$. From Proposition
-  \ref{prop:tar grad}:
+  \ref{prop:tar_grad}:
   \begin{align*}
      \delta \tar(\obs) V 
     &= \tr{V ( I - \modcov \obs^*\Sigma^{-1}\obs) \tmp \obs^* \Sigma^{-1}} \\
@@ -98,7 +98,7 @@ us in finding such constraints.
   $j^{\text{th}}$ measurement functional increases $\tar(\obs)$.
 \end{proof}
 
-Proposition \ref{prop:bigger better} implies that it is a good idea to
+Proposition \ref{prop:bigger_better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
 measurements in $\textup{span}\{\meas\}$ for some $\meas \neq 0$, then
 the D-optimality criterion is unbounded. In contrast, in any real-life
@@ -137,9 +137,9 @@ delegated to the Supplementary:
   \end{equation*}
 \end{proposition}
 
-%% The same arguments justifying \eqref{eq:tar grad} hold here, and thus:
+%% The same arguments justifying \eqref{eq:tar_grad} hold here, and thus:
 
-%% \begin{align}\label{eq:grad constraints}
+%% \begin{align}\label{eq:grad_constraints}
 %% \nabla \phi_j(\obs) = \obs^* e_j e_j^t = \meas_j e_j^t , j=1,\dots,m,
 %% \end{align}
 %% where $\nabla \phi_j(\obs) \in \hilo^m$. As noted at the end of
@@ -159,14 +159,14 @@ multipliers:
 \end{align}
 
 We now substitute the gradients calculated in Propositions
-\ref{prop:tar grad} and \ref{prop:constraints grad} into
-\eqref{eq:Lagrange mult1}:
+\ref{prop:tar_grad} and \ref{prop:constraints_grad} into
+\eqref{eq:Lagrange_mult1}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
 \end{equation} 
 Letting $\Xi := \diag(\xi_j)$, we can write \eqref{eq:constrained} and
-\eqref{eq:Lagrange mult2} more compactly as:
+\eqref{eq:Lagrange_mult2} more compactly as:
 
 \begin{theorem}[Necessary conditions for D-Optimality]\label{thm:constrained}
   Let:
