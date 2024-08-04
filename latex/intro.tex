@@ -90,17 +90,16 @@ generalizes to linear models over infinite-dimensional Hilbert spaces
 (i.e.~function spaces).
 
 \subsection{A toy model: the 1D heat equation}\label{subsec:toy}
-For concreteness, let us now consider a toy model of a physical
-process for which we wish to solve an inverse problem: a partial
-differential equation known as the \emph{heat equation} in one
-dimension (1D heat equation henceforth). Readers less familiar with
-partial differential equations can think of the following setup:
-before us there is a perfectly insulated metal rod. At each point on
-the rod the temperature is different and unknown, and we call this
-temperature distribution the \emph{initial condition}. We wait for a
-short time $T$ and let the heat dissipate a bit inside the rod. The
-heat equation determines the heat distribution inside the rod at time
-$t=T$.
+For concreteness, let us now consider a toy inverse problem: inferring
+the initial condition for partial differential equation known as the
+\emph{heat equation} in one dimension (1D heat equation
+henceforth). Readers less familiar with partial differential equations
+can think of the following setup: before us there is a perfectly
+insulated metal rod. At each point on the rod the temperature is
+different and unknown, and we call this temperature distribution the
+\emph{initial condition}. We wait for a short time $T$ and let the
+heat dissipate a bit inside the rod. The heat equation determines the
+heat distribution inside the rod at time $t=T$.
 
 The full time evolution of heat in the rod $\Omega=[0,1]$ is formally
 described by the following three equations:
@@ -131,8 +130,8 @@ Dirichlet boundary condition eq.~\eqref{eq:heat2} is a linear
 combination of sines $\ev_n(x) = \sin(\pi n x)$, so $u_0 = \sum_{n\geq
   1} a_n \ev_n$ for some $\{a_n\}_{n\geq 1}$. Now, note that $\ev_n$
 are in fact eigenvectors of the Laplacian: $\Delta \ev_n = -\pi^2
-n^2\ev_n$. It should not be hard to believe that eq.~\eqref{eq:heat1}
-implies $u(\cdot, T) = \sum_{n\geq 1} a_n \exp(-\pi^2 n^2T ) \ev_n$
+n^2\ev_n$. It should not be hard to believe that $u(\cdot, T) =
+\sum_{n\geq 1} a_n \exp(-\pi^2 n^2T ) \ev_n$
 \cite{renardy2006PDE}. Thus, eigenvectors of the linear operator that
 describes the time evolution of heat are $\ev_n(x) = \sin(\pi n x)$
 with corresponding eigenvalues
@@ -142,7 +141,7 @@ with corresponding eigenvalues
 
 In the \emph{inverse problem of the 1D heat equation}, our goal is to
 infer the initial condition $u_0 = u(\cdot, 0)$ from observations of
-the final condition $u(\cdot, T)$. However, we are not able to measure
+the final state $u(\cdot, T)$. However, we are not able to measure
 $u(\cdot, T)$ at every point in the domain $\Omega$. Rather, we take
 some number of temperature measurements on the rod once our waiting
 time $T$ has passed and try to infer $u(\cdot, 0)$ from these

@@ -101,12 +101,15 @@ us in finding such constraints.
 Proposition \ref{prop:bigger_better} implies that it is a good idea to
 bound the norm of measurements. If, for example, we can take
 measurements in $\textup{span}\{\meas\}$ for some $\meas \neq 0$, then
-the D-optimality criterion is unbounded. In contrast, in any real-life
-problem where sensors are concerned, the norm of measurements recorded
-by sensors is always one\footnote{Again, our analysis does not apply
-to point evaluations. These are just used for motivation and can be
-approximated by elements in $\hilo^*$ as long as $\hilo$ is a function
-space, e.g.~$L^2(\Omega)$.}:
+the D-optimality criterion is unbounded, so a D-optimal design does
+not exist. In contrast, in any real-life problem where sensors are
+concerned, the norm of measurements recorded by sensors is always
+one\footnote{Again, our analysis does not directly apply to point
+evaluations. We just utilize point evaluations for motivation. We can
+approximate point evaluations by e.g.~elements in $\hilo^*$ as long as
+$\hilo$ is a function space, e.g.~$L^2(\Omega)$. In this case, for a
+fixed apporximation of $\delta$ the norm of the corresponding
+functional is constant (but $\neq 1$.}:
 
 \begin{equation}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}

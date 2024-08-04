@@ -6,29 +6,39 @@
 In the proof of Theorem \ref{thm:char} we utilize Lemma
 \ref{lemma:free} to construct D-optimal designs. We implement this
 construction with the goal of testing numerically how prevalent are
-clustered designs. We iterate over the number of measurements $m \in
-\{4,\dots, 24\}$, and for every $m$ we then iterate over $k:=\rank
-\obs^*\obs \in \{2,\dots, m-1\}$. For each pair $m,k$ we run $N=5000$
-simulations according to the following steps:
+clustered designs. To this end, we would like to generate random prior
+eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
+$\opt^*\opt$ and then utilize the construction of
+Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
+
+
+To simplify things, we directly sample rank $\opt^*\opt$. We iterate
+over the number of measurements $m \in \{4,\dots, 24\}$, and for every
+$m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
+m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
+times:
 \begin{enumerate}
 \item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
-  entries $\log (d_i) \sim \mathcal{N}(25,15)$ and normalize it so
-  that $\ttr D = m$.
+  entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
+  $\ttr D = m$\footnote{Results are robust to the choice of parameters
+  in the lognormal distribution above.}.
 \item Conjugate $D$ by a random orthogonal matrix to form a positive
-  semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$.
+  semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
+  represents $\opt^*\opt$.
 \item Apply the construction of Lemma \ref{lemma:free} to calculate
-  $A$ such that $AA^t = M$, where $A$ has unit norm columns.
-\item Since columns of $A$ correspond to measurement vectors, we call
-  $A$ "clustered" if $A$ has two or more identical columns (up to some
-  numerical precision threshold).
+  $A$ such that $AA^t = M$, where $A$ has unit norm columns. I.e.~find
+  the optimal design $\opt$.
+\item Since $A$ corresponds to $\opt$, its columns correspond to
+  measurement vectors. We call $A$ "clustered" if $A$ has two or more
+  identical columns (up to some numerical precision threshold).
 \end{enumerate}
 We then calculate the fraction of clustered designs of the simulations
 we ran, for each pair $m,k$. Clusterization occurred at high rates
 ($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
 these simulations, clusterization is a generic property. However, when
-$m-k = 1$, clusterization does not occur. We do not why and further
-investigation into this phenomenon is out of scope for the current
-study.
+$m-k = 1$, clusterization does not occur. We do not why this is so and
+further investigation into this phenomenon is out of scope for the
+current study.
 
 \begin{figure}
     \centering
@@ -42,9 +52,11 @@ study.
 \end{figure}
 
 Full results are located in the \texttt{simulations.csv} file within
-the accompanying \href{https://github.com/yairdaon/OED}{repository},
-code implementing the experiments described above is located in module
-\texttt{zeros.py} of said repository.
+the accompanying \href{https://github.com/yairdaon/OED}{repository}.
+Code implementing the experiments described above is located in module
+\texttt{zeros.py} of said repository. Runtime should be less than 30
+minutes on any reasonably modern laptop (it took 12 minutes on the
+author's laptop).
 
 
 \subsection{Correlated errors}\label{subsec:corr_errors_sims}

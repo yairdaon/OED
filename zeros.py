@@ -67,7 +67,7 @@ def MDUS(m, k):
     
     assert m >= k
 
-    D = np.random.lognormal(mean=25, sigma=15, size=k)
+    D = np.random.lognormal(mean=50, sigma=15, size=k)
     D = np.sort(D)[::-1]
     # D = np.array([np.random.lognormal(mean=i, sigma=1) for i in range(k)]) 
     D = D * m / np.sum(D)

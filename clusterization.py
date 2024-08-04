@@ -7,6 +7,11 @@ from src.observations import PointObservation
 
 FS = 24 ## Font size
 
+## Avoid clusterization by increasing this to e.g. 4
+MODEL_ERROR = 0
+
+
+
 def main():
 
     sig = 5e-2 ## Observation error amplitude
@@ -27,8 +32,6 @@ def main():
     ## when employing homogeneous Neumann boundary condition.
     delta = 0. if transform == 'dst' else 0.5
     
-    ## Avoid clusterization by increasing this to e.g. 4
-    model_error = 0
 
     ## Forward model - the heat equation with BC chosen according to transform
     fwd = Heat(N=N,
@@ -54,7 +57,7 @@ def main():
                      L=L,
                      N=N,
                      transform=transform,
-                     model_error=model_error)
+                     model_error=MODEL_ERROR)
 
 
     
@@ -82,7 +85,7 @@ def main():
     plt.xlabel("Eigenvector", fontsize=FS)
     plt.ylabel("Precision", fontsize=FS)
     plt.tight_layout()
-    plt.savefig(f"latex/figs/FgammaFstar_modelError{model_error}.png")
+    plt.savefig(f"latex/figs/FgammaFstar_modelError{MODEL_ERROR}.png")
     
     
     ###################################
@@ -128,7 +131,7 @@ def main():
     ax.set_xlim(0,1)
     plt.tight_layout()
 
-    plt.savefig(f"latex/figs/{transform}_modelError{model_error}.png")
+    plt.savefig(f"latex/figs/{transform}_modelError{MODEL_ERROR}.png")
     #plt.show()
 
     ##############################
@@ -176,7 +179,7 @@ def main():
     plt.xlabel(r"$x \in \Omega$", fontsize=fs)
     plt.legend(title='eigenvector, weighted')
     plt.tight_layout()
-    plt.savefig(f"latex/figs/eigenvectors_{transform}_modelError{model_error}.png")
+    plt.savefig(f"latex/figs/eigenvectors_{transform}_modelError{MODEL_ERROR}.png")
    
 
     
