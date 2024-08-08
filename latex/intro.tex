@@ -382,15 +382,15 @@ estimate the number of relevant degrees of freedom, and even to reduce
 the complexity of a computational model, e.g.~by dropping
 discretization points.
 
-It is important to note that we do not view measurement clusterization
-as undesirable, nor do we believe it should be avoided at
+It is important to note that we do not view clustered designs as
+undesirable, nor do we believe it should be avoided at
 all. Clusterization is a peculiar phenomenon and it is perfectly
 reasonable for someone to argue against the D-optimality criterion
 based on the fact that it results in clustered designs. We have seen,
 however that there is a perfectly reasonable explanation for
 clusterization. We have shown that clusterization is an inevitable
 consequence of having a problem with some modes where uncertainty
-decays faster than others. 
+decays faster than others.
 
 Lastly, we believe that when clusterization arises, it should serve as
 a warning sign to practitioners. In the inverse problem of the 1D heat
@@ -408,16 +408,23 @@ information spread is the speed of light, but we expect heat to spread
 considerably slower: heating an Olympic pool at one end should have no
 immediate effect on the temperature at the other end.
 
+Our choice of prior is also a potential major contributor to
+clusterization. Our choice of Gaussian prior similarly implies
+information is shared between distant locations in $\Omega$. Thus, we
+suggest refraining from choosing Gaussian priors with inverse
+Laplacian covariance operators. Rather, non-Gaussian priors could be
+employed instead \cite{hosseini2017, hosseini2019}.
+
 We believe that the emergence of clusterization in this context is
 thus non-physical, arising from the way the inverse problems we
 consider are phrased. Clusterization therefore indicates that the
-underlying mathematical model is overly permissive and fails to
-capture crucial physical constraints of the problem. We suggest that
-when clusterization occurs, practitioners should consider alternative
-models where information is localized in space and travels at finite
-speed in the medium. Such models may not only provide more physically
-accurate and meaningful results but may also mitigate the issue of
-clusterization.
+underlying mathematical / Bayesian model is overly permissive and
+fails to capture crucial physical constraints of the problem. We
+suggest that when clusterization occurs, practitioners should consider
+alternative models where information is localized in space and travels
+at finite speed in the medium. Such models may not only provide more
+physically accurate and meaningful results but may also mitigate the
+issue of clusterization.
 
 
 
