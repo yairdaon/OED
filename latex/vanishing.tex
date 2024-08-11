@@ -401,40 +401,69 @@ clusterization arises as a consequence of the pigeonhole principle.
 
 
 \subsubsection{Clusterization in our generic model}
-In our generic model, the limit on the number of measurements arises
-as a consequence of Carath\'eodory's Theorem\footnote{Let $X \subseteq
-\mathbb{R}^n, X \neq \phi$ and denote $\conv (X)$ the convex hull of
-$X$. Let $x \in \conv (X)$. Then $x$ is a convex combination of at
-most $n+1$ vectors in $X$.} and the concentration on the first $k$
-eigenvectors of $\fwd \prcov \fwd^*$. The discussion below extends
-arguments presented in \cite[Chapter 3]{silvey} and \cite[Section
+We can gain further insight to clusterization in our generic model,
+from Carath\'eodory's Theorem and the concentration on the first $k$
+eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
+adapting arguments presented in \cite[Chapter
+  3]{silveyOptimalDesign1980} and \cite[Section
   5.2.3]{pronzatoPazman2013}.
 
-We now ignore all but the first $k$ eigenvectors of $\fwd \prcov
-\fwd$, as instructed by Theorem \ref{thm:char}. Thus, we can safely
-replace $\hilo$ with the $k$-dimensional subspace spanned by the first
-$k$ eigenvectors of $\fwd^*\prcov\fwd$. Since this subspace is
-isomorphic to $\mathbb{R}^k$, we do not name it and simply denote it
-by $\mathbb{R}^k$. Now, let
+Consider $\opt$ a D-optimal design under our generic model.  As
+instructed by Theorem \ref{thm:char}, we ignore all but the first $k$
+eigenvectors of $\fwd \prcov \fwd$. Thus, we replace $\hilo$ with
+$\hilo^{(k)}$ --- the $k$-dimensional subspace spanned by the first
+$k$ eigenvectors of $\fwd^*\prcov\fwd$. We keep in mind that
+$\hilo^{(k)}$ is isomorphic to $\mathbb{R}^k$ and let
 \begin{equation*}
-  \mathcal{M} := \conv \{\meas \meas^* : \meas\in \mathbb{R}^k, \|\meas\|=1\},
+  \mathcal{M} := \conv \{\meas \meas^* : \meas\in \hilo^{(k)}, \|\meas\|=1\},
   %\hilo^{(k)}\},
 \end{equation*}
-where $\conv$ denotes the convex hull of a set. Since $\mathcal{M}$ is
-a set of positive-definite matrices, it lives in a
-$k(k+1)/2$-dimensional subspace of $\mathbb{R}^{k\times k}$. Now note
-that $\frac{1}{m}\opt^*\opt \in \mathcal{M}$. By Carath\'eodory's
-Theorem, there exists a convex combination
+where $\conv$ denotes the convex hull of a set. The set $\mathcal{M}$
+contains only positive-definite matrices, hence it lives in a
+$k(k+1)/2$-dimensional vector space. Since $\opt^*\opt = \sum_{i=1}^m
+\meas_i\meas_i^*$ for $\meas_i \in \hilo^{(k)}$, it is easy to verify
+that $\frac1m \opt^*\opt \in \mathcal{M}$.  Now, recall
+Carath\'eodory's Theorem:
+\begin{theorem}[Carath\'eodory]
+  Let $X \subseteq \mathbb{R}^n, X \neq \phi$ and denote $\conv (X)$
+  the convex hull of $X$. For every $x \in \conv (X)$, $x$ is a convex
+  combination of at most $n+1$ vectors in $X$.
+\end{theorem}
+Carath\'eodory's Theorem implies that there exist $\meas_i$ and
+$\alpha_i$ such that
 \begin{equation*}
-  \frac{1}{m} \opt^*\opt = \sum_{i=1}^{\frac{k(k+1)}{2} + 1} \alpha_i \meas\meas^*,
+  \opt^*\opt = \sum_{i=1}^I \alpha_i \meas_i\meas_i^*,
 \end{equation*}
-where $\|\meas\|=1, \sum_{i=1}^I\alpha_i = 1$ and $\alpha_i > 0$.
+where $\|\meas\|=1, \sum\alpha_i = m, \alpha_i \geq 0$ and $I =
+\frac{k(k+1)}{2} + 1$. We can thus write $\opt$ as (note that we do
+not require $\meas_i$ to be orthogonal to each other):
 
-For example, if $k=2$ --- as is the case for the inverse prblem of the
-heat equation --- then an optimal design $\opt$ is a combination of at
-most $3$ measurement vectors $\meas$. Thus, if the number of allowed
-measurements $m$ is larger than $3$, then there exists an optimal
-clustered design.
+\[
+\opt =
+\left[
+  \begin{array}{ccc}
+    \horzbar & \sqrt{\alpha_i} \meas^*_1 & \horzbar \\
+    \horzbar & \sqrt{\alpha_2} \meas_2^* & \horzbar \\
+             & \vdots    &          \\
+    \horzbar & \sqrt{\alpha_I} \meas_I^* & \horzbar \\
+  \end{array}
+\right]
+\]
+
+Therefore, if $m > \frac{k(k+1)}{2} + 1$, then at least one
+coefficient $\alpha_i > 1$. Note that the abovementioned $\opt$ is not
+a valid design (since its rows do not have unit norm,
+i.e.~$\|\sqrt{\alpha_i}\meas\| \neq 1$). However, such representation
+provides another, deep view of clusterization.
+
+%% For example, if $k=2$, there exists an optimal design $\opt$ that can
+%% be represented be as a linear combination of at most $(2+1)/2 + 1 = 4$
+%% measurement vectors $\meas$, with nonnegative coefficients whose
+%% squares sum to $m$. If, the number of allowed measurements $m=5$, we
+%% can write $\opt = \sum_{i=1}^4 \alpha_i \meas_i$, where $\alpha_i > 1$
+%% for some $i\in \{1,2,3,4\}$. Since we put weight $>1$ on the
+%% $i\textsuperscript{th}$ measurement, we can view such a design as
+%% clustered.
 
 
 %%  whereThus, if we view $\obs$ as a $\mathbb{R}^{m\times k}$ matrix, we
