@@ -400,7 +400,7 @@ clusterization arises as a consequence of the pigeonhole principle.
 
 
 
-\subsubsection{Clusterization in our generic model}
+\subsubsection{Clusterization in our generic model}%\label{subsub:cara}
 We can gain further insight to clusterization in our generic model,
 from Carath\'eodory's Theorem and the concentration on the first $k$
 eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
@@ -412,18 +412,17 @@ Consider $\opt$ a D-optimal design under our generic model.  As
 instructed by Theorem \ref{thm:char}, we ignore all but the first $k$
 eigenvectors of $\fwd \prcov \fwd$. Thus, we replace $\hilo$ with
 $\hilo^{(k)}$ --- the $k$-dimensional subspace spanned by the first
-$k$ eigenvectors of $\fwd^*\prcov\fwd$. We keep in mind that
-$\hilo^{(k)}$ is isomorphic to $\mathbb{R}^k$ and let
+$k$ eigenvectors of $\fwd^*\prcov\fwd$. Let
 \begin{equation*}
   \mathcal{M} := \conv \{\meas \meas^* : \meas\in \hilo^{(k)}, \|\meas\|=1\},
   %\hilo^{(k)}\},
 \end{equation*}
 where $\conv$ denotes the convex hull of a set. The set $\mathcal{M}$
-contains only positive-definite matrices, hence it lives in a
-$k(k+1)/2$-dimensional vector space. Since $\opt^*\opt = \sum_{i=1}^m
-\meas_i\meas_i^*$ for $\meas_i \in \hilo^{(k)}$, it is easy to verify
-that $\frac1m \opt^*\opt \in \mathcal{M}$.  Now, recall
-Carath\'eodory's Theorem:
+contains only positive-definite operators on a $k$-dimensional vector
+space. Hence $\mathcal{M}$ lives in a $k(k+1)/2$-dimensional vector
+space. Since $\opt^*\opt = \sum_{i=1}^m \meas_i\meas_i^*$ for $\meas_i
+\in \hilo^{(k)}$, it is easy to verify that $\frac1m \opt^*\opt \in
+\mathcal{M}$.  Recall Carath\'eodory's Theorem:
 \begin{theorem}[Carath\'eodory]
   Let $X \subseteq \mathbb{R}^n, X \neq \phi$ and denote $\conv (X)$
   the convex hull of $X$. For every $x \in \conv (X)$, $x$ is a convex
@@ -435,8 +434,9 @@ $\alpha_i$ such that
   \opt^*\opt = \sum_{i=1}^I \alpha_i \meas_i\meas_i^*,
 \end{equation*}
 where $\|\meas\|=1, \sum\alpha_i = m, \alpha_i \geq 0$ and $I =
-\frac{k(k+1)}{2} + 1$. We can thus write $\opt$ as (note that we do
-not require $\meas_i$ to be orthogonal to each other):
+\frac{k(k+1)}{2} + 1$. We can thus write $\opt$ as:
+%(note that we do not require $\meas_i$ to be orthogonal to each
+%other):
 
 \[
 \opt =
@@ -447,50 +447,11 @@ not require $\meas_i$ to be orthogonal to each other):
              & \vdots    &          \\
     \horzbar & \sqrt{\alpha_I} \meas_I^* & \horzbar \\
   \end{array}
-\right]
+\right].
 \]
 
-Therefore, if $m > \frac{k(k+1)}{2} + 1$, then at least one
-coefficient $\alpha_i > 1$. Note that the abovementioned $\opt$ is not
-a valid design (since its rows do not have unit norm,
-i.e.~$\|\sqrt{\alpha_i}\meas\| \neq 1$). However, such representation
-provides another, deep view of clusterization.
-
-%% For example, if $k=2$, there exists an optimal design $\opt$ that can
-%% be represented be as a linear combination of at most $(2+1)/2 + 1 = 4$
-%% measurement vectors $\meas$, with nonnegative coefficients whose
-%% squares sum to $m$. If, the number of allowed measurements $m=5$, we
-%% can write $\opt = \sum_{i=1}^4 \alpha_i \meas_i$, where $\alpha_i > 1$
-%% for some $i\in \{1,2,3,4\}$. Since we put weight $>1$ on the
-%% $i\textsuperscript{th}$ measurement, we can view such a design as
-%% clustered.
-
-
-%%  whereThus, if we view $\obs$ as a $\mathbb{R}^{m\times k}$ matrix, we
-%%  conclude that $\obs^*\obs$ is a symmetric positive definite matrix
-%%  that lives in a $k(k+1)/2$-dimensional space.
-
-%% The set $\conv \mathcal{M}$ is a superset of all possible 
-
-
-%% Since we restrict $\|\meas\| = 1$, the set of allowed
-%% $\obs^*\obs$ is the ball of norm $m$ unit ball in (a space isomorphic to)
-%% $\mathbb{R}^k.
-
-
-
-%% $\{\meas \meas: \meas \in \span (\ev_1,\ev_2,\dots,
-%% \ev_k\}$ is in fact $k$-dimensional.
-
-
-
-
-%%   By Theorem
-%%   \ref{thm:char}, we ignore all eigenvectors except for the first
-%%   $k$.\ \
-
-
-
-
-
-%% First, note that $\fwd^*\obs^*\obs\fwd$ is the Fisher inf
+Unfortunately, $\opt$ is not a valid design, since its rows do not
+have unit norm. Still, the above representation of $\opt$ is useful:
+If $m > \frac{k(k+1)}{2} + 1$, then $\alpha_i > 1$ for some $1\leq i
+\leq I$.  Thus, we can view $\opt$ as a clustered design, since it
+places weight $>1$ on a single measurement vector.

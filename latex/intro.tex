@@ -341,20 +341,34 @@ previous section:
   clusterization in the inverse problem of the 1D heat equation.
 
 \item \label{q:why} \textbf{Why does measurement clusterization
-  occur?} In Section \ref{subsec:why} (specifically, Fig~\ref{fig:why}
-  and the discussion following it) we give a compelling answer to this
-  question by transporting insights we gain from our generic model to
-  the inverse problem of the 1D heat equation. Our analysis reveals
-  that a D-optimal design focuses on a select set of prior
-  eigenvectors, specifically those with the largest eigenvalues in the
-  prior covariance spectrum. In practical scenarios, the number of
-  locations where (a) all relevant prior eigenvectors are
-  significantly large, and (b) other eigenvectors are close to zero,
-  is limited. Consequently, the clusterization of measurements arises
-  as a natural consequence of the pigeonhole principle, as there are
-  more measurements available than there are locations satisfying
-  conditions (a) and (b).
+  occur?} In Sections \ref{subsec:why} we give two compelling answers
+  to this question by (i) transporting insights we gain from our
+  generic model to the inverse problem of the 1D heat equation, and
+  (ii) connecting measurement clusterization to Carath\'eodory's
+  Theorem.
 
+  Our analysis for the heat equation relies on conclusions from our
+  generic model. In particular, Theorem \ref{thm:char} reveals that a
+  D-optimal design focuses on a select set of prior eigenvectors,
+  i.e.~those with the largest eigenvalues in the prior covariance
+  spectrum. In practical scenarios, the number of locations where (a)
+  all relevant prior eigenvectors are significantly large, and (b)
+  other eigenvectors are close to zero, is limited. Consequently, the
+  clusterization of measurements arises as a natural consequence of
+  the pigeonhole principle, as there are more measurements available
+  than there are locations satisfying conditions (a) and (b).
+
+  The connection to Carath\'eodory's Theorem also utilizes the
+  concentration of measurement effort on the abovementioned select set
+  of prior eigenvectors. This concentration allows us to move from an
+  infinite-dimensional setting to finite dimensions, where the
+  conditions of Carath\'eodory's Theorem hold. We conclude that a
+  D-optimal design arises by weighting a small number of
+  measurements. If the number of allowed measurements is larger than
+  the small number dictated by Carath\'eodory's Theorem, we have
+  excessive weight on some measurements, which can be interpreted as
+  clusterization.
+  
 \end{enumerate}
 
 \subsubsection{Implications}
