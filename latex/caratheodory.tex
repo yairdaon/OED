@@ -1,0 +1,54 @@
+We can gain further insight to clusterization in our generic model,
+from Carath\'eodory's Theorem and the concentration on the first $k$
+eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
+adapting arguments presented in \cite[Chapter
+  3]{silveyOptimalDesign1980} and \cite[Section
+  5.2.3]{pronzatoPazman2013}.
+
+Consider $\opt$ a D-optimal design under our generic model.  As
+instructed by Theorem \ref{thm:char}, we ignore all but the first $k$
+eigenvectors of $\fwd \prcov \fwd$. Thus, we replace $\hilo$ with
+$\hilo^{(k)}$ --- the $k$-dimensional subspace spanned by the first
+$k$ eigenvectors of $\fwd^*\prcov\fwd$. Let
+\begin{equation*}
+  \mathcal{M} := \conv \{\meas \meas^* : \meas\in \hilo^{(k)}, \|\meas\|=1\},
+  %\hilo^{(k)}\},
+\end{equation*}
+where $\conv$ denotes the convex hull of a set. The set $\mathcal{M}$
+contains only positive-definite operators on a $k$-dimensional vector
+space. Hence $\mathcal{M}$ lives in a $k(k+1)/2$-dimensional vector
+space. Since $\opt^*\opt = \sum_{i=1}^m \meas_i\meas_i^*$ for $\meas_i
+\in \hilo^{(k)}$, it is easy to verify that $\frac1m \opt^*\opt \in
+\mathcal{M}$.  Recall Carath\'eodory's Theorem:
+\begin{theorem*}[Carath\'eodory]
+  Let $X \subseteq \mathbb{R}^n, X \neq \phi$ and denote $\conv (X)$
+  the convex hull of $X$. For every $x \in \conv (X)$, $x$ is a convex
+  combination of at most $n+1$ vectors in $X$.
+\end{theorem*}
+Carath\'eodory's Theorem implies that there exist $\meas_i$ and
+$\alpha_i$ such that
+\begin{equation*}
+  \opt^*\opt = \sum_{i=1}^I \alpha_i \meas_i\meas_i^*,
+\end{equation*}
+where $\|\meas\|=1, \sum\alpha_i = m, \alpha_i \geq 0$ and $I =
+\frac{k(k+1)}{2} + 1$. We can thus write $\opt$ as:
+%(note that we do not require $\meas_i$ to be orthogonal to each
+%other):
+
+\[
+\opt =
+\left[
+  \begin{array}{ccc}
+    \horzbar & \sqrt{\alpha_i} \meas^*_1 & \horzbar \\
+    \horzbar & \sqrt{\alpha_2} \meas_2^* & \horzbar \\
+             & \vdots    &          \\
+    \horzbar & \sqrt{\alpha_I} \meas_I^* & \horzbar \\
+  \end{array}
+\right].
+\]
+
+Unfortunately, $\opt$ is not a valid design, since its rows do not
+have unit norm. Still, the above representation of $\opt$ is useful:
+If $m > \frac{k(k+1)}{2} + 1$, then $\alpha_i > 1$ for some $1\leq i
+\leq I$.  Thus, we can view $\opt$ as a clustered design, since it
+places weight $>1$ on a single measurement vector.

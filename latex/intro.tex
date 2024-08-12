@@ -358,9 +358,9 @@ previous section:
   the pigeonhole principle, as there are more measurements available
   than there are locations satisfying conditions (a) and (b).
 
-  The connection to Carath\'eodory's Theorem also utilizes the
-  concentration of measurement effort on the abovementioned select set
-  of prior eigenvectors. This concentration allows us to move from an
+  The connection to Carath\'eodory's Theorem also builds on the focus
+  of measurement effort to the abovementioned select set of prior
+  eigenvectors. This concentration allows us to move from an
   infinite-dimensional setting to finite dimensions, where the
   conditions of Carath\'eodory's Theorem hold. We conclude that a
   D-optimal design arises by weighting a small number of
@@ -372,74 +372,7 @@ previous section:
 \end{enumerate}
 
 \subsubsection{Implications}
-Our answer to Question \ref{q:generic} implies that encountering
-clusterization should be expected in many different problems across
-many different scientific fields. Researchers that encounter
-clusterization should not be surprised or wary. In Our answer to
-Question \ref{q:why}, we explain what our view of the cause of
-clusterization is. It appears, the cause is generic: a D-optimal
-design reduces uncertainty for a select set of prior covariance
-eigenvectors --- those with the most prior uncertainty, i.e.~those the
-practitioner cares about the most! We believe practitioners should not
-try to avoid measurement clusterization. Rather, practitioners should
-take repeated measurements (e.g.~in MRI and borehole tomography),
-increase apparatus sensitivity (e.g.~in EIT), or take consecutive
-measurements (e.g.~in the 1D heat equation). Overall, we show that
-measurement clusterization is a natural and (almost) inevitable part
-of Bayesian D-optimal designs (but see disclaimer below).
-
-One interesting implication of the analysis presented here is that
-clusterization can serve as an evidence to the number of relevant
-eigenvectors. Since leading eigenvectors typically correspond to slow
-variations in space and/or time, clusterization could be used to
-estimate the number of relevant degrees of freedom, and even to reduce
-the complexity of a computational model, e.g.~by dropping
-discretization points.
-
-It is important to note that we do not view clustered designs as
-undesirable, nor do we believe it should be avoided at
-all. Clusterization is a peculiar phenomenon and it is perfectly
-reasonable for someone to argue against the D-optimality criterion
-based on the fact that it results in clustered designs. We have seen,
-however that there is a perfectly reasonable explanation for
-clusterization. We have shown that clusterization is an inevitable
-consequence of having a problem with some modes where uncertainty
-decays faster than others.
-
-Lastly, we believe that when clusterization arises, it should serve as
-a warning sign to practitioners. In the inverse problem of the 1D heat
-equation, clusterization occurs primarily because Laplacian
-eigenvectors \emph{do not} decay in $\Omega$. Consequently, measuring
-$u(x_1, T)$ at some point $x_1 \in \Omega$ provides information about
-$u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively, this
-should not occur: for small $T$, the heat distribution at $x_1$ should
-give very little knowledge on the heat distribution at $x_2$. This
-behavior stems from a well-known property of the heat equation: it
-allows information to spread \emph{instantly} across the computational
-domain \cite{renardy2006PDE}. In reality, heat (and information)
-propagate at finite speeds. Of course, the known physical barrier for
-information spread is the speed of light, but we expect heat to spread
-considerably slower: heating an Olympic pool at one end should have no
-immediate effect on the temperature at the other end.
-
-Our choice of prior is also a potential major contributor to
-clusterization. Our choice of Gaussian prior similarly implies
-information is shared between distant locations in $\Omega$. Thus, we
-suggest refraining from choosing Gaussian priors with inverse
-Laplacian covariance operators. Rather, non-Gaussian priors could be
-employed instead \cite{hosseini2017, hosseini2019}.
-
-We believe that the emergence of clusterization in this context is
-thus non-physical, arising from the way the inverse problems we
-consider are phrased. Clusterization therefore indicates that the
-underlying mathematical / Bayesian model is overly permissive and
-fails to capture crucial physical constraints of the problem. We
-suggest that when clusterization occurs, practitioners should consider
-alternative models where information is localized in space and travels
-at finite speed in the medium. Such models may not only provide more
-physically accurate and meaningful results but may also mitigate the
-issue of clusterization.
-
+\input{implications}
 
 
 \subsubsection{Other Contributions}
