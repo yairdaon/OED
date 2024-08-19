@@ -1,8 +1,8 @@
 \section{Introduction}\label{section:intro}
 The practice of experimental design entails specifying every detail of
-running an experiment \cite{chaloner1995}. At its simplest form,
-experimental design involves choosing a set of measurements to be
-taken. For example, consider the process of searching for oil:
+running an experiment \cite{chaloner1995}. In its most basic form,
+experimental design entails specifying measurements that consist an
+experiment. For example, consider the process of searching for oil:
 measurements require digging holes in the ground and a \emph{design}
 simply indicates which holes should be dug
 \cite{horesh2008borehole}. Since measurements are expensive, only a
@@ -50,14 +50,15 @@ interest.
 In all of the examples of inverse problems we have seen, as well as in
 many other applications, only a limited number of measurements are
 allowed. For example, in borehole tomography, a measurement involves
-drilling a deep well in the ground --- a very costly endeavor. Even in
-a seemingly simpler application such as MRI, a patient cannot occupy
-the MRI machine for too long, hence only a limited number of
-measurements can be taken. Therefore, measurements should be chosen to
-most benefit the user. Typically, a user will consider some utility,
-called a \emph{design criterion} and take measurements that maximize
-this utility. Two of the most widely recognized and extensively
-studied design criteria are the A- and \emph{D-optimality} criteria.
+drilling a deep well in the ground --- a very costly endeavor. In
+medical imaging applications like MRI, the time alloted for each
+patient in the MRI machine limits the number of measurements that can
+be taken during a single session. Therefore, measurements should be
+chosen to extract as much information from the experiment. Typically,
+a user will consider some utility, called a \emph{design criterion}
+and take measurements that maximize this utility. Two of the most
+widely recognized and extensively studied design criteria are the A-
+and \emph{D-optimality} criteria.
 
 In this study, we focus on the Bayesian D-optimality
 criterion. Bayesian D-optimality carries a simple and intuitive
@@ -87,7 +88,7 @@ D-optimal design minimizes the determinant of the posterior covariance
 a more general definition of the D-optimality criterion that applies
 to arbitrary measures. We also show how the D-optimality criterion
 generalizes to linear models over infinite-dimensional Hilbert spaces
-(i.e.~function spaces).
+(e.g.~function spaces).
 
 \subsection{A toy model: the 1D heat equation}\label{subsec:toy}
 For concreteness, let us now consider a toy inverse problem: inferring
@@ -124,17 +125,17 @@ disappears. This type of boundary condition is known as a
 describes the \emph{initial condition}, i.e.~the heat distribution
 inside the rod at time $t=0$.
 
-Solving the 1D heat equation is straightforward. Any initial heat
-distribution $u_0\in L^2([0,1])$ that satisfies the homogeneous
-Dirichlet boundary condition eq.~\eqref{eq:heat2} is a linear
-combination of sines $\ev_n(x) = \sin(\pi n x)$, so $u_0 = \sum_{n\geq
-  1} a_n \ev_n$ for some $\{a_n\}_{n\geq 1}$. Now, note that $\ev_n$
-are in fact eigenvectors of the Laplacian: $\Delta \ev_n = -\pi^2
-n^2\ev_n$. It should not be hard to believe that $u(\cdot, T) =
-\sum_{n\geq 1} a_n \exp(-\pi^2 n^2T ) \ev_n$
-\cite{renardy2006PDE}. Thus, eigenvectors of the linear operator that
-describes the time evolution of heat are $\ev_n(x) = \sin(\pi n x)$
-with corresponding eigenvalues
+Solving the 1D heat equation is straightforward. Consider an initial
+heat distribution $u_0\in L^2([0,1])$ that satisfies the homogeneous
+Dirichlet boundary condition eq.~\eqref{eq:heat2}. The initial
+condition $u_0$ is a linear combination of sines $\ev_n(x) = \sin(\pi
+n x)$, so $u_0 = \sum_{n\geq 1} a_n \ev_n$ for some $\{a_n\}_{n\geq
+  1}$. Now, note that $\ev_n$ are in fact eigenvectors of the
+Laplacian: $\Delta \ev_n = -\pi^2 n^2\ev_n$. It should not be hard to
+believe that $u(\cdot, T) = \sum_{n\geq 1} a_n \exp(-\pi^2 n^2T )
+\ev_n$ \cite{renardy2006PDE}. Thus, eigenvectors of the linear
+operator that describes the time evolution of heat are $\ev_n(x) =
+\sin(\pi n x)$ with corresponding eigenvalues
 \begin{equation}\label{eq:decay}
   \exp(-\pi^2 n^2T ).
 \end{equation}
@@ -152,9 +153,9 @@ since heat spreads in a diffusive manner and any roughness in the
 initial condition is quickly smoothed, as implied by the squared
 exponential decay of eigenvalues in eq.~\eqref{eq:decay} with
 $n\to\infty$. See Supplementary movies S1 and S2 for an illustration
-of this phenomenon (code generating these movies is located in module
-\texttt{movies.py} in the accompanying
-\href{https://github.com/yairdaon/OED}{repository}). For ill-posed
+of this phenomenon\footnote{Code generating these movies is located in
+module \texttt{movies.py} in the accompanying
+\href{https://github.com/yairdaon/OED}{repository}.}. For ill-posed
 problems regularization is required, and we implement such
 regularization via a fully Bayesian formulation of the inverse
 problem.
@@ -162,12 +163,11 @@ problem.
 We choose a prior for the initial condition $u_0 \sim \mathcal{N}(0,
 (-\Delta)^{-1})$, with homogeneous Dirichlet boundary condition. This
 choice of prior covariance operator ensures the posterior is
-well-defined and prior realizations are well-behaved, see
-\cite[Theorem 3.1 and Lemma 6.25]{Stuart10} for details. The second
-ingredient of a fully Bayesian formulation of the inverse problem is
-likelihood. We simply assume centered iid Gaussian measurement error
-model, giving rise to a the widely applicable Gaussian likelihood
-function.
+well-defined and prior realizations are well-behaved, see Theorem 3.1
+and Lemma 6.25 in \cite{Stuart10} for details. The second ingredient of a
+fully Bayesian formulation of the inverse problem is likelihood. We
+simply assume centered iid Gaussian measurement error model, giving
+rise to a the widely applicable Gaussian likelihood function.
 
 
 \subsection{Measurement Clusterization}
