@@ -51,7 +51,7 @@ In all of the examples of inverse problems we have seen, as well as in
 many other applications, only a limited number of measurements are
 allowed. For example, in borehole tomography, a measurement involves
 drilling a deep well in the ground --- a very costly endeavor. In
-medical imaging applications like MRI, the time alloted for each
+medical imaging applications like MRI, the time allotted for each
 patient in the MRI machine limits the number of measurements that can
 be taken during a single session. Therefore, measurements should be
 chosen to extract as much information from the experiment. Typically,
@@ -160,25 +160,39 @@ problems regularization is required, and we implement such
 regularization via a fully Bayesian formulation of the inverse
 problem.
 
-We choose a prior for the initial condition $u_0 \sim \mathcal{N}(0,
-(-\Delta)^{-1})$, with homogeneous Dirichlet boundary condition. This
-choice of prior covariance operator ensures the posterior is
-well-defined and prior realizations are well-behaved, see Theorem 3.1
-and Lemma 6.25 in \cite{Stuart10} for details. The second ingredient of a
-fully Bayesian formulation of the inverse problem is likelihood. We
-simply assume centered iid Gaussian measurement error model, giving
-rise to a the widely applicable Gaussian likelihood function.
+
+In order to find a fully Bayesian formulation for our inverse problem
+we first need to specify a prior on \emph{functions} defined over
+$\Omega = [0,1]$. For the sake of simplicity we would like to utilize
+a Gaussian prior. While specifying the prior mean is easy --- we take
+the zero function on $\Omega$ --- specifying a prior covariance is
+more involved. In analogy with the finite dimensional case, we seek a
+covariance \emph{operator} that is positive definite and imposes
+sufficient regularity on functions over $\Omega$. Thus, we set our
+prior for the initial condition $u_0 \sim \mathcal{N}(0,
+(-\Delta)^{-1})$, where $\Delta$ again defined with homogeneous
+Dirichlet boundary condition. The intuition here is that
+$(-\Delta)^{-1}$ is smoothing and prior realizations are generated, in
+analogy to the finite dimensional case, via
+$(-\Delta)^{-1/2}\mathcal{W}$, where $\mathcal{W}$ is white noise
+\cite{rue2011}. Our choice of prior covariance operator ensures the
+posterior is well-defined and prior realizations are well-behaved, see
+Theorem 3.1 and Lemma 6.25 in \cite{Stuart10} for details. The second
+ingredient of a fully Bayesian formulation of the inverse problem is
+likelihood. We simply assume centered iid Gaussian measurement error
+model, giving rise to a the widely applicable Gaussian likelihood
+function.
 
 
 \subsection{Measurement Clusterization}
 Surprisingly, A- and D-optimal designs for inverse problems have been
 observed to yield remarkably similar measurements in certain cases
-\cite{fedorovDesignSpatialExperiments1996, nyberg2012, fedorov1997,
-  Ucinski05, neitzel2019sparse}. This phenomenon is illustrated for
-our toy inverse problem in Fig.~\ref{fig:clusterization_illustration},
-where D-optimal measurement locations are shown for different numbers
-of measurements. Notably, for six measurements, a D-optimal design
-yields two sets of measurements that are identical. Following
+\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+  neitzel2019sparse}. This phenomenon is illustrated for our toy
+inverse problem in Fig.~\ref{fig:clusterization_illustration}, where
+D-optimal measurement locations are shown for different numbers of
+measurements. Notably, for six measurements, a D-optimal design yields
+two sets of measurements that are identical. Following
 \cite{Ucinski05}, we refer to this intriguing phenomenon as
 \emph{measurement clusterization}. We consider a design to be
 \emph{clustered} when two or more of its constituent measurements are
@@ -203,39 +217,59 @@ identical.
 \end{figure}
 
 
-Clusterization should not be confused with either repetition nor with
-replication, which are commonly viewed as beneficial and even
-necessary aspects of an optimal design \cite{fisher1949design,
-  morris2011, schafer2001replication}. For example,
-\cite{fisher1949design} in his famous milk and tea experiment,
-suggested that repetition is a "way of enlarging the experiment and,
-thereby, increasing its sensitiveness". In another example,
-\cite{fay2000rainfall} measured the effect of rainfall on grass growth
-in plots of land. The experiment involved fifteen "rainfall
-manipulation shelters", where "Four rainfall manipulation treatments
-(three replicates) then were assigned to 12 of the plots". While it
-seems reasonable for the researchers to replicate the phenomenon they
-are trying to study, clusterization is different: a clustered design
-in the rainfall experiment would imply the researchers should take a
-repeated measurement \emph{on the same plot}, at the expense of
-measuring grass growth in other plots. In sharp contrast to repetition
-and replication, clusterization is highly nonintuitive and we will see
-that its origins run considerably deeper.
+%% REV 1, 2
+Clusterization should not be confused with replication. Replication
+requires that the experimentalist executes multiple trials under
+circumstances that are \emph{nominally identical} \cite[Section
+  1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
+and even necessary aspect of optimal experimental design
+\cite{fisher1949design, morris2011, schafer2001replication}. Similarly
+to a design implementing replication, a clustered design reduces the
+signal-to-noise ratio of the repeated measurements
+\cite{telford2007brief}. The difference is that a clustered design
+takes repeated measurements at the expense of other quantities not
+measured at all.
+
+%% Rev 2
+For example, \cite{fisher1949design}, suggested repeating his famous
+milk and tea experiment in order "to be able to demonstrate the
+predominance of correct classifications in spite of occasional
+errors". Unfortunately, in the experiments we consider, replication is
+impossible. For example, in the MRI problem, we cannot generate an
+individual nominally identical to the one we wish to scan.
+
+%% Rev 2
+To further illustrate the difference between replication and
+clusterization, consider an experiment measuring the effect of
+rainfall on grass growth \cite{fay2000rainfall}. The experiment
+involved four rainfall manipulation "treatments" (i.e.~simulating
+different timing and quantity of rainfall), each replicated three
+times over a different plot of land. Indeed, it seems reasonable for
+researchers to replicate the phenomenon they are trying to study. A
+clustered design in such an experiment would imply the researchers
+should take a repeated measurement \emph{on the same plot}, at the
+expense of measuring grass growth in other plots. To conclude our
+short discussion on replication vs.~clusterization: these are
+fundamentally different concepts and even though replication is quite
+intuitive, it is inapplicable to the inverse problems we consider in
+this manuscript.
+
+
 
 
 Researchers of inverse problems widely agree that measurement
-clusterization is undesirable
-\cite{fedorovDesignSpatialExperiments1996, nyberg2012, fedorov1997,
-  Ucinski05, neitzel2019sparse}, prompting the exploration of various
-remedies to address this issue. One approach involves merging close
-measurements \cite{fedorov1997}; however, this strategy merely
-overlooks the phenomenon of measurement clusterization. An alternative
-solution lies in \emph{clusterization-free design}s, where measurement
-locations are deliberately chosen to be distant from one another. This
-can be achieved by imposing distance constraints between measurements
-or by introducing correlated errors that account for both observation
-error and model misspecification \cite{Ucinski05}. For instance, in
-the context of time-series analysis for pharmacokinetic experiments,
+clusterization is undesirable \cite{fedorov1996, nyberg2012,
+  fedorov1997, Ucinski05, neitzel2019sparse}, prompting the
+exploration of various remedies to address this issue. One approach
+involves merging close measurements \cite{fedorov1997}; however, this
+strategy merely overlooks the phenomenon of measurement
+clusterization. An alternative solution lies in
+\emph{clusterization-free design}s, where measurement locations are
+deliberately chosen to be distant from one another. This can be
+achieved by imposing distance constraints between measurements or by
+introducing correlated errors that account for both observation error
+and model misspecification \cite{Ucinski05}. For instance, in the
+context of time-series analysis for pharmacokinetic experiments,
 measurement clusterization can be mitigated by incorporating the
 modeling of auto-correlation time within the noise terms
 \cite{nyberg2012}.
@@ -371,8 +405,124 @@ previous section:
   
 \end{enumerate}
 
-\subsubsection{Implications}
-\input{implications}
+\subsubsection{Implications}\label{subsub:implications}
+Our answer to Question \ref{q:generic} implies that encountering
+clusterization could be expected in many different problems across
+many different scientific fields. Researchers that encounter
+clusterization should not be surprised or wary. In Our answer to
+Question \ref{q:why}, we explain what our view of the cause of
+clusterization is. It appears, the cause is generic: a D-optimal
+design reduces uncertainty for a select set of prior covariance
+eigenvectors --- those with the most prior uncertainty, i.e.~those the
+practitioner cares about the most!
+
+A further implication of the analysis we present is that
+clusterization can serve as an evidence to the number of relevant
+eigenvectors in the problem. These eigenvectors correspond to the
+relevant degrees of freedom in the problem. Thus, clusterization tells
+us that we might be able to reduce the complexity of a computational
+model, e.g.~by dropping discretization points.
+
+%% REV 1
+%% REV 2
+When clusterization arises, we believe it should serve as a warning
+signal to practitioners. In the inverse problem of the 1D heat
+equation, clusterization occurs primarily because Laplacian
+eigenvectors do not decay in $\Omega$. Consequently, measuring $u(x_1,
+T)$ at some point $x_1 \in \Omega$ provides information about
+$u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively, this
+should not happen: for small $T$, the heat distribution at $x_1$
+should give very little knowledge on the heat distribution at
+$x_2$. This behavior stems from a well-known property of the heat
+equation: it allows information to spread instantly across the
+computational domain \cite{renardy2006PDE}. In reality, heat (and
+information) propagate at finite speeds. Of course, the known physical
+barrier for information spread is the speed of light, but we expect
+heat and information to spread considerably slower. Thus,
+clusterization may suggest that our physical model itself is at fault.
+
+%% We believe that the emergence of clusterization in this context might
+%% be non-physical, arising from the way the inverse problems we consider
+%% are phrased. Clusterization therefore indicates that the underlying
+%% mathematical / Bayesian model is overly permissive and fails to
+%% capture crucial physical constraints of the problem. We suggest that
+%% when clusterization occurs, practitioners should consider alternative
+%% models where information is localized in space and travels at finite
+%% speed in the medium. Such models may not only provide more physically
+%% accurate and meaningful results but may also mitigate the issue of
+%% clusterization.
+
+%% REV 1
+%% REV 2
+Our choice of prior is perhaps an even greater contributor to
+clusterization. Our choice of Gaussian prior similarly implies
+information is shared between distant locations in $\Omega$. Thus, we
+suggest refraining from choosing Gaussian priors with inverse
+Laplacian covariance operators. Rather, non-Gaussian priors should be
+employed instead \cite{hosseini2017, hosseini2019}. So, clusterization
+may suggest we give more attention to the choice of prior.
+
+%% REV 1
+Given the above discussion, it is our belief that the methods
+suggested by other authors to avoid clusterization are merely
+overlooking the problem. We do not view clustered designs as
+inherently bad on their own. Rather, we suggest that if a clustered
+design arises, then a practitioner should revisit their probabilistic
+and physical modeling assumptions. If the practitioner is confident in
+their assumptions, then clustered designs should be avoided only to
+the extent necessitated by the physical measuring apparatus.
+
+Another For example, \cite{tekentrup2020} provides convergence analysis for
+various designs with differing space filling properties. They showed
+that convergence rate depends on how these designs fill space. We
+expect better convergence rates for D-optimal designs, even though
+D-optimal designs may demonstrate clusterization. The reason is that
+D-optimal designs explore space in a way tailored to the problem
+studied. Consequently, D-optimal designs cluster because they first
+aim to measure what matters most; see the discussion following
+Theorem \ref{thm:char} for details.
+
+%% be avoided at all. Nothing in our analysis indicates that we should
+%% expect any pathological behavior when utilizing D-optimal designs. On
+%% the contrary: we show that D-optimal designs (clustered or not) reduce
+%% uncertainty of prior covariance eigenvectors where it is
+%% highest. Thus, in a sense we hope to make precise in a future study,
+%% we expect convergence of for D-optimal designs to be fastest.
+
+
+
+%% practitioners should not try to avoid measurement
+%% clusterization. Rather, practitioners should take repeated
+%% measurements (e.g.~in MRI and borehole tomography), increase apparatus
+%% sensitivity (e.g.~in EIT), or take consecutive measurements (e.g.~in
+%% the 1D heat equation). Overall, we show that measurement
+%% clusterization is a natural and (almost) inevitable part of Bayesian
+%% D-optimal designs (but see disclaimer below).
+
+
+
+
+
+We expect D-optimal designs to judicious exploration of
+design space, as implemented by a D-optimal design to give better
+convergence compared to randomly sampling the design
+space \cite{knapik2011}.
+
+
+
+
+%% Clusterization is a peculiar phenomenon and it is perfectly reasonable
+%% for someone to argue against the D-optimality criterion based on the
+%% fact that it results in clustered designs. We have seen, however that
+%% there is a perfectly reasonable explanation for clusterization. We
+%% have shown that clusterization is an inevitable consequence of having
+%% a problem with some modes where uncertainty decays faster than others.
+
+
+
+
+
+
 
 
 \subsubsection{Other Contributions}

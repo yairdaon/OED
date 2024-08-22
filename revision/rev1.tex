@@ -1,0 +1,96 @@
+\section{Reviewer 1}\label{ref1}
+\RC This paper explains a common practical issue: the cause of
+clusterization in Bayesian D-optimal designs in infinite dimensions
+and why adding a correlated measurement process decluster the design
+points. Its theoretical results are valuable to the field of inverse
+problems/uncertainty quantification and the conclusions should be
+useful to practitioners in this field.
+
+\AR I appreciate the kind words.
+
+
+\RC However, I feel changing the assumption from independent to correlated
+measurements is quite artificial: people tweak a data generation
+process assumption to solve an optimal design problem, and the author
+just takes the assumption as it is.
+
+\AR If I understand correctly --- I completely agree. I added text
+emphasizing that I do not endorse using correlated errors:
+
+\begin{quote}
+  Given the above discussion, it is our belief that the methods
+  suggested by other authors to avoid clusterization are merely
+  overlooking the problem. We do not view clustered designs as
+  inherently bad on their own. Rather, we suggest that if a clustered
+  design arises, then a practitioner should revisit their probabilistic
+  and physical modeling assumptions. If the practitioner is confident in
+  their assumptions, then clustered designs should be avoided only to
+  the extent necessitated by the physical measuring apparatus.
+\end{quote}
+
+\RC Since the author proves the clusterization issue under the independent
+measurement assumption, I expect the author to go deeper and explain
+why an ordinary data generation assumption + a common optimal design
+leads to a “suboptimal” design?
+
+\AR In my view, this is a result of the unlocalized structure of
+Laplacian eigenvectors. I believe this is more of a problem with our
+physical models and choice of priors. See discussion below reproduced
+from the revised manuscript:
+
+\begin{quote}
+  When clusterization arises, we believe it should serve as a warning
+  signal to practitioners. In the inverse problem of the 1D heat
+  equation, clusterization occurs primarily because Laplacian
+  eigenvectors do not decay in $\Omega$. Consequently, measuring
+  $u(x_1, T)$ at some point $x_1 \in \Omega$ provides information
+  about $u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively,
+  this should not happen: for small $T$, the heat distribution at
+  $x_1$ should give very little knowledge on the heat distribution at
+  $x_2$. This behavior stems from a well-known property of the heat
+  equation: it allows information to spread instantly across the
+  computational domain \cite{renardy2006PDE}. In reality, heat (and
+  information) propagate at finite speeds. Of course, the known
+  physical barrier for information spread is the speed of light, but
+  we expect heat and information to spread considerably slower. Thus,
+  clusterization may suggest that our physical model itself is at
+  fault.
+  
+  Our choice of prior is perhaps an even greater contributor to
+  clusterization. Our choice of Gaussian prior similarly implies
+  information is shared between distant locations in $\Omega$. Thus,
+  we suggest refraining from choosing Gaussian priors with inverse
+  Laplacian covariance operators. Rather, non-Gaussian priors should
+  be employed instead \cite{hosseini2017, hosseini2019}. So,
+  clusterization may suggest we give more attention to the choice of
+  prior.
+\end{quote}
+
+
+\RC Not just by the mathematical proof, but from an information theory
+point of view. For example, does the redundancy points mean additional
+points does not reduce the variance of the estimation at all? If
+that’s the case, how does correlated measurement assumption “help”
+with it?
+
+\AR I think this is the same misunderstanding I commented on above;
+For any nonzero observation error $\sigma^2 > 0$, repeated
+measurements will indeed reduce the signal-to-noise ratio of the
+measurement and result in an increase of the design criterion. I
+briefly comment on this subject in the paragraph below:
+
+\begin{quote}
+  Clusterization should not be confused with replication. Replication
+  requires that the experimentalist executes multiple trials under
+  circumstances that are \emph{nominally identical} \cite[Section
+    1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
+  and even necessary aspect of optimal experimental design
+  \cite{fisher1949design, morris2011,
+    schafer2001replication}. Similarly to a design implementing
+  replication, a clustered design reduces the signal-to-noise ratio of
+  the repeated measurements \cite{telford2007brief}. The difference is
+  that a clustered design takes repeated measurements at the expense
+  of other quantities not measured at all.
+\end{quote}
+
+

@@ -21,8 +21,8 @@ materials I had access to there is no further mention of these
 numerical simulations and results; only a link to a Github repository
 is provided, which is however not functioning.
 
-\AR I made sure the \href{https://github.com/yairdaon/OED}{repository}
-is functioning and well-documented.
+\AR I made sure the repository is functioning and well-documented. See
+\url{https://github.com/yairdaon/OED}.
 
 
 \RC Evidently, this issue needs to be fixed before any future
@@ -34,57 +34,58 @@ percentages obtained. Also, the code needs to be publicly available
 for reproducibility.
 
 \AR I appreciate the suggestion. I added a section reproducing the
-abovementioned numerical experiments to the main article:
+abovementioned numerical experiments to the main article. See Section
+\ref{subsec:lemma_sims} reproduced below:
 
 
 \begin{quote}
   In the proof of Theorem \ref{thm:char} we utilize Lemma
-  \ref{lemma:free} to construct D-optimal designs. We implement this
-  construction with the goal of testing numerically how prevalent are
-  clustered designs. To this end, we would like to generate random
-  prior eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
-  $\opt^*\opt$ and then utilize the construction of
-  Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
+\ref{lemma:free} to construct D-optimal designs. We implement this
+construction with the goal of testing numerically how prevalent are
+clustered designs. To this end, we would like to generate random prior
+eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
+$\opt^*\opt$ and then utilize the construction of
+Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
 
 
-  To simplify things, we directly sample rank $\opt^*\opt$. We iterate
-  over the number of measurements $m \in \{4,\dots, 24\}$, and for
-  every $m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
-  m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
-  times:
-  \begin{enumerate}
-  \item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
-    entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
-    $\ttr D = m$.
-  \item Conjugate $D$ by a random orthogonal matrix to form a positive
-    semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
-    represents $\opt^*\opt$.
-  \item Apply the construction of Lemma \ref{lemma:free} to calculate
-    $A$ such that $AA^t = M$, where $A$ has unit norm
-    columns. I.e.~find the optimal design $\opt$.
-  \item Since $A$ corresponds to $\opt$, its columns correspond to
-    measurement vectors. We call $A$ "clustered" if $A$ has two or
-    more identical columns (up to some numerical precision threshold).
-  \end{enumerate}
-  We then calculate the fraction of clustered designs of the simulations
-  we ran, for each pair $m,k$. Clusterization occurred at high rates
-  ($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
-  these simulations, clusterization is a generic property. However, when
-  $m-k = 1$, clusterization does not occur. We do not why this is so and
-  further investigation into this phenomenon is out of scope for the
-  current study.
-  
-  Full results are located in the \texttt{simulations.csv} file within
-  the accompanying \href{https://github.com/yairdaon/OED}{repository}.
-  Code implementing the experiments described above is located in module
-  \texttt{zeros.py} of said repository. Runtime should be less than 30
-  minutes on any reasonably modern laptop (it took 12 minutes on the
-  author's laptop).
+To simplify things, we directly sample rank $\opt^*\opt$. We iterate
+over the number of measurements $m \in \{4,\dots, 24\}$, and for every
+$m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
+m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
+times:
+\begin{enumerate}
+\item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
+  entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
+  $\ttr D = m$. 
+\item Conjugate $D$ by a random orthogonal matrix to form a positive
+  semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
+  represents $\opt^*\opt$.
+\item Apply the construction of Lemma \ref{lemma:free} to calculate
+  $A$ such that $AA^t = M$, where $A$ has unit norm columns. I.e.~find
+  the optimal design $\opt$.
+\item Since $A$ corresponds to $\opt$, its columns correspond to
+  measurement vectors. We call $A$ "clustered" if $A$ has two or more
+  identical columns (up to some numerical precision threshold).
+\end{enumerate}
+We then calculate the fraction of clustered designs of the simulations
+we ran, for each pair $m,k$. Clusterization occurred at high rates
+($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
+these simulations, clusterization is a generic property. However, when
+$m-k = 1$, clusterization does not occur. We do not why this is so and
+further investigation into this phenomenon is out of scope for the
+current study.
+
+Full results are located in the \texttt{simulations.csv} file within
+the accompanying \href{https://github.com/yairdaon/OED}{repository}.
+Code implementing the experiments described above is located in module
+\texttt{zeros.py} of said repository. Runtime should be less than 30
+minutes on any reasonably modern laptop (it took 12 minutes on the
+author's laptop).
 \end{quote}
 
 \begin{figure}
     \centering
-    \includegraphics[height=0.5\textwidth]{figs/simulations.png}
+    \includegraphics[height=0.5\textwidth]{../latex/figs/simulations.png}
     \caption{Fraction of clustered $A$ for $AA^t = M$ and $M$
       generated randomly (see text and repository for details on
       generating $M$). It is evident that when $m-k \geq 2$ clusterization
@@ -122,8 +123,7 @@ regarding the validity of their physical model and Bayesian
 assumptions:
 
 \begin{quote}
-  
-  
+  DO THIS FML!!!!!!
 \end{quote}
 
 \RC Figure 1: It is hard to discern whether the measurements locations
@@ -140,8 +140,10 @@ $\Omega=[0,1]$ I view a numerical error $<10^{-5}$ as reasonable.
 \RC Experiment with the 1D heat equation: the experiment showcases
 some interesting phenomena, but also raises many questions. For
 instance: I would expect the dimensionality of the working domain
-(here the unit interval [0, 1]) to play a role, since larger dimension
-allow for higher freedom in placing the design points.
+(here the unit interval $[0, 1]$) to play a role, since larger
+dimension allow for higher freedom in placing the design points.
+
+\AR Say something??? FML
 
 \RC Further, a dimensionality effect should also arise directly from
 Theorem 1 via the prior covariance eigenvalues: in the experiment the
@@ -162,15 +164,6 @@ me digress from the main points I wanted to convey and (2) I view
 implementing experiments in higher dimensions as out of the scope of
 the current study.
 
-
-
-\begin{quote}
-  We choose a prior for the initial condition $u_0 \sim \mathcal{N}(0,
-  (-\Delta)^{-1})$, with homogeneous Dirichlet boundary
-  condition. This choice ensures the posterior is well-defined and
-  prior realizations are well-behaved, see \cite[Theorem 3.1 and Lemma
-    6.25]{Stuart10} for details.
-\end{quote}
 
   
 \RC Also, it should be relatively easy here to also study empirically
@@ -231,11 +224,9 @@ phenomena, and they are routinely studied in statistical papers.
 might feel too abstract to some practitioners. Thus, I choose to keep
 this part to avoid complaints from other readers.
 
-
-
 \RC What does ‘strongly smoothing’ operator means in the third line of Section 2.1?
 
-\AR Basically I meant that its eigenvalues decrease "quickly". I
+\AR Basically I meant that its eigenvalues decay "quickly". I
 understand this is not a common or well-defined term so I removed the
 relevant sentence.
 
@@ -258,8 +249,6 @@ criterion?
 view them as pathological. I added a short discussion reproduced
 below:
 
-
-
 \begin{quote}
   It is worth noting that by the nonnegativity of the KL divergence,
   $\tar$ cannot decrease upon adding measurements. However, we can
@@ -273,13 +262,27 @@ below:
 \RC Also, can the conclusion drawn here be extended to the case of
 noisy observations $\sigma > 0$?
 
-\AR I do not expect this conclusion to hold: if noise is
-    present, even a repeated measurement will result in some
-    information gain and an increase in design criterion, since the
-    observation error is effectively reduced by a factor of
-    $1/\sqrt{2}$ for the repeated measurement.
+\AR I do not expect this conclusion to hold: if noise is present, even
+a repeated measurement will result in some information gain and an
+increase in design criterion. The reason is that for that particular
+measurement the signal-to-noise ratio increases: observation error is
+effectively reduced by a factor of $1/\sqrt{2}$ for the repeated
+measurement. I discuss this briefly in the revised manuscript:
 
-
+\begin{quote}
+  Clusterization should not be confused with replication. Replication
+  requires that the experimentalist executes multiple trials under
+  circumstances that are \emph{nominally identical} \cite[Section
+    1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
+  and even necessary aspect of optimal experimental design
+  \cite{fisher1949design, morris2011, schafer2001replication}. Similarly
+  to a design implementing replication, a clustered design reduces the
+  signal-to-noise ratio of the repeated measurements
+  \cite{telford2007brief}. The difference is that a clustered design
+  takes repeated measurements at the expense of other quantities not
+  measured at all.
+\end{quote}
+  
   
 \RC At the end of Section 4 on p.15 it is mentioned that $\tar$ is not
 defined for $\sigma^2= 0$, but in the latter case, could not a
@@ -325,8 +328,6 @@ constraints to the something different (i.e.~$\|R(\cdot;t\|$) but that
 does not change the analysis. I barely mentioned this issue in the
 paper since I think it is confusing and adds little context. See,
 however, a footnote I added which is reproduced below:
-  
-
 
 \begin{quote}
   The alert reader will likely ask how do we reconcile point
@@ -342,7 +343,7 @@ however, a footnote I added which is reproduced below:
 the D-optimal procedure will aim to ignore the third and fourth
 eigenvalue/function was drawn?
 
-\AR I explain this in more detail in the paper:
+\AR I explain this in more detail in the revised manuscript:
 
 
 \begin{quote}
@@ -398,6 +399,7 @@ eigenvalue/function was drawn?
   pigeonhole principle.
 
 \end{quote}
+
 \begin{figure}\label{fig:eigenvectors}
   \centering
   \includegraphics[width=\textwidth]{figs/eigenvectors_dst_scaled.png}

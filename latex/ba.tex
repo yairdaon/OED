@@ -44,7 +44,33 @@
 \end{aug}
 
 \begin{abstract}
-  \input{abstract}
+  Estimation of parameters in physical processes often demands costly
+  measurements, prompting the pursuit of an optimal measurement
+  strategy. Finding such strategy is termed the problem of
+  \emph{optimal experimental design}, abbreviated as optimal
+  design. Remarkably, optimal designs can yield tightly clustered
+  measurement locations, leading researchers to fundamentally revise
+  the design problem just to circumvent this issue. Some authors
+  introduce error correlation among error terms that are initially
+  independent, while others restrict measurement locations to a finite
+  set of locations. While both approaches may prevent clusterization,
+  they also fundamentally alter the optimal design problem.
+
+  In this study, we consider Bayesian D-optimal designs, i.e.~designs
+  that maximize the expected Kullback-Leibler divergence between
+  posterior and prior. We propose an analytically tractable model for
+  D-optimal designs over Hilbert spaces. In this framework, we make
+  several key contributions: \textbf{(a)} We establish that
+  measurement clusterization is a generic trait of D-optimal designs
+  with independent Gaussian measurement errors, and prove that
+  introducing correlations among measurement error terms mitigates
+  clusterization. \textbf{(b)} We characterize D-optimal designs as
+  reducing uncertainty across a subset of prior covariance
+  eigenvectors. Finally, \textbf{(c)} We leverage this
+  characterization to argue that measurement clusterization arises as
+  a consequence of the pigeonhole principle: when more measurements
+  are taken than there are locations where the select eigenvectors are
+  large and others are small --- clusterization occurs.
 \end{abstract}
 
 %% ** Keywords **
@@ -66,13 +92,36 @@
 
 
 \begin{acks}[Acknowledgments]
-  \input{ack}
+  This study is a result of research I started during my PhD studies
+  under the instruction of Prof.~Georg Stadler at the Courant
+  Institute of Mathematical Sciences. I would like to thank him for
+  his great mentorship, attention to details and kindness. I would
+  also like to thank Christian Remling, who helped me find a proof for
+  Lemma \ref{lemma:free} in
+  \href{https://mathoverflow.net/questions/280168/redistribute-diagonal-entries-of-a-matrix/280203#280203c}{Mathoverflow}.
+  Last, but certainly not least, I would like to thank the three
+  referees, associate editor and editor in chief for providing
+  detailed and insightful reviewes that have made this manuscript a
+  whole lot better.
+  %Having worked on this manuscript alone for several years, they have
+  %almost become my coautoh
+
   
-  \input{funding}
+  This research was supported in part by an appointment with the
+  National Science Foundation (NSF) Mathematical Sciences Graduate
+  Internship (MSGI) Program sponsored by the NSF Division of
+  Mathematical Sciences. This program is administered by the Oak Ridge
+  Institute for Science and Education (ORISE) through an interagency
+  agreement between the U.S. Department of Energy (DOE) and NSF. ORISE
+  is managed for DOE by ORAU. All opinions expressed in this paper are
+  the author's and do not necessarily reflect the policies and views
+  of NSF, ORAU/ORISE, or DOE.
+  % This work was also supported by The Raymond and Beverly Sackler
+  % Post-Doctoral Scholarship.
 \end{acks}
 
 \bibliographystyle{ba}
-\bibliography{../../lib.bib}
+\bibliography{/Users/yairdaon/work//lib.bib}
 
 
 \end{document}
