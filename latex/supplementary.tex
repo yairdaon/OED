@@ -2,8 +2,9 @@
 \input{definitions}
 \usepackage{amsthm}
 \usepackage{authblk}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,filecolor=blue,backref=page]{hyperref}
+%% \newtheorem{lemma}{Lemma}
+%% \newtheorem{proposition}{Proposition}
 %% \externaldocument[][nocite]{ms}
 
 \title{Supplementary Material: Measurement Clusterization in D-optimal
@@ -22,17 +23,18 @@
 Below, we give details of the inverse problem of the 1D heat
 equation. Our goal is to infer the initial condition of the
 one-dimensional heat equation with a homogeneous Dirichlet boundary
-condition \ref{eq:heat_equation}, i.e.~ an absorbing boundary. We
-model the prior for the initial condition as $u_0 \sim
-\normal(0,\prcov)$, for $\prcov = (-\Delta)^{-1}$ with a homogeneous
-Dirichlet boundary condition. Recall that by Weyl's law, eigenvalues
-$\lambda_j$ of the Laplace operator increase as $\lambda_j \sim
-j^{d/2}$, where $d = \dim \Omega$ is the dimensionality of the
-domain. In accordance with Weyl's law, \cite[Theorem 3.1]{Stuart10}
-suggests taking priors as "Laplacian-like" operators raised to a power
-smaller than $-\frac{d}{2}$, to maintain regularity of posterior
-realizations.By Weyl's law, eigenvalues of the Laplacian decay like
+condition (eq.~\ref{eq:heat_equation} in the manuscript), i.e.~ an
+absorbing boundary. We model the prior for the initial condition as
+$u_0 \sim \normal(0,\prcov)$, for $\prcov = (-\Delta)^{-1}$ with a
+homogeneous Dirichlet boundary condition.
 
+%% Recall that by Weyl's law, eigenvalues
+%% $\lambda_j$ of the Laplace operator increase as $\lambda_j \sim
+%% j^{d/2}$, where $d = \dim \Omega$ is the dimensionality of the
+%% domain. In accordance with Weyl's law, \cite[Theorem 3.1]{Stuart10}
+%% suggests taking priors as "Laplacian-like" operators raised to a power
+%% smaller than $-\frac{d}{2}$, to maintain regularity of posterior
+%% realizations.
 
 We let the final time $T = 0.03$ and denote $\fwd$ the forward
 operator, so that $u(\cdot, T) = \fwd u_0$. We let $\obs$ a
@@ -953,6 +955,6 @@ Hilbert spaces.
 
 %\bibliographystyle{siamplain}
 \bibliographystyle{amsplain}
-\bibliography{/home/yair/projects/bibtex.bib}
+\bibliography{/Users/yairdaon/work/lib.bib}
 
 \end{document}
