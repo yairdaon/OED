@@ -23,13 +23,9 @@ found to have repeated measurements. The paper does not explain why
 the author thinks repeated measurements (measurement clusterisation)
 is an undesirable property.
 
-\AR\label{rep} I do not view clusterization as an undesired property, I only
-mentioned many authors consider it to be undesirable. I have added a
-paragraph contrasting repetition and replication with clusterization
-and why I believe they may be different:
+\AR\label{rep} I added the following to the Introduction.
 
-
-\begin{quote}
+\begin{quote} %% Replication
   Clusterization should not be confused with replication. Replication
   requires that the experimentalist executes multiple trials under
   circumstances that are \emph{nominally identical} \cite[Section
@@ -41,28 +37,28 @@ and why I believe they may be different:
   the repeated measurements \cite{telford2007brief}. The difference is
   that a clustered design takes repeated measurements at the expense
   of other quantities not measured at all.
-
-  For example, \cite{fisher1949design}, suggested repeating his famous
-  milk and tea experiment in order "to be able to demonstrate the
-  predominance of correct classifications in spite of occasional
-  errors". Unfortunately, in the experiments we consider, replication
-  is impossible. For example, in the MRI problem, we cannot generate
-  an individual nominally identical to the one we wish to scan.
-
-  To further illustrate the difference between replication and
-  clusterization, consider an experiment measuring the effect of
-  rainfall on grass growth \cite{fay2000rainfall}. The experiment
-  involved four rainfall manipulation "treatments" (i.e.~simulating
-  different timing and quantity of rainfall), each replicated three
-  times over a different plot of land. Indeed, it seems reasonable for
-  researchers to replicate the phenomenon they are trying to study. A
-  clustered design in such an experiment would imply the researchers
-  should take a repeated measurement \emph{on the same plot}, at the
-  expense of measuring grass growth in other plots. To conclude our
-  short discussion on replication vs.~clusterization: these are
-  fundamentally different concepts and even though replication is
-  quite intuitive, it is inapplicable to the inverse problems we
-  consider in this manuscript.
+  \newline
+For example, \cite{fisher1949design}, suggested repeating his famous
+milk and tea experiment in order "to be able to demonstrate the
+predominance of correct classifications in spite of occasional
+errors". Unfortunately, in the experiments we consider, replication is
+impossible. For example, in the MRI problem, we cannot generate an
+individual nominally identical to the one we wish to scan.
+\newline
+To further illustrate the difference between replication and
+clusterization, consider an experiment measuring the effect of
+rainfall on grass growth \cite{fay2000rainfall}. The experiment
+involved four rainfall manipulation "treatments" (i.e.~simulating
+different timing and quantity of rainfall), each replicated three
+times over a different plot of land. Indeed, it seems reasonable for
+researchers to replicate the phenomenon they are trying to study. A
+clustered design in such an experiment would imply the researchers
+should take a repeated measurement \emph{on the same plot}, at the
+expense of measuring grass growth in other plots. To conclude our
+short discussion on replication vs.~clusterization: these are
+fundamentally different concepts and even though replication is quite
+intuitive, it is inapplicable to the inverse problems we consider in
+this manuscript.
 \end{quote}
 
 
@@ -81,37 +77,18 @@ seem suboptimal to some.
 
 \RC (if the model is correct, which it won’t be).
 
-\AR I think this is a great point. I believe clusterization may imply
-a model is somehow inadequate:
-
-\begin{quote}
-  When clusterization arises, we believe it should serve as a warning
-  signal to practitioners. In the inverse problem of the 1D heat
-  equation, clusterization occurs primarily because Laplacian
-  eigenvectors do not decay in $\Omega$. Consequently, measuring
-  $u(x_1, T)$ at some point $x_1 \in \Omega$ provides information
-  about $u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively,
-  this should not happen: for small $T$, the heat distribution at
-  $x_1$ should give very little knowledge on the heat distribution at
-  $x_2$. This behavior stems from a well-known property of the heat
-  equation: it allows information to spread instantly across the
-  computational domain \cite{renardy2006PDE}. In reality, heat (and
-  information) propagate at finite speeds. Of course, the known
-  physical barrier for information spread is the speed of light, but
-  we expect heat and information to spread considerably slower. Thus,
-  clusterization may suggest that our physical model itself is at
-  fault.
-  
-  Our choice of prior is perhaps an even greater contributor to
-  clusterization. Our choice of Gaussian prior similarly implies
-  information is shared between distant locations in $\Omega$. Thus,
-  we suggest refraining from choosing Gaussian priors with inverse
-  Laplacian covariance operators. Rather, non-Gaussian priors should
-  be employed instead \cite{hosseini2017, hosseini2019}. So,
-  clusterization may suggest we give more attention to the choice of
-  prior.
+\AR I think this is a great point. My analysis implies one of the
+causes to clusterization is linearization:
+\begin{quote} %% Linearization
+Another potential cause of clusterization is linearization. While in a
+real applications the model is not necessarily linear, some authors
+consider a linearized version of their model when seeking optimal
+designs \cite{fedorov1996, neitzel2019sparse}. Our analysis then shows
+that the linearity of the forward problem is also an important
+ingredient in giving rise to clustered desgins. Therefore, our advice
+to practitioners is to avoid linearization, and find D-optimal designs
+via other methods, e.g.~the sampling method of \cite{ryan2003}.
 \end{quote}
-
 
 
 \RC An example, is a chemical engineering experiment where one wishes
@@ -119,15 +96,11 @@ to learn the relationship between a series of variables and yield of a
 chemical reaction. The experiment will involve specifying the
 variables, and measuring the yield (the observation) after a specified
 period of time. This process is then duplicated with a potentially
-different set of variables.  It is perfectly possible to have repeated
+different set of variables. It is perfectly possible to have repeated
 variables.
 
-\AR I agree that the problem with clustered designs depends on the
-application. However, in the chemical engineering experiment
-mentioned, it is possible that an optimal design will require two
-simultaneous measurements of the same experiment. This is an example
-of a clustered design that seems unintuitive.
-
+\AR I agree, but what you are describing is replication. See my
+comment on replication vs.~clusterization above.
  
 \RC The author needs to make clear that they are considering
 experiments where repeated measurements are impossible. Admittedly,
@@ -136,8 +109,7 @@ given on page 1. However, it needs to be made explicit in the Abstract
 and the first paragraph of the paper.
 
 \AR I do not refrain from considering experiments where repeated
-measurements are possible. I am giving insight on why such designs
-arise, since many authors view repeated measurements as non-intuitive.
+measurements are possible.
 
   
 \RC The paper explains why repeated measurements can be optimal
@@ -146,45 +118,8 @@ link with how repeated measurements are, typically, regarded as
 desirable in classical design of experiments for finite
 dimensions.
 
-\AR Thank you for this suggestion. I believe my previous answer above
-also answers this comment. It is reproduced below:
-
-\begin{quote}
-  Clusterization should not be confused with replication. Replication
-  requires that the experimentalist executes multiple trials under
-  circumstances that are \emph{nominally identical} \cite[Section
-    1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
-  and even necessary aspect of optimal experimental design
-  \cite{fisher1949design, morris2011,
-    schafer2001replication}. Similarly to a design implementing
-  replication, a clustered design reduces the signal-to-noise ratio of
-  the repeated measurements \cite{telford2007brief}. The difference is
-  that a clustered design takes repeated measurements at the expense
-  of other quantities not measured at all.
-
-  For example, \cite{fisher1949design}, suggested repeating his famous
-  milk and tea experiment in order "to be able to demonstrate the
-  predominance of correct classifications in spite of occasional
-  errors". Unfortunately, in the experiments we consider, replication
-  is impossible. For example, in the MRI problem, we cannot generate
-  an individual nominally identical to the one we wish to scan.
-
-  To further illustrate the difference between replication and
-  clusterization, consider an experiment measuring the effect of
-  rainfall on grass growth \cite{fay2000rainfall}. The experiment
-  involved four rainfall manipulation "treatments" (i.e.~simulating
-  different timing and quantity of rainfall), each replicated three
-  times over a different plot of land. Indeed, it seems reasonable for
-  researchers to replicate the phenomenon they are trying to study. A
-  clustered design in such an experiment would imply the researchers
-  should take a repeated measurement \emph{on the same plot}, at the
-  expense of measuring grass growth in other plots. To conclude our
-  short discussion on replication vs.~clusterization: these are
-  fundamentally different concepts and even though replication is
-  quite intuitive, it is inapplicable to the inverse problems we
-  consider in this manuscript.
-\end{quote}
-
+\AR Great point, see my quote on replication vs.~clusterization
+reproduced above.
 
 \RC See for example, the discussion of the relationship between
 Carath\'eodory’s Theorem and the number of support points in \cite[page
@@ -196,7 +131,7 @@ points.
 presented there do not directly apply to the setup I suggest in my
 paper. Thus, I have made some modifications:
 
-\begin{quote}
+\begin{quote} %% Caratheodory
   We can gain further insight to clusterization in our generic model,
   from Carath\'eodory's Theorem and the concentration on the first $k$
   eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
@@ -253,26 +188,6 @@ paper. Thus, I have made some modifications:
   places weight $>1$ on a single measurement vector.
 \end{quote}
 
-%% Firstly, the argument in \cite{pronzatoPazman2013} relies on the
-%% assumption that $\theta$ --- the parameter we seek to infer --- is
-%% $p$-dimensional. However, the setup I suggest is
-%% infinite-dimensional. E.g.~in the generic model I propose, the
-%% parameter is in $\hilo$, which is assumed an infinite-dimensional
-%% Hilbert space. Similarly, the initial condition $u_0$ we try to infer
-%% in the inverse problem of the heat equation is in some function space
-%% over $\Omega=[0,1]$. Even if we discretize $\Omega$ and consider a
-%% finite-dimensional problem, the number of discretization points would
-%% be at least a hundred. So even the bound $m \leq p=100$ suggested in
-%% \cite[Section 5.3.1]{pronzatoPazman2013} is not very meaningful when
-%% we allow only $\approx 6$ measurements. Indeed, discretization points
-%% are cheap and measurements are expensive so the number of
-%% discretization points will always be considerably larger than the
-%% number of allowed measurements. Thus, I do not see how the bound
-%% suggested will be informative. Respectfully I choose not to explore
-%% your suggestion in the manuscript.
-
-%% We can bypass the fact that $p$ tends to be large by recalling that
-%% Theorem \ref{thm:char} implies
 
 \subsection{Context}
 \RC The paper lacks discussion on context. I read the answers to the
@@ -316,7 +231,7 @@ the result seems non-intuitive. I expanded this discussion in the
 revised manuscript. See below and the discussion preceding it in
 Section \ref{subsub:implications} of the revised manuscript. 
 
-\begin{quote}
+\begin{quote}%% Avoid
   Given the above discussion, it is our belief that the methods
   suggested by other authors to avoid clusterization are merely
   overlooking the problem. We do not view clustered designs as
@@ -335,11 +250,23 @@ is accounting for model error: but it is still pragmatic: the data
 acquisition given by equation (1) is not the true data-generating
 process.
 
-\AR I do not support imposing correlations in the paper, I just
-used correlations to show how my framework can be used to rigorously
-prove what is widely accepted. Other referees also understood that the
-paper endorses imposing correlations and I accept that this is my
-error in writing. See text answering previous comment.
+\AR I apologize for this misunderstanding and appreciate the
+comment. I have revised the manuscript to reflect the fact that I do
+not support imposing correlations in the paper. I do argue against
+linearization (see comment on linearization above) and the use of Gaussian priors (see below):
+
+\begin{quote} %% Gaussian
+One potential cause of clusterization is our choice of prior. Gaussian
+priors, coupled with a Gaussian likelihood and a linear forward
+problem give rise to a closed form solution for the posterior via
+conjugacy. As we show in Section \ref{subsec:lemma_sims}, such
+assumptions generically give rise to clusterization. While an
+assumption of a Gaussian likelihood is standard, and rooted in the
+central limit theorem, an assumption of Gaussian prior is merely a
+matter of convenience. Therefore, we advise any practitioner who
+encounters clusterization to replace their Gaussian priors with
+non-Gaussian priors instead \cite{hosseini2017, hosseini2019}.
+\end{quote}
 
 
 \subsection{Minor comments}
@@ -347,32 +274,60 @@ error in writing. See text answering previous comment.
 optimality of the design (e.g. Definition 3) and one for the
 adjoint. Suggest changing the one for optimality.
 
-\AR I changed $\obs^\star$ to $\opt$.
-
-%% \begin{quote}
-%%   \begin{definition}\label{def:d_optimality}
-%%     We say \DIFdelbegin \DIFdel{\( \obs^{\star} \)}\DIFdelend
-%%     \DIFaddbegin \DIFadd{alive}\DIFaddend
-
-%%     \(\opt\) is \emph{D-optimal} if \(\opt =
-%%     \argmax_{\obs} \tar(\obs)\), where entries of \(\obs \in (\hilo^*)^m\)
-%%     are constrained to some allowed set of measurements in \(\hilo^*\).
-%%   \end{definition}
-%% \end{quote}
+\AR I changed the notation for a D-optimal design from $\obs^\star$ to
+$\opt$.
   
 \RC I do not like the use of the term measurements as used in the
 paper. The measurements are the $\data$’s since these are a result of
 measuring a physical quantity. However, the paper refers to the
 quantities that are controlled as the measurements.
 
-\AR I was not able to find a better term to replace "measurements", so
-I stuck to it.
-
+\AR I was not able to find a better term to replace "measurements".
   
 \RC Proof of Proposition 12 uses $\eps$ as part of the regularisation
 trick but this has been used previously for error (e.g. equation (1)).
   
-\AR I changed it to $\nu$. You will not find the revised proof in the
-manuscript since I moved it to the Supplementary.
+\AR I replaced $\eps$ with $\nu$ and moved the entire proof to the
+Supplementary.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% Firstly, the argument in \cite{pronzatoPazman2013} relies on the
+%% assumption that $\theta$ --- the parameter we seek to infer --- is
+%% $p$-dimensional. However, the setup I suggest is
+%% infinite-dimensional. E.g.~in the generic model I propose, the
+%% parameter is in $\hilo$, which is assumed an infinite-dimensional
+%% Hilbert space. Similarly, the initial condition $u_0$ we try to infer
+%% in the inverse problem of the heat equation is in some function space
+%% over $\Omega=[0,1]$. Even if we discretize $\Omega$ and consider a
+%% finite-dimensional problem, the number of discretization points would
+%% be at least a hundred. So even the bound $m \leq p=100$ suggested in
+%% \cite[Section 5.3.1]{pronzatoPazman2013} is not very meaningful when
+%% we allow only $\approx 6$ measurements. Indeed, discretization points
+%% are cheap and measurements are expensive so the number of
+%% discretization points will always be considerably larger than the
+%% number of allowed measurements. Thus, I do not see how the bound
+%% suggested will be informative. Respectfully I choose not to explore
+%% your suggestion in the manuscript.
+
+%% We can bypass the fact that $p$ tends to be large by recalling that
+%% Theorem \ref{thm:char} implies

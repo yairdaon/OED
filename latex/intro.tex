@@ -217,7 +217,7 @@ identical.
 \end{figure}
 
 
-%% REV 1, 2
+%% Replication 1
 Clusterization should not be confused with replication. Replication
 requires that the experimentalist executes multiple trials under
 circumstances that are \emph{nominally identical} \cite[Section
@@ -230,7 +230,7 @@ signal-to-noise ratio of the repeated measurements
 takes repeated measurements at the expense of other quantities not
 measured at all.
 
-%% Rev 2
+%% Replication 2
 For example, \cite{fisher1949design}, suggested repeating his famous
 milk and tea experiment in order "to be able to demonstrate the
 predominance of correct classifications in spite of occasional
@@ -238,7 +238,7 @@ errors". Unfortunately, in the experiments we consider, replication is
 impossible. For example, in the MRI problem, we cannot generate an
 individual nominally identical to the one we wish to scan.
 
-%% Rev 2
+%% Replication 3
 To further illustrate the difference between replication and
 clusterization, consider an experiment measuring the effect of
 rainfall on grass growth \cite{fay2000rainfall}. The experiment
@@ -253,9 +253,6 @@ short discussion on replication vs.~clusterization: these are
 fundamentally different concepts and even though replication is quite
 intuitive, it is inapplicable to the inverse problems we consider in
 this manuscript.
-
-
-
 
 Researchers of inverse problems widely agree that measurement
 clusterization is undesirable \cite{fedorov1996, nyberg2012,
@@ -423,104 +420,54 @@ relevant degrees of freedom in the problem. Thus, clusterization tells
 us that we might be able to reduce the complexity of a computational
 model, e.g.~by dropping discretization points.
 
-%% REV 1
-%% REV 2
-When clusterization arises, we believe it should serve as a warning
-signal to practitioners. In the inverse problem of the 1D heat
-equation, clusterization occurs primarily because Laplacian
-eigenvectors do not decay in $\Omega$. Consequently, measuring $u(x_1,
-T)$ at some point $x_1 \in \Omega$ provides information about
-$u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively, this
-should not happen: for small $T$, the heat distribution at $x_1$
-should give very little knowledge on the heat distribution at
-$x_2$. This behavior stems from a well-known property of the heat
-equation: it allows information to spread instantly across the
-computational domain \cite{renardy2006PDE}. In reality, heat (and
-information) propagate at finite speeds. Of course, the known physical
-barrier for information spread is the speed of light, but we expect
-heat and information to spread considerably slower. Thus,
-clusterization may suggest that our physical model itself is at fault.
+%% Gaussian
+One potential cause of clusterization is our choice of prior. Gaussian
+priors, coupled with a Gaussian likelihood and a linear forward
+problem give rise to a closed form solution for the posterior via
+conjugacy. As we show in Section \ref{subsec:lemma_sims}, such
+assumptions generically give rise to clusterization. While an
+assumption of a Gaussian likelihood is standard, and rooted in the
+central limit theorem, an assumption of Gaussian prior is merely a
+matter of convenience. Therefore, we advise any practitioner who
+encounters clusterization to replace their Gaussian priors with
+non-Gaussian priors instead \cite{hosseini2017, hosseini2019}.
 
-%% We believe that the emergence of clusterization in this context might
-%% be non-physical, arising from the way the inverse problems we consider
-%% are phrased. Clusterization therefore indicates that the underlying
-%% mathematical / Bayesian model is overly permissive and fails to
-%% capture crucial physical constraints of the problem. We suggest that
-%% when clusterization occurs, practitioners should consider alternative
-%% models where information is localized in space and travels at finite
-%% speed in the medium. Such models may not only provide more physically
-%% accurate and meaningful results but may also mitigate the issue of
-%% clusterization.
+%% Linearization
+Another potential cause of clusterization is linearization. While in a
+real applications the model is not necessarily linear, some authors
+consider a linearized version of their model when seeking optimal
+designs \cite{fedorov1996, neitzel2019sparse}. Our analysis then shows
+that the linearity of the forward problem is also an important
+ingredient in giving rise to clustered desgins. Therefore, our advice
+to practitioners is to avoid linearization, and find D-optimal designs
+via other methods, e.g.~the sampling method of \cite{ryan2003}.
 
-%% REV 1
-%% REV 2
-Our choice of prior is perhaps an even greater contributor to
-clusterization. Our choice of Gaussian prior similarly implies
-information is shared between distant locations in $\Omega$. Thus, we
-suggest refraining from choosing Gaussian priors with inverse
-Laplacian covariance operators. Rather, non-Gaussian priors should be
-employed instead \cite{hosseini2017, hosseini2019}. So, clusterization
-may suggest we give more attention to the choice of prior.
-
-%% REV 1
+%% Avoid
 Given the above discussion, it is our belief that the methods
 suggested by other authors to avoid clusterization are merely
 overlooking the problem. We do not view clustered designs as
 inherently bad on their own. Rather, we suggest that if a clustered
-design arises, then a practitioner should revisit their probabilistic
-and physical modeling assumptions. If the practitioner is confident in
-their assumptions, then clustered designs should be avoided only to
-the extent necessitated by the physical measuring apparatus.
+design arises, a practitioner should revisit their modeling
+assumptions --- specifically, their choice of prior and model
+linearization. If the practitioner is confident in their assumptions,
+then clustered designs should be avoided only to the extent
+necessitated by the physical measuring apparatus.
 
-Another For example, \cite{tekentrup2020} provides convergence analysis for
-various designs with differing space filling properties. They showed
-that convergence rate depends on how these designs fill space. We
-expect better convergence rates for D-optimal designs, even though
-D-optimal designs may demonstrate clusterization. The reason is that
-D-optimal designs explore space in a way tailored to the problem
-studied. Consequently, D-optimal designs cluster because they first
-aim to measure what matters most; see the discussion following
-Theorem \ref{thm:char} for details.
+%% Convergence
+Given that D-optimal designs suffer from clusterization, it is natural
+to ask whether D-optimal designs should be pursued at all. Other
+authors have established convergence results for decaying measurement
+error \cite{knapik2011}, space-filling measurements
+\cite{teckentrup2020} and randomly sampled designs
+\cite{nickl2023}. Unfortunately, D-optimal designs --- clustered
+designs in particular --- do not fall into any of these categories.
 
-%% be avoided at all. Nothing in our analysis indicates that we should
-%% expect any pathological behavior when utilizing D-optimal designs. On
-%% the contrary: we show that D-optimal designs (clustered or not) reduce
-%% uncertainty of prior covariance eigenvectors where it is
-%% highest. Thus, in a sense we hope to make precise in a future study,
-%% we expect convergence of for D-optimal designs to be fastest.
-
-
-
-%% practitioners should not try to avoid measurement
-%% clusterization. Rather, practitioners should take repeated
-%% measurements (e.g.~in MRI and borehole tomography), increase apparatus
-%% sensitivity (e.g.~in EIT), or take consecutive measurements (e.g.~in
-%% the 1D heat equation). Overall, we show that measurement
-%% clusterization is a natural and (almost) inevitable part of Bayesian
-%% D-optimal designs (but see disclaimer below).
-
-
-
-
-
-We expect D-optimal designs to judicious exploration of
-design space, as implemented by a D-optimal design to give better
-convergence compared to randomly sampling the design
-space \cite{knapik2011}.
-
-
-
-
-%% Clusterization is a peculiar phenomenon and it is perfectly reasonable
-%% for someone to argue against the D-optimality criterion based on the
-%% fact that it results in clustered designs. We have seen, however that
-%% there is a perfectly reasonable explanation for clusterization. We
-%% have shown that clusterization is an inevitable consequence of having
-%% a problem with some modes where uncertainty decays faster than others.
-
-
-
-
+Luckily, we can expect convergence from D-optimal designs (including
+clustered designs). Convergence holds in the following sense: the
+posterior uncertainty ellipsoid in $\hilo$ will contract to zero along
+every eigenfunction of $\fwd \prcov \fwd^*$. See Section
+\ref{subsub:convergence} for a proof based on Theorem \ref{thm:char}
+--- the main theorem of this manuscript.
 
 
 
@@ -544,10 +491,92 @@ with \(\ttr M = m \in \mathbb{N}\) as \(M = AA^t\), where \(A\in
 The main limitation of this study is that our generic model does not
 correspond to any specific real-life problem. Specifically, in its
 current form, our model does not allow point evaluations. Thus, while
-our model is generic enough to be analytically tractable, some may
+our model is generic enough to be analytically tractable, one may
 argue that our model is too far removed from any real application. To
 these claims I would answer that scientists have a long history of
 studying models that are bare-bones simplifications of real systems,
 e.g.~the Ising model \cite{cipra1987}, the Lorenz system \cite{brin},
 the Lotka-Volterra equations \cite{logan2006}, the Carnot engine
 \cite{kardar2007} and many others.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% When clusterization arises, we believe it should serve as a warning
+%% signal to practitioners. In the inverse problem of the 1D heat
+%% equation, clusterization occurs primarily because Laplacian
+%% eigenvectors do not decay in $\Omega$. Consequently, measuring $u(x_1,
+%% T)$ at some point $x_1 \in \Omega$ provides information about
+%% $u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively, this
+%% should not happen: for small $T$, the heat distribution at $x_1$
+%% should give very little knowledge on the heat distribution at
+%% $x_2$. This behavior stems from a well-known property of the heat
+%% equation: it allows information to spread instantly across the
+%% computational domain \cite{renardy2006PDE}. In reality, heat (and
+%% information) propagate at finite speeds. Of course, the known physical
+%% barrier for information spread is the speed of light, but we expect
+%% heat and information to spread considerably slower. Thus,
+%% clusterization may suggest that our physical model itself is at fault.
+
+%% We believe that the emergence of clusterization in this context might
+%% be non-physical, arising from the way the inverse problems we consider
+%% are phrased. Clusterization therefore indicates that the underlying
+%% mathematical / Bayesian model is overly permissive and fails to
+%% capture crucial physical constraints of the problem. We suggest that
+%% when clusterization occurs, practitioners should consider alternative
+%% models where information is localized in space and travels at finite
+%% speed in the medium. Such models may not only provide more physically
+%% accurate and meaningful results but may also mitigate the issue of
+%% clusterization.
+
+
+
+%% be avoided at all. Nothing in our analysis indicates that we should
+%% expect any pathological behavior when utilizing D-optimal designs. On
+%% the contrary: we show that D-optimal designs (clustered or not) reduce
+%% uncertainty of prior covariance eigenvectors where it is
+%% highest. Thus, in a sense we hope to make precise in a future study,
+%% we expect convergence of for D-optimal designs to be fastest.
+
+
+
+%% practitioners should not try to avoid measurement
+%% clusterization. Rather, practitioners should take repeated
+%% measurements (e.g.~in MRI and borehole tomography), increase apparatus
+%% sensitivity (e.g.~in EIT), or take consecutive measurements (e.g.~in
+%% the 1D heat equation). Overall, we show that measurement
+%% clusterization is a natural and (almost) inevitable part of Bayesian
+%% D-optimal designs (but see disclaimer below).
+

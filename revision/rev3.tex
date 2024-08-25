@@ -38,49 +38,48 @@ abovementioned numerical experiments to the main article. See Section
 \ref{subsec:lemma_sims} reproduced below:
 
 
-\begin{quote}
+\begin{quote} %% Simulate
   In the proof of Theorem \ref{thm:char} we utilize Lemma
-\ref{lemma:free} to construct D-optimal designs. We implement this
-construction with the goal of testing numerically how prevalent are
-clustered designs. To this end, we would like to generate random prior
-eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
-$\opt^*\opt$ and then utilize the construction of
-Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
-
-
-To simplify things, we directly sample rank $\opt^*\opt$. We iterate
-over the number of measurements $m \in \{4,\dots, 24\}$, and for every
-$m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
-m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
-times:
-\begin{enumerate}
-\item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
-  entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
-  $\ttr D = m$. 
-\item Conjugate $D$ by a random orthogonal matrix to form a positive
-  semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
-  represents $\opt^*\opt$.
-\item Apply the construction of Lemma \ref{lemma:free} to calculate
-  $A$ such that $AA^t = M$, where $A$ has unit norm columns. I.e.~find
-  the optimal design $\opt$.
-\item Since $A$ corresponds to $\opt$, its columns correspond to
-  measurement vectors. We call $A$ "clustered" if $A$ has two or more
-  identical columns (up to some numerical precision threshold).
-\end{enumerate}
-We then calculate the fraction of clustered designs of the simulations
-we ran, for each pair $m,k$. Clusterization occurred at high rates
-($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
-these simulations, clusterization is a generic property. However, when
-$m-k = 1$, clusterization does not occur. We do not why this is so and
-further investigation into this phenomenon is out of scope for the
-current study.
-
-Full results are located in the \texttt{simulations.csv} file within
-the accompanying \href{https://github.com/yairdaon/OED}{repository}.
-Code implementing the experiments described above is located in module
-\texttt{zeros.py} of said repository. Runtime should be less than 30
-minutes on any reasonably modern laptop (it took 12 minutes on the
-author's laptop).
+  \ref{lemma:free} to construct D-optimal designs. We implement this
+  construction with the goal of testing numerically how prevalent are
+  clustered designs. To this end, we would like to generate random
+  prior eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
+  $\opt^*\opt$ and then utilize the construction of
+  Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
+  \newline
+  To simplify things, we directly sample rank $\opt^*\opt$. We iterate
+  over the number of measurements $m \in \{4,\dots, 24\}$, and for
+  every $m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
+  m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
+  times:
+  \begin{enumerate}
+  \item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
+    entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
+    $\ttr D = m$.
+  \item Conjugate $D$ by a random orthogonal matrix to form a positive
+    semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
+    represents $\opt^*\opt$.
+  \item Apply the construction of Lemma \ref{lemma:free} to calculate
+    $A$ such that $AA^t = M$, where $A$ has unit norm
+    columns. I.e.~find the optimal design $\opt$.
+  \item Since $A$ corresponds to $\opt$, its columns correspond to
+    measurement vectors. We call $A$ "clustered" if $A$ has two or
+    more identical columns (up to some numerical precision threshold).
+  \end{enumerate}
+  We then calculate the fraction of clustered designs of the
+  simulations we ran, for each pair $m,k$. Clusterization occurred at
+  high rates ($>99.9\%$) whenever $m-k > 1$; see
+  Fig.~\ref{fig:sim_AAt}. Hence, in these simulations, clusterization
+  is a generic property. However, when $m-k = 1$, clusterization does
+  not occur. We do not why this is so and further investigation into
+  this phenomenon is out of scope for the current study.
+  \newline
+  Full results are located in the \texttt{simulations.csv} file within
+  the accompanying \href{https://github.com/yairdaon/OED}{repository}.
+  Code implementing the experiments described above is located in
+  module \texttt{zeros.py} of said repository. Runtime should be less
+  than 30 minutes on any reasonably modern laptop (it took 12 minutes
+  on the author's laptop).
 \end{quote}
 
 \begin{figure}
@@ -116,15 +115,58 @@ by the present paper. I think a discussion on this would be
 illuminating for the reader and help draw a connection to the broader
 statistical inverse problems literature.
 
-\AR I added a discussion on this subject. I do not argue against the
-use of clustered designs imply that clustered designs, but I believe
-that when they arise it should be a warning signal to a practitioner
-regarding the validity of their physical model and Bayesian
-assumptions:
-
-\begin{quote}
-  DO THIS FML!!!!!!
+\AR I added a discussion on this subject. In the manuscript this
+discussion is broken in two since the second part relies on Theorem
+\ref{thm:char}. Thus, the first part is in the Introduction and the
+second part follows the statement and proof of the abovementioned
+theorem. I believe the level of discussion is adequate and view a
+deeper analysis of convergence rates as out of scope for the current
+study.
+\begin{quote}%%Convergence
+  Given that D-optimal designs suffer from clusterization, it is
+  natural to ask whether D-optimal designs should be pursued at
+  all. Other authors have established convergence results for decaying
+  measurement error \cite{knapik2011}, space-filling measurements
+  \cite{teckentrup2020} and randomly sampled designs
+  \cite{nickl2023}. Unfortunately, D-optimal designs --- clustered
+  designs in particular --- do not fall into any of these categories.
+  \newline
+  Luckily, we can expect convergence from D-optimal designs (including
+  clustered designs). Convergence holds in the following sense: the
+  posterior uncertainty ellipsoid in $\hilo$ will contract to zero
+  along every eigenfunction of $\fwd \prcov \fwd^*$. See Section
+  \ref{subsub:convergence} for a proof based on Theorem \ref{thm:char}
+  --- the main theorem of this manuscript.
+  \newline
+  Below we fulfill our promise from Section \ref{subsub:implications}
+  and prove that the posterior uncertainty ellipsoid in $\hilo$ will
+  contract to zero along every eigenfunction of $\fwd \prcov
+  \fwd^*$. In our proof we ignore potential problems with conducting
+  inference on function spaces which are not unique to D-optimal
+  designs (see e.g.~\ref{owhadi2015} for more details).
+  \newline
+  First, let $\opt_m$ a D-optimal design utilizing $m$
+  measurements. Then, an immediate consequence of Theorem
+  \ref{thm:char} is that $\rank \opt_m^*\opt_m = k \to \infty$ as the
+  number of measurements $m \to \infty$. Moreover, part (5) of Theorem
+  \ref{thm:char} ensures that the eigenvalues of the posterior
+  covariance equal
+  \begin{equation*}
+    \theta^{(k)}_i = \left ( \frac{\sum_{j=1}^k \lambda_j^{-1} +
+      \sigma^{-2}m}{k} \right )^{-1}, \text{ for $i\leq k$},
+  \end{equation*}
+  where we explicitly express the dependence of $k$ in the
+  superscript. Now note that $\theta^{(k)}_i \leq \lambda_i$ for
+  $i\leq k$. Specifically, for fixed $k$, we get $\theta^{(k)}_i \leq
+  \lambda_k$ for all $i\leq k$. Since $\lim_{k\to \infty} \lambda_k=
+  0$, we conclude that for all $i$, $\lim_{k\to\infty} \theta^{(k)}_i
+  = 0$. Since $m\to \infty$ implies $k\to \infty$ we have
+  $\lim_{m\to\infty} \theta^{(k)}_i = 0$ for all $i$. Therefore,
+  posterior uncertainty decays to zero for all eigenvectors.
 \end{quote}
+
+
+
 
 \RC Figure 1: It is hard to discern whether the measurements locations
 are perfectly overlapping or just very closely placed. Perhaps using
@@ -136,19 +178,16 @@ numerically, but they are identical to five decimal digits. Since I
 find these points via optimization over point location in
 $\Omega=[0,1]$ I view a numerical error $<10^{-5}$ as reasonable.
 
-
 \RC Experiment with the 1D heat equation: the experiment showcases
 some interesting phenomena, but also raises many questions. For
 instance: I would expect the dimensionality of the working domain
 (here the unit interval $[0, 1]$) to play a role, since larger
 dimension allow for higher freedom in placing the design points.
-
-\AR Say something??? FML
-
-\RC Further, a dimensionality effect should also arise directly from
-Theorem 1 via the prior covariance eigenvalues: in the experiment the
-prior covariance operator is set to be equal to the inverse Laplace
-operator $(-\Delta)^{-1}$. In d-dimensional domains, its eigenvalues
+Further, a dimensionality effect should also arise directly from
+Theorem 1\footnote{Now denoted Theorem \ref{thm:char}.} via the prior
+covariance eigenvalues: in the experiment the prior covariance
+operator is set to be equal to the inverse Laplace operator
+$(-\Delta)^{-1}$. In d-dimensional domains, its eigenvalues
 $\lambda_j$ are known to follow Weyl’s asymptotics, growing as
 $j^{2/d}$, which should then impact the index after which the
 eigenvalues are ‘thresholded’ by the procedure.
@@ -160,10 +199,11 @@ dimensions we would have to take as prior \(u_0 \sim
 d/2\) in order to maintain regularity of prior realizations. I decided
 not to include a discussion on the choice of priors in higher spatial
 dimensions because (1) it would require too much exposition and make
-me digress from the main points I wanted to convey and (2) I view
-implementing experiments in higher dimensions as out of the scope of
-the current study.
-
+me digress from the main points I wanted to convey and (2) due to
+technical difficulties in installing packages for inverse problems
+\cite{attia2023pyoed, VillaPetraGhattas16} I had to implement the
+inverse problem of the 1D heat equation from scratch, so I decided to
+leave out experiments in higher dimensions.
 
   
 \RC Also, it should be relatively easy here to also study empirically
@@ -188,7 +228,7 @@ Experiments:
 \end{quote}
 \begin{figure}
   \centering
-  \includegraphics[height=0.5\textwidth]{figs/dst_modelError4.png}
+  \includegraphics[height=0.5\textwidth]{../latex/figs/dst_modelError4.png}
   \caption{Model correlation mitigates clusterization. We add a
     model correlation term to the error terms in the 1D heat
     equation inverse problem. Lo and behold, measurements are not
@@ -205,11 +245,12 @@ would consider cutting it from Section 1. The paragraphs in p.4 and 5
 already do a good job presenting the results, and the repetition of
 the formal statement does not seem necessary here.
 
-\AR I removed the statement of Theorem 1 from the introduction.
+\AR I removed the statement of Theorem 1 from the introduction. It is
+Theorem \ref{thm:char} now.
 
 
 \RC Denoting the optimal design in Theorem 1 by simply $\obs$ is
-somewhat confusing, cf. the equation in the second item. Perhaps a
+somewhat confusing, cf.~the equation in the second item. Perhaps a
 separate notation such as $\bar{\obs}$ would help readability.
 
 \AR Thank you for the comment, I completely agree. Optimal designs are
@@ -249,14 +290,14 @@ criterion?
 view them as pathological. I added a short discussion reproduced
 below:
 
-\begin{quote}
-  It is worth noting that by the nonnegativity of the KL divergence,
-  $\tar$ cannot decrease upon adding measurements. However, we can
-  construct examples where the posterior does not change upon taking a
-  new measurement e.g.~if the prior variance vanishes on some
-  eigenvector and a measurement is taken on said eigenvector. We do
-  not expect a measurement to generate no information gain whatsoever
-  in any realistic scenario, and ignore such pathologies.
+\begin{quote}%% Pathologies
+It is worth noting that by the nonnegativity of the KL divergence,
+$\tar$ cannot decrease upon adding measurements. However, we can
+construct examples where the posterior does not change upon taking a
+new measurement e.g.~if the prior variance vanishes on some
+eigenvector and a measurement is taken on said eigenvector. We do not
+expect a measurement to generate no information gain whatsoever in any
+realistic scenario, and ignore such pathologies.
 \end{quote}
 
 \RC Also, can the conclusion drawn here be extended to the case of
@@ -268,19 +309,19 @@ increase in design criterion. The reason is that for that particular
 measurement the signal-to-noise ratio increases: observation error is
 effectively reduced by a factor of $1/\sqrt{2}$ for the repeated
 measurement. I discuss this briefly in the revised manuscript:
-
-\begin{quote}
-  Clusterization should not be confused with replication. Replication
-  requires that the experimentalist executes multiple trials under
-  circumstances that are \emph{nominally identical} \cite[Section
-    1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
-  and even necessary aspect of optimal experimental design
-  \cite{fisher1949design, morris2011, schafer2001replication}. Similarly
-  to a design implementing replication, a clustered design reduces the
-  signal-to-noise ratio of the repeated measurements
-  \cite{telford2007brief}. The difference is that a clustered design
-  takes repeated measurements at the expense of other quantities not
-  measured at all.
+ 
+\begin{quote} %% Replication
+Clusterization should not be confused with replication. Replication
+requires that the experimentalist executes multiple trials under
+circumstances that are \emph{nominally identical} \cite[Section
+  1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
+and even necessary aspect of optimal experimental design
+\cite{fisher1949design, morris2011, schafer2001replication}. Similarly
+to a design implementing replication, a clustered design reduces the
+signal-to-noise ratio of the repeated measurements
+\cite{telford2007brief}. The difference is that a clustered design
+takes repeated measurements at the expense of other quantities not
+measured at all.
 \end{quote}
   
   
@@ -310,10 +351,9 @@ operator as a prior \cite{rue2011}. So a study of this example (with
 and without correlated errors) is already included in the paper. I am
 afraid implementing another inverse problem is out of scope for the
 present paper since I was not able to install common packages for
-inverse problems \cite{attia2023pyoed, VillaPetraGhattas16,
-  VillaPetraGhattas18, VillaPetraGhattas21} on my machine.
+inverse problems \cite{attia2023pyoed, VillaPetraGhattas16} on my
+machine.
   
-
 \RC For these it is still not clear how the conclusion from Theorem 1
 translates into the Figure 1, also because I am unsure about the
 applicability of the result to point evaluations.
@@ -321,15 +361,16 @@ applicability of the result to point evaluations.
 \AR Indeed, point evaluations $\delta_x$ are not in any function space
 I consider in the paper since my analysis is limited to Hilbert
 spaces. Point evaluations can be approximated well in
-e.g.~$L^2(\Omega)$ so in my opinion this is not a deal breaker. The
-only caveat is that upon approximating point evaluations e.g.~by
-$R(x;t) = t\mathbb{1}_{-t/2, t/2}(x)$ we will need to change the norm
-constraints to the something different (i.e.~$\|R(\cdot;t\|$) but that
-does not change the analysis. I barely mentioned this issue in the
-paper since I think it is confusing and adds little context. See,
-however, a footnote I added which is reproduced below:
+e.g.~$L^2(\Omega)$ so in my opinion this is not a deal breaker. For
+example, we can replace point evaluations by $R(x;t) =
+t\mathbb{1}_{-1/2t, 1/2t}(x)$, where $\mathbb{1}$ is an indicator
+function. We will then need to change the norm constraints on
+measurement vectors from unit to $\|R(\cdot;t\|^2 = \int R^2(x;t)dx =
+t$ norm but that does not change the analysis as long as $t$ is
+fixed. I barely mentioned this issue in the paper since I think it is
+confusing and adds little context. See a footnote I added:
 
-\begin{quote}
+\begin{quote} %% Footnote
   The alert reader will likely ask how do we reconcile point
   measurements $\delta_x$ as suggested by the formulation of the 1D
   heat equation with working in Hilbert spaces. We don't. We follow
@@ -349,8 +390,11 @@ eigenvalue/function was drawn?
 \begin{quote}
   Building on Theorem \ref{thm:char}, we can now give a compelling
   explanation to the measurement clusterization we observed for the
-  inverse problem of the heat equation (Fig.~\ref{fig:eigenvectors}).
-    
+  inverse problem of the heat equation, see Section
+  \ref{subsub:clusterization1} below. We also suggest a generic
+  explanation for clusterization, see Section
+  \ref{subsub:clusterization2}.
+  \newline
   Consider $\fwd$ and $\prcov$ from \emph{the inverse problem of the
   heat equation}. As before, we denote the eigenvalues of
   $\fwd\prcov\fwd^*$ by $\lambda_j$. We input these eigenvalues into
@@ -360,7 +404,7 @@ eigenvalue/function was drawn?
   for the first $k$ eigenvectors. So, a D-optimal design arising from
   our \emph{generic model} completely avoids measuring eigenvectors
   $k+1$ and above.
-
+  \newline
   Of course, in a real life problem --- such as the inverse problem of
   the 1D heat equation --- it is likely impossible to find measurement
   locations for which all eigenvectors $k+1$ and above are
@@ -369,7 +413,7 @@ eigenvalue/function was drawn?
   1D heat equation in eq.\eqref{eq:decay}), a D-optimal design will
   try to balance measuring a small number (i.e.~$k$) of the leading
   eigenvectors.
-
+  \newline
   The abovementioned balance is explored in
   Fig.~\ref{fig:eigenvectors}. We allow $m=4$ measurements in $\Omega
   = [0,1]$ and observe that D-optimal measurement locations are
@@ -384,7 +428,7 @@ eigenvalue/function was drawn?
   eigenvectors. For example, a measurement at $x=0.5$ would have
   ignored the second eigenvector altogether, since the second
   eigenvector is zero at $x=0.5$.
-
+  \newline
   Now we can understand measurement clusterization for the inverse
   problem of the heat equation. A D-optimal design attempts to measure
   the first $k$ eigenvectors of $\fwd \prcov \fwd^*$. But there may be
@@ -397,12 +441,11 @@ eigenvalue/function was drawn?
   a good compromise between the first and second scaled
   eigenvectors. Thus, clusterization arises as a consequence of the
   pigeonhole principle.
-
 \end{quote}
 
 \begin{figure}\label{fig:eigenvectors}
   \centering
-  \includegraphics[width=\textwidth]{figs/eigenvectors_dst_scaled.png}
+  \includegraphics[width=\textwidth]{../latex/figs/eigenvectors_dst_scaled.png}
   \caption{D-optimal measurement locations ($m=4$ measurements) and
     weighted eigenvectors for finding the initial condition of the 1D
     heat equation. Measurement locations and weighted eigenvectors are

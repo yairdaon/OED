@@ -326,8 +326,7 @@ Fig.~\ref{fig:optimal_vs_not} for an illustration.
 %%     \label{fig:cylinder}
 %% \end{figure}
 
-
-
+%% Why
 \subsection{Answer to Question \ref{q:why}}\label{subsec:why}
 Building on Theorem \ref{thm:char}, we can now give a compelling
 explanation to the measurement clusterization we observed for the
@@ -456,3 +455,31 @@ If $m > \frac{k(k+1)}{2} + 1$, then $\alpha_i > 1$ for some $1\leq i
 \leq I$.  Thus, we can view $\opt$ as a clustered design, since it
 places weight $>1$ on a single measurement vector.
 
+
+\subsubsection{Convergence}\label{subsub:convergence}
+Below we fulfill our promise from Section \ref{subsub:implications}
+and prove that the posterior uncertainty ellipsoid in $\hilo$ will
+contract to zero along every eigenfunction of $\fwd \prcov \fwd^*$. In
+our proof we ignore potential problems with conducting inference on
+function spaces which are not unique to D-optimal designs (see
+e.g.~\ref{owhadi2015} for more details).
+
+
+First, let $\opt_m$ a D-optimal design utilizing $m$
+measurements. Then, an immediate consequence of Theorem \ref{thm:char}
+is that $\rank \opt_m^*\opt_m = k \to \infty$ as the number of
+measurements $m \to \infty$. Moreover, part (5) of Theorem
+\ref{thm:char} ensures that the eigenvalues of the posterior
+covariance equal
+\begin{equation*}
+  \theta^{(k)}_i = \left ( \frac{\sum_{j=1}^k \lambda_j^{-1} +
+    \sigma^{-2}m}{k} \right )^{-1}, \text{ for $i\leq k$},
+\end{equation*}
+where we explicitly express the dependence of $k$ in the
+superscript. Now note that $\theta^{(k)}_i \leq \lambda_i$ for $i\leq
+k$. Specifically, for fixed $k$, we get $\theta^{(k)}_i \leq \lambda_k$
+for all $i\leq k$. Since $\lim_{k\to \infty} \lambda_k= 0$, we
+conclude that for all $i$, $\lim_{k\to\infty} \theta^{(k)}_i =
+0$. Since $m\to \infty$ implies $k\to \infty$ we have
+$\lim_{m\to\infty} \theta^{(k)}_i = 0$ for all $i$. Therefore,
+posterior uncertainty decays to zero for all eigenvectors.
