@@ -29,93 +29,113 @@
 \hrule
 
 % Legend
-\hfill {\bfseries RC:} \textbf{\textit{Reviewer Comment}},\(\quad\) AR: \emph{Author Response}, \(\quad\square\) Manuscript text
+\hfill {\bfseries RC:} \textbf{\textit{Referee Comment}},\(\quad\) AR: \emph{Author Response}, \(\quad\square\) Manuscript text
 
 I appreciate the many thoughtful insightful comments by all of
 you. These comments have helped me considerably improve the exposition
 of my paper and added new insights as well. I sincerely appreciate the
-option to revise and resubmit. Please see below my answers to the
-comments made by editor in chief (Section \ref{eic}), associate editor
-(Section \ref{ae}) and three referees (Sections \ref{ref1}, \ref{ref2}
-and \ref{ref3}).
+option to revise and resubmit this manuscript. Please see below my
+answers to the comments made by the editor in chief (Section
+\ref{eic}), associate editor (Section \ref{ae}) and three referees
+(Sections \ref{ref1}, \ref{ref2} and \ref{ref3}).
 
 
 
-%% \section{Editor in Chief}\label{eic}
-%% \RC Personally I like the paper, but it represents a somehow unusual
-%% submission for Bayesian Analysis, and I am worried about it being of
-%% sufficient general interest for the broad readership of the
-%% journal. Still, in agreement with the AE, we decided to give the
-%% author the possibility to revise the paper. However, I must stress
-%% that there is no guarantee of a successful outcome, which will solely
-%% depend on the quality of the revision. In particular:
+\section{Editor in Chief}\label{eic}
+\RC Personally I like the paper, but it represents a somehow unusual
+submission for Bayesian Analysis, and I am worried about it being of
+sufficient general interest for the broad readership of the
+journal. Still, in agreement with the AE, we decided to give the
+author the possibility to revise the paper. However, I must stress
+that there is no guarantee of a successful outcome, which will solely
+depend on the quality of the revision. In particular:
 
-%% \RC the Introduction is to be made accessible to the whole BA
-%%     readership;
+\RC the Introduction is to be made accessible to the whole BA
+    readership;
     
-%% \AR I have considerably extended the introduction.
+\AR I have considerably extended the introduction. See revised
+manuscript, diff file and detailed answers to referees' comments
+below.
    
     
-%% \RC the motivation and the practical statistical implications are to
-%% be developed and discussed;
+\RC the motivation and the practical statistical implications are to
+be developed and discussed;
 
-%% \AR I added a section on the implications:
-
-%% %\begin{quote}
-%%   %\input{implications}
-%% %\end{quote}
+\AR I added a section on the implications. The main takeaways are: (1)
+avoid linearization and Gaussian priors, and (2) clusterization can
+inform you of the number of relevant d.o.f in the problem.
    
     
-%% \RC the contribution has to be better contextualized with respect to
-%% the literature in both inverse problems and D-optimal designs;
+\RC the contribution has to be better contextualized with respect to
+the literature in both inverse problems and D-optimal designs;
 
+\AR I added discussion on replication, contrasting it with
+clusterization. I added convergence proof for D-optimal designs
+(albeit without explicit rate) per Referee 2's request.
     
-%% \RC numerical evidence and code, mentioned in the paper but actually
-%% not provided, need to be made available;
+\RC numerical evidence and code, mentioned in the paper but actually
+not provided, need to be made available;
     
-%% \AR I added a section describing numerical experiments and their
-%% results. I also added documentation to the accompanying
-%% \href{https://github.com/yairdaon/OED}{repository} and made sure all
-%% scripts there run.
+\AR I added a section describing numerical experiments and their
+results. I also added documentation to the accompanying
+\href{https://github.com/yairdaon/OED}{repository} and made sure all
+scripts there run.
 
-%% \RC the mathematical derivations have to be watertight and some
-%% clarifications are needed in this respect (see Report of Referee 3).
+\RC the mathematical derivations have to be watertight and some
+clarifications are needed in this respect (see Report of Referee 3).
   
-%% \AR I am not sure which specific comment of Reviewer 3 this refers to,
-%% please see my answers to Reviewer 3 below.
+\AR I am not sure which specific comment of Referee 3 this refers to,
+please see my answers to Referee 3 below.
    
 
-%% \section{Associate Editor}\label{ae}
-%% \RC The three referees found merits and interest in your work, but also
-%% pointed out several major issues to be addressed. Of particular
-%% concern to me, the paper's exposition jumps too quickly into the
-%% formulation / maths without giving a proper intuition and
-%% context. This makes the paper less accessible to readers who aren't
-%% already quite familiar with inverse problems (which are introduced
-%% with very little preamble, and it's not even immediately explicit what
-%% are the parameters being learned) and optimal experimental design.
+\section{Associate Editor}\label{ae}
+\RC The three referees found merits and interest in your work, but also
+pointed out several major issues to be addressed. Of particular
+concern to me, the paper's exposition jumps too quickly into the
+formulation / maths without giving a proper intuition and
+context. This makes the paper less accessible to readers who aren't
+already quite familiar with inverse problems (which are introduced
+with very little preamble, and it's not even immediately explicit what
+are the parameters being learned) and optimal experimental design.
 
-%% \AR I have added considerably to the introduction. See revised
-%% manuscript and diff file.
-
-
-%% \RC A referee makes valid points as to whether clusterization of
-%% measurements is a problem in general, when in fact in can be an
-%% appealing feature in some settings, and another referee asks whether
-%% D-optimal designs should be abandoned altogether. The exposition
-%% needs to discuss these high-level issues, and introduce the related
-%% literature and results appropriately, to give the work proper
-%% context.
+\AR I have added considerably to the introduction. I hope you will
+find the transfer to the maths smoother now.
 
 
+\RC A referee makes valid points as to whether clusterization of
+measurements is a problem in general, when in fact in can be an
+appealing feature in some settings,
 
-%% \RC Altogether, I think that your work has the potential to make a
-%% good contribution to Bayesian analysis, but as it currently stands
-%% significant work is needed.
+\AR I added a discussion contrasting replication vs.~clusterization.
+
+\RC and another referee asks whether D-optimal designs should be
+abandoned altogether.
+
+\AR I added comments on my suggestions to practitioners who encounter
+clusterization: avoid Gaussian priors and linearization, separate
+observations only to the extent required by the physical measurement
+apparatus.
+
+
+\RC The exposition needs to discuss these high-level
+issues, and introduce the related literature and results
+appropriately, to give the work proper context.
+
+\AR I also added a discussion on convergence per Referee 2's request
+contrasting D-optimal designs with other convergence results.
+
+\RC Altogether, I think that your work has the potential to make a
+good contribution to Bayesian analysis, but as it currently stands
+significant work is needed.
+
+\AR Again, I appreciate the time and effort invested by the referees
+and editorial team. Thanks for the opportunity to revise and improve this manuscript.
 
 
 \input{rev1}
+
 \input{rev2}
+
 \input{rev3}
 
 \bibliographystyle{apalike}
