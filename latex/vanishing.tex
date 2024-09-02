@@ -315,8 +315,8 @@ we seek a D-optimal design, we distribute the blue liquid by
 repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
 such a procedure is that the precision for the first $k$ eigenvectors
-is the average of the total precision $\sum_{j=1}^k \lambda_j^{-1} +
-\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and
+is the average of their total aggregated precision $\sum_{j=1}^k
+\lambda_j^{-1} + \sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and
 Fig.~\ref{fig:optimal_vs_not} for an illustration.
 %% \begin{figure}%{r}{0.25\textwidth} 
 %%     \centering
@@ -332,9 +332,9 @@ Building on Theorem \ref{thm:char}, we can now give a compelling
 explanation to the measurement clusterization we observed for the
 inverse problem of the heat equation, see Section
 \ref{subsub:clusterization1} below. We also suggest a generic
-explanation for clusterization, see Section \ref{subsub:clusterization2}.
+explanation for clusterization, see Section \ref{subsub:cara}.
 
-\subsubsection{Clusterization in the heat equation}
+\subsubsection{Clusterization in the heat equation}\label{subsub:clusterization1}
 Consider $\fwd$ and $\prcov$ from \emph{the inverse problem of the
 heat equation}. As before, we denote the eigenvalues of
 $\fwd\prcov\fwd^*$ by $\lambda_j$. We input these eigenvalues into our
@@ -346,13 +346,12 @@ first $k$ eigenvectors. So, a D-optimal design arising from our
 and above.
 
 Of course, in a real life problem --- such as the inverse problem of
-the 1D heat equation --- it is likely impossible to find measurement
-locations for which all eigenvectors $k+1$ and above are
-zero. However, if the eigenvalues of $\fwd\prcov\fwd^*$ decay quickly
-(recall the square-exponential decay for eigenvalues of the 1D heat
-equation in eq.\eqref{eq:decay}), a D-optimal design will try to
-balance measuring a small number (i.e.~$k$) of the leading
-eigenvectors.
+the 1D heat equation --- it is likely impossible to find measurements
+for which all eigenvectors $k+1$ and above are zero. However, if the
+eigenvalues of $\fwd\prcov\fwd^*$ decay quickly (recall the
+square-exponential decay for eigenvalues of the 1D heat equation in
+eq.\eqref{eq:decay}), a D-optimal design will try to balance measuring
+a small number (i.e.~$k$) of the leading eigenvectors.
 
 The abovementioned balance is explored in
 Fig.~\ref{fig:eigenvectors}. We allow $m=4$ measurements in $\Omega =
@@ -369,16 +368,17 @@ $x=0.5$ would have ignored the second eigenvector altogether, since
 the second eigenvector is zero at $x=0.5$.
 
 Now we can understand measurement clusterization for the inverse
-problem of the heat equation. A D-optimal design attempts to measure
-the first $k$ eigenvectors of $\fwd \prcov \fwd^*$. But there may be
-(spatial) limitations on where these $k$ eigenvectors have large
-amplitude. For the inverse problem of the heat equation there are two
-spatial locations that present a good compromise between the
+problem of the 1D heat equation. A D-optimal design attempts to
+measure the first $k$ eigenvectors of $\fwd \prcov \fwd^*$. But there
+may be (spatial) limitations on where these $k$ eigenvectors have
+large amplitude. For the inverse problem of the heat equation there
+are two spatial locations that present a good compromise between the
 amplitudes of the first and second eigenvectors, namely $x_1$ and
 $x_2$ --- see Fig.~\ref{fig:eigenvectors}. We have $m=4$ measurements
 at our disposal but only two spatial locations that are a good
-compromise between the first and second scaled eigenvectors. Thus,
-clusterization arises as a consequence of the pigeonhole principle.
+compromise between the amplitudes of the first and second scaled
+eigenvectors. Thus, clusterization arises as a consequence of the
+pigeonhole principle.
 
 \begin{figure}\label{fig:eigenvectors}
     \centering
@@ -389,7 +389,7 @@ clusterization arises as a consequence of the pigeonhole principle.
       eigenvectors are plotted over the computational domain $\Omega =
       [0, 1]$ (x-axis). Measurement clusterization occurs
       approximately at $0.31$ and $0.69$. These two locations are a
-      compromise between the magnitudes of the first and second
+      compromise between the amplitudes of the first and second
       eigenvectors, which are the eigenvectors that a D-optimal design
       aims to measure. Allocating $m=4$ measurements into two
       locations results in clusterization, according to the pigeonhole
@@ -399,13 +399,12 @@ clusterization arises as a consequence of the pigeonhole principle.
 
 
 
-\subsubsection{Clusterization in our generic model}%\label{subsub:cara}
+\subsubsection{Clusterization in our generic model}\label{subsub:cara}
 We can gain further insight to clusterization in our generic model,
 from Carath\'eodory's Theorem and the concentration on the first $k$
 eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
-adapting arguments presented in \cite[Chapter
-  3]{silveyOptimalDesign1980} and \cite[Section
-  5.2.3]{pronzatoPazman2013}.
+adapting arguments presented in \cite[Chapter 3]{silvey1980} and
+\cite[Section 5.2.3]{pronzatoPazman2013}.
 
 Consider $\opt$ a D-optimal design under our generic model.  As
 instructed by Theorem \ref{thm:char}, we ignore all but the first $k$
@@ -457,29 +456,36 @@ places weight $>1$ on a single measurement vector.
 
 
 \subsubsection{Convergence}\label{subsub:convergence}
-Below we fulfill our promise from Section \ref{subsub:implications}
-and prove that the posterior uncertainty ellipsoid in $\hilo$ will
-contract to zero along every eigenfunction of $\fwd \prcov \fwd^*$. In
-our proof we ignore potential problems with conducting inference on
-function spaces which are not unique to D-optimal designs (see
-e.g.~\ref{owhadi2015} for more details).
+In this section we fulfill our promise from Section
+\ref{subsub:implications} and prove that the posterior uncertainty
+ellipsoid in $\hilo$ will contract to zero along every eigenvector of
+$\fwd \prcov \fwd^*$. In our proof we ignore potential problems with
+conducting inference on function spaces which are not unique to
+D-optimal designs (see e.g.~\cite{owhadi2015} for more details).
 
 
-First, let $\opt_m$ a D-optimal design utilizing $m$
-measurements. Then, an immediate consequence of Theorem \ref{thm:char}
-is that $\rank \opt_m^*\opt_m = k \to \infty$ as the number of
-measurements $m \to \infty$. Moreover, part (5) of Theorem
-\ref{thm:char} ensures that the eigenvalues of the posterior
-covariance equal
+First, denote $\opt_m$ a D-optimal design utilizing $m$ measurements
+and denote $k_m := \rank\opt_m^*\opt_m$. An immediate consequence of
+Theorem \ref{thm:char} is that allowing more measurements will
+eventually allow us to measure each eigenvalue, i.e.:
+\begin{equation}\label{eq:lim}
+  \lim_{m\to\infty} k_m = \infty
+\end{equation}
+
+Now, recall that part (5) of Theorem \ref{thm:char} ensures that the
+eigenvalues of the posterior pushforward covariance equal
 \begin{equation*}
-  \theta^{(k)}_i = \left ( \frac{\sum_{j=1}^k \lambda_j^{-1} +
-    \sigma^{-2}m}{k} \right )^{-1}, \text{ for $i\leq k$},
+  \theta^{(k)}_i = \left ( \frac{\sum_{j=1}^{k} \lambda_j^{-1} +
+    \sigma^{-2}m}{k} \right )^{-1}, \text{ for $i\leq k$}.
 \end{equation*}
-where we explicitly express the dependence of $k$ in the
-superscript. Now note that $\theta^{(k)}_i \leq \lambda_i$ for $i\leq
-k$. Specifically, for fixed $k$, we get $\theta^{(k)}_i \leq \lambda_k$
-for all $i\leq k$. Since $\lim_{k\to \infty} \lambda_k= 0$, we
-conclude that for all $i$, $\lim_{k\to\infty} \theta^{(k)}_i =
-0$. Since $m\to \infty$ implies $k\to \infty$ we have
-$\lim_{m\to\infty} \theta^{(k)}_i = 0$ for all $i$. Therefore,
+Using the inequality for the arithmetic and harmonic means, it is easy
+to verify that
+\begin{equation*}
+  \theta^{(k)}_i \leq \lambda_{k}.
+   %% \leq \frac{\sum_{j=1}^{k} \lambda_j}{k}
+\end{equation*}
+Since $\lim_{k\to \infty} \lambda_k= 0$, we conclude that for all $i$,
+$\lim_{k\to\infty} \theta^{(k)}_i = 0$. Combining the latter
+observation with eq.~\eqref{eq:lim}, we conclude that
+$\lim_{m\to\infty} \theta^{(k_m)}_i = 0$ for all $i$. Therefore,
 posterior uncertainty decays to zero for all eigenvectors.

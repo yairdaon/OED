@@ -2,22 +2,24 @@
 Here we present the basics of Bayesian inverse problems over Hilbert
 spaces. Since we are ultimately interested in inferring a function
 over some domain, we will keep in mind that these Hilbert spaces
-should really be thought of as function spaces. Our setup is similar
-to \cite{knapik2011}. A deeper treatment of the foundations for
-inverse problems over function spaces can be found in \cite{Stuart10}.
+should really be thought of as function spaces, utilizing a setup
+similar to \cite{knapik2011}. A deeper treatment of the foundations
+for inverse problems over function spaces can be found in
+\cite{Stuart10}.
 
 
 \subsection{Forward Problems}\label{subsec:abstract_OED}
-In this section we give definitions and notations for forward problems,
-which are an essential part of the inverse problems we discuss
-later. Consider a "parameter space" \(\hilp\) and an "observation
-space" \(\hilo\) --- both separable Hilbert spaces (the subscripts p
-and o are for "parameter" and "observation", respectively). The
-parameter space includes the quantity we seek to infer; in the inverse
-problem of the heat equation, the parameter space $\hilp$ is where the
-initial condition lives. The observation space $\hilo$, on the other
-hand, is the space from which we take measurements; in the example of
-the 1D heat equation, $u(\cdot, T) \in \hilo$.
+In this section we give definitions and notations for forward
+problems, which are an essential part of the inverse problems we
+discuss later. Consider a "parameter space" \(\hilp\) and an
+"observation space" \(\hilo\) --- both separable Hilbert spaces (the
+subscripts p and o are for "parameter" and "observation",
+respectively). The parameter space includes the quantity we seek to
+infer; in the inverse problem of the heat equation, the parameter
+space $\hilp$ is where the initial condition lives. The observation
+space $\hilo$, on the other hand, is the space from which we take
+measurements; in the example of the heat equation, $u(\cdot, T) \in
+\hilo$.
 
 The connection between parameter and observation spaces is made by the
 \emph{forward operator} \(\fwd: \hilp \to \hilo\). We assume the
@@ -90,8 +92,8 @@ transported to the observation space via the forward operator $\fwd u
 \in \hilo$, how observations are generated from a parameter via $\obs
 \fwd u$ and how observations and noise give rise to data $\data$. It
 is time to formulate the process of inferring the parameter as a
-Bayesian inverse problem. We have already defined the likelihood in
-the previous section, and now we will define the prior.
+Bayesian inverse problem. We have already defined the Gaussian
+likelihood in the previous section, and now we will define the prior.
 
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on

@@ -7,46 +7,43 @@ In the proof of Theorem \ref{thm:char} we utilize Lemma
 \ref{lemma:free} to construct D-optimal designs. We implement this
 construction with the goal of testing numerically how prevalent are
 clustered designs. To this end, we would like to generate random prior
-eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
-$\opt^*\opt$ and then utilize the construction of
+eigenvalues $\lambda_j$, fix $m$ and $k$, find what a D-optimal
+$\opt^*\opt$ should be, and then utilize the construction of
 Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
 
 
-To simplify things, we directly sample rank $\opt^*\opt$. We iterate
-over the number of measurements $m \in \{4,\dots, 24\}$, and for every
-$m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
-m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
-times:
+To simplify things, we directly generate $\opt^*\opt$. We iterate over
+the number of measurements $m \in \{4,\dots, 24\}$, and for every $m$
+we then iterate over $k:=\rank \opt^*\opt \in \{2,\dots, m-1\}$. For
+each pair $m,k$ we repeat the following steps $N=5000$ times:
 \begin{enumerate}
 \item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
-  entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
-  $\ttr D = m$. 
+  entries $\log (d_i) \sim \mathcal{N}(50,15)$.
+\item Normalize $D$ that $\ttr D = m$.
 \item Conjugate $D$ by a random orthogonal matrix to form a positive
   semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
   represents $\opt^*\opt$.
 \item Apply the construction of Lemma \ref{lemma:free} to calculate
-  $A$ such that $AA^t = M$, where $A$ has unit norm columns. I.e.~find
-  the optimal design $\opt$.
-\item Since $A$ corresponds to $\opt$, its columns correspond to
+  $A$ such that $AA^t = M$, where $A$ has unit norm columns. $A^t$ is
+  our optimal design $\opt$.
+\item Since $A^t$ corresponds to $\opt$, its columns correspond to
   measurement vectors. We call $A$ "clustered" if $A$ has two or more
-  identical columns (up to some numerical precision threshold).
+  identical columns (up to some numerical precision threshold,
+  i.e.~$10^{-5}$).
 \end{enumerate}
 We then calculate the fraction of clustered designs of the simulations
 we ran, for each pair $m,k$. Clusterization occurred at high rates
 ($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
 these simulations, clusterization is a generic property. However, when
-$m-k = 1$, clusterization does not occur. We do not why this is so and
-further investigation into this phenomenon is out of scope for the
-current study.
+$m-k = 1$, clusterization does not occur. We do not why this is so.
 
 \begin{figure}
     \centering
     \includegraphics[height=0.5\textwidth]{figs/simulations.png}
     \caption{Fraction of clustered $A$ for $AA^t = M$ and $M$
       generated randomly (see text and repository for details on
-      generating $M$). It is evident that when $m-k \geq 2$ clusterization
-      is ubiquitous, whereas for lower $m-k$ clusterization does not
-      occur.}
+      generating $M$). It is evident that when $m-k > 1$ clusterization
+      is prevalent, whereas for lower $m-k$ clusterization is not.}
   \label{fig:sim_AAt}
 \end{figure}
 
@@ -75,9 +72,8 @@ is located in module \texttt{clusterization.py} in the accompanying
     \includegraphics[height=0.5\textwidth]{figs/dst_modelError4.png}
     \caption{Model correlation mitigates clusterization. We add a
       model correlation term to the error terms in the 1D heat
-      equation inverse problem. Lo and behold, measurements are not
-      close anymore and are pushed away thanks to the model error
-      term.}
+      equation inverse problem. As expected, measurements are pushed
+      away owing to the model error term.}
   \label{fig:corr_errors}
 \end{figure}
 
