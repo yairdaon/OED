@@ -64,13 +64,19 @@ reflected back into $\Omega$.
 
 
 \subsection{Numerical Implementation}
-Our solution is based on moving the entire problem to the frequency
-domain, where the Laplacian $\Delta$ is a diagonal operator. For the
-homogeneous Dirichlet boundary version, we move to the frequencey
-domain via the Discrete Sine Transform, while for the homogeneous
-Neumann boundary condition version we do this via the Discrete Cosine
-Transform. Importantly, both transforms respect their corresponding
-boundary condtions.
+Our solution is based on transporting the entire problem to the
+frequency domain, where the Laplacian $\Delta$ is a diagonal
+operator. In the frequency domain we can calculate the D-optimality
+utility $\tar$ easily and the time evolution of heat is a simple ODE
+on each eigenvector, owing to the diagonal structure of $\Delta$
+there.
+
+
+For the homogeneous Dirichlet boundary version, we move to
+the frequencey domain via the Discrete Sine Transform, while for the
+homogeneous Neumann boundary condition version we do this via the
+Discrete Cosine Transform. Importantly, both transforms respect their
+corresponding boundary condtions.
 
 The implementation of the D-optimality criterion for this inverse
 problem with homogeneous Neumann and Dirichlet boundary conditions can

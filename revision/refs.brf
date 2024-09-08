@@ -11,8 +11,8 @@
 \backcite {morris2011}{{4}{4.1}{subsection.4.1}}
 \backcite {morris2011}{{5}{4.1}{subsection.4.1}}
 \backcite {fisher1949design, morris2011, schafer2001replication}{{5}{4.1}{subsection.4.1}}
-\backcite {telford2007brief}{{5}{4.1}{subsection.4.1}}
 \backcite {fisher1949design}{{5}{4.1}{subsection.4.1}}
+\backcite {telford2007brief}{{5}{4.1}{subsection.4.1}}
 \backcite {fay2000rainfall}{{5}{4.1}{subsection.4.1}}
 \backcite {fedorov1996}{{5}{4.1}{subsection.4.1}}
 \backcite {nyberg2012}{{5}{4.1}{subsection.4.1}}
@@ -25,14 +25,17 @@
 \backcite {knapik2011}{{10}{5.1}{subsection.5.1}}
 \backcite {nickl2023}{{10}{5.1}{subsection.5.1}}
 \backcite {teckentrup2020}{{10}{5.1}{subsection.5.1}}
-\backcite {knapik2011}{{12}{5.1}{subsection.5.1}}
-\backcite {teckentrup2020}{{12}{5.1}{subsection.5.1}}
-\backcite {nickl2023}{{12}{5.1}{subsection.5.1}}
-\backcite {attia2023pyoed, VillaPetraGhattas16}{{13}{5.1}{subsection.5.1}}
-\backcite {morris2011}{{14}{5.1}{figure.caption.2}}
-\backcite {fisher1949design, morris2011, schafer2001replication}{{14}{5.1}{figure.caption.2}}
-\backcite {telford2007brief}{{14}{5.1}{figure.caption.2}}
-\backcite {rasmussen2006}{{14}{5.1}{figure.caption.2}}
+\backcite {knapik2011}{{11}{5.1}{subsection.5.1}}
+\backcite {teckentrup2020}{{11}{5.1}{subsection.5.1}}
+\backcite {nickl2023}{{11}{5.1}{subsection.5.1}}
+\backcite {owhadi2015}{{12}{5.1}{subsection.5.1}}
+\backcite {attia2023pyoed, villa2021}{{13}{5.1}{equation.5.1}}
+\backcite {morris2011}{{15}{5.1}{figure.caption.2}}
+\backcite {fisher1949design, morris2011, schafer2001replication}{{15}{5.1}{figure.caption.2}}
+\backcite {fisher1949design}{{15}{5.1}{figure.caption.2}}
+\backcite {telford2007brief}{{15}{5.1}{figure.caption.2}}
+\backcite {fay2000rainfall}{{15}{5.1}{figure.caption.2}}
+\backcite {rasmussen2006}{{15}{5.1}{figure.caption.2}}
 \backcite {AlexanderianGloorGhattas14}{{15}{5.1}{figure.caption.2}}
 \backcite {rue2011}{{15}{5.1}{figure.caption.2}}
-\backcite {attia2023pyoed, VillaPetraGhattas16}{{15}{5.1}{figure.caption.2}}
+\backcite {attia2023pyoed, villa2021}{{15}{5.1}{figure.caption.2}}

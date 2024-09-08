@@ -27,17 +27,11 @@ is an undesirable property.
 
 \begin{quote} %% Replication
   Clusterization should not be confused with replication. Replication
-  requires that the experimentalist executes multiple trials under
-  circumstances that are \emph{nominally identical} \cite[Section
-    1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
-  and even necessary aspect of optimal experimental design
-  \cite{fisher1949design, morris2011,
-    schafer2001replication}. Similarly to a design implementing
-  replication, a clustered design reduces the signal-to-noise ratio of
-  the repeated measurements \cite{telford2007brief}. The difference is
-  that a clustered design takes repeated measurements at the expense
-  of other quantities not measured at all.
-  \newline
+requires that the experimentalist executes multiple trials under
+circumstances that are \emph{nominally identical} \cite[Section
+  1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
+and even necessary aspect of optimal experimental design
+\cite{fisher1949design, morris2011, schafer2001replication}.
 For example, \cite{fisher1949design}, suggested repeating his famous
 milk and tea experiment in order "to be able to demonstrate the
 predominance of correct classifications in spite of occasional
@@ -45,20 +39,24 @@ errors". Unfortunately, in the experiments we consider, replication is
 impossible. For example, in the MRI problem, we cannot generate an
 individual nominally identical to the one we wish to scan.
 \newline
-To further illustrate the difference between replication and
-clusterization, consider an experiment measuring the effect of
-rainfall on grass growth \cite{fay2000rainfall}. The experiment
-involved four rainfall manipulation "treatments" (i.e.~simulating
-different timing and quantity of rainfall), each replicated three
-times over a different plot of land. Indeed, it seems reasonable for
-researchers to replicate the phenomenon they are trying to study. A
-clustered design in such an experiment would imply the researchers
-should take a repeated measurement \emph{on the same plot}, at the
-expense of measuring grass growth in other plots. To conclude our
-short discussion on replication vs.~clusterization: these are
-fundamentally different concepts and even though replication is quite
-intuitive, it is inapplicable to the inverse problems we consider in
-this manuscript.
+Similarly to a design implementing replication, a clustered design
+reduces the signal-to-noise ratio of the repeated measurements
+\cite{telford2007brief}. The difference is that a clustered design
+takes repeated measurements at the expense of other quantities not
+measured at all. For example, consider an experiment measuring the
+effect of rainfall on grass growth \cite{fay2000rainfall}. The
+experiment involved four rainfall manipulation "treatments"
+(i.e.~simulating different timing and quantity of rainfall), each
+replicated three times over different plots of land. Indeed, it seems
+reasonable for researchers to replicate the phenomenon they are trying
+to study. A clustered design in such an experiment would imply the
+researchers should take a repeated measurement \emph{on the same
+plot}, at the expense of measuring grass growth in other plots!
+\newline
+To conclude our short discussion on replication vs.~clusterization:
+these are fundamentally different concepts and even though replication
+is quite intuitive, it is inapplicable to the inverse problems we
+consider in this manuscript.
 \end{quote}
 
 
@@ -99,8 +97,8 @@ period of time. This process is then duplicated with a potentially
 different set of variables. It is perfectly possible to have repeated
 variables.
 
-\AR I agree, but what you are describing is replication. See my
-comment on replication vs.~clusterization above.
+\AR I agree, but I believe what you are describing is replication. See
+my comment on replication vs.~clusterization above.
  
 \RC The author needs to make clear that they are considering
 experiments where repeated measurements are impossible. Admittedly,
@@ -196,7 +194,10 @@ statistical practice, or experimental science, of these findings?
 
 \AR I really appreciate this comment. I added a section highlighting
 the implications of this study. Since it is too long to reproduce
-here, see Section \ref{subsub:implications} in the revised manuscript.
+here, see Section \ref{subsub:implications} in the revised
+manuscript. I will just mention that one important takeaway is that
+practitioners should avoid linearization and Gaussian priors when
+seeking D-optimal designs.
 
 
 \RC The presentation of the paper does not help. The results are
@@ -205,7 +206,7 @@ relegate much of the mathematical detail to Supplementary Material and
 use the main manuscript for exposition.
 
 \AR Thanks for this comment. I considerably expanded the
-  introduction and delegated many proofs to the Supplementary.
+  Introduction and delegated many proofs to the Supplementary.
 
 
 \subsection{Avoiding measurement clusterisation}
@@ -228,8 +229,8 @@ mathematical formulation of the problem. One can then take one of two
 approaches: either accept what the mathematics suggest, even if it
 counterintuitive, or find ways to circumvent the mathematics because
 the result seems non-intuitive. I expanded this discussion in the
-revised manuscript. See below and the discussion preceding it in
-Section \ref{subsub:implications} of the revised manuscript. 
+revised manuscript. See paragraph below and the discussion preceding
+it in Section \ref{subsub:implications} of the revised manuscript.
 
 \begin{quote}%% Avoid
   Given the above discussion, it is our belief that the methods

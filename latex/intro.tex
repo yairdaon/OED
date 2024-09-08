@@ -368,7 +368,7 @@ previous section:
   %% This decay depends mostly on how ill-posed the problem at hand is
   %% and does not depend much on the prior
   See Section \ref{section:vanishing} --- particularly, Theorem
-  \ref{thm:char} and the discussion following it. Furhtermore, in
+  \ref{thm:char} and the discussion following it. Furthermore, in
   Section \ref{subsec:lemma_sims} we show results of numerical
   experiments, where simulations of our model give rise to D-optimal
   designs that exhibit clusterization with high probability. Thus,
@@ -453,7 +453,7 @@ real applications the model is not necessarily linear, some authors
 consider a linearized version of their model when seeking optimal
 designs \cite{fedorov1996, neitzel2019sparse}. Our analysis then shows
 that the linearity of the forward problem is also an important
-ingredient in giving rise to clustered desgins. Therefore, our advice
+ingredient in giving rise to clustered designs. Therefore, our advice
 to practitioners is to avoid linearization, and find D-optimal designs
 via other methods, e.g.~the sampling method of \cite{ryan2003}.
 
@@ -462,11 +462,11 @@ Given the above discussion, it is our belief that the methods
 suggested by other authors to avoid clusterization are merely
 overlooking the problem. We do not view clustered designs as
 inherently bad on their own. Rather, we suggest that if a clustered
-design arises, a practitioner should revisit their modeling
-assumptions --- specifically, their choice of prior and model
-linearization. If the practitioner is confident in their assumptions,
-then clustered designs should be avoided only to the extent
-necessitated by the physical measuring apparatus.
+design arises, a practitioner should revisit their modeling choices
+--- specifically, their choice of prior and model linearization. If
+the practitioner is confident in their analysis, then clustered
+designs should be avoided only to the extent necessitated by the
+physical measuring apparatus.
 
 %% Convergence
 Clusterization in D-optimal designs raises the question of whether
@@ -474,18 +474,12 @@ D-optimal designs should be pursued at all. While other authors have
 established convergence results for decaying measurement error
 \cite{knapik2011}, space-filling measurements \cite{teckentrup2020}
 and randomly sampled designs \cite{nickl2023}, their results do not
-hold for D-optimal designs. %% Unfortunately, D-optimal designs ---
-%% clustered designs in particular --- do not fall into any of these
-%% categories.
-
-Luckily, we can expect convergence from D-optimal designs (including
-clustered designs). Convergence holds in the following sense: the
-posterior uncertainty ellipsoid will contract to zero along each
-one of its eigenvectors. See Section \ref{subsub:convergence} for a
-precise statement and a proof based on Theorem \ref{thm:char} --- the
-main theorem of this manuscript.
-
-
+hold for D-optimal designs. Luckily, we can expect convergence from
+D-optimal designs (including clustered designs) in the following
+sense: the posterior uncertainty ellipsoid will contract to zero along
+each one of its eigenvectors. See Section \ref{subsub:convergence} for
+a precise statement and a proof based on Theorem \ref{thm:char} ---
+the main theorem of this manuscript.
 
 
 \subsubsection{Other Contributions}
