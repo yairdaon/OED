@@ -1,8 +1,7 @@
 ## OED
 
-Code to generate figures from my paper "Measurement Clusterization in
-D-optimal Designs for Bayesian Linear Inverse Problems over Hilbert
-Spaces".
+Code to generate figures from my paper "Measurement Clusterization in Bayesian
+D-optimal Designs in Infinite Dimensions".
 
 #The Directory src/
 
@@ -44,14 +43,8 @@ add model error to the calculation, thus avoiding clusterization.
 movies.py generates a forward and a backward time evolution of the
 heat equation.
 
-zeros.py implements the constructive existence proof of Lemma ... from
+zeros.py implements the constructive existence proof of Lemma 15 from
 the paper. It runs said construction for many numbers of measurements
 (m) and possible ranks of O^*O (i.e. k). For each such pair it
 generates 2000 random matrices PSD M with trace M = m. It then
-constructs A such that AA^t = M and A has unit norm columns (???).	
-
-See `main.py` for
-example usage. Code relies on standard libraries. Particularly, it
-requires the `numba` package to be installed.
-
-https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169050
+constructs A such that AA^t = M and A has unit norm columns.	
