@@ -220,6 +220,39 @@ fully characterize them in Theorem \ref{thm:char} below.
   \end{enumerate}
 \end{theorem}
 
+  Then:
+  \begin{enumerate}
+  \item  \(\tr{\obs^*\obs} = m\).
+  \item \(\obs^*\obs\) and \(\fwd\prcov\fwd^*\) are simultaneously
+    diagonalizable.
+  \item \(k := \rank \obs^*\obs \leq m\) and
+    \begin{equation*}
+      \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). %= \frac12 \sum_{i=1}^{m} \log (1 + \sigma^{-2}\lambda_i\eta_i).
+    \end{equation*}
+  %% \item 
+  %%   \begin{equation*}
+  %%     k = \argmax \left \{ k:\lambda_k^{-1} < \sigma^{-2}\frac{m}{k} + \frac{1}{k} \sum_{j=1}^{k}
+  %%     \lambda_j^{-1} \right \}.
+  %%   \end{equation*}
+  \item
+    \begin{equation*}
+        \eta_i = \begin{cases}
+          \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
+          0 & i > k 
+        \end{cases}.
+    \end{equation*}
+  \item The covariance of the pushforwad \(\fwd_{*} \post\) is \(\left
+    ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right
+    )^{-1}\) and its eigenvalues are
+    \begin{equation*}
+      \theta_i =
+      \begin{cases}
+        \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}m}{k} \right )^{-1} & i \leq k \\
+        \lambda_i &  i > k 
+      \end{cases}
+    \end{equation*}
+  \end{enumerate}
+\end{theorem}
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
   satisfies the unit norm constraint on measurements. Part (2)
