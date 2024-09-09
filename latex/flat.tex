@@ -59,6 +59,7 @@
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -68,6 +69,9 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+
+
+\raggedbottom
  
 \pubyear{2021}
 \volume{TBA}
@@ -104,10 +108,37 @@
 \end{aug}
 
 \begin{abstract}
-  Estimation of parameters in physical processes often demands costly measurements, prompting the pursuit of an optimal measurement strategy. Finding such strategy is termed the problem of \emph{optimal experimental design}, abbreviated as optimal design. Remarkably, optimal designs can yield tightly clustered measurement locations, leading researchers to fundamentally revise the design problem just to circumvent this issue. Some authors introduce error correlation among error terms that are initially independent, while others restrict measurement locations to a finite set of locations. While both approaches may prevent clusterization, they also fundamentally alter the optimal design problem.
+  Estimation of parameters in physical processes often demands costly
+  measurements, prompting the pursuit of an optimal measurement
+  strategy. Finding such strategy is termed the problem of
+  \emph{optimal experimental design}, abbreviated as optimal
+  design. Remarkably, optimal designs can yield tightly clustered
+  measurement locations, leading researchers to fundamentally revise
+  the design problem just to circumvent this issue. Some authors
+  introduce error correlation among error terms that are initially
+  independent, while others restrict measurement locations to a finite
+  set of locations. While both approaches may prevent clusterization,
+  they also fundamentally alter the optimal design problem.
 
-In this study, we consider Bayesian D-optimal designs, i.e.~designs that maximize the expected Kullback-Leibler divergence between posterior and prior. We propose an analytically tractable model for D-optimal designs over Hilbert spaces. In this framework, we make several key contributions: \textbf{(a)} We establish that measurement clusterization is a generic trait of D-optimal designs with independent Gaussian measurement errors, and prove that introducing correlations among measurement error terms mitigates clusterization. \textbf{(b)} We characterize D-optimal designs as reducing uncertainty across a subset of prior covariance eigenvectors. Finally, \textbf{(c)} We leverage this characterization to argue that measurement clusterization arises as a consequence of the pigeonhole principle: when more measurements are taken than there are locations where the select eigenvectors are large and others are small --- clusterization occurs. 
- \end{abstract}
+  In this study, we consider Bayesian D-optimal designs, i.e.~designs
+  that maximize the expected Kullback-Leibler divergence between
+  posterior and prior. We propose an analytically tractable model for
+  D-optimal designs over Hilbert spaces. In this framework, we make
+  several key contributions: \textbf{(a)} We establish that
+  measurement clusterization is a generic trait of D-optimal designs
+  for linear inverse problems with independent Gaussian measurement
+  errors and a Gaussian prior. \textbf{(b)} We prove that introducing
+  correlations among measurement error terms mitigates
+  clusterization. \textbf{(c)} We characterize D-optimal designs as
+  reducing uncertainty across a subset of prior covariance
+  eigenvectors. \textbf{(d)} We leverage this characterization to
+  argue that measurement clusterization arises as a consequence of the
+  pigeonhole principle: when more measurements are taken than there
+  are locations where the select eigenvectors are large and others are
+  small --- clusterization occurs. Finally, we use our analysis to
+  argue against the use of Gaussian priors with linearized physical
+  models when seeking a D-optimal design.
+\end{abstract}
 
 \begin{keyword}[class=MSC]
 \kwd[Primary ]{62F15}
@@ -118,15 +149,23 @@ In this study, we consider Bayesian D-optimal designs, i.e.~designs that maximiz
 \end{frontmatter}
 
 \section{Introduction}\label{section:intro}
-The practice of experimental design entails specifying every detail of
-running an experiment \cite{chaloner1995}. At its simplest form,
-experimental design involves choosing a set of measurements to be
-taken. For example, consider the process of searching for oil:
-measurements require digging holes in the ground and a \emph{design}
-simply indicates which holes should be dug
-\cite{horesh2008borehole}. Since measurements are expensive, only a
-limited number of them can be taken, and thus carefully choosing
-measurement locations is crucial.
+Experimental design is a systematic approach to specifying every
+possible aspect of an experiment \cite{chaloner1995}. In this study,
+we focus on experiments that involve measuring quantities arising from
+naturally occurring processes. For us, therefore, experimental design
+entails determining which specific measurements to record from a given
+process. In a typical experiment the number of measurements that can
+be recorded is limited by time, cost and other constraints. Therefore
+selecting the right set of measurements to record is crucial as it
+directly impacts the utility of the data collected, and consequently,
+the validity of the conclusions drawn.
+
+For example, consider the process of searching for oil: measurements
+require digging deep holes in the ground, known as "boreholes". A
+\emph{design} simply indicates which boreholes should be dug
+\cite{horesh2008borehole}. Since digging boreholes is expensive, only
+a limited number of them can be dug, and thus carefully choosing their
+locations is crucial.
 
 Specifying the right set of measurements holds particular significance
 when solving an \emph{inverse problem} --- i.e.~making inference of
@@ -153,7 +192,7 @@ deep cylindrical wells drilled into the ground. Data of travel and
 return times of the acoustic waves are recorded. Wave travel and
 return time is influenced by the properties of the subsurface
 materials, such as density, elasticity, and the presence of fluids or
-voids. Combining travel time data with a geophysical models of
+voids. Combining travel time data with a geophysical model of the
 contents of the earth's crust facilitates reconstructing the structure
 of the subsurface in a process called \emph{borehole tomography}
 \cite{horesh2008borehole}. Inverse problems also arise in many other
@@ -169,31 +208,31 @@ interest.
 In all of the examples of inverse problems we have seen, as well as in
 many other applications, only a limited number of measurements are
 allowed. For example, in borehole tomography, a measurement involves
-drilling a deep well in the ground --- a very costly endeavor. Even in
-a seemingly simpler application such as MRI, a patient cannot occupy
-the MRI machine for too long, hence only a limited number of
-measurements can be taken. Therefore, measurements should be chosen to
-most benefit the user. Typically, a user will consider some utility,
-called a \emph{design criterion} and take measurements that maximize
-this utility. Two of the most widely recognized and extensively
-studied design criteria are the A- and \emph{D-optimality} criteria.
+drilling a deep well in the ground --- a very costly endeavor. In
+medical imaging applications like MRI, the time allotted for each
+patient in the MRI machine limits the number of measurements that can
+be taken during a single session. Therefore, measurements should be
+chosen to extract as much information from the experiment. Typically,
+a user will consider some utility, called a \emph{design criterion}
+and take measurements that maximize this utility. Two of the most
+widely recognized and extensively studied design criteria are the A-
+and \emph{D-optimality} criteria.
 
 In this study, we focus on the Bayesian D-optimality
 criterion. Bayesian D-optimality carries a simple and intuitive
 meaning: measurements chosen according to the D-optimality criterion
 maximize the expected Kullback-Leibler (KL) divergence from posterior
 to prior \cite{chaloner1995, AlexanderianGloorGhattas14,
-  CoverThomas91}. Utilizing KL divergence for quantifying differences
-between distributions is standard practice and we will not motivate it
-further here. For a discrete parameter $\param$ and data $\data$, the
-KL divergence is defined as
+  CoverThomas91}.
+Recall that for a discrete parameter $\param$ and data $\data$, the KL
+divergence is defined as
 \begin{equation}\label{eq:basic_KL}
   D_{KL}\left (\Pr(\param|\data)||\Pr(\param)\right ) =  \sum_{\param} \log
   \frac{\Pr(\param|\data)}{\Pr(\param)} \Pr(\param|\data). 
 \end{equation}
 Of course, data $\data$ is not known before the experiment is
-conducted, so we average over it to define the D-optimality criterion
-as:
+conducted. Hence, we average over $\data$ to define the D-optimality
+criterion as:
 \begin{equation*}
   \mathbb{E}_{\data}\left [ D_{KL}\left (\Pr(\param|\data)||\Pr(\param)\right ) \right ].
 \end{equation*}
@@ -206,19 +245,19 @@ D-optimal design minimizes the determinant of the posterior covariance
 a more general definition of the D-optimality criterion that applies
 to arbitrary measures. We also show how the D-optimality criterion
 generalizes to linear models over infinite-dimensional Hilbert spaces
-(i.e.~function spaces).
+(e.g.~function spaces).
 
 \subsection{A toy model: the 1D heat equation}\label{subsec:toy}
 For concreteness, let us now consider a toy inverse problem: inferring
-the initial condition for partial differential equation known as the
+the initial condition for a partial differential equation known as the
 \emph{heat equation} in one dimension (1D heat equation
 henceforth). Readers less familiar with partial differential equations
-can think of the following setup: before us there is a perfectly
-insulated metal rod. At each point on the rod the temperature is
-different and unknown, and we call this temperature distribution the
-\emph{initial condition}. We wait for a short time $T$ and let the
-heat dissipate a bit inside the rod. The heat equation determines the
-heat distribution inside the rod at time $t=T$.
+can think of the following setup: before us there is a metal rod,
+perfectly insulated except for its tips. At each point on the rod the
+temperature is different and unknown, and we call this temperature
+distribution the \emph{initial condition}. We wait for a short time
+$T$ and let the heat dissipate a bit inside the rod. The heat equation
+determines the heat distribution inside the rod at time $t=T$.
 
 The full time evolution of heat in the rod $\Omega=[0,1]$ is formally
 described by the following three equations:
@@ -243,61 +282,83 @@ disappears. This type of boundary condition is known as a
 describes the \emph{initial condition}, i.e.~the heat distribution
 inside the rod at time $t=0$.
 
-Solving the 1D heat equation is straightforward. Any initial heat
-distribution $u_0\in L^2([0,1])$ that satisfies the homogeneous
-Dirichlet boundary condition eq.~\eqref{eq:heat2} is a linear
-combination of sines $\ev_n(x) = \sin(\pi n x)$, so $u_0 = \sum_{n\geq
-  1} a_n \ev_n$ for some $\{a_n\}_{n\geq 1}$. Now, note that $\ev_n$
-are in fact eigenvectors of the Laplacian: $\Delta \ev_n = -\pi^2
-n^2\ev_n$. It should not be hard to believe that $u(\cdot, T) =
-\sum_{n\geq 1} a_n \exp(-\pi^2 n^2T ) \ev_n$
-\cite{renardy2006PDE}. Thus, eigenvectors of the linear operator that
-describes the time evolution of heat are $\ev_n(x) = \sin(\pi n x)$
-with corresponding eigenvalues
+Solving the 1D heat equation is straightforward. Consider an initial
+heat distribution $u_0\in L^2([0,1])$ that satisfies the homogeneous
+Dirichlet boundary condition eq.~\eqref{eq:heat2}. This initial
+condition $u_0$ is a linear combination of sines $\ev_n(x) = \sin(\pi
+n x)$, so $u_0 = \sum_{n\geq 1} a_n \ev_n$ for some $\{a_n\}_{n\geq
+  1}$. Now, note that $\ev_n$ are in fact eigenvectors of the
+Laplacian: $\Delta \ev_n = -\pi^2 n^2\ev_n$. It should not be hard to
+believe that $u(\cdot, T) = \sum_{n\geq 1} a_n \exp(-\pi^2 n^2T )
+\ev_n$ \cite{renardy2006PDE}. Thus, eigenvectors of the linear
+operator that describes the time evolution of heat are $\ev_n(x) =
+\sin(\pi n x)$ with corresponding eigenvalues
 \begin{equation}\label{eq:decay}
   \exp(-\pi^2 n^2T ).
 \end{equation}
 
 In the \emph{inverse problem of the 1D heat equation}, our goal is to
-infer the initial condition $u_0 = u(\cdot, 0)$ from observations of
-the final state $u(\cdot, T)$. However, we are not able to measure
-$u(\cdot, T)$ at every point in the domain $\Omega$. Rather, we take
-some number of temperature measurements on the rod once our waiting
-time $T$ has passed and try to infer $u(\cdot, 0)$ from these
-measurements.
+infer the initial condition $u_0 = u(\cdot, 0)$ from noisy
+observations of the final state $u(\cdot, T)$. However, we are not
+able to measure $u(\cdot, T)$ at every point in the domain
+$\Omega$. Rather, we take some number of temperature measurements on
+the rod once our waiting time $T$ has passed and try to infer
+$u(\cdot, 0)$ from these measurements.
 
 The inverse problem of the 1D heat equation is difficult ("ill-posed")
 since heat spreads in a diffusive manner and any roughness in the
 initial condition is quickly smoothed, as implied by the squared
 exponential decay of eigenvalues in eq.~\eqref{eq:decay} with
 $n\to\infty$. See Supplementary movies S1 and S2 for an illustration
-of this phenomenon (code generating these movies is located in module
-\texttt{movies.py} in the accompanying
-\href{https://github.com/yairdaon/OED}{repository}). For ill-posed
+of this phenomenon\footnote{Code generating these movies is located in
+module \texttt{movies.py} in the accompanying
+\href{https://github.com/yairdaon/OED}{repository}.}. For ill-posed
 problems regularization is required, and we implement such
 regularization via a fully Bayesian formulation of the inverse
 problem.
 
-We choose a prior for the initial condition $u_0 \sim \mathcal{N}(0,
-(-\Delta)^{-1})$, with homogeneous Dirichlet boundary condition. This
-choice of prior covariance operator ensures the posterior is
-well-defined and prior realizations are well-behaved, see
-\cite[Theorem 3.1 and Lemma 6.25]{Stuart10} for details. The second
-ingredient of a fully Bayesian formulation of the inverse problem is
-likelihood. We simply assume centered iid Gaussian measurement error
-model, giving rise to a the widely applicable Gaussian likelihood
-function.
+
+In order to find a fully Bayesian formulation for our inverse problem
+we first need to specify a prior on \emph{functions} defined over
+$\Omega = [0,1]$. For the sake of simplicity we would like to utilize
+a Gaussian prior. While specifying the prior mean is easy --- we take
+the zero function on $\Omega$ --- specifying a prior covariance is
+more involved. In analogy with the finite dimensional case, we seek a
+covariance \emph{operator} that is positive definite and imposes
+sufficient regularity on functions over $\Omega$. Thus, we set our
+prior for the initial condition $u_0 \sim \mathcal{N}(0,
+(-\Delta)^{-1})$, where $\Delta$ is again defined with a homogeneous
+Dirichlet boundary condition. The intuition here is that since
+$\Delta$ is a differential operator, it is "roughing" (the opposite of
+smoothing) and so $(-\Delta)^{-1}$ is smoothing. Prior realizations
+are generated, in analogy to the finite dimensional case, by smoothing
+white noise: $(-\Delta)^{-1/2}\mathcal{W}$, where $\mathcal{W}$ is
+white noise \cite{rue2011}. Our choice of prior covariance operator
+ensures the posterior is well-defined and prior realizations are
+well-behaved, see Theorem 3.1 and Lemma 6.25 in \cite{Stuart10} for
+details. The second ingredient of a fully Bayesian formulation of the
+inverse problem is likelihood. We simply assume centered iid Gaussian
+measurement error model, giving rise to a the widely applicable
+Gaussian likelihood function.
+
+Now that we have a fully Bayesian formulation of our toy inverse
+problem, we would like to find a D-optimal design. Defining D-optimal
+designs over function spaces is somewhat mathematically
+involved. Thus, to keep our discussion here focused, we will explore
+these technical details later in Section
+\ref{subsec:D_optimal_design}. For now, it suffices to know that
+D-optimal designs can be defined for our problem.
 
 
 \subsection{Measurement Clusterization}
 Surprisingly, A- and D-optimal designs for inverse problems have been
 observed to yield remarkably similar measurements in certain cases
-\cite{fedorovDesignSpatialExperiments1996, nyberg2012, fedorov1997,
-  Ucinski05, neitzel2019sparse}. This phenomenon is illustrated for
-our toy inverse problem in Fig.~\ref{fig:clusterization_illustration},
-where D-optimal measurement locations are shown for different numbers
-of measurements. Notably, for six measurements, a D-optimal design
-yields two sets of measurements that are identical. Following
+\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+  neitzel2019sparse}. This phenomenon is illustrated for our toy
+inverse problem in Fig.~\ref{fig:clusterization_illustration}, where
+D-optimal measurement locations are shown for different numbers of
+measurements. Notably, for six measurements, a D-optimal design yields
+two sets of measurements that are identical. Following
 \cite{Ucinski05}, we refer to this intriguing phenomenon as
 \emph{measurement clusterization}. We consider a design to be
 \emph{clustered} when two or more of its constituent measurements are
@@ -322,39 +383,51 @@ identical.
 \end{figure}
 
 
-Clusterization should not be confused with either repetition nor with
-replication, which are commonly viewed as beneficial and even
-necessary aspects of an optimal design \cite{fisher1949design,
-  morris2011, schafer2001replication}. For example,
-\cite{fisher1949design} in his famous milk and tea experiment,
-suggested that repetition is a "way of enlarging the experiment and,
-thereby, increasing its sensitiveness". In another example,
-\cite{fay2000rainfall} measured the effect of rainfall on grass growth
-in plots of land. The experiment involved fifteen "rainfall
-manipulation shelters", where "Four rainfall manipulation treatments
-(three replicates) then were assigned to 12 of the plots". While it
-seems reasonable for the researchers to replicate the phenomenon they
-are trying to study, clusterization is different: a clustered design
-in the rainfall experiment would imply the researchers should take a
-repeated measurement \emph{on the same plot}, at the expense of
-measuring grass growth in other plots. In sharp contrast to repetition
-and replication, clusterization is highly nonintuitive and we will see
-that its origins run considerably deeper.
+Clusterization should not be confused with replication. Replication
+requires that the experimentalist executes multiple trials under
+circumstances that are \emph{nominally identical} \cite[Section
+  1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
+and even necessary aspect of optimal experimental design
+\cite{fisher1949design, morris2011, schafer2001replication}.
+For example, \cite{fisher1949design}, suggested repeating his famous
+milk and tea experiment in order "to be able to demonstrate the
+predominance of correct classifications in spite of occasional
+errors". Unfortunately, in the experiments we consider, replication is
+impossible. For example, in the MRI problem, we cannot generate an
+individual nominally identical to the one we wish to scan.
 
+Similarly to a design implementing replication, a clustered design
+reduces the signal-to-noise ratio of the repeated measurements
+\cite{telford2007brief}. The difference is that a clustered design
+takes repeated measurements at the expense of other quantities not
+measured at all. For example, consider an experiment measuring the
+effect of rainfall on grass growth \cite{fay2000rainfall}. The
+experiment involved four rainfall manipulation "treatments"
+(i.e.~simulating different timing and quantity of rainfall), each
+replicated three times over different plots of land. Indeed, it seems
+reasonable for researchers to replicate the phenomenon they are trying
+to study. A clustered design in such an experiment would imply the
+researchers should take a repeated measurement \emph{on the same
+plot}, at the expense of measuring grass growth in other plots!
+
+To conclude our short discussion on replication vs.~clusterization:
+these are fundamentally different concepts and even though replication
+is quite intuitive, it is inapplicable to the inverse problems we
+consider in this manuscript.
 
 Researchers of inverse problems widely agree that measurement
-clusterization is undesirable
-\cite{fedorovDesignSpatialExperiments1996, nyberg2012, fedorov1997,
-  Ucinski05, neitzel2019sparse}, prompting the exploration of various
-remedies to address this issue. One approach involves merging close
-measurements \cite{fedorov1997}; however, this strategy merely
-overlooks the phenomenon of measurement clusterization. An alternative
-solution lies in \emph{clusterization-free design}s, where measurement
-locations are deliberately chosen to be distant from one another. This
-can be achieved by imposing distance constraints between measurements
-or by introducing correlated errors that account for both observation
-error and model misspecification \cite{Ucinski05}. For instance, in
-the context of time-series analysis for pharmacokinetic experiments,
+clusterization is undesirable \cite{fedorov1996, nyberg2012,
+  fedorov1997, Ucinski05, neitzel2019sparse}, prompting the
+exploration of various remedies to address this issue. One approach
+involves merging close measurements \cite{fedorov1997}; however, this
+strategy merely overlooks the phenomenon of measurement
+clusterization. An alternative solution lies in
+\emph{clusterization-free design}s, where measurement locations are
+deliberately chosen to be distant from one another. This can be
+achieved by imposing distance constraints between measurements or by
+introducing correlated errors that account for both observation error
+and model misspecification \cite{Ucinski05}. For instance, in the
+context of time-series analysis for pharmacokinetic experiments,
 measurement clusterization can be mitigated by incorporating the
 modeling of auto-correlation time within the noise terms
 \cite{nyberg2012}.
@@ -424,15 +497,14 @@ previous section:
 We give two complementing answers to this question. First, from a
   theoretical perspective, we show that clusterization mainly depends
   on how quickly the eigenvalues of the prior covariance in
-  observation space decay. This decay depends mostly on how ill-posed
-  the problem at hand is and does not depend much on the prior. See
-  Section \ref{section:vanishing} --- particularly, Theorem
-  \ref{thm:char} and the discussion following it. We also show results
-  of numerical experiments, where simulations of our model give rise
-  to D-optimal designs that exhibit clusterization with high
-  probability in Section \ref{subsec:lemma_sims}. Thus, given the
-  genericity of our model, we expect measurement clusterization to be
-  a generic and ubiquitous phenomenon.
+  observation space decay.
+See Section \ref{section:vanishing} --- particularly, Theorem
+  \ref{thm:char} and the discussion following it. Furthermore, in
+  Section \ref{subsec:lemma_sims} we show results of numerical
+  experiments, where simulations of our model give rise to D-optimal
+  designs that exhibit clusterization with high probability. Thus,
+  given the genericity of our model, we expect measurement
+  clusterization to be a generic and ubiquitous phenomenon.
 
 \item \label{q:mitigate} \textbf{Why does imposing correlations
   between observations alleviate measurement clusterization?} In
@@ -464,96 +536,85 @@ We give two complementing answers to this question. First, from a
   the pigeonhole principle, as there are more measurements available
   than there are locations satisfying conditions (a) and (b).
 
-  The connection to Carath\'eodory's Theorem also utilizes the
-  concentration of measurement effort on the abovementioned select set
-  of prior eigenvectors. This concentration allows us to move from an
-  infinite-dimensional setting to finite dimensions, where the
-  conditions of Carath\'eodory's Theorem hold. We conclude that a
-  D-optimal design arises by weighting a small number of
-  measurements. If the number of allowed measurements is larger than
-  the small number dictated by Carath\'eodory's Theorem, we have
-  excessive weight on some measurements, which can be interpreted as
-  clusterization.
+  The connection to Carath\'eodory's Theorem also builds on the focus
+  of measurement effort to the abovementioned select set of prior
+  eigenvectors. This allows us to move from an infinite-dimensional
+  setting to finite dimensions, where the conditions of
+  Carath\'eodory's Theorem hold. We conclude that a D-optimal design
+  arises by weighting a small number of measurements. If the number of
+  allowed measurements is larger than the small number dictated by
+  Carath\'eodory's Theorem, we have excessive weight on some
+  measurements, which can be interpreted as clusterization.
   
 \end{enumerate}
 
-\subsubsection{Implications}
+\subsubsection{Implications}\label{subsub:implications}
 Our answer to Question \ref{q:generic} implies that encountering
-clusterization should be expected in many different problems across
+clusterization could be expected in many different problems across
 many different scientific fields. Researchers that encounter
 clusterization should not be surprised or wary. In Our answer to
 Question \ref{q:why}, we explain what our view of the cause of
 clusterization is. It appears, the cause is generic: a D-optimal
 design reduces uncertainty for a select set of prior covariance
 eigenvectors --- those with the most prior uncertainty, i.e.~those the
-practitioner cares about the most! We believe practitioners should not
-try to avoid measurement clusterization. Rather, practitioners should
-take repeated measurements (e.g.~in MRI and borehole tomography),
-increase apparatus sensitivity (e.g.~in EIT), or take consecutive
-measurements (e.g.~in the 1D heat equation). Overall, we show that
-measurement clusterization is a natural and (almost) inevitable part
-of Bayesian D-optimal designs (but see disclaimer below).
+practitioner cares about the most!
 
-One interesting implication of the analysis presented here is that
+A further implication of the analysis we present is that
 clusterization can serve as an evidence to the number of relevant
-eigenvectors. Since leading eigenvectors typically correspond to slow
-variations in space and/or time, clusterization could be used to
-estimate the number of relevant degrees of freedom, and even to reduce
-the complexity of a computational model, e.g.~by dropping
-discretization points.
+eigenvectors in the problem. These eigenvectors correspond to the
+relevant degrees of freedom in the problem. Thus, clusterization tells
+us that we might be able to reduce the complexity of a computational
+model, e.g.~by dropping discretization points.
 
-It is important to note that we do not view clustered designs as
-undesirable, nor do we believe it should be avoided at
-all. Clusterization is a peculiar phenomenon and it is perfectly
-reasonable for someone to argue against the D-optimality criterion
-based on the fact that it results in clustered designs. We have seen,
-however that there is a perfectly reasonable explanation for
-clusterization. We have shown that clusterization is an inevitable
-consequence of having a problem with some modes where uncertainty
-decays faster than others.
+One potential cause of clusterization is our choice of prior. Gaussian
+priors, coupled with a Gaussian likelihood and a linear forward
+problem give rise to a closed form solution for the posterior via
+conjugacy. As we show in Section \ref{subsec:lemma_sims}, such
+assumptions generically give rise to clusterization. While an
+assumption of a Gaussian likelihood is standard, and rooted in the
+central limit theorem, an assumption of Gaussian prior is merely a
+matter of convenience. Therefore, we advise any practitioner who
+encounters clusterization to replace their Gaussian priors with
+non-Gaussian priors instead \cite{hosseini2017, hosseini2019}.
 
-Lastly, we believe that when clusterization arises, it should serve as
-a warning sign to practitioners. In the inverse problem of the 1D heat
-equation, clusterization occurs primarily because Laplacian
-eigenvectors \emph{do not} decay in $\Omega$. Consequently, measuring
-$u(x_1, T)$ at some point $x_1 \in \Omega$ provides information about
-$u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively, this
-should not occur: for small $T$, the heat distribution at $x_1$ should
-give very little knowledge on the heat distribution at $x_2$. This
-behavior stems from a well-known property of the heat equation: it
-allows information to spread \emph{instantly} across the computational
-domain \cite{renardy2006PDE}. In reality, heat (and information)
-propagate at finite speeds. Of course, the known physical barrier for
-information spread is the speed of light, but we expect heat to spread
-considerably slower: heating an Olympic pool at one end should have no
-immediate effect on the temperature at the other end.
+Another potential cause of clusterization is linearization. While in a
+real applications the model is not necessarily linear, some authors
+consider a linearized version of their model when seeking optimal
+designs \cite{fedorov1996, neitzel2019sparse}. Our analysis then shows
+that the linearity of the forward problem is also an important
+ingredient in giving rise to clustered designs. Therefore, our advice
+to practitioners is to avoid linearization, and find D-optimal designs
+via other methods, e.g.~the sampling method of \cite{ryan2003}.
 
-Our choice of prior is also a potential major contributor to
-clusterization. Our choice of Gaussian prior similarly implies
-information is shared between distant locations in $\Omega$. Thus, we
-suggest refraining from choosing Gaussian priors with inverse
-Laplacian covariance operators. Rather, non-Gaussian priors could be
-employed instead \cite{hosseini2017, hosseini2019}.
+Given the above discussion, it is our belief that the methods
+suggested by other authors to avoid clusterization are merely
+overlooking the problem. We do not view clustered designs as
+inherently bad on their own. Rather, we suggest that if a clustered
+design arises, a practitioner should revisit their modeling choices
+--- specifically, their choice of prior and model linearization. If
+the practitioner is confident in their analysis, then clustered
+designs should be avoided only to the extent necessitated by the
+physical measuring apparatus.
 
-We believe that the emergence of clusterization in this context is
-thus non-physical, arising from the way the inverse problems we
-consider are phrased. Clusterization therefore indicates that the
-underlying mathematical / Bayesian model is overly permissive and
-fails to capture crucial physical constraints of the problem. We
-suggest that when clusterization occurs, practitioners should consider
-alternative models where information is localized in space and travels
-at finite speed in the medium. Such models may not only provide more
-physically accurate and meaningful results but may also mitigate the
-issue of clusterization.
-
+Clusterization in D-optimal designs raises the question of whether
+D-optimal designs should be pursued at all. While other authors have
+established convergence results for decaying measurement error
+\cite{knapik2011}, space-filling measurements \cite{teckentrup2020}
+and randomly sampled designs \cite{nickl2023}, their results do not
+hold for D-optimal designs. Luckily, we can expect convergence from
+D-optimal designs (including clustered designs) in the following
+sense: the posterior uncertainty ellipsoid will contract to zero along
+each one of its eigenvectors. See Section \ref{subsub:convergence} for
+a precise statement and a proof based on Theorem \ref{thm:char} ---
+the main theorem of this manuscript.
 
 
 \subsubsection{Other Contributions}
 In Theorem \ref{thm:char}, we also show that D-optimal designs are
-best understood in the space of \emph{observations}, see Section
-\ref{section:vanishing} for a precise statement. This is in accordance
-with previous work by \cite{koval2020}, who showed that A-optimal
-designs are best constructed in the space of observations.
+best understood in the space of \emph{observations}
+This is in accordance with previous work by \cite{koval2020}, who
+showed that A-optimal designs are best constructed in the space of
+observations.
 
 In the process of proving Theorem \ref{thm:char} we prove and
 generalize several lemmas. Among those, is Lemma \ref{lemma:free},
@@ -567,33 +628,83 @@ with \(\ttr M = m \in \mathbb{N}\) as \(M = AA^t\), where \(A\in
 The main limitation of this study is that our generic model does not
 correspond to any specific real-life problem. Specifically, in its
 current form, our model does not allow point evaluations. Thus, while
-our model is generic enough to be analytically tractable, some may
+our model is generic enough to be analytically tractable, one may
 argue that our model is too far removed from any real application. To
 these claims I would answer that scientists have a long history of
 studying models that are bare-bones simplifications of real systems,
 e.g.~the Ising model \cite{cipra1987}, the Lorenz system \cite{brin},
 the Lotka-Volterra equations \cite{logan2006}, the Carnot engine
 \cite{kardar2007} and many others.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  \section{Preliminaries and Notation}\label{section:prelim}
 Here we present the basics of Bayesian inverse problems over Hilbert
 spaces. Since we are ultimately interested in inferring a function
 over some domain, we will keep in mind that these Hilbert spaces
-should really be thought of as function spaces. A deeper treatment of
-the foundations for inverse problems over function spaces can be found
-in \cite{Stuart10}.
+should really be thought of as function spaces, utilizing a setup
+similar to \cite{knapik2011}. A deeper treatment of the foundations
+for inverse problems over function spaces can be found in
+\cite{Stuart10}.
 
 
 \subsection{Forward Problems}\label{subsec:abstract_OED}
-In this section we give definitions and notations for forward problems,
-which are an essential part of the inverse problems we discuss
-later. Consider a "parameter space" \(\hilp\) and an "observation
-space" \(\hilo\) --- both separable Hilbert spaces (the subscripts p
-and o are for "parameter" and "observation", respectively). The
-parameter space includes the quantity we seek to infer; in the inverse
-problem of the heat equation, the parameter space $\hilp$ is where the
-initial condition lives. The observation space $\hilo$, on the other
-hand, is the space from which we take measurements; in the example of
-the 1D heat equation, $u(\cdot, T) \in \hilo$.
+In this section we give definitions and notations for forward
+problems, which are an essential part of the inverse problems we
+discuss later. Consider a "parameter space" \(\hilp\) and an
+"observation space" \(\hilo\) --- both separable Hilbert spaces (the
+subscripts p and o are for "parameter" and "observation",
+respectively). The parameter space includes the quantity we seek to
+infer; in the inverse problem of the heat equation, the parameter
+space $\hilp$ is where the initial condition lives. The observation
+space $\hilo$, on the other hand, is the space from which we take
+measurements; in the example of the heat equation, $u(\cdot, T) \in
+\hilo$.
 
 The connection between parameter and observation spaces is made by the
 \emph{forward operator} \(\fwd: \hilp \to \hilo\). We assume the
@@ -614,7 +725,7 @@ formulation of the 1D heat equation with working in Hilbert spaces. We
 don't. We follow standard practice in the literature and restrict our
 analysis to Hilbert spaces. We can satisfy ourselves with the fact
 that point evaluations could be approximated in a standard Hilbert
-space like $L^2(\Omega)$.}.
+space like $L^2(\Omega)$.}. 
 
 Data is acquired via noisy observations, and we consider two types of
 error terms: Spatially correlated model error \(\eps' \sim
@@ -653,8 +764,8 @@ transported to the observation space via the forward operator $\fwd u
 \in \hilo$, how observations are generated from a parameter via $\obs
 \fwd u$ and how observations and noise give rise to data $\data$. It
 is time to formulate the process of inferring the parameter as a
-Bayesian inverse problem. We have already defined the likelihood in
-the previous section, and now we will define the prior.
+Bayesian inverse problem. We have already defined the Gaussian
+likelihood in the previous section, and now we will define the prior.
 
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
@@ -832,7 +943,7 @@ evaluations. We just utilize point evaluations for motivation. We can
 approximate point evaluations by e.g.~elements in $\hilo^*$ as long as
 $\hilo$ is a function space, e.g.~$L^2(\Omega)$. In this case, for a
 fixed apporximation of $\delta$ the norm of the corresponding
-functional is constant (but $\neq 1$.}:
+functional is a constant $\neq 1$.}:
 
 \begin{equation}
   \| \delta_{\x} \| = \sup_{0 \neq u \in C(\Omega)}
@@ -880,7 +991,7 @@ multipliers:
 
 We now substitute the gradients calculated in Propositions
 \ref{prop:tar_grad} and \ref{prop:constraints_grad} into
-\eqref{eq:Lagrange_mult1}:
+eq.~\eqref{eq:Lagrange_mult1}:
 \begin{equation}\label{eq:constrained}
   (I - \modcov \obs^* \Sigma^{-1} \obs) \fwd \postcov \fwd^* \obs^*\Sigma^{-1}
   = \sum_{j=1}^m \xi_j \obs^* e_je_j^t = (\xi_1 \meas_1,\dots,\xi_m \meas_m).
@@ -951,7 +1062,8 @@ The proof is long and tedious, and is delegated to the Supplementary.
   Denote $A:= \obs \modcov \obs^*$ and $v_j$ the $j^{\text{th}}$
   column of $A$.  Note that $v_j = \obsm \modcov \meas_m$, since
   $(\obsm \modcov \obsm^*)_{ij} = \meas_i(\modcov \meas_j)$, as
-  explained in \eqref{eq:modcov_explained}. We can now verify that
+  explained in the paragraph preceding
+  eq.~\eqref{eq:modcov_explained}. We can now verify that
   \begin{equation}\label{eq:observation}
     \Sigmam^{-1} \obsm \modcov \meas_m = \Sigmam^{-1}v_j = (A +\sigma^2I_{m-1})^{-1} v_j =
     e_j -\sigma^2 \Sigmam^{-1}e_j.
@@ -1043,7 +1155,7 @@ when $\sigma^2=0$. Our results are stronger, since we show
 It is worth noting that by the nonnegativity of the KL divergence,
 $\tar$ cannot decrease upon adding measurements. However, we can
 construct examples where the posterior does not change upon taking a
-new measurement e.g.~if the prior variance vanishes on some
+new measurement, e.g.~if the prior variance vanishes on some
 eigenvector and a measurement is taken on said eigenvector. We do not
 expect a measurement to generate no information gain whatsoever in any
 realistic scenario, and ignore such pathologies.
@@ -1330,11 +1442,9 @@ we seek a D-optimal design, we distribute the blue liquid by
 repeatedly adding a drop to whatever cylinder currently has the lowest
 level of liquid in it, as long as its index $i \leq m$. The result of
 such a procedure is that the precision for the first $k$ eigenvectors
-is the average of the total precision $\sum_{j=1}^k \lambda_j^{-1} +
-\sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and
+is the average of their total aggregated precision $\sum_{j=1}^k
+\lambda_j^{-1} + \sigma^{-2}m$, see eq.~\eqref{eq:cylinders} and
 Fig.~\ref{fig:optimal_vs_not} for an illustration.
-
-
 
 
 \subsection{Answer to Question \ref{q:why}}\label{subsec:why}
@@ -1342,9 +1452,9 @@ Building on Theorem \ref{thm:char}, we can now give a compelling
 explanation to the measurement clusterization we observed for the
 inverse problem of the heat equation, see Section
 \ref{subsub:clusterization1} below. We also suggest a generic
-explanation for clusterization, see Section \ref{subsub:clusterization2}.
+explanation for clusterization, see Section \ref{subsub:cara}.
 
-\subsubsection{Clusterization in the heat equation}
+\subsubsection{Clusterization in the heat equation}\label{subsub:clusterization1}
 Consider $\fwd$ and $\prcov$ from \emph{the inverse problem of the
 heat equation}. As before, we denote the eigenvalues of
 $\fwd\prcov\fwd^*$ by $\lambda_j$. We input these eigenvalues into our
@@ -1356,13 +1466,12 @@ first $k$ eigenvectors. So, a D-optimal design arising from our
 and above.
 
 Of course, in a real life problem --- such as the inverse problem of
-the 1D heat equation --- it is likely impossible to find measurement
-locations for which all eigenvectors $k+1$ and above are
-zero. However, if the eigenvalues of $\fwd\prcov\fwd^*$ decay quickly
-(recall the square-exponential decay for eigenvalues of the 1D heat
-equation in eq.\eqref{eq:decay}), a D-optimal design will try to
-balance measuring a small number (i.e.~$k$) of the leading
-eigenvectors.
+the 1D heat equation --- it is likely impossible to find measurements
+for which all eigenvectors $k+1$ and above are zero. However, if the
+eigenvalues of $\fwd\prcov\fwd^*$ decay quickly (recall the
+square-exponential decay for eigenvalues of the 1D heat equation in
+eq.\eqref{eq:decay}), a D-optimal design will try to balance measuring
+a small number (i.e.~$k$) of the leading eigenvectors.
 
 The abovementioned balance is explored in
 Fig.~\ref{fig:eigenvectors}. We allow $m=4$ measurements in $\Omega =
@@ -1379,16 +1488,17 @@ $x=0.5$ would have ignored the second eigenvector altogether, since
 the second eigenvector is zero at $x=0.5$.
 
 Now we can understand measurement clusterization for the inverse
-problem of the heat equation. A D-optimal design attempts to measure
-the first $k$ eigenvectors of $\fwd \prcov \fwd^*$. But there may be
-(spatial) limitations on where these $k$ eigenvectors have large
-amplitude. For the inverse problem of the heat equation there are two
-spatial locations that present a good compromise between the
+problem of the 1D heat equation. A D-optimal design attempts to
+measure the first $k$ eigenvectors of $\fwd \prcov \fwd^*$. But there
+may be (spatial) limitations on where these $k$ eigenvectors have
+large amplitude. For the inverse problem of the heat equation there
+are two spatial locations that present a good compromise between the
 amplitudes of the first and second eigenvectors, namely $x_1$ and
 $x_2$ --- see Fig.~\ref{fig:eigenvectors}. We have $m=4$ measurements
 at our disposal but only two spatial locations that are a good
-compromise between the first and second scaled eigenvectors. Thus,
-clusterization arises as a consequence of the pigeonhole principle.
+compromise between the amplitudes of the first and second scaled
+eigenvectors. Thus, clusterization arises as a consequence of the
+pigeonhole principle.
 
 \begin{figure}\label{fig:eigenvectors}
     \centering
@@ -1399,7 +1509,7 @@ clusterization arises as a consequence of the pigeonhole principle.
       eigenvectors are plotted over the computational domain $\Omega =
       [0, 1]$ (x-axis). Measurement clusterization occurs
       approximately at $0.31$ and $0.69$. These two locations are a
-      compromise between the magnitudes of the first and second
+      compromise between the amplitudes of the first and second
       eigenvectors, which are the eigenvectors that a D-optimal design
       aims to measure. Allocating $m=4$ measurements into two
       locations results in clusterization, according to the pigeonhole
@@ -1409,12 +1519,12 @@ clusterization arises as a consequence of the pigeonhole principle.
 
 
 
-\subsubsection{Clusterization in our generic model}We can gain further insight to clusterization in our generic model,
+\subsubsection{Clusterization in our generic model}\label{subsub:cara}
+We can gain further insight to clusterization in our generic model,
 from Carath\'eodory's Theorem and the concentration on the first $k$
 eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
-adapting arguments presented in \cite[Chapter
-  3]{silveyOptimalDesign1980} and \cite[Section
-  5.2.3]{pronzatoPazman2013}.
+adapting arguments presented in \cite[Chapter 3]{silvey1980} and
+\cite[Section 5.2.3]{pronzatoPazman2013}.
 
 Consider $\opt$ a D-optimal design under our generic model.  As
 instructed by Theorem \ref{thm:char}, we ignore all but the first $k$
@@ -1430,17 +1540,17 @@ space. Hence $\mathcal{M}$ lives in a $k(k+1)/2$-dimensional vector
 space. Since $\opt^*\opt = \sum_{i=1}^m \meas_i\meas_i^*$ for $\meas_i
 \in \hilo^{(k)}$, it is easy to verify that $\frac1m \opt^*\opt \in
 \mathcal{M}$.  Recall Carath\'eodory's Theorem:
-\begin{theorem}[Carath\'eodory]
+\begin{theorem*}[Carath\'eodory]
   Let $X \subseteq \mathbb{R}^n, X \neq \phi$ and denote $\conv (X)$
   the convex hull of $X$. For every $x \in \conv (X)$, $x$ is a convex
   combination of at most $n+1$ vectors in $X$.
-\end{theorem}
+\end{theorem*}
 Carath\'eodory's Theorem implies that there exist $\meas_i$ and
 $\alpha_i$ such that
 \begin{equation*}
   \opt^*\opt = \sum_{i=1}^I \alpha_i \meas_i\meas_i^*,
 \end{equation*}
-where $\|\meas\|=1, \sum\alpha_i = m, \alpha_i \geq 0$ and $I =
+where $\|\meas_i\|=1, \sum\alpha_i = m, \alpha_i \geq 0$ and $I =
 \frac{k(k+1)}{2} + 1$. We can thus write $\opt$ as:
 
 
@@ -1461,6 +1571,41 @@ have unit norm. Still, the above representation of $\opt$ is useful:
 If $m > \frac{k(k+1)}{2} + 1$, then $\alpha_i > 1$ for some $1\leq i
 \leq I$.  Thus, we can view $\opt$ as a clustered design, since it
 places weight $>1$ on a single measurement vector.
+
+
+\subsubsection{Convergence}\label{subsub:convergence}
+In this section we fulfill our promise from Section
+\ref{subsub:implications} and prove that the posterior uncertainty
+ellipsoid in $\hilo$ will contract to zero along every eigenvector of
+$\fwd \prcov \fwd^*$. In our proof we ignore potential problems with
+conducting inference on function spaces which are not unique to
+D-optimal designs (see e.g.~\cite{owhadi2015} for more details).
+
+
+First, denote $\opt_m$ a D-optimal design utilizing $m$ measurements
+and denote $k_m := \rank\opt_m^*\opt_m$. An immediate consequence of
+Theorem \ref{thm:char} is that allowing more measurements will
+eventually allow us to measure each eigenvalue, i.e.:
+\begin{equation}\label{eq:lim}
+  \lim_{m\to\infty} k_m = \infty
+\end{equation}
+
+Now, recall that part (5) of Theorem \ref{thm:char} ensures that the
+eigenvalues of the posterior pushforward covariance equal
+\begin{equation*}
+  \theta^{(k)}_i = \left ( \frac{\sum_{j=1}^{k} \lambda_j^{-1} +
+    \sigma^{-2}m}{k} \right )^{-1}, \text{ for $i\leq k$}.
+\end{equation*}
+Using the inequality for the arithmetic and harmonic means, it is easy
+to verify that
+\begin{equation*}
+  \theta^{(k)}_i \leq \lambda_{k}.
+\end{equation*}
+Since $\lim_{k\to \infty} \lambda_k= 0$, we conclude that for all $i$,
+$\lim_{k\to\infty} \theta^{(k)}_i = 0$. Combining the latter
+observation with eq.~\eqref{eq:lim}, we conclude that
+$\lim_{m\to\infty} \theta^{(k_m)}_i = 0$ for all $i$. Therefore,
+posterior uncertainty decays to zero for all eigenvectors.
  \section{Numerical Experiments}
 
 
@@ -1470,46 +1615,43 @@ In the proof of Theorem \ref{thm:char} we utilize Lemma
 \ref{lemma:free} to construct D-optimal designs. We implement this
 construction with the goal of testing numerically how prevalent are
 clustered designs. To this end, we would like to generate random prior
-eigenvalues $\lambda_j$, fix $m$ and $k$, find a D-optimal
-$\opt^*\opt$ and then utilize the construction of
+eigenvalues $\lambda_j$, fix $m$ and $k$, find what a D-optimal
+$\opt^*\opt$ should be, and then utilize the construction of
 Theorem~\ref{thm:char} and Lemma~\ref{lemma:free} to find $\opt$.
 
 
-To simplify things, we directly sample rank $\opt^*\opt$. We iterate
-over the number of measurements $m \in \{4,\dots, 24\}$, and for every
-$m$ we then iterate over $k:=\rank \obs^*\obs \in \{2,\dots,
-m-1\}$. For each pair $m,k$ we repeat the following steps $N=5000$
-times:
+To simplify things, we directly generate $\opt^*\opt$. We iterate over
+the number of measurements $m \in \{4,\dots, 24\}$, and for every $m$
+we then iterate over $k:=\rank \opt^*\opt \in \{2,\dots, m-1\}$. For
+each pair $m,k$ we repeat the following steps $N=5000$ times:
 \begin{enumerate}
 \item Generate random diagonal $D\in \mathbb{R}^{k\times k}$ with
-  entries $\log (d_i) \sim \mathcal{N}(50,15)$ and normalize so that
-  $\ttr D = m$. 
+  entries $\log (d_i) \sim \mathcal{N}(50,15)$.
+\item Normalize $D$ that $\ttr D = m$.
 \item Conjugate $D$ by a random orthogonal matrix to form a positive
   semi-definite $M := UDU^t \in \mathbb{R}^{k\times k}$. This $M$
   represents $\opt^*\opt$.
 \item Apply the construction of Lemma \ref{lemma:free} to calculate
-  $A$ such that $AA^t = M$, where $A$ has unit norm columns. I.e.~find
-  the optimal design $\opt$.
-\item Since $A$ corresponds to $\opt$, its columns correspond to
+  $A$ such that $AA^t = M$, where $A$ has unit norm columns. $A^t$ is
+  our optimal design $\opt$.
+\item Since $A^t$ corresponds to $\opt$, its columns correspond to
   measurement vectors. We call $A$ "clustered" if $A$ has two or more
-  identical columns (up to some numerical precision threshold).
+  identical columns (up to some numerical precision threshold,
+  i.e.~$10^{-5}$).
 \end{enumerate}
 We then calculate the fraction of clustered designs of the simulations
 we ran, for each pair $m,k$. Clusterization occurred at high rates
 ($>99.9\%$) whenever $m-k > 1$; see Fig.~\ref{fig:sim_AAt}. Hence, in
 these simulations, clusterization is a generic property. However, when
-$m-k = 1$, clusterization does not occur. We do not why this is so and
-further investigation into this phenomenon is out of scope for the
-current study.
+$m-k = 1$, clusterization does not occur. We do not why this is so.
 
 \begin{figure}
     \centering
     \includegraphics[height=0.5\textwidth]{figs/simulations.png}
     \caption{Fraction of clustered $A$ for $AA^t = M$ and $M$
       generated randomly (see text and repository for details on
-      generating $M$). It is evident that when $m-k \geq 2$ clusterization
-      is ubiquitous, whereas for lower $m-k$ clusterization does not
-      occur.}
+      generating $M$). It is evident that when $m-k > 1$ clusterization
+      is prevalent, whereas for lower $m-k$ clusterization is not.}
   \label{fig:sim_AAt}
 \end{figure}
 
@@ -1519,6 +1661,9 @@ Code implementing the experiments described above is located in module
 \texttt{zeros.py} of said repository. Runtime should be less than 30
 minutes on any reasonably modern laptop (it took 12 minutes on the
 author's laptop).
+
+
+
 
 
 \subsection{Correlated errors}\label{subsec:corr_errors_sims}
@@ -1535,11 +1680,11 @@ is located in module \texttt{clusterization.py} in the accompanying
     \includegraphics[height=0.5\textwidth]{figs/dst_modelError4.png}
     \caption{Model correlation mitigates clusterization. We add a
       model correlation term to the error terms in the 1D heat
-      equation inverse problem. Lo and behold, measurements are not
-      close anymore and are pushed away thanks to the model error
-      term.}
+      equation inverse problem. As expected, measurements are pushed
+      away owing to the model error term.}
   \label{fig:corr_errors}
 \end{figure}
+
 
 
 
@@ -1548,30 +1693,32 @@ is located in module \texttt{clusterization.py} in the accompanying
 
 \begin{acks}[Acknowledgments]
   This study is a result of research I started during my PhD studies
-under the instruction of Prof.~Georg Stadler at the Courant Institute
-of Mathematical Sciences. I would like to thank him for his great
-mentorship, attention to details and kindness. I would also like to
-thank Christian Remling, who helped me find a proof for Lemma
-\ref{lemma:free} in
-\href{https://mathoverflow.net/questions/280168/redistribute-diagonal-entries-of-a-matrix/280203#280203c}{Mathoverflow}.
-Last, but certainly not least, I would like to thank the three
-referees, associate editor and editor in chief for providing detailed
-and insightful reviewes that have made this manuscript a whole lot
-better.
-   
+  under the instruction of Prof.~Georg Stadler at the Courant
+  Institute of Mathematical Sciences. I would like to thank him for
+  his great mentorship, attention to details and kindness. I would
+  also like to thank Christian Remling, who helped me find a proof for
+  Lemma \ref{lemma:free} in
+  \href{https://mathoverflow.net/questions/280168/redistribute-diagonal-entries-of-a-matrix/280203#280203c}{Mathoverflow}.
+  Last, but certainly not least, I would like to thank the three
+  referees, associate editor and editor in chief for providing
+  detailed and insightful reviewes that have made this manuscript a
+  whole lot better.
+
+
+  
   This research was supported in part by an appointment with the
-National Science Foundation (NSF) Mathematical Sciences Graduate
-Internship (MSGI) Program sponsored by the NSF Division of
-Mathematical Sciences. This program is administered by the Oak Ridge
-Institute for Science and Education (ORISE) through an interagency
-agreement between the U.S. Department of Energy (DOE) and NSF. ORISE
-is managed for DOE by ORAU. All opinions expressed in this paper are
-the author's and do not necessarily reflect the policies and views of
-NSF, ORAU/ORISE, or DOE.
- \end{acks}
+  National Science Foundation (NSF) Mathematical Sciences Graduate
+  Internship (MSGI) Program sponsored by the NSF Division of
+  Mathematical Sciences. This program is administered by the Oak Ridge
+  Institute for Science and Education (ORISE) through an interagency
+  agreement between the U.S. Department of Energy (DOE) and NSF. ORISE
+  is managed for DOE by ORAU. All opinions expressed in this paper are
+  the author's and do not necessarily reflect the policies and views
+  of NSF, ORAU/ORISE, or DOE.
+\end{acks}
 
 \bibliographystyle{ba}
-\bibliography{../../lib.bib}
+\bibliography{/Users/yairdaon/work/lib.bib}
 
 
 \end{document}
