@@ -266,12 +266,12 @@ plot}, at the expense of measuring grass growth in other plots!
 
 As another example illustrating the differences between replication
 and clusterization, consider an experiment involving a chemical
-reaction at different temperatures. An investigator may choose to
-\emph{replicate} the experiment at $10^\circ C$ and $30^\circ
-C$. Within a single replication, the investigator may also choose to
-take measurements at different times. If the investigator chooses to
-take two measurements at the same time (within a single replication),
-then the investigator has utilized a \emph{clustered} design. While
+reaction conducted at different temperatures. An investigator may
+choose to repeat the experiment at $10^\circ C$ and $30^\circ C$,
+giving rise to \emph{replication}. Within a single experiment, the
+investigator may also sample the concentrations of the reagents
+through the course of the experiment. Simultaneous sampling (within a
+single experiment) gives rise to \emph{clusterization}. While
 replication is intuitively sensible for this chemical experiment,
 clusterization is not.
 
@@ -280,22 +280,35 @@ these are fundamentally different concepts and even though replication
 is quite intuitive, it is inapplicable to the inverse problems we
 consider in this manuscript.
 
-Researchers of inverse problems widely agree that measurement
-clusterization is undesirable \cite{fedorov1996, nyberg2012,
-  fedorov1997, Ucinski05, neitzel2019sparse}, prompting the
-exploration of various remedies to address this issue. One approach
-involves merging close measurements \cite{fedorov1997}; however, this
-strategy merely overlooks the phenomenon of measurement
-clusterization. An alternative solution lies in
-\emph{clusterization-free design}s, where measurement locations are
-deliberately chosen to be distant from one another. This can be
-achieved by imposing distance constraints between measurements or by
-introducing correlated errors that account for both observation error
-and model misspecification \cite{Ucinski05}. For instance, in the
-context of time-series analysis for pharmacokinetic experiments,
-measurement clusterization can be mitigated by incorporating the
-modeling of auto-correlation time within the noise terms
-\cite{nyberg2012}.
+Measurement clusterization is generally considered undesirable
+\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+  neitzel2019sparse}. It is counterintuitive for a so-called "optimal"
+design to prioritize marginally improving accuracy in a small region
+over taking measurements in unexplored regions of the computational
+domain, where they could significantly reduce uncertainty.
+
+The issue with clusterization is evident in
+Fig.~\ref{fig:clusterization_illustration}, where most clustered
+designs shown place little to no measurement weight in the center of
+the domain, where prior uncertainty is largest. It seems as though a
+clustered design assumes that focusing measurement efforts on a small
+subset of the domain can somehow yield information about the entire
+domain. Intuitively, this is an unreasonable assumption, albeit it
+holds for \emph{linear} models.
+
+The view that clusterization is undesirable prompted the exploration
+of various remedies to address this issue. One approach involves
+merging close measurements \cite{fedorov1997}; however, this strategy
+merely overlooks the phenomenon of measurement clusterization. An
+alternative solution lies in \emph{clusterization-free design}s, where
+measurement locations are deliberately chosen to be distant from one
+another. This can be achieved by imposing distance constraints between
+measurements or by introducing correlated errors that account for both
+observation error and model misspecification \cite{Ucinski05}. For
+instance, in the context of time-series analysis for pharmacokinetic
+experiments, measurement clusterization can be mitigated by
+incorporating the modeling of auto-correlation time within the noise
+terms \cite{nyberg2012}.
 
 
 In spatial problems involving choice of measurements within a domain

@@ -1,0 +1,202 @@
+\documentclass{ar2rc}
+
+\title{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
+\author{Yair Daon}
+\journal{Bayesian Analysis}
+\doi{12345}
+
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Editor in Chief and Associate Editor}
+\RC The new version of this paper has been carefully read by the AE and
+the three original Referees. All of them found the paper greatly
+improved. One of the Referees is satisfied and recommends acceptance,
+another asks for an additional clarification; the third still has some
+concerns, which need to be addressed. Two reports can be downloaded
+from the system. The AE wrote to me: 'The referees are largely happy
+with the revised version. I would urge the author to clarify a couple
+of remaining questions: why is clusterization bad (and what's the
+difference with repeated measurements) and why the recommendation of
+independent non-Gaussian priors over dependent Gaussian priors.'
+\\
+\newline
+I concur with the overall positive assessment of this new
+version. Hence, I am pleased to recommend a 'Minor Revision'. The
+outlook is now clearly positive, but it is essential for the author to
+satisfactorily address all additional comments raised in this round.
+
+\AR Again, thanks for the insightful comments by all reviewers. These
+have greatly improved the quality of this manuscript.
+
+\section{Reviewer \#1}
+\RC In this version, the author added a sentence “Finally, we use our
+analysis to argue against the use of Gaussian priors with linearized
+physical models when seeking a D-optimal design” to the end of the
+abstract, add recommendation at page 8 \& 9 to mitigate the
+clusterization, and also add a paragraph to explain why D-optimal
+design is still desirable. It makes the argument more coherent. When I
+was rereading the paper, a clearer story appeared.
+\begin{enumerate}
+\item Why clusterization happens under independent Gaussian priors + linearized physical models for D-optimal design
+\item Clusterization is bad
+\item D-optimal design is good
+\item The problem is within independent Gaussian priors + linearized physical models
+\item correlated Gaussian prior “fix” the clusterization
+\item changing independent Gaussian priors to correlated Gaussian priors is also bad
+\item Author recommends independent non-Gaussian priors or avoids linearization
+\end{enumerate}
+The main contribution for the paper is 1, 3, 4, 5. It is fine this
+paper does not address each point given how broad they are, but I
+expect a better summary.
+
+\AR Honestly, I do not understand what Reviewer \# 1 is suggesting
+here. I think that given its required broad scope, the abstract gives
+a good outline of all points mentioned by Reviewer \# 1 except for
+3. I also think the introduction gives a reasonably thorough
+explanation on all points, even more so with the newly added text (see
+replies below).
+
+\RC For 2, author states “Researchers of inverse problems widely agree
+that measurement clusterization is undesirable \cite{fedorov1996,
+  nyberg2012, fedorov1997, Ucinski05, neitzel2019sparse}, prompting
+the exploration of various remedies to address this issue.” It is
+stated as widely recognized as bad but I still don’t get why. It would
+be nice if the author can add a few sentences to summary key points of
+these researches.
+
+\AR The abovementioned studies hardly give any insight into the reason
+clusterization should be avoided, e.g.:
+\begin{itemize}
+  \item "The points $x_s$ have the tendency to cluster around support
+    points of the optimal design. We can avoid that in the following
+    way..." \cite{fedorov1997}.
+\item "...undesirable sparsity properties, e.g., a clusterization..."
+  \cite{neitzel2019sparse}.
+\end{itemize}
+I added an explanation on why we should not expect to find a clustered
+optimal design:
+
+\begin{quote}
+\DIFdelbegin \DIFdel{Researchers of inverse problems widely agree that measurement
+}\DIFdelend \DIFaddbegin \DIFadd{Measurement clusterization is generally considered undesirable
+\mbox{%DIFAUXCMD
+\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+  neitzel2019sparse}}\hskip0pt%DIFAUXCMD
+. It is counterintuitive for a so-called "optimal"
+design to prioritize marginally improving accuracy in a small region
+over taking measurements in unexplored regions of the computational
+domain, where they could significantly reduce uncertainty.
+}
+
+\DIFadd{The issue with clusterization is evident in
+Fig.~1, where most clustered
+designs shown place little to no measurement weight in the center of
+the domain, where prior uncertainty is largest. It seems as though a
+clustered design assumes that focusing measurement efforts on a small
+subset of the domain can somehow yield information about the entire
+domain. Intuitively, this is an unreasonable assumption, albeit it
+holds for }\emph{\DIFadd{linear}} \DIFadd{models.
+}
+
+\DIFadd{The view that }\DIFaddend clusterization is undesirable \DIFdelbegin \DIFdel{\mbox{%DIFAUXCMD
+\cite{fedorov1996, nyberg2012,
+  fedorov1997, Ucinski05, neitzel2019sparse}}\hskip0pt%DIFAUXCMD
+, prompting }\DIFdelend \DIFaddbegin \DIFadd{prompted }\DIFaddend the exploration
+of various remedies to address this issue (\dots)
+\end{quote}
+
+\RC For 6 and 7, I understand the avoiding linearization
+recommendation, since linearization can lead to oversimplification of
+the physical process and degrades the design. But I don’t get why
+“independent non-Gaussian priors” is better than “correlated Gaussian
+priors” in “fixing” the Clusterization. They are both prior
+distribution choices, both seem quite arbitrary to me, unless the
+author can show one prior has any benefit over the other for optimal
+design, the central topic being discussed. I emphasize I don’t expect
+the author to address this somewhat philosophical question in the
+paper. I just feel if the author does not have an argument in favor of
+one vs the other, the author can just present available information
+and avoid giving recommendations.
+
+
+\AR If I understand correctly, there is a misunderstanding here. We
+can take an independent Gaussian \emph{likelihood}, which is
+standard. Some authors avoid clusterization by modifying the
+likelihood by imposing correlations between measurements. I find this
+approach very ad-hoc; correlations between measurements do not
+correspond to any physical or statistical property of the problem and
+they are there because the push measurements apart.  \\
+\newline
+On the other hand, there is the choice of a Gaussian \emph{prior}. In
+my opinion, Gaussian priors are merely a convenience. Thus, in the
+manuscript I suggest utilizing non-Gaussian priors that are (1)
+potentially better modelling approach, and (2) mitigate
+clusterization, as a byproduct. See paragraph below, where I added
+some clarifications.
+\begin{quote}
+  One potential cause of clusterization is our choice of
+  prior. Gaussian priors, coupled with a Gaussian likelihood and a
+  linear forward problem give rise to a closed form solution for the
+  posterior via conjugacy. As we show in Section 6.1, such assumptions
+  generically give rise to clusterization. While an assumption of a
+  Gaussian likelihood \DIFaddbegin \DIFadd{(i.e.~independent Gaussian
+    noise) }\DIFaddend is standard, and rooted in the central limit
+  theorem, an assumption of Gaussian prior is merely a matter of
+  convenience. Therefore, we advise any practitioner who encounters
+  clusterization to replace their Gaussian priors with non-Gaussian
+  priors instead \cite{hosseini2017, hosseini2019}\DIFaddbegin
+  \DIFadd{, as these are not only more realistic but also expected to
+    mitigate clusterization}\DIFaddend .
+\end{quote}
+Respectfully, I do not believe such misunderstanding warrants
+extensive modification of the manuscript and overloading it with more
+arguments. Hence, I kept the minimal modifications above.
+
+
+
+\section*{Reviewer 2}
+\subsection*{Measurement Clusterization vs Repetition}
+
+\RC I am still not quite sure I get the difference. If I am to do a
+chemistry experiment where I can make 3 measurements of the response
+ay 3 temperatures. I find an optimal design that tells me to collect
+to a measurement at 10 degrees and two at 30. Is this measurement
+clusterisation or repeated measurement?
+Note that by doing two measurements at 30 degrees, it was at the expense of taking a measurement at two distinct temperatures.
+
+\AR I added the following paragraph, building on the example suggested
+by the reviewer. I hope it explains the important difference between
+the concepts of replication and clusterization.
+\begin{quote}
+  As another example illustrating the differences between replication
+  and clusterization, consider an experiment involving a chemical
+  reaction conducted at different temperatures. An investigator may
+  choose to repeat the experiment at $10^\circ C$ and $30^\circ C$,
+  giving rise to \emph{replication}. Within a single experiment, the
+  investigator may also sample the concentrations of the reagents
+  through the course of the experiment. Simultaneous sampling (within
+  a single experiment) gives rise to \emph{clusterization}. While
+  replication is intuitively sensible for this chemical experiment,
+  clusterization is not.
+\end{quote}
+
+\bibliography{/Users/yairdaon/lib.bib}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
