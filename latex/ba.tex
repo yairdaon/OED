@@ -2,6 +2,27 @@
 \documentclass[ba]{imsart}
 \input{definitions}
 
+%\usepackage{comment}% http://ctan.org/pkg/comment
+%% %% %\excludecomment{proof}
+%% \excludecomment{figure}
+%% \let\endfigure\relax
+
+
+%\overfullrule=0pt
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
 %
 \pubyear{2021}
 \volume{TBA}

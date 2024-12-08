@@ -3,8 +3,8 @@
 
 \usefonttheme{professionalfonts} % using non standard fonts for beamer
 \usefonttheme{serif} % default family is serif
-\usepackage{fontspec}
-\setmainfont{Liberation Serif}
+%% \usepackage{fontspec}
+%% \setmainfont{Liberation Serif}
 \usepackage{multimedia}
 \setbeamertemplate{footline}[frame number]
 \usepgfplotslibrary{fillbetween}
@@ -32,7 +32,7 @@
 
   \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{inverse_problem.png}
+    \includegraphics[width=\textwidth]{figs/inverse_problem.png}
   \end{figure}
 
   \footnotesize{Neumayer, Suppan and Bretterklieber (2019)}
@@ -55,7 +55,7 @@
   
       \begin{figure}
         \centering
-        \only<2->{\includegraphics[width=1.3\textwidth, height=0.76\textwidth]{heat_rod.png}}
+        \only<2->{\includegraphics[width=1.3\textwidth, height=0.76\textwidth]{figs/heat_rod.png}}
       \end{figure}
     \end{column}
 
@@ -63,12 +63,12 @@
 
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{CT.png}
+        \includegraphics[width=\linewidth]{figs/CT.png}
       \end{figure}
 
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth, height=4cm]{borehole.png}
+        \includegraphics[width=\linewidth, height=4cm]{figs/borehole.png}
       \end{figure}
       
     \end{column}
@@ -108,7 +108,7 @@
 
 \begin{figure}
   \centering
-  \includegraphics[width=8cm,height=5cm]{heat_rod.png} 
+  \includegraphics[width=8cm,height=5cm]{figs/heat_rod.png} 
 \end{figure}
 
 \footnotesize{Wikimedia Commons}
@@ -118,7 +118,7 @@
 \begin{frame}
   \begin{figure}
     \centering
-    \href{run:forward_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{forward_heat_equation.png}}    
+    \href{run:figs/forward_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{figs/forward_heat_equation.png}}    
     
     %% \includemovie[inline=false,text={\includegraphics[scale=0.25]{forward_heat_equation.png}}]{}{}{forward_heat_equation.mp4}
     %% \flashmovie[width=12cm,height=8cm,engine=flv-player,auto=1]{forward_heat_equation.mp4}
@@ -156,11 +156,23 @@
   \frametitle{Ill Posedness}
   \begin{figure}
     \centering
-    \href{run:reverse_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{reverse_heat_equation.png}}    
+    \href{run:figs/reverse_heat_equation.mp4}{\includegraphics[width=12cm,height=8cm]{figs/reverse_heat_equation.png}}    
     %% \movie[width=10cm,height=6cm,poster,autostart,loop]{
     %% \includegraphics[width=10cm,height=6cm]{reverse_heat_equation.png}
     %% }{reverse_heat_equation.mp4}
   \end{figure}
+\end{frame}
+
+  
+\begin{frame}
+  \begin{itemize}
+  \item<1-> Separable Hilbert space $\hil$.
+  \item<2-> \(\fwd: \hil \to \hil\).
+  \item<3-> \(\meas_j \in \hil^*, j=1,\dots,m \).
+  \item<4-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
+  \item<5-> \(\data := \obs \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
+  \item<6-> Goal: infer "parameter" $\param$ from data $\data$.
+  \end{itemize} 
 \end{frame}
 
 \begin{frame}
@@ -190,13 +202,13 @@
 
   \only<1>{
     \begin{center}
-      \includegraphics[width=1\textwidth]{bayes.png}
+      \includegraphics[width=1\textwidth]{figs/bayes.png}
     \end{center}
   }
   
   \only<2>{
     \begin{center}
-      \includegraphics[width=1\textwidth]{kl.png}
+      \includegraphics[width=1\textwidth]{figs/kl.png}
     \end{center}
   }
   
@@ -206,7 +218,7 @@
 
 \begin{frame}
   \begin{center}
-    \includegraphics[width=\textwidth]{bayesian_inverse_problems.jpg}
+    \includegraphics[width=\textwidth]{figs/bayesian_inverse_problems.jpg}
   \end{center}
   \footnotesize{Alexanderian (2021).}
 \end{frame}
@@ -234,7 +246,7 @@
 \end{align*}
 
 \begin{figure}
-   \includegraphics[width=10cm,height=6cm]{MultivariateNormal.png}
+   \includegraphics[width=10cm,height=6cm]{figs/MultivariateNormal.png}
 \end{figure}
 
 \footnotesize{Wikimedia Commons}
@@ -276,7 +288,7 @@
   
       \begin{figure}
         \centering
-        \includegraphics[width=1.2\textwidth, height=0.66\textwidth]{heat_rod.png}
+        \includegraphics[width=1.2\textwidth, height=0.66\textwidth]{figs/heat_rod.png}
       \end{figure}
     \end{column}
 
@@ -284,12 +296,12 @@
 
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth, height=3.5cm]{CT.png}
+        \includegraphics[width=\linewidth, height=3.5cm]{figs/CT.png}
       \end{figure}
 
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth, height=3.5cm]{borehole.png}
+        \includegraphics[width=\linewidth, height=3.5cm]{figs/borehole.png}
       \end{figure}
       
     \end{column}
@@ -387,7 +399,7 @@
 \frametitle{Problem: Clusterization}
 \begin{figure}
   \centering
-  \includegraphics[height=0.5\textwidth]{dst_modelError0.png}
+  \includegraphics[height=0.5\textwidth]{figs/dst_modelError0.png}
 \end{figure}
 
 % Discuss sensor clusterization in the heat equation example
@@ -406,9 +418,9 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.55\textwidth}
-      \only<1>{\includegraphics[width=\textwidth]{merge.png}}
-      \only<2>{\includegraphics[width=\textwidth]{constraints.png}}
-      \only<3>{\includegraphics[width=\textwidth]{stadler_OED.png}}
+      \only<1>{\includegraphics[width=\textwidth]{figs/merge.png}}
+      \only<2>{\includegraphics[width=\textwidth]{figs/constraints.png}}
+      \only<3>{\includegraphics[width=\textwidth]{figs/stadler_OED.png}}
     \end{column}
   \end{columns}  
 \end{frame}
@@ -509,7 +521,7 @@ Where
     %% \end{equation*}
     where \(\Xi \in \mathbb{R}^{m \times m}\) is diagonal.
   \end{theorem}
-  \pause Proof idea: Lagrange multipliers.
+  \pause A nonlinear eigenvalue problem. \pause Proof: Lagrange multipliers.
 \end{frame}
 
 
@@ -654,6 +666,18 @@ Where
       &\lambda_i  &&\quad \text{ o.w.}
     \end{align*}
   \end{theorem}
+  \pause Proof: KKT and a lemma.
+\end{frame}
+
+\begin{frame}
+  \begin{lemma}[D.]
+    Let $M \in \R^{k \times k}$ symmetric positive definite with $\ttr
+    M = m$, $m \geq k$. We can find $\func_j \in \R^k,j=1,\dots,m$
+    with $\|\func_j\|=1$ and $A = (\func_1,\dots,\func_m)$ such that
+    $AA^t = M$.
+  \end{lemma}
+  \pause Proof: $M = UDU^t$. Find $V$ orthogonal such that $V^tDV$ has
+  unit diagonal via Givens rotations. Let $A := U\sqrt{D} V^t$.
 \end{frame}
 
 \begin{frame}
@@ -706,23 +730,35 @@ Where
   \frametitle{Four Sensors for the Heat Equation}
   \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{eigenvectors_dst.png}
+    \includegraphics[width=\textwidth]{figs/eigenvectors.png}
   \end{figure}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Summary}
+  \frametitle{Simulating of Generic Model}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figs/simulations.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contributions}
   \begin{itemize}
-  \item Study a generic inverse problem with unit ball constraints.
-  \item D-optimality implies \(\fwd \postcov\fwd^* \opt^* = \opt^* \Xi\).
-  \item Key: $\opt^*\opt$ and \(\fwd \prcov\fwd^*\) are
+  \item <1-> Generic inverse problem with unit norm constraints.
+  \item <2-> D-optimality \( \Longrightarrow \) nonlinear eigenvalue problem.%\fwd \postcov\fwd^* \opt^* = \opt^* \Xi\).
+  \item <3-> Key: $\opt^*\opt$ and \(\fwd \prcov\fwd^*\) are
     simultaneously diagonalizable.
-  \item A D-optimal design concentrates on smallest prior covariance eigenvectors...
-  \item ... and a D-optimal design reduces uncertainty uniformly on these.
-  \item Saw manifestation in the heat equation.
-  \item Clusterization is just a result of avoiding higher eigenvectors
-    and pigeonhole principle.
-  \item Did not review: correlated errors, genericity of clusterization.
+  \item <4-> D-optimal design concentrates on smallest prior covariance eigenvectors...
+  \item <5-> ... and reduces uncertainty uniformly on these.
+  %\item <6-> Saw manifestation in the heat equation.
+  \item <6-> Avoiding higher eigenvectors + pigeonhole principle
+    $\Rightarrow$ clusterization.
+  %\item <7-> We know how many d.o.f we can expect to resolve. 
+  \item <7-> Clusterization is generic in \emph{linear} problems.
+  \item <8-> Bottom line: avoid linearization. % when seeking optimal designs.
   \end{itemize}
 \end{frame}
 \end{document}
+
+
