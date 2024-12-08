@@ -55,6 +55,11 @@
 \newcommand{\opt}{\mathcal{D}}
 \newcommand{\postopt}{\mu_{\textup{post}}^{\data, \opt}} 
 
+\raggedbottom
+ 
+
+
+
 
 
 \theoremstyle{plain}
@@ -70,9 +75,6 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-
-\raggedbottom
- 
 \pubyear{2021}
 \volume{TBA}
 \issue{TBA}
@@ -410,6 +412,17 @@ to study. A clustered design in such an experiment would imply the
 researchers should take a repeated measurement \emph{on the same
 plot}, at the expense of measuring grass growth in other plots!
 
+As another example illustrating the differences between replication
+and clusterization, consider an experiment involving a chemical
+reaction at different temperatures. An investigator may choose to
+\emph{replicate} the experiment at $10^\circ C$ and $30^\circ
+C$. Within a single replication, the investigator may also choose to
+take measurements at different times. If the investigator chooses to
+take two measurements at the same time (within a single replication),
+then the investigator has utilized a \emph{clustered} design. While
+replication is intuitively sensible for this chemical experiment,
+clusterization is not.
+
 To conclude our short discussion on replication vs.~clusterization:
 these are fundamentally different concepts and even though replication
 is quite intuitive, it is inapplicable to the inverse problems we
@@ -571,11 +584,12 @@ priors, coupled with a Gaussian likelihood and a linear forward
 problem give rise to a closed form solution for the posterior via
 conjugacy. As we show in Section \ref{subsec:lemma_sims}, such
 assumptions generically give rise to clusterization. While an
-assumption of a Gaussian likelihood is standard, and rooted in the
-central limit theorem, an assumption of Gaussian prior is merely a
-matter of convenience. Therefore, we advise any practitioner who
-encounters clusterization to replace their Gaussian priors with
-non-Gaussian priors instead \cite{hosseini2017, hosseini2019}.
+assumption of a Gaussian likelihood (i.e.~independent Gaussian noise)
+is standard, and rooted in the central limit theorem, an assumption of
+Gaussian prior is merely a matter of convenience. Therefore, we advise
+practitioners encountering clusterization to replace Gaussian priors
+with non-Gaussian ones \cite{hosseini2017, hosseini2019}, as these are
+not only more realistic but also expected to mitigate clusterization.
 
 Another potential cause of clusterization is linearization. While in a
 real applications the model is not necessarily linear, some authors
@@ -1348,8 +1362,35 @@ fully characterize them in Theorem \ref{thm:char} below.
       \end{cases}.
     \end{equation}
   \end{enumerate}
-\end{theorem}
 
+
+  Then:
+  \begin{enumerate}
+  \item  \(\tr{\obs^*\obs} = m\).
+  \item \(\obs^*\obs\) and \(\fwd\prcov\fwd^*\) are simultaneously
+    diagonalizable.
+  \item \(k := \rank \obs^*\obs \leq m\) and
+    \begin{equation*}
+      \tar(\obs) = \frac12 \sum_{i=1}^{k} \log (1 + \sigma^{-2}\lambda_i\eta_i). \end{equation*}
+\item
+    \begin{equation*}
+        \eta_i = \begin{cases}
+          \frac{m}{k} - \sigma^2 \lambda_i^{-1} + \sigma^2 \frac{1}{k} \sum_{j=1}^k \lambda_j^{-1} & 1 \leq i \leq k \\
+          0 & i > k 
+        \end{cases}.
+    \end{equation*}
+  \item The covariance of the pushforwad \(\fwd_{*} \post\) is \(\left
+    ( (\fwd \prcov \fwd^*)^{-1} + \sigma^{-2} \obs^*\obs \right
+    )^{-1}\) and its eigenvalues are
+    \begin{equation*}
+      \theta_i =
+      \begin{cases}
+        \left(\frac{\sum_{j=1}^k \lambda_j^{-1} + \sigma^{-2}m}{k} \right )^{-1} & i \leq k \\
+        \lambda_i &  i > k 
+      \end{cases}
+    \end{equation*}
+  \end{enumerate}
+\end{theorem}
 \begin{proof}
   Part (1) is immediate for any measurement operator $\obs$ that
   satisfies the unit norm constraint on measurements. Part (2)
