@@ -1,6 +1,6 @@
 \section{Introduction}\label{section:intro}
 Experimental design is a systematic approach to specifying every
-possible aspect of an experiment \cite{chaloner1995}. In this study,
+possible aspect of an experiment \citet{chaloner1995}. In this study,
 we focus on experiments that involve measuring quantities arising from
 naturally occurring processes. For us, therefore, experimental design
 entails determining which specific measurements to record from a given
@@ -13,14 +13,14 @@ the validity of the conclusions drawn.
 For example, consider the process of searching for oil: measurements
 require digging deep holes in the ground, known as "boreholes". A
 \emph{design} simply indicates which boreholes should be dug
-\cite{horesh2008borehole}. Since digging boreholes is expensive, only
+\citet{horesh2008borehole}. Since digging boreholes is expensive, only
 a limited number of them can be dug, and thus carefully choosing their
 locations is crucial.
 
 Specifying the right set of measurements holds particular significance
 when solving an \emph{inverse problem} --- i.e.~making inference of
 the physical world utilizing a physical model of a phenomenon of
-interest \cite{tarantola2005,kaipio2005}. In an inverse problem, we
+interest \citet{tarantola2005,kaipio2005}. In an inverse problem, we
 seek to infer physical quantities, based on observations and a model
 of the physical world. Models are typically phrased in the language of
 ordinary or partial differential equations.
@@ -30,13 +30,13 @@ example, in electrical impedance tomography (EIT) we seek to infer the
 structure of the inside of a human body. Inference is conducted based
 on observations of electrical current impedance measured at specific
 electrode locations on the skin, leveraging known equations of
-electric current flow \cite{horesh2010impedance}. Magnetic Resonance
+electric current flow \citet{horesh2010impedance}. Magnetic Resonance
 Imaging (MRI) also entails solving an inverse problem. There,
 radio-frequency pulses are sent through the human body in the presence
 of a strong magnetic field. The response of one's body contents to
 these radio-frequency pulses is measured, allowing a radiologist to
 view the internals of a body in a noninvasive manner
-\cite{horesh2008mri}. An inverse problem also arises in oil and gas
+\citet{horesh2008mri}. An inverse problem also arises in oil and gas
 exploration, where acoustic waves are sent through "boreholes" ---
 deep cylindrical wells drilled into the ground. Data of travel and
 return times of the acoustic waves are recorded. Wave travel and
@@ -45,9 +45,9 @@ materials, such as density, elasticity, and the presence of fluids or
 voids. Combining travel time data with a geophysical model of the
 contents of the earth's crust facilitates reconstructing the structure
 of the subsurface in a process called \emph{borehole tomography}
-\cite{horesh2008borehole}. Inverse problems also arise in many other
-areas of seismology and geology \cite{rabinowitz1990, steinberg1995}
-and medical imaging \cite{tarantola2005}. In many inverse problems the
+\citet{horesh2008borehole}. Inverse problems also arise in many other
+areas of seismology and geology \citet{rabinowitz1990, steinberg1995}
+and medical imaging \citet{tarantola2005}. In many inverse problems the
 goal is to infer some numerical parameter. However, in the formulation
 we consider in this study, as well as in the examples above, the goal
 is to conduct inference over some \emph{function} over $\Omega$, where
@@ -72,7 +72,7 @@ In this study, we focus on the Bayesian D-optimality
 criterion. Bayesian D-optimality carries a simple and intuitive
 meaning: measurements chosen according to the D-optimality criterion
 maximize the expected Kullback-Leibler (KL) divergence from posterior
-to prior \cite{chaloner1995, AlexanderianGloorGhattas14,
+to prior \citet{chaloner1995, AlexanderianGloorGhattas14,
   CoverThomas91}.
 %%  Utilizing KL divergence for quantifying differences between
 %% distributions is standard practice and we will not motivate it
@@ -94,7 +94,7 @@ criterion as a \emph{D-optimal design}.
 
 For a linear model with Gaussian prior in finite dimensions, a
 D-optimal design minimizes the determinant of the posterior covariance
-\cite{chaloner1995}. In Section \ref{subsec:D_optimal_design} we give
+\citet{chaloner1995}. In Section \ref{subsec:D_optimal_design} we give
 a more general definition of the D-optimality criterion that applies
 to arbitrary measures. We also show how the D-optimality criterion
 generalizes to linear models over infinite-dimensional Hilbert spaces
@@ -143,7 +143,7 @@ n x)$, so $u_0 = \sum_{n\geq 1} a_n \ev_n$ for some $\{a_n\}_{n\geq
   1}$. Now, note that $\ev_n$ are in fact eigenvectors of the
 Laplacian: $\Delta \ev_n = -\pi^2 n^2\ev_n$. It should not be hard to
 believe that $u(\cdot, T) = \sum_{n\geq 1} a_n \exp(-\pi^2 n^2T )
-\ev_n$ \cite{renardy2006PDE}. Thus, eigenvectors of the linear
+\ev_n$ \citet{renardy2006PDE}. Thus, eigenvectors of the linear
 operator that describes the time evolution of heat are $\ev_n(x) =
 \sin(\pi n x)$ with corresponding eigenvalues
 \begin{equation}\label{eq:decay}
@@ -186,9 +186,9 @@ $\Delta$ is a differential operator, it is "roughing" (the opposite of
 smoothing) and so $(-\Delta)^{-1}$ is smoothing. Prior realizations
 are generated, in analogy to the finite dimensional case, by smoothing
 white noise: $(-\Delta)^{-1/2}\mathcal{W}$, where $\mathcal{W}$ is
-white noise \cite{rue2011}. Our choice of prior covariance operator
+white noise \citet{rue2011}. Our choice of prior covariance operator
 ensures the posterior is well-defined and prior realizations are
-well-behaved, see Theorem 3.1 and Lemma 6.25 in \cite{Stuart10} for
+well-behaved, see Theorem 3.1 and Lemma 6.25 in \citet{Stuart10} for
 details. The second ingredient of a fully Bayesian formulation of the
 inverse problem is likelihood. We simply assume centered iid Gaussian
 measurement error model, giving rise to a the widely applicable
@@ -206,13 +206,13 @@ D-optimal designs can be defined for our problem.
 \subsection{Measurement Clusterization}
 Surprisingly, A- and D-optimal designs for inverse problems have been
 observed to yield remarkably similar measurements in certain cases
-\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+\citet{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
   neitzel2019sparse}. This phenomenon is illustrated for our toy
 inverse problem in Fig.~\ref{fig:clusterization_illustration}, where
 D-optimal measurement locations are shown for different numbers of
 measurements. Notably, for six measurements, a D-optimal design yields
 two sets of measurements that are identical. Following
-\cite{Ucinski05}, we refer to this intriguing phenomenon as
+\citet{Ucinski05}, we refer to this intriguing phenomenon as
 \emph{measurement clusterization}. We consider a design to be
 \emph{clustered} when two or more of its constituent measurements are
 identical.
@@ -239,11 +239,11 @@ identical.
 %% Replication 1
 Clusterization should not be confused with replication. Replication
 requires that the experimentalist executes multiple trials under
-circumstances that are \emph{nominally identical} \cite[Section
+circumstances that are \emph{nominally identical} \citet[Section
   1.2.4]{morris2011}. Replication is commonly viewed as a beneficial
 and even necessary aspect of optimal experimental design
-\cite{fisher1949design, morris2011, schafer2001replication}.
-For example, \cite{fisher1949design}, suggested repeating his famous
+\citet{fisher1949design, morris2011, schafer2001replication}.
+For example, \citet{fisher1949design}, suggested repeating his famous
 milk and tea experiment in order "to be able to demonstrate the
 predominance of correct classifications in spite of occasional
 errors". Unfortunately, in the experiments we consider, replication is
@@ -252,10 +252,10 @@ individual nominally identical to the one we wish to scan.
 
 Similarly to a design implementing replication, a clustered design
 reduces the signal-to-noise ratio of the repeated measurements
-\cite{telford2007brief}. The difference is that a clustered design
+\citet{telford2007brief}. The difference is that a clustered design
 takes repeated measurements at the expense of other quantities not
 measured at all. For example, consider an experiment measuring the
-effect of rainfall on grass growth \cite{fay2000rainfall}. The
+effect of rainfall on grass growth \citet{fay2000rainfall}. The
 experiment involved four rainfall manipulation "treatments"
 (i.e.~simulating different timing and quantity of rainfall), each
 replicated three times over different plots of land. Indeed, it seems
@@ -281,7 +281,7 @@ is quite intuitive, it is inapplicable to the inverse problems we
 consider in this manuscript.
 
 Measurement clusterization is generally considered undesirable
-\cite{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
+\citet{fedorov1996, nyberg2012, fedorov1997, Ucinski05,
   neitzel2019sparse}. It is counterintuitive for a so-called "optimal"
 design to prioritize marginally improving accuracy in a small region
 over taking measurements in unexplored regions of the computational
@@ -298,23 +298,23 @@ holds for \emph{linear} models.
 
 The view that clusterization is undesirable prompted the exploration
 of various remedies to address this issue. One approach involves
-merging close measurements \cite{fedorov1997}; however, this strategy
+merging close measurements \citet{fedorov1997}; however, this strategy
 merely overlooks the phenomenon of measurement clusterization. An
 alternative solution lies in \emph{clusterization-free design}s, where
 measurement locations are deliberately chosen to be distant from one
 another. This can be achieved by imposing distance constraints between
 measurements or by introducing correlated errors that account for both
-observation error and model misspecification \cite{Ucinski05}. For
+observation error and model misspecification \citet{Ucinski05}. For
 instance, in the context of time-series analysis for pharmacokinetic
 experiments, measurement clusterization can be mitigated by
 incorporating the modeling of auto-correlation time within the noise
-terms \cite{nyberg2012}.
+terms \citet{nyberg2012}.
 
 
 In spatial problems involving choice of measurements within a domain
 \(\Omega \subseteq \mathbb{R}^d, d=1,2,3\), many researchers
 circumvent the problem of measurement clusterization by restricting
-measurements to a coarse grid in \(\Omega\) \cite{koval2020,
+measurements to a coarse grid in \(\Omega\) \citet{koval2020,
   alexanderian2021, attia2022, alexanderian2014, alexanderian2016,
   alexanderian2018efficient, brunton2016}. This approach incurs a
 significant computational cost as it requires solving a difficult
@@ -325,11 +325,11 @@ relaxed by first assigning optimal measurement weights in
 researchers incorporate a sparsifying \(\ell_1\) penalty term into the
 design criterion, which is subsequently thresholded to achieve the
 desired binary design over the coarse grid
-\cite{horesh2008borehole}. Others progressively relax the \(\ell_1\)
+\citet{horesh2008borehole}. Others progressively relax the \(\ell_1\)
 penalty to an \(\ell_0\) penalty via a continuation method
-\cite{alexanderian2016, alexanderian2014}. Others cast the problem of
+\citet{alexanderian2016, alexanderian2014}. Others cast the problem of
 finding optimal measurement weights as a stochastic optimization
-problem \cite{attia2022stochastic}. All of the aforementioned methods
+problem \citet{attia2022stochastic}. All of the aforementioned methods
 may indeed find a binary optimal design restricted to a given coarse
 grid. However, none addresses one fundamental issue: the restriction
 of measurement locations to a coarse grid in \(\Omega\) fundamentally
@@ -469,7 +469,7 @@ assumption of a Gaussian likelihood (i.e.~independent Gaussian noise)
 is standard, and rooted in the central limit theorem, an assumption of
 Gaussian prior is merely a matter of convenience. Therefore, we advise
 any practitioner who encounters clusterization to replace their
-Gaussian priors with non-Gaussian priors instead \cite{hosseini2017,
+Gaussian priors with non-Gaussian priors instead \citet{hosseini2017,
   hosseini2019}, as these are not only more realistic but also
 expected to mitigate clusterization.
 
@@ -477,11 +477,11 @@ expected to mitigate clusterization.
 Another potential cause of clusterization is linearization. While in a
 real applications the model is not necessarily linear, some authors
 consider a linearized version of their model when seeking optimal
-designs \cite{fedorov1996, neitzel2019sparse}. Our analysis then shows
+designs \citet{fedorov1996, neitzel2019sparse}. Our analysis then shows
 that the linearity of the forward problem is also an important
 ingredient in giving rise to clustered designs. Therefore, our advice
 to practitioners is to avoid linearization, and find D-optimal designs
-via other methods, e.g.~the sampling method of \cite{ryan2003}.
+via other methods, e.g.~the sampling method of \citet{ryan2003}.
 
 %% Avoid
 Given the above discussion, it is our belief that the methods
@@ -498,8 +498,8 @@ physical measuring apparatus.
 Clusterization in D-optimal designs raises the question of whether
 D-optimal designs should be pursued at all. While other authors have
 established convergence results for decaying measurement error
-\cite{knapik2011}, space-filling measurements \cite{teckentrup2020}
-and randomly sampled designs \cite{nickl2023}, their results do not
+\citet{knapik2011}, space-filling measurements \citet{teckentrup2020}
+and randomly sampled designs \citet{nickl2023}, their results do not
 hold for D-optimal designs. Luckily, we can expect convergence from
 D-optimal designs (including clustered designs) in the following
 sense: the posterior uncertainty ellipsoid will contract to zero along
@@ -512,7 +512,7 @@ the main theorem of this manuscript.
 In Theorem \ref{thm:char}, we also show that D-optimal designs are
 best understood in the space of \emph{observations}
 %% , see Section \ref{section:vanishing} for a precise statement.
-This is in accordance with previous work by \cite{koval2020}, who
+This is in accordance with previous work by \citet{koval2020}, who
 showed that A-optimal designs are best constructed in the space of
 observations.
 
@@ -532,88 +532,6 @@ our model is generic enough to be analytically tractable, one may
 argue that our model is too far removed from any real application. To
 these claims I would answer that scientists have a long history of
 studying models that are bare-bones simplifications of real systems,
-e.g.~the Ising model \cite{cipra1987}, the Lorenz system \cite{brin},
-the Lotka-Volterra equations \cite{logan2006}, the Carnot engine
-\cite{kardar2007} and many others.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%% When clusterization arises, we believe it should serve as a warning
-%% signal to practitioners. In the inverse problem of the 1D heat
-%% equation, clusterization occurs primarily because Laplacian
-%% eigenvectors do not decay in $\Omega$. Consequently, measuring $u(x_1,
-%% T)$ at some point $x_1 \in \Omega$ provides information about
-%% $u(x_2,T)$ for distant points $x_2 \in \Omega$. Intuitively, this
-%% should not happen: for small $T$, the heat distribution at $x_1$
-%% should give very little knowledge on the heat distribution at
-%% $x_2$. This behavior stems from a well-known property of the heat
-%% equation: it allows information to spread instantly across the
-%% computational domain \cite{renardy2006PDE}. In reality, heat (and
-%% information) propagate at finite speeds. Of course, the known physical
-%% barrier for information spread is the speed of light, but we expect
-%% heat and information to spread considerably slower. Thus,
-%% clusterization may suggest that our physical model itself is at fault.
-
-%% We believe that the emergence of clusterization in this context might
-%% be non-physical, arising from the way the inverse problems we consider
-%% are phrased. Clusterization therefore indicates that the underlying
-%% mathematical / Bayesian model is overly permissive and fails to
-%% capture crucial physical constraints of the problem. We suggest that
-%% when clusterization occurs, practitioners should consider alternative
-%% models where information is localized in space and travels at finite
-%% speed in the medium. Such models may not only provide more physically
-%% accurate and meaningful results but may also mitigate the issue of
-%% clusterization.
-
-
-
-%% be avoided at all. Nothing in our analysis indicates that we should
-%% expect any pathological behavior when utilizing D-optimal designs. On
-%% the contrary: we show that D-optimal designs (clustered or not) reduce
-%% uncertainty of prior covariance eigenvectors where it is
-%% highest. Thus, in a sense we hope to make precise in a future study,
-%% we expect convergence of for D-optimal designs to be fastest.
-
-
-
-%% practitioners should not try to avoid measurement
-%% clusterization. Rather, practitioners should take repeated
-%% measurements (e.g.~in MRI and borehole tomography), increase apparatus
-%% sensitivity (e.g.~in EIT), or take consecutive measurements (e.g.~in
-%% the 1D heat equation). Overall, we show that measurement
-%% clusterization is a natural and (almost) inevitable part of Bayesian
-%% D-optimal designs (but see disclaimer below).
-
+e.g.~the Ising model \citet{cipra1987}, the Lorenz system \citet{brin},
+the Lotka-Volterra equations \citet{logan2006}, the Carnot engine
+\citet{kardar2007} and many others.

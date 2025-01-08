@@ -3,9 +3,9 @@ Here we present the basics of Bayesian inverse problems over Hilbert
 spaces. Since we are ultimately interested in inferring a function
 over some domain, we will keep in mind that these Hilbert spaces
 should really be thought of as function spaces, utilizing a setup
-similar to \cite{knapik2011}. A deeper treatment of the foundations
+similar to \citet{knapik2011}. A deeper treatment of the foundations
 for inverse problems over function spaces can be found in
-\cite{Stuart10}.
+\citet{Stuart10}.
 
 
 \subsection{Forward Problems}\label{subsec:abstract_OED}
@@ -36,9 +36,9 @@ $\meas_1,\dots,\meas_m$ we call \emph{measurements}:
 \end{equation*}
 %% \footnote{It is common for the measurement and forward
 %% operators to be merged \(\tmp := \obs \fwd\)
-%% \cite{AlexanderianGloorGhattas14}, but the analysis carried out in the
+%% \citet{AlexanderianGloorGhattas14}, but the analysis carried out in the
 %% following sections requires that \(\fwd\) and \(\obs\) are explicitly
-%% separated, as in \cite{attia2022stochastic,
+%% separated, as in \citet{attia2022stochastic,
 %%   cvetkovic2023choosing}.}
 Thus, \(\obs \in ( \hilo^* )^m\), where \(m\) is the number of
 measurements taken\footnote{The alert reader will likely ask how do we
@@ -83,7 +83,7 @@ where
   \end{split}
 \end{align}
 Taking \(\modcov = 0\) is a common practice
-\cite{tarantola2005,kaipio2005,Vogel02} and then \(\Sigma =
+\citet{tarantola2005,kaipio2005,Vogel02} and then \(\Sigma =
 \sigma^2I_m\) is a scalar matrix which does not depend on \(\obs\).
 
 \subsection{Bayesian Linear Inverse Problems}\label{subsec:bayesian_inverse_problems}
@@ -97,10 +97,10 @@ likelihood in the previous section, and now we will define the prior.
 
 We take a Gaussian prior \(\param \sim \pr = \normal(\prmean
 ,\prcov)\) with some appropriate covariance operator \(\prcov\) on
-\(\hilp\) \cite{Stuart10}. For example, for the inverse problem of the
+\(\hilp\) \citet{Stuart10}. For example, for the inverse problem of the
 1D heat equation we chose $\prcov = (-\Delta)^{-1}$, as described in
 Section \ref{subsec:toy}. Note that \(\fwd \prcov \fwd^*\) is the
-prior covariance in \(\hilo\) \cite{Stuart10}, and as such is assumed
+prior covariance in \(\hilo\) \citet{Stuart10}, and as such is assumed
 invertible --- an assumption which we will use later (if \(\fwd\) has
 a nontrivial kernel we utilize Occam's Razor and ignore said kernel
 altogether).
@@ -108,7 +108,7 @@ altogether).
 Since $\fwd$ is linear and $\pr$ is Gaussian --- the posterior
 \(\post\) is Gaussian as well. We do not utilize the posterior mean in
 this study, but the posterior covariance operator $\postcov$ is given
-by the known formula \cite{Stuart10}:
+by the known formula \citet{Stuart10}:
 \begin{align}\label{eq:postcov}
   \postcov = (\prcov^{-1} + \fwd^* \obs^* \Sigma^{-1} \obs \fwd
   )^{-1}.
@@ -125,11 +125,11 @@ derivative:
 \end{equation*}
 
 The study of D-optimal designs for Bayesian linear inverse problems in
-infinite dimensions was pioneered by \cite{AlexanderianGloorGhattas14,
+infinite dimensions was pioneered by \citet{AlexanderianGloorGhattas14,
   alexanderian2018efficient}. The main result we will make use of is
 summarized (in our notation) below:
 
-\begin{theorem}[Alexanderian, Gloor, Ghattas \cite{AlexanderianGloorGhattas14}]\label{thm:d_optimality}
+\begin{theorem}[Alexanderian, Gloor, Ghattas \citet{AlexanderianGloorGhattas14}]\label{thm:d_optimality}
   Let \(\pr = \normal(\prmean,\prcov)\) be a Gaussian prior on \(\hilp\)
   and let \(\post = \normal(\postmean,\postcov)\) the posterior measure
   on \(\hilp\) for the Bayesian linear inverse problem \(\data = \obs
@@ -146,10 +146,10 @@ summarized (in our notation) below:
   \end{align}
 \end{theorem}
 
-In \cite{AlexanderianGloorGhattas14, alexanderian2018efficient},
+In \citet{AlexanderianGloorGhattas14, alexanderian2018efficient},
 results are stated for \(\Sigma=I\) (implied by \(\modcov =
 0,\sigma^2=1\)), but these results also hold for more general
-covariance matrices \cite[p. 681]{AlexanderianGloorGhattas14}.
+covariance matrices \citet[p. 681]{AlexanderianGloorGhattas14}.
 
 %% It is important to note that since \(\obs\) is finite-rank,
 %% \(\prcov^{1/2} \fwd ^* \obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}\) is
@@ -179,72 +179,3 @@ We think of \(\prcov\) as constant, in the sense that $\prcov$ does
 not depend on data $\data$. Thus, a D-optimal design minimizes a
 quantity analogous to the posterior covariance determinant, similarly
 to the finite-dimensional case.
-
-
-%% \subsection{Notation Summary}\label{subsec:notation}
-%%   Our notation is summarized below. We let:
-%%   \begin{itemize}
-%%   \item \(\hilp, \hilo\) Hilbert spaces.
-%%   \item \(\fwd:\hilp \to \hilo\) a linear compact operator.
-%%   \item \(\pr \sim \mathcal{N}(0, \prcov)\) prior Gaussian measure on
-%%     \(\hilp$, with prior covariance operator \(\prcov:\hilp \to \hilp$.
-%%   \item \(\obs: \hilo \to \mathbb{R}^m\) measurement operator, where \(m
-%%     \in \mathbb{N}\) is the number of measurements taken.
-%%   \item \(\sigma^2 \in \mathbb{R}_{+}\) observation noise variance.
-%%   \item \(\modcov\) model error covariance operator.
-%%     %% \(\data = \obs \fwd \param + \eps$, where \(\eps \in
-%%     %% \mathbb{R}^m\) isiid \(\mathcal{N}(0, \sigma^2)\) noise.
-%%   \item \(\Sigma(\obs) = \obs \modcov \obs^* + \sigma^2I$. 
-%%   \item \(\post\) the posterior measure, with covariance \(\postcov$.
-%%   \item A D-optimality design criterion
-%%     \cite{AlexanderianGloorGhattas14}:
-%%     \begin{align*}
-%%       \begin{split}
-%%         \tar(\obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
-%%         % 
-%%         % 
-%%         % 
-%%         &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \Sigma(\obs)^{-1} \obs
-%%         \fwd \prcov^{1/2}).
-%%       \end{split}
-%%     \end{align*}
-%%   %% \item \(\{\lambda_i\}_{i=1}^\infty\) eigenvalues of \(\fwd\prcov\fwd^*$
-%%   %%   in decreasing order of magnitude.
-%%   %% %% \item \(\{\ev_i\}_{i=1}^\infty\) their corresponding eigenvectors.
-%%   %% \item \(\{\eta_i\}_{i=1}^\infty\) eigenvalues of \(\obs^*\obs$.
-%%   \end{itemize}
-
-
-%% \subsection{Sequential vs Simultaneous Optimization}\label{subsec:seq_vs_sim}
-%% From defintion \ref{def:d_optimality} we wish to characterize solution(s) of the
-%% following optimization problem for \(\tar$. %%: (\hilo^*)^m \to \R$:
-%% \begin{align}\label{eq:optimization}
-%%   \obs^{\star} := \argmax_{\obs} \tar( \obs ) 
-%%   = \argmax_{\obs} \frac12 \log \det 
-%%   (I + \prcov^{1/2} \fwd^*\obs^* \Sigma^{-1} \obs \fwd \prcov^{1/2}),
-%% \end{align}
-%% where \(\obs\) is constrained to some allowed set of observations. We
-%% call this problem ``simultaneous optimization'', since all
-%% observations are decided on simulatneously.
-
-%% For computational reasons, one may prefer to find the best
-%% observations in a sequential manner. Denote
-%% \begin{equation}\label{eq:def_obs_k}
-%%   \obs_k := (\meas_1,\dots, \meas_k)^t,  k\leq m.
-%% \end{equation}
-%% Sequential optimal design proceeds as follows. Find \(\meas_1\) by
-%% maximizing \(\tar(\obs_1)$. Then, keeping \(\meas_1\) fixed --- find
-%% \(\meas_2\) as the maximizer of \(\tar(\obs_2)$. Then, find \(\meas_3\) by
-%% keeping \(\meas_1,\meas_2\) fixed and taking \(\meas_3\) as the maximizer
-%% of \(\tar(\obs_3)$. Continue this way until \(\obs_m = \obs\) is
-%% found, where \(m\) is the number of available observations. %% It is
-%% %% important to notice that this scheme does not require actually
-%% %% observing data --- in \eqref{eq:objective} data is averaged out.
-
-%% The analysis in this paper is conducted for the general simultaneous
-%% optimization case. The sequential optimization case is dealt with in
-%% section \ref{subsec:clusterization_sequential}. It is important to
-%% note, however that all conclusions we arrive at for the simultaneous
-%% case easily specialize to the sequential case by considering the
-%% posterior as the next sequential step's prior.
-

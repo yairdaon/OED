@@ -164,7 +164,7 @@ fully characterize them in Theorem \ref{thm:char} below.
   Let:
   \begin{itemize}
     \item The D-optimality design criterion
-    \cite{AlexanderianGloorGhattas14}:
+    \citet{AlexanderianGloorGhattas14}:
     \begin{align*}
       \begin{split}
         \tar(\obs) %:&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
@@ -436,8 +436,8 @@ pigeonhole principle.
 We can gain further insight to clusterization in our generic model,
 from Carath\'eodory's Theorem and the concentration on the first $k$
 eigenvectors of $\fwd \prcov \fwd^*$. We present a short discussion
-adapting arguments presented in \cite[Chapter 3]{silvey1980} and
-\cite[Section 5.2.3]{pronzatoPazman2013}.
+adapting arguments presented in \citet[Chapter 3]{silvey1980} and
+\citet[Section 5.2.3]{pronzatoPazman2013}.
 
 Consider $\opt$ a D-optimal design under our generic model.  As
 instructed by Theorem \ref{thm:char}, we ignore all but the first $k$
@@ -454,11 +454,11 @@ space. Hence $\mathcal{M}$ lives in a $k(k+1)/2$-dimensional vector
 space. Since $\opt^*\opt = \sum_{i=1}^m \meas_i\meas_i^*$ for $\meas_i
 \in \hilo^{(k)}$, it is easy to verify that $\frac1m \opt^*\opt \in
 \mathcal{M}$.  Recall Carath\'eodory's Theorem:
-\begin{theorem*}[Carath\'eodory]
+\begin{ctheorem}[Carath\'eodory]
   Let $X \subseteq \mathbb{R}^n, X \neq \phi$ and denote $\conv (X)$
   the convex hull of $X$. For every $x \in \conv (X)$, $x$ is a convex
   combination of at most $n+1$ vectors in $X$.
-\end{theorem*}
+\end{ctheorem}
 Carath\'eodory's Theorem implies that there exist $\meas_i$ and
 $\alpha_i$ such that
 \begin{equation*}
@@ -494,7 +494,7 @@ In this section we fulfill our promise from Section
 ellipsoid in $\hilo$ will contract to zero along every eigenvector of
 $\fwd \prcov \fwd^*$. In our proof we ignore potential problems with
 conducting inference on function spaces which are not unique to
-D-optimal designs (see e.g.~\cite{owhadi2015} for more details).
+D-optimal designs (see e.g.~\citet{owhadi2015} for more details).
 
 
 First, denote $\opt_m$ a D-optimal design utilizing $m$ measurements

@@ -3,21 +3,22 @@
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{array}
-\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
-\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
-%% \usepackage{amsaddr}
 
-
-\usepackage{thm-restate}
 \usepackage{tikz,pgfplotstable}
 \usetikzlibrary{patterns}
 \pgfplotsset{compat=1.9} % set to 1.8 to get old behaviour
-%\usepackage{hyperref}
 \usepackage{xcolor}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\conv}{conv}
 
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\M}{\mathcal{M}}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
 
 \newcommand{\der}{\text{\textup{d}}}
 \newcommand{\diag}{\textup{diag}}
@@ -38,12 +39,8 @@
 \newcommand{\postcovm}{\widehat{\Gamma_{\textup{post}}}}
 \newcommand{\uu}{\mathbf{u}}
 \newcommand{\tar}{\Psi}
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\conv}{conv}
 
 
-% Definitions for second chapter
 \newcommand{\data}{\mathbf{d}}
 \newcommand{\param}{\mathbf{m}}
 \newcommand{\normal}{\mathcal{N}}
@@ -68,5 +65,3 @@
 \newcommand{\opt}{\mathcal{D}}
 \newcommand{\postopt}{\mu_{\textup{post}}^{\data, \opt}} % Posterior measure
 
-
-\raggedbottom

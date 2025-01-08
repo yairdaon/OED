@@ -2,93 +2,124 @@
 \documentclass[ba]{imsart}
 \input{definitions}
 
-%\usepackage{comment}% http://ctan.org/pkg/comment
-%% %% %\excludecomment{proof}
-%% \excludecomment{figure}
-%% \let\endfigure\relax
+%% Packages
+\RequirePackage{amsthm,amsmath,amsfonts,amssymb}
+\RequirePackage[numbers]{natbib}
+%\RequirePackage[authoryear]{natbib}%% uncomment this for author-year citations
+\RequirePackage[colorlinks,citecolor=blue,urlcolor=blue,backref=page,backref=page]{hyperref}
+\RequirePackage{graphicx}
 
-
-%\overfullrule=0pt
-
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}
-\newtheorem*{theorem*}{Theorem}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-
-%
-\pubyear{2021}
+\pubyear{2024}
+\arxiv{2007.12032}
 \volume{TBA}
 \issue{TBA}
-% \doi{0000}
-%\arxiv{}
 \firstpage{1}
 \lastpage{1}
 
-\usepackage{amsthm}
-\usepackage{amsmath}
-\usepackage{natbib}
-\usepackage[colorlinks,citecolor=blue,urlcolor=blue,filecolor=blue,backref=page]{hyperref}
-\usepackage{graphicx}
-
 \startlocaldefs
-% ** Local definitions **
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Uncomment next line to change            %%
+%% the type of equation numbering           %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\numberwithin{equation}{section}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% For Axiom, Claim, Corollary, Hypothesis, %%
+%% Lemma, Theorem, Proposition              %%
+%% use \theoremstyle{plain}                 %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{axiom}{Axiom}
+\newtheorem{claim}[axiom]{Claim}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% For Assumption, Definition, Example,     %%
+%% Notation, Property, Remark, Fact         %%
+%% use \theoremstyle{definition}            %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{example}{Example}
+\newtheorem*{fact}{Fact}
+\newtheorem*{ctheorem}{Theorem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% For Case use \theoremstyle{remark}       %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{remark}
+\newtheorem{case}{Case}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Please put your definitions here:        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \endlocaldefs
+
 
 \begin{document}
 
-%% *** Frontmatter *** 
-
 \begin{frontmatter}
-\title{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
-
-%\title{\support{}}
-\runtitle{Measurement Clusterization in D-optimal Designs}
-%\author{Yair Daon}
-%\numberwithin{equation}{section}
+  \title{Measurement Clusterization in Bayesian D-optimal Designs in Infinite Dimensions}
+  \runtitle{Measurement Clusterization in D-optimal Designs}
+  
 
 \begin{aug}
-\author{\fnms{Yair} \snm{Daon}\thanksref{addr1}\ead[label=e1]{yair.daon@gmail.com}}
-\runauthor{Yair Daon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Only one address is permitted per author. %%
+%% Only division, organization and e-mail is %%
+%% included in the address.                  %%
+%% Additional information can be included in %%
+%% the Acknowledgments section if necessary. %%
+%% ORCID can be inserted by command:         %%
+%% \orcid{0000-0000-0000-0000}               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author[A]{\fnms{Yair}~\snm{Daon}\ead[label=e1]{yair.daon@gmail.com}\orcid{0000-0002-7491-2008}}
+%% \author[A]{\fnms{Second}~\snm{Author}\ead[label=e2]{second@somewhere.com}
+%% \and
+%% \author[B]{\fnms{Third}~\snm{Author}\ead[label=e3]{third@somewhere.com}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Addresses                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\address[A]{Azrieli Faculty of Medicine, Bar-Ilan University 
+\printead[presep={,\ }]{e1}}
 
-\address[addr1]{Azrieli Faculty of Medicine, Bar-Ilan University, Safed, Israel
-    \printead{e1} % print email address of "e1"
-}
-
+%% \address[B]{Department,
+%% University or Company Name\printead[presep={,\ }]{e2,e3}}
+%% \runauthor{F. Author et al.}
 \end{aug}
 
 \begin{abstract}
   Estimation of parameters in physical processes often demands costly
   measurements, prompting the pursuit of an optimal measurement
-  strategy. Finding such strategy is termed the problem of
-  \emph{optimal experimental design}, abbreviated as optimal
-  design. Remarkably, optimal designs can yield tightly clustered
-  measurement locations, leading researchers to fundamentally revise
-  the design problem just to circumvent this issue. Some authors
-  introduce error correlation among error terms that are initially
-  independent, while others restrict measurement locations to a finite
-  set of locations. While both approaches may prevent clusterization,
-  they also fundamentally alter the optimal design problem.
+  strategy. Finding such strategy is termed the problem of optimal
+  experimental design, abbreviated as optimal design. Remarkably,
+  optimal designs can yield tightly clustered measurement locations,
+  leading researchers to fundamentally revise the design problem just
+  to circumvent this issue. Some authors introduce error correlation
+  among error terms that are initially independent, while others
+  restrict measurement locations to a finite set of locations. While
+  both approaches may prevent clusterization, they also fundamentally
+  alter the optimal design problem.
 
   In this study, we consider Bayesian D-optimal designs, i.e.~designs
   that maximize the expected Kullback-Leibler divergence between
   posterior and prior. We propose an analytically tractable model for
   D-optimal designs over Hilbert spaces. In this framework, we make
-  several key contributions: \textbf{(a)} We establish that
+  several key contributions: (a) We establish that
   measurement clusterization is a generic trait of D-optimal designs
   for linear inverse problems with independent Gaussian measurement
-  errors and a Gaussian prior. \textbf{(b)} We prove that introducing
+  errors and a Gaussian prior. (b) We prove that introducing
   correlations among measurement error terms mitigates
-  clusterization. \textbf{(c)} We characterize D-optimal designs as
+  clusterization.(c) We characterize D-optimal designs as
   reducing uncertainty across a subset of prior covariance
-  eigenvectors. \textbf{(d)} We leverage this characterization to
+  eigenvectors. (d) We leverage this characterization to
   argue that measurement clusterization arises as a consequence of the
   pigeonhole principle: when more measurements are taken than there
   are locations where the select eigenvectors are large and others are
@@ -102,6 +133,12 @@
 \kwd[Primary ]{62F15}
 \kwd{35R30}
 \kwd[; secondary ]{28C20}
+\end{keyword}
+
+\begin{keyword}
+\kwd{D-optimal design}
+\kwd{inverse problem}
+\kwd{clusterization}
 \end{keyword}
 
 \end{frontmatter}
@@ -129,8 +166,9 @@
   whole lot better.
   %Having worked on this manuscript alone for several years, they have
   %almost become my coautoh
+\end{acks}
 
-  
+\begin{funding} 
   This research was supported in part by an appointment with the
   National Science Foundation (NSF) Mathematical Sciences Graduate
   Internship (MSGI) Program sponsored by the NSF Division of
@@ -142,11 +180,10 @@
   of NSF, ORAU/ORISE, or DOE.
   % This work was also supported by The Raymond and Beverly Sackler
   % Post-Doctoral Scholarship.
-\end{acks}
+\end{funding}
 
 \bibliographystyle{ba}
-\bibliography{/Users/yairdaon/lib.bib}
-
+\bibliography{~/lib.bib}
 
 \end{document}
 

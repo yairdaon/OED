@@ -1,5 +1,7 @@
 \documentclass{beamer}
 \input{definitions}
+\usepackage{setspace}
+
 
 \usefonttheme{professionalfonts} % using non standard fonts for beamer
 \usefonttheme{serif} % default family is serif
@@ -9,7 +11,7 @@
 \setbeamertemplate{footline}[frame number]
 \usepgfplotslibrary{fillbetween}
 
-\title{Measurement Clusterization in Bayesian D-optimal Designs}
+\title{Clusterization in D-optimal designs: the case against linearization}
 \author{Yair Daon}
 \institute{Azrieli Faculty of Medicine, Bar-Ilan University}
 \date{}
@@ -199,21 +201,10 @@
 
 
 \begin{frame}
-
-  \only<1>{
-    \begin{center}
-      \includegraphics[width=1\textwidth]{figs/bayes.png}
-    \end{center}
-  }
-  
-  \only<2>{
-    \begin{center}
-      \includegraphics[width=1\textwidth]{figs/kl.png}
-    \end{center}
-  }
-  
+  \begin{center}
+    \includegraphics[width=1\textwidth]{figs/bayes.png}
+  \end{center}
 \end{frame}
-
 
 
 \begin{frame}
@@ -246,10 +237,9 @@
 \end{align*}
 
 \begin{figure}
-   \includegraphics[width=10cm,height=6cm]{figs/MultivariateNormal.png}
+   \includegraphics[width=10cm,height=6cm]{figs/gaussian.png}
 \end{figure}
 
-\footnotesize{Wikimedia Commons}
 % Introduce prior and posterior measurea 
 \end{frame}
 
@@ -310,16 +300,25 @@
 \end{frame}
 
 
+\begin{frame}
+  \only<1>{
+    \begin{center}
+      \includegraphics[width=1\textwidth]{figs/bayes.png}
+    \end{center}
+  }
+  \only<2>{
+    \begin{center}
+      \includegraphics[width=1\textwidth]{figs/kl.png}
+    \end{center}
+  }
+\end{frame}
 
 \begin{frame}
-  Maximize \only<4->{over $\obs$}
+  We need a \emph{design criterion}!  \only<4->{Maximize over $\obs$}
   \begin{equation*}
-    \onslide<3->{\mathbb{E}_{\data} \Big [}D_{\text{KL}} (\post || \pr ) \onslide<3->{\Big ]}
-    \onslide<2->{=} \onslide<3->{\mathbb{E}_{\data} \Big [}\onslide<2->{\int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)}  \onslide<3->{\Big ]}
+    \onslide<5->{\mathbb{E}_{\data} \Big [}\onslide<2->{D_{\text{KL}} (\post || \pr )} \onslide<5->{\Big ]}
+    \onslide<3->{=} \onslide<5->{\mathbb{E}_{\data} \Big [}\onslide<3->{\int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)}  \onslide<5->{\Big ]}
   \end{equation*}
-
-
-
   %% \begin{equation*}
   %%   \onslide<1->{\phantom{\mathbb{E_{\data}}}}D_{\text{KL}} (\post || \pr ) = \onslide<1->{\phantom{\mathbb{E_{\data}}}} \int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)
   %%   \onslide<2->{\mathbb{E_{\data}}}
@@ -328,9 +327,8 @@
   %% \begin{equation*}
   %%   \onslide<2->{\mathbb{E_{\data}}}
   %% \end{eion*}
-
-  
 \end{frame}
+
 
 % Slide 10: D-optimality criterion
 \begin{frame}
@@ -341,6 +339,7 @@
     %% measure on \(\hil\) for the Bayesian linear inverse problem
     %% \(\data = \obs \fwd\param + \eps\).
     %% Then
+    For linear $\fwd$ and Gaussian prior and likelihood:
     \begin{align*}
       \begin{split}
         \tar( \obs) :&= \mathbb{E}_{\data}\left [ D_{\text{KL}} (\post || \pr ) \right ] \\
@@ -355,8 +354,8 @@
 
   \pause
   \begin{definition}
-  \(\opt\) is \emph{D-optimal} if \(\opt = \argmax_{\obs}
-  \tar(\obs)\).
+    \(\opt\) is \emph{D-optimal} if \(\opt = \argmax_{\obs}
+    \tar(\obs)\).
   \end{definition}
 
 
@@ -378,6 +377,14 @@
   \onslide<4->{D-optimal designs minimize $\det \postcov$.}
 \end{frame}
 
+\begin{frame}
+  \frametitle{D-Optimality}
+  \(\opt\) is \emph{D-optimal} if \(\opt = \argmax_{\obs}
+  \tar(\obs)\), \pause \newline \newline where 
+  \begin{equation*}
+    \tar \stackrel{\sim}{=} \log \det \prcov \postcov^{-1}.
+  \end{equation*}
+\end{frame}
 
 %% \begin{frame}
 %%   Recall \(\tar( \obs) = \frac12 \log \det ( I + 
@@ -497,6 +504,16 @@ Where
 \end{align*}
 \end{frame}
 
+
+\begin{frame}[plain]
+    \centering
+        {\Huge \bfseries \setstretch{2} Results}
+
+\end{frame}
+
+
+
+
 \begin{frame}
 %% \frametitle{Necessary conditions for optimality}
 % Present the nonlinear eigenvalue problem for the vanishing model error case
@@ -532,14 +549,16 @@ Where
     \begin{gather*}
       \fwd\prcov\fwd^* \text{ and } \opt^* \opt \text{ are simultaneously diagonalizable}.\\
       \Uparrow \\
-      \onslide<3->{\left( (\fwd\prcov\fwd^*)^{-1} + \opt^* \opt \right)^{-1} \opt^* = \opt^* \Xi \\
+      \onslide<4->{\left( (\fwd\prcov\fwd^*)^{-1} + \opt^* \opt \right)^{-1} \opt^* = \opt^* \Xi \\
         \Uparrow}  \\
-      \onslide<2->{\fwd  \left(\prcov^{-1} + \fwd^* \opt^*\opt \fwd \right)^{-1} \fwd^* \opt^* = \opt^* \Xi  \\
+      \onslide<3->{\fwd  \left(\prcov^{-1} + \fwd^* \opt^*\opt \fwd \right)^{-1} \fwd^* \opt^* = \opt^* \Xi  \\
         \Uparrow}  \\
-      \fwd \postcov \fwd^* \opt^* = \opt^* \Xi  \\
+      \onslide<2->{\fwd \postcov \fwd^* \opt^* = \opt^* \Xi  \\
+      \Uparrow} \\
+      \text{D-optimality}
     \end{gather*}
   \end{theorem}
-  \uncover<4->{Proof idea: invariant space for each eigenvalue, use spectral decomposition.}
+  \uncover<5->{Last step: invariant space for each eigenvalue, use spectral decomposition.}
 \end{frame}
 
 
@@ -677,7 +696,7 @@ Where
     $AA^t = M$.
   \end{lemma}
   \pause Proof: $M = UDU^t$. Find $V$ orthogonal such that $V^tDV$ has
-  unit diagonal via Givens rotations. Let $A := U\sqrt{D} V^t$.
+  unit diagonal via Givens rotations. Take $A := U\sqrt{D} V^t$.
 \end{frame}
 
 \begin{frame}
