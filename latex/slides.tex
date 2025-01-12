@@ -11,6 +11,7 @@
 \setbeamertemplate{footline}[frame number]
 \usepgfplotslibrary{fillbetween}
 
+
 \title{Clusterization in D-optimal designs: the case against linearization}
 \author{Yair Daon}
 \institute{Azrieli Faculty of Medicine, Bar-Ilan University}
@@ -37,7 +38,7 @@
     \includegraphics[width=\textwidth]{figs/inverse_problem.png}
   \end{figure}
 
-  \footnotesize{Neumayer, Suppan and Bretterklieber (2019)}
+  {\hfill \tiny Neumayer, Suppan and Bretterklieber (2019)}
   %Paper: Statistical solution of inverse problems using a state
   %reduction. Image of electrical capacitance tomography (ECT).
 \end{frame}
@@ -49,7 +50,7 @@
       
       \begin{itemize}
       \item<3-> Separable Hilbert space $\hil$.
-      \item<4-> \(\fwd: \hil \to \hil\).
+      \item<4-> Linear \(\fwd: \hil \to \hil\).
       \item<5-> \(\meas_j \in \hil^*, j=1,\dots,m \).
       %\item<6-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
       \item<6-> \(\data_j := \meas_j \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
@@ -75,7 +76,7 @@
       
     \end{column}
   \end{columns}
-  \footnotesize{Wikimedia Commons, Conroy and Guy 2005, radiologykey.com }
+  {\hfill \tiny Wikimedia Commons, Conroy and Guy 2005, radiologykey.com }
 \end{frame}
 
 
@@ -113,7 +114,7 @@
   \includegraphics[width=8cm,height=5cm]{figs/heat_rod.png} 
 \end{figure}
 
-\footnotesize{Wikimedia Commons}
+{\hfill \tiny Wikimedia Commons}
 \end{frame}
 
 
@@ -169,7 +170,7 @@
 \begin{frame}
   \begin{itemize}
   \item<1-> Separable Hilbert space $\hil$.
-  \item<2-> \(\fwd: \hil \to \hil\).
+  \item<2-> Linear \(\fwd: \hil \to \hil\).
   \item<3-> \(\meas_j \in \hil^*, j=1,\dots,m \).
   \item<4-> \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t\).
   \item<5-> \(\data := \obs \fwd \param + \eps\).% \text{ where } \eps \sim \mathcal{N}(0,\sigma^2 I_m)\)
@@ -211,14 +212,14 @@
   \begin{center}
     \includegraphics[width=\textwidth]{figs/bayesian_inverse_problems.jpg}
   \end{center}
-  \footnotesize{Alexanderian (2021).}
+  {\hfill \tiny Alexanderian (2021).}
 \end{frame}
 
 \begin{frame}
 \frametitle{Bayesian Inverse Problems (Stuart 2010)}
 \begin{itemize}
 \item Separable Hilbert space $\hil$.
-\item \(\fwd: \hil \to \hil\). 
+\item Linear \(\fwd: \hil \to \hil\). 
 \item \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
 \item \(\data := \obs \fwd \param + \eps \text{ where } \eps \sim \mathcal{N}(0,I_m)\).
 \item Prior $\pr$, posterior $\post$.
@@ -230,9 +231,9 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Gaussian measures}
+\frametitle{Gaussian measures via linear pushforward}
 \begin{align*}
-  \pr &\sim \mathcal{N}(\prmean, \prcov), \text{ $\prcov$ is trace-class}\\
+  \pr &\sim \mathcal{N}(\param, \prcov), \text{ $\prcov$ is trace-class}\\
   \onslide<2->{&\postcov^{-1} = \prcov^{-1} + \fwd^* \obs^*\obs \fwd} 
 \end{align*}
 
@@ -240,7 +241,102 @@
    \includegraphics[width=10cm,height=6cm]{figs/gaussian.png}
 \end{figure}
 
-% Introduce prior and posterior measurea 
+% Introduce prior and posterior measurea
+%% Let v_1 = [1,1], v_2 = [1,-1], v_3 = [-1,-0.5]. Take random 2 by 2 positive definite matrix  and call it Gamma. Let m = [1,1.4]. 
+%% Create a figure with two columns of height 6 and width 12. 
+
+%% 1a. On the left half draw a heatmap of a gaussian N(m, Gamma) in greyscale.
+%% 1b. Draw mu as a black dot and mark it \mathbf{m} (in black). 
+%% 1c. Draw the vectors v_1, v_2, v_3 as red, green and blue arrows emanating from the origin.
+%% 1d. Restrict this image to [-2,3] on both x and y axes.
+
+%% 2. Let X ~ N(mu, Gamma). Partition the right column into three rows of equal height. 
+%% 2a. In row 1 draw the density a gaussian N(v_1^t mu, v_1^t Gamma v_1) in red and at the top right write \mathcal{N}(v_1^t\mu, v_1^t \Gamma v_1).
+%% 2b. In row 2 draw the density a gaussian N(v_2^t mu, v_2^t Gamma v_2) in green and at the top right write \mathcal{N}(v_2^t\mu, v_2^t \Gamma v_2).
+%% 3c. In row 3 draw the density a gaussian N(v_3^t mu, v_3^t Gamma v_3) in blue and at the top right write \mathcal{N}(v_3^t\mu, v_3^t \Gamma v_3).
+%% 2d. Make sure the scales on the x axes are the same and remove all ticks and labels from axes.
+
+%% In this figure use fontsize 18
+
+
+%% import numpy as np
+%% import matplotlib.pyplot as plt
+%% 
+%% # Define parameters
+%% v_1 = np.array([1, 1])
+%% v_2 = np.array([1, -1])
+%% v_3 = np.array([-1, -0.5])
+%% m = np.array([1, 1.4])
+%% 
+%% # Generate a random 2x2 positive definite matrix Gamma
+%% np.random.seed(42)
+%% A = np.random.rand(2, 2)
+%% Gamma = np.dot(A, A.T)  # Make it positive definite
+%% 
+%% # Define the grid for the heatmap
+%% x = np.linspace(-2, 3, 500)
+%% y = np.linspace(-2, 3, 500)
+%% X, Y = np.meshgrid(x, y)
+%% 
+%% # Compute the Gaussian density
+%% pos = np.dstack((X, Y))
+%% inv_Gamma = np.linalg.inv(Gamma)
+%% Z = np.exp(-0.5 * ((pos - m) @ inv_Gamma * (pos - m)).sum(axis=2)) / (2 * np.pi * np.sqrt(np.linalg.det(Gamma)))
+%% 
+%% # Compute parameters for Gaussian densities
+%% gaussians = []
+%% for v in [v_1, v_2, v_3]:
+%%     mean = np.dot(v, m)
+%%     variance = np.dot(v, np.dot(Gamma, v))
+%%     gaussians.append((mean, variance))
+%% 
+%% # Determine the shared x-axis range for the densities
+%% x_min = min(mean - 3 * np.sqrt(variance) for mean, variance in gaussians)
+%% x_max = max(mean + 3 * np.sqrt(variance) for mean, variance in gaussians)
+%% x_shared = np.linspace(x_min, x_max, 500)
+%% 
+%% # Create the figure
+%% fig = plt.figure(figsize=(12, 6))
+%% fontsize = 18
+%% 
+%% # Plot the heatmap in the left column
+%% ax_left = fig.add_subplot(1, 2, 1)
+%% ax_left.imshow(Z, extent=(-2, 3, -2, 3), origin='lower', cmap='gray')
+%% ax_left.set_xlim([-2, 3])
+%% ax_left.set_ylim([-2, 3])
+%% 
+%% # Draw m as a black dot and label it
+%% ax_left.plot(m[0], m[1], 'o', color='black', markersize=8)
+%% ax_left.text(m[0] + 0.2, m[1], r"$\mathbf{m}$", color="black", fontsize=fontsize)
+%% 
+%% # Draw the vectors as arrows
+%% arrow_colors = ['red', 'green', 'blue']
+%% for v, color in zip([v_1, v_2, v_3], arrow_colors):
+%%     ax_left.arrow(0, 0, v[0], v[1], color=color, head_width=0.2, head_length=0.3, linewidth=2)
+%% 
+%% # Remove all formatting from the left column axes
+%% ax_left.axis("off")
+%% 
+%% # Plot the densities in the right column with respective colors, labels, and shared x-axis
+%% for i, (mean, variance) in enumerate(gaussians):
+%%     ax_right = fig.add_subplot(3, 2, 2 + i * 2)
+%%     density = (1 / np.sqrt(2 * np.pi * variance)) * np.exp(-0.5 * ((x_shared - mean) ** 2) / variance)
+%%     ax_right.plot(x_shared, density, color=arrow_colors[i], linewidth=2)
+%%     
+%%     # Add label at the top right
+%%     label = rf"$\mathcal{{N}}(v_{i+1}^T\mathbf{{m}}, v_{i+1}^T \Gamma v_{i+1})$"
+%%     ax_right.text(0.95, 0.9, label, color=arrow_colors[i], fontsize=fontsize, transform=ax_right.transAxes, ha='right')
+%%     
+%%     # Remove all formatting from the right column axes
+%%     ax_right.axis("off")
+%% 
+%% # Adjust layout
+%% plt.tight_layout()
+%% plt.show()
+
+
+
+
 \end{frame}
 
 
@@ -250,7 +346,7 @@
 
 \begin{itemize}
 \item Separable Hilbert space \(\hil\).
-\item Forward operator \(\fwd: \hil \to \hil\).
+\item Linear forward operator \(\fwd: \hil \to \hil\).
 %\item Observation operator \(\obs: \hil \to \mathbb{R}^m\).
 \item Observation operator \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m,\ u \in \hil\).
 \item Data \(\data := \obs \fwd \param + \eps,\ \eps \sim \mathcal{N}(0,I_m)\).
@@ -261,6 +357,13 @@
 \end{frame}
 
 
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{figs/bayesian_inverse_problems.jpg}
+  \end{center}
+  {\hfill \tiny Alexanderian (2021).}
+\end{frame}
 
 
 
@@ -296,9 +399,8 @@
       
     \end{column}
   \end{columns}
-  %\footnotesize{Wikimedia Commons, Conroy and Guy 2005, radiologykey.com }
+  %{\hfill \tiny Wikimedia Commons, Conroy and Guy 2005, radiologykey.com }
 \end{frame}
-
 
 \begin{frame}
   \only<1>{
@@ -313,8 +415,9 @@
   }
 \end{frame}
 
+
 \begin{frame}
-  We need a \emph{design criterion}!  \only<4->{Maximize over $\obs$}
+  We have a \emph{design criterion}!  \only<4->{Maximize over $\obs$}
   \begin{equation*}
     \onslide<5->{\mathbb{E}_{\data} \Big [}\onslide<2->{D_{\text{KL}} (\post || \pr )} \onslide<5->{\Big ]}
     \onslide<3->{=} \onslide<5->{\mathbb{E}_{\data} \Big [}\onslide<3->{\int \log \frac{\der \post}{\der \pr}(\param) \der \post(\param)}  \onslide<5->{\Big ]}
@@ -328,6 +431,7 @@
   %%   \onslide<2->{\mathbb{E_{\data}}}
   %% \end{eion*}
 \end{frame}
+
 
 
 % Slide 10: D-optimality criterion
@@ -419,9 +523,9 @@
   \begin{columns}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
-      \item<1> Merging close measurements (Fedorov 1997).
-      \item<2> Distance constraints, correlated errors (Ucinski 2005).
-      \item<3> A finite set of locations (Alexanderian et al. 2020).
+      \item<1> Merging close measurements, {\tiny Fedorov 1997}.
+      \item<2> Distance constraints / correlated errors, {\tiny Ucinski 2005}.
+      \item<3> Finitely many locations, {\tiny Alexanderian et al. 2020}.
       \end{itemize}
     \end{column}
     \begin{column}{0.55\textwidth}
@@ -448,11 +552,11 @@ measurement clusterization?
 \end{frame}
 
 \begin{frame}
-\frametitle{A generic formulation for D-optimality}
+\frametitle{A generic inverse problem}
 
 \begin{itemize}
 \item Separable Hilbert space \(\hil\).
-\item Forward operator \(\fwd: \hil \to \hil\).
+\item Linear forward operator \(\fwd: \hil \to \hil\).
 \item Observations \(\obs u = (\meas_1^*u, \dots, \meas_m^*u )^t \in \R^m\).
 \item Prior and posterior covariance \( \prcov, \postcov\).
 \item Data \(\data := \obs \fwd \param + \eps\).
@@ -498,17 +602,23 @@ Where
     % 
     % 
     % 
-    &= \frac12 \log \det ( I + \prcov^{1/2} \fwd ^* \obs^* \obs \fwd
-    \prcov^{1/2}).
+    &= \frac12 \log \det
+    %
+    \only<1>{
+      ( I + \prcov^{1/2} \fwd ^* \obs^* \obs \fwd \prcov^{1/2})
+    }
+    %
+    \only<2>{
+    \prcov \postcov^{-1}
+    }. 
   \end{split}
 \end{align*}
 \end{frame}
 
 
 \begin{frame}[plain]
-    \centering
-        {\Huge \bfseries \setstretch{2} Results}
-
+  \centering
+      {\Huge \bfseries \setstretch{2} Results}
 \end{frame}
 
 
@@ -590,14 +700,16 @@ Where
     \uncover<2->{Then \(\eta_i > 0\) for eigenvectors corresponding to largest \(\lambda_i\).}
   \end{theorem}
   
-  
-  \uncover<3->{How many? \(\rank \opt^*\opt\).}
-
-  \uncover<4->{Why?
+  %% \begin{itemize}
+  %% \item <3-> How many? \(\rank \opt^*\opt\).
+  %% \item <4->
+  \uncover<3->{
+    Why? Sylvester $\det I+ AB = \det I +BA$:
     \begin{align*}
-      \det(I + \prcov^{1/2}  \fwd ^* \opt^* \opt \fwd \prcov^{1/2}) \sim \prod (1+\lambda_i\eta_i)
+      \det(I + \prcov^{1/2}  \fwd ^* \opt^* \opt \fwd \prcov^{1/2}) = \prod (1+\lambda_i\eta_i)
     \end{align*}
   }
+  %% \end{itemize}
   %% INTRODUCE CYLINDERS!!!!
 \end{frame}
 
@@ -681,8 +793,8 @@ Where
     %of the pushforward \(\fwd_{*} \post\) is and its
     has eigenvalues 
     \begin{align*}
-      &\left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} &&\quad i \leq \rank \opt^*\opt \\
-      &\lambda_i  &&\quad \text{ o.w.}
+      &\left(\frac{\sum_{j=1}^k \lambda_j^{-1} + m}{k} \right )^{-1} &&\quad i \leq k:= \rank \opt^*\opt \\
+      &\lambda_i  &&\quad i > k.
     \end{align*}
   \end{theorem}
   \pause Proof: KKT and a lemma.
@@ -698,6 +810,17 @@ Where
   \pause Proof: $M = UDU^t$. Find $V$ orthogonal such that $V^tDV$ has
   unit diagonal via Givens rotations. Take $A := U\sqrt{D} V^t$.
 \end{frame}
+
+
+\begin{frame}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figs/la.png}
+  \end{figure}
+  % https://x.com/masonporter/status/1732149577007149348
+\end{frame}
+
+
 
 \begin{frame}
   \begin{figure}
@@ -754,7 +877,7 @@ Where
 \end{frame}
 
 \begin{frame}
-  \frametitle{Simulating of Generic Model}
+  \frametitle{Simulating Generic Model}
   \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figs/simulations.png}
@@ -764,7 +887,7 @@ Where
 \begin{frame}
   \frametitle{Contributions}
   \begin{itemize}
-  \item <1-> Generic inverse problem with unit norm constraints.
+  \item <1-> Generic model for D-optimality.
   \item <2-> D-optimality \( \Longrightarrow \) nonlinear eigenvalue problem.%\fwd \postcov\fwd^* \opt^* = \opt^* \Xi\).
   \item <3-> Key: $\opt^*\opt$ and \(\fwd \prcov\fwd^*\) are
     simultaneously diagonalizable.
